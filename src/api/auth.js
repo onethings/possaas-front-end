@@ -1,11 +1,10 @@
 import api from './axios';
 
-export const login = async (tenantId, username, password) => {
-    const response = await api.post('/api/users/login', {
-        tenantId,
-        username,
-        password,
-    });
+export const login = async (username, password, tenantId = null) => {
+    const data = { username, password };
+    if (tenantId) data.tenantId = tenantId;
+
+    const response = await api.post('/api/users/login', data);
     return response.data;
 };
 

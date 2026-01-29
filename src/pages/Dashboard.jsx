@@ -63,12 +63,12 @@ const Dashboard = () => {
     };
 
     const chartData = {
-        labels: ['週一', '週二', '週三', '週四', '週五', '週六', '週日'],
+        labels: businessSummary.salesTrend?.map(d => d.date.split('-').slice(1).join('/')) || ['週一', '週二', '週三', '週四', '週五', '週六', '週日'],
         datasets: [
             {
                 fill: true,
                 label: '銷售額 ($)',
-                data: [1500, 2300, 1800, 2800, 3200, 4500, 3800],
+                data: businessSummary.salesTrend?.map(d => d.totalRevenue) || [0, 0, 0, 0, 0, 0, 0],
                 borderColor: 'hsl(230, 80%, 60%)',
                 backgroundColor: 'rgba(99, 102, 241, 0.1)',
                 tension: 0.4,
@@ -80,9 +80,20 @@ const Dashboard = () => {
         responsive: true,
         plugins: {
             legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: (context) => `銷售額: $${context.parsed.y.toLocaleString()}`
+                }
+            }
         },
         scales: {
-            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'hsl(0,0%,70%)' } },
+            y: {
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: {
+                    color: 'hsl(0,0%,70%)',
+                    callback: (value) => `$${value.toLocaleString()}`
+                }
+            },
             x: { grid: { display: false }, ticks: { color: 'hsl(0,0%,70%)' } },
         },
     };
@@ -103,7 +114,6 @@ const Dashboard = () => {
         );
     }
 
-    const businessSummary = summary.businessSummary || {};
     const systemStats = summary.systemStats || {};
     const agentStats = summary.agentStats || {};
 
@@ -115,9 +125,9 @@ const Dashboard = () => {
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>{user?.tenantId} 營運概覽</h2>
+                <h2 style={{ fontSize: '1.5rem' }}>{summary.personal?.tenantId || user?.tenantId} 營運概覽</h2>
                 <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                    最後更新：{businessSummary.lastUpdate ? new Date(businessSummary.lastUpdate).toLocaleString() : '剛剛'}
+                    最後更新：{businessSummary.lastUpdate ? businessSummary.lastUpdate : '今日暫無數據'}
                 </span>
             </div>
 
@@ -125,23 +135,23 @@ const Dashboard = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
                 {summary.role <= 2 ? (
                     <>
-                        <StatCard icon={Users} label="總租戶數" value={systemStats.totalTenants || 0} change="+2" positive />
-                        <StatCard icon={Users} label="活躍租戶" value={systemStats.activeTenants || 0} change="+1" positive />
-                        <StatCard icon={ShoppingBag} label="全系統產品" value={systemStats.totalProducts || 0} change="+15" positive />
+                        <StatCard icon={Users} label="總租戶數" value={systemStats.totalTenants || 0} change="系統級別" positive />
+                        <StatCard icon={Users} label="活躍租戶" value={systemStats.activeTenants || 0} change="Live" positive />
+                        <StatCard icon={ShoppingBag} label="全系統產品" value={systemStats.totalProducts || 0} change="Total" positive />
                         <StatCard icon={TrendingUp} label="存檔進度" value={`${systemStats.archivedProgress || 0}`} change="Stable" positive />
                     </>
                 ) : summary.role === 3 ? (
                     <>
-                        <StatCard icon={Users} label="管理的租戶" value={agentStats.subTenantCount || 0} change="+1" positive />
-                        <StatCard icon={Users} label="管理的帳號" value={agentStats.totalUsersManaged || 0} change="+3" positive />
-                        <StatCard icon={DollarSign} label="預估庫存價值" value={`$${businessSummary.inventory?.totalValue?.toLocaleString() || 0}`} change="---" positive />
-                        <StatCard icon={ShoppingBag} label="管理產品數" value={businessSummary.inventory?.totalItems || 0} change="---" positive />
+                        <StatCard icon={Users} label="管理的租戶" value={agentStats.subTenantCount || 0} change="+0" positive />
+                        <StatCard icon={Users} label="管理的帳號" value={agentStats.totalUsersManaged || 0} change="+0" positive />
+                        <StatCard icon={DollarSign} label="預估庫存價值" value={`$${businessSummary.inventory?.totalValue?.toLocaleString() || 0}`} change="Live" positive />
+                        <StatCard icon={ShoppingBag} label="管理產品數" value={businessSummary.inventory?.totalItems || 0} change="Items" positive />
                     </>
                 ) : (
                     <>
-                        <StatCard icon={DollarSign} label="昨日銷售 (報表)" value={`$${businessSummary.latestSales?.toLocaleString() || 0}`} change="+0%" positive />
-                        <StatCard icon={TrendingUp} label="庫存總價值" value={`$${businessSummary.inventory?.totalValue?.toLocaleString() || 0}`} change="+5.2%" positive />
-                        <StatCard icon={ShoppingBag} label="在庫件數" value={businessSummary.inventory?.totalItems || 0} change="-2.1%" />
+                        <StatCard icon={DollarSign} label="本日銷售" value={`$${businessSummary.latestSales?.toLocaleString() || 0}`} change="Live" positive />
+                        <StatCard icon={TrendingUp} label="庫存總價值" value={`$${businessSummary.inventory?.totalValue?.toLocaleString() || 0}`} change="Stock" positive />
+                        <StatCard icon={ShoppingBag} label="在庫件數" value={businessSummary.inventory?.totalItems || 0} change="Units" positive={businessSummary.inventory?.totalItems > 0} />
                         <StatCard icon={Users} label="目前用戶" value={summary.personal?.username || 'Admin'} change="Online" positive />
                     </>
                 )}
@@ -160,10 +170,20 @@ const Dashboard = () => {
                 <div className="glass-panel" style={{ padding: '1.5rem' }}>
                     <h3 style={{ marginBottom: '1.5rem' }}>熱門產品</h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <ProductItem name="原裝墨盒 P01" sales="124" price="$1,200" />
-                        <ProductItem name="維修配件套裝" sales="89" price="$450" />
-                        <ProductItem name="相紙 A4 50張" sales="65" price="$180" />
-                        <ProductItem name="打印機噴頭" sales="42" price="$2,800" />
+                        {businessSummary.topProducts?.length > 0 ? (
+                            businessSummary.topProducts.map((p, idx) => (
+                                <ProductItem
+                                    key={p.productId?._id || idx}
+                                    name={p.productId?.name || '未知產品'}
+                                    sales={p.qty}
+                                    price={`$${p.revenue?.toLocaleString()}`}
+                                />
+                            ))
+                        ) : (
+                            <div style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '2rem' }}>
+                                暫無熱門產品數據
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

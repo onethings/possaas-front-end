@@ -9,12 +9,13 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const { loginUser } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
+    const [showTenant, setShowTenant] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
-        tenantId: '',
         username: '',
-        password: ''
+        password: '',
+        tenantId: ''
     });
 
     const handleSubmit = async (e) => {
@@ -22,19 +23,19 @@ const LoginPage = () => {
         setLoading(true);
         setError('');
         try {
-            const result = await login(formData.tenantId, formData.username, formData.password);
+            const result = await login(formData.username, formData.password, formData.tenantId || null);
             if (result.success) {
-                // For now, let's assume the user data is just the username and tenantId
-                // The backend only returns { success: true, token }
-                // We might want to decode the JWT or fetch user details separately
-                // For simplicity, we'll store basic info
-                loginUser({ username: formData.username, tenantId: formData.tenantId }, result.token);
+                loginUser(result.user, result.token);
                 navigate('/dashboard');
-            } else {
-                setError(result.message || '登入失敗');
             }
         } catch (err) {
-            setError(err.response?.data?.message || '伺服器錯誤，請稍後再試');
+            const data = err.response?.data;
+            if (data?.requireTenant) {
+                setShowTenant(true);
+                setError(data.message);
+            } else {
+                setError(data?.message || '登入失敗，請檢查您的帳號、密碼或公司編號');
+            }
         } finally {
             setLoading(false);
         }
@@ -56,24 +57,9 @@ const LoginPage = () => {
                 <p style={{ color: 'var(--text-muted)' }}>登錄您的管理後台以繼續</p>
             </div>
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                 <div className="input-group">
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>租戶 ID / 公司編號</label>
-                    <div style={{ position: 'relative' }}>
-                        <Building2 size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
-                        <input
-                            type="text"
-                            placeholder="例如: superstore-01"
-                            style={inputStyle}
-                            value={formData.tenantId}
-                            onChange={(e) => setFormData({ ...formData, tenantId: e.target.value })}
-                            required
-                        />
-                    </div>
-                </div>
-
-                <div className="input-group">
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>帳號 / Email</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Email 地址</label>
                     <div style={{ position: 'relative' }}>
                         <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
                         <input
@@ -108,6 +94,39 @@ const LoginPage = () => {
                     </div>
                 </div>
 
+                {showTenant && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        className="input-group"
+                    >
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>公司編號 (Company ID)</label>
+                        <div style={{ position: 'relative' }}>
+                            <Building2 size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
+                            <input
+                                type="text"
+                                placeholder="例如: superstore-01"
+                                style={inputStyle}
+                                value={formData.tenantId}
+                                onChange={(e) => setFormData({ ...formData, tenantId: e.target.value })}
+                                required
+                            />
+                        </div>
+                    </motion.div>
+                )}
+
+                {!showTenant && (
+                    <div style={{ textAlign: 'right' }}>
+                        <button
+                            type="button"
+                            onClick={() => setShowTenant(true)}
+                            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '0.85rem', cursor: 'pointer', padding: 0 }}
+                        >
+                            使用公司編號登入？
+                        </button>
+                    </div>
+                )}
+
                 {error && (
                     <div style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(248, 113, 113, 0.1)', color: '#f87171', fontSize: '0.9rem', textAlign: 'center' }}>
                         {error}
@@ -118,13 +137,14 @@ const LoginPage = () => {
                     type="submit"
                     className="btn-primary"
                     disabled={loading}
-                    style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: loading ? 0.7 : 1 }}
+                    style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: loading ? 0.7 : 1 }}
                 >
                     {loading ? '登入中...' : '登入系統'} <ArrowRight size={18} />
                 </button>
 
-                <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem' }}>
-                    <a href="#" style={{ color: 'var(--primary)', textDecoration: 'none' }}>忘記密碼？</a>
+                <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between' }}>
+                    <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>忘記密碼？</a>
+                    <a href="#" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>申請試用</a>
                 </div>
             </form>
         </motion.div>
