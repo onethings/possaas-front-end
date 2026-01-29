@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
     TrendingUp,
@@ -6,7 +6,8 @@ import {
     ShoppingBag,
     DollarSign,
     ArrowUpRight,
-    ArrowDownRight
+    ArrowDownRight,
+    Loader2
 } from 'lucide-react';
 import {
     Chart as ChartJS,
@@ -20,6 +21,8 @@ import {
     Filler
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { getReportSummary } from '../api/reports';
+import { useAuth } from '../contexts/AuthContext';
 
 ChartJS.register(
     CategoryScale,
@@ -33,6 +36,32 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+    const { user } = useAuth();
+    const [summary, setSummary] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        fetchSummary();
+    }, []);
+
+    const fetchSummary = async () => {
+        setLoading(true);
+        try {
+            const result = await getReportSummary();
+            if (result.success) {
+                setSummary(result.data);
+            } else {
+                setError('無法讀取數據摘要');
+            }
+        } catch (err) {
+            setError('伺服器連線失敗');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const chartData = {
         labels: ['週一', '週二', '週三', '週四', '週五', '週六', '週日'],
         datasets: [
@@ -58,6 +87,26 @@ const Dashboard = () => {
         },
     };
 
+    if (loading) {
+        return (
+            <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                <Loader2 className="animate-spin" size={32} /> 數據讀取中...
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171' }}>
+                {error}
+            </div>
+        );
+    }
+
+    const businessSummary = summary.businessSummary || {};
+    const systemStats = summary.systemStats || {};
+    const agentStats = summary.agentStats || {};
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -66,17 +115,38 @@ const Dashboard = () => {
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>控制台概覽</h2>
-                <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>數據最後更新：剛剛</span>
+                <h2 style={{ fontSize: '1.5rem' }}>{user?.tenantId} 營運概覽</h2>
+                <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                    最後更新：{businessSummary.lastUpdate ? new Date(businessSummary.lastUpdate).toLocaleString() : '剛剛'}
+                </span>
             </div>
 
             {/* Stats Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
-                <StatCard icon={DollarSign} label="本日營收" value="$12,850" change="+12.5%" positive />
-                <StatCard icon={ShoppingBag} label="訂單數量" value="48" change="+5.2%" positive />
-                <StatCard icon={Users} label="新增客戶" value="12" change="-2.1%" />
-                <StatCard icon={TrendingUp} label="平均客單價" value="$267" change="+8.0%" positive />
+                {summary.role <= 2 ? (
+                    <>
+                        <StatCard icon={Users} label="總租戶數" value={systemStats.totalTenants || 0} change="+2" positive />
+                        <StatCard icon={Users} label="活躍租戶" value={systemStats.activeTenants || 0} change="+1" positive />
+                        <StatCard icon={ShoppingBag} label="全系統產品" value={systemStats.totalProducts || 0} change="+15" positive />
+                        <StatCard icon={TrendingUp} label="存檔進度" value={`${systemStats.archivedProgress || 0}`} change="Stable" positive />
+                    </>
+                ) : summary.role === 3 ? (
+                    <>
+                        <StatCard icon={Users} label="管理的租戶" value={agentStats.subTenantCount || 0} change="+1" positive />
+                        <StatCard icon={Users} label="管理的帳號" value={agentStats.totalUsersManaged || 0} change="+3" positive />
+                        <StatCard icon={DollarSign} label="預估庫存價值" value={`$${businessSummary.inventory?.totalValue?.toLocaleString() || 0}`} change="---" positive />
+                        <StatCard icon={ShoppingBag} label="管理產品數" value={businessSummary.inventory?.totalItems || 0} change="---" positive />
+                    </>
+                ) : (
+                    <>
+                        <StatCard icon={DollarSign} label="昨日銷售 (報表)" value={`$${businessSummary.latestSales?.toLocaleString() || 0}`} change="+0%" positive />
+                        <StatCard icon={TrendingUp} label="庫存總價值" value={`$${businessSummary.inventory?.totalValue?.toLocaleString() || 0}`} change="+5.2%" positive />
+                        <StatCard icon={ShoppingBag} label="在庫件數" value={businessSummary.inventory?.totalItems || 0} change="-2.1%" />
+                        <StatCard icon={Users} label="目前用戶" value={summary.personal?.username || 'Admin'} change="Online" positive />
+                    </>
+                )}
             </div>
+
 
             {/* Main Row */}
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>

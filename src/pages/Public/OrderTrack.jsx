@@ -2,26 +2,41 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, MapPin, Package, CheckCircle2, Clock, Phone } from 'lucide-react';
 
+import { trackOrder } from '../../api/orders';
+
 const OrderTrack = () => {
     const [orderId, setOrderId] = useState('');
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault();
         setLoading(true);
-        // Mock API call
-        setTimeout(() => {
-            setResult({
-                id: orderId || 'ORD-8821',
-                status: 'delivered',
-                customer: '張先生',
-                items: ['原裝墨盒 P01 x 2', '維修零件 A x 1'],
-                lastUpdate: '2026-01-29 11:30',
-                location: '深水埗分店'
-            });
+        setError('');
+        setResult(null);
+        try {
+            const apiResult = await trackOrder(orderId);
+            if (apiResult.success) {
+                // Map backend order to UI structure
+                const order = apiResult.data;
+                setResult({
+                    id: order.orderNo,
+                    status: order.status === 'paid' ? 'delivered' : 'pending',
+                    customer: order.customerNameSnapshot || '客戶',
+                    items: order.items.map(i => `${i.nameSnapshot || '產品'} x ${i.qty}`),
+                    lastUpdate: new Date(order.updatedAt || order.createdAt).toLocaleString(),
+                    location: '發貨分店' // Currently static or can be derived from storeId
+                });
+            } else {
+                setError('找不到該訂單，請檢查單號是否正確');
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || '查詢失敗');
+            console.error(err);
+        } finally {
             setLoading(false);
-        }, 1000);
+        }
     };
 
     return (
@@ -55,6 +70,12 @@ const OrderTrack = () => {
                     {loading ? '查詢中...' : '查詢'}
                 </button>
             </form>
+
+            {error && (
+                <div style={{ padding: '1rem', borderRadius: 'var(--radius-md)', background: 'rgba(248, 113, 113, 0.1)', color: '#f87171', marginBottom: '2rem', textAlign: 'center' }}>
+                    {error}
+                </div>
+            )}
 
             <AnimatePresence>
                 {result && (

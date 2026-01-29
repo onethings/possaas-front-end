@@ -1,20 +1,45 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, User, Building2, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { login } from '../api/auth';
 
 const LoginPage = () => {
+    const navigate = useNavigate();
+    const { loginUser } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         tenantId: '',
         username: '',
         password: ''
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Logging in with:', formData);
-        // Logic will be added here
+        setLoading(true);
+        setError('');
+        try {
+            const result = await login(formData.tenantId, formData.username, formData.password);
+            if (result.success) {
+                // For now, let's assume the user data is just the username and tenantId
+                // The backend only returns { success: true, token }
+                // We might want to decode the JWT or fetch user details separately
+                // For simplicity, we'll store basic info
+                loginUser({ username: formData.username, tenantId: formData.tenantId }, result.token);
+                navigate('/dashboard');
+            } else {
+                setError(result.message || '登入失敗');
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || '伺服器錯誤，請稍後再試');
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     return (
         <motion.div
@@ -83,8 +108,19 @@ const LoginPage = () => {
                     </div>
                 </div>
 
-                <button type="submit" className="btn-primary" style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                    登入系統 <ArrowRight size={18} />
+                {error && (
+                    <div style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(248, 113, 113, 0.1)', color: '#f87171', fontSize: '0.9rem', textAlign: 'center' }}>
+                        {error}
+                    </div>
+                )}
+
+                <button
+                    type="submit"
+                    className="btn-primary"
+                    disabled={loading}
+                    style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: loading ? 0.7 : 1 }}
+                >
+                    {loading ? '登入中...' : '登入系統'} <ArrowRight size={18} />
                 </button>
 
                 <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem' }}>

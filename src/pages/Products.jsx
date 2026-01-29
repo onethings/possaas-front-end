@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
     Plus,
@@ -7,18 +7,43 @@ import {
     Edit2,
     Trash2,
     ExternalLink,
-    Filter
+    Filter,
+    Loader2
 } from 'lucide-react';
+import { getProducts } from '../api/products';
 
 const Products = () => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-    const mockProducts = [
-        { sku: 'P010214', name: '原裝墨盒 P01', price: 1200, stock: 45, category: '配件' },
-        { sku: 'P120556', name: '維修配件套裝', price: 450, stock: 12, category: '套裝' },
-        { sku: 'P884102', name: '打印機噴頭', price: 2800, stock: 5, category: '配件' },
-        { sku: 'S001124', name: '相紙 A4 50張', price: 180, stock: 120, category: '耗材' },
-    ];
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () => {
+        setLoading(true);
+        try {
+            const result = await getProducts();
+            if (result.success) {
+                setProducts(result.data);
+            } else {
+                setError('無法讀取產品列表');
+            }
+        } catch (err) {
+            setError('伺服器連線失敗');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const filteredProducts = products.filter(p =>
+        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.sku?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
 
     return (
         <motion.div
@@ -52,48 +77,67 @@ const Products = () => {
             </div>
 
             {/* Table */}
-            <div className="glass-panel" style={{ overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead>
-                        <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
-                            <th style={thStyle}>SKU / 條碼</th>
-                            <th style={thStyle}>產品名稱</th>
-                            <th style={thStyle}>價格</th>
-                            <th style={thStyle}>庫存</th>
-                            <th style={thStyle}>分類</th>
-                            <th style={thStyle}>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {mockProducts.map((p) => (
-                            <tr key={p.sku} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                <td style={tdStyle}><code style={{ color: 'var(--primary-light)' }}>{p.sku}</code></td>
-                                <td style={tdStyle}>{p.name}</td>
-                                <td style={tdStyle}>${p.price.toLocaleString()}</td>
-                                <td style={tdStyle}>
-                                    <span style={{
-                                        padding: '2px 8px',
-                                        borderRadius: '12px',
-                                        fontSize: '0.8rem',
-                                        background: p.stock < 10 ? 'rgba(248, 113, 113, 0.1)' : 'rgba(74, 222, 128, 0.1)',
-                                        color: p.stock < 10 ? '#f87171' : '#4ade80'
-                                    }}>
-                                        {p.stock} 件
-                                    </span>
-                                </td>
-                                <td style={tdStyle}>{p.category}</td>
-                                <td style={tdStyle}>
-                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                        <button style={actionBtnStyle}><Edit2 size={16} /></button>
-                                        <button style={actionBtnStyle}><Trash2 size={16} color="#f87171" /></button>
-                                        <button style={actionBtnStyle}><ExternalLink size={16} /></button>
-                                    </div>
-                                </td>
+            <div className="glass-panel" style={{ overflow: 'hidden', minHeight: '200px', display: 'flex', flexDirection: 'column' }}>
+                {loading ? (
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                        <Loader2 className="animate-spin" size={24} /> 讀取中...
+                    </div>
+                ) : error ? (
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171' }}>
+                        {error}
+                    </div>
+                ) : (
+                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                        <thead>
+                            <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+                                <th style={thStyle}>SKU / 條碼</th>
+                                <th style={thStyle}>產品名稱</th>
+                                <th style={thStyle}>價格</th>
+                                <th style={thStyle}>庫存</th>
+                                <th style={thStyle}>分類</th>
+                                <th style={thStyle}>操作</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {filteredProducts.length === 0 ? (
+                                <tr>
+                                    <td colSpan="6" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                                        找不到符合條件的產品
+                                    </td>
+                                </tr>
+                            ) : (
+                                filteredProducts.map((p) => (
+                                    <tr key={p._id || p.sku} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                        <td style={tdStyle}><code style={{ color: 'var(--primary-light)' }}>{p.sku || 'N/A'}</code></td>
+                                        <td style={tdStyle}>{p.name}</td>
+                                        <td style={tdStyle}>${p.price?.toLocaleString()}</td>
+                                        <td style={tdStyle}>
+                                            <span style={{
+                                                padding: '2px 8px',
+                                                borderRadius: '12px',
+                                                fontSize: '0.8rem',
+                                                background: (p.stock || 0) < 10 ? 'rgba(248, 113, 113, 0.1)' : 'rgba(74, 222, 128, 0.1)',
+                                                color: (p.stock || 0) < 10 ? '#f87171' : '#4ade80'
+                                            }}>
+                                                {p.stock || 0} 件
+                                            </span>
+                                        </td>
+                                        <td style={tdStyle}>{p.category || '未分類'}</td>
+                                        <td style={tdStyle}>
+                                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                <button style={actionBtnStyle}><Edit2 size={16} /></button>
+                                                <button style={actionBtnStyle}><Trash2 size={16} color="#f87171" /></button>
+                                                <button style={actionBtnStyle}><ExternalLink size={16} /></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                )}
             </div>
+
         </motion.div>
     );
 };

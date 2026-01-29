@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
     Search,
@@ -7,18 +7,38 @@ import {
     Eye,
     CheckCircle,
     Clock,
-    XCircle
+    XCircle,
+    Loader2
 } from 'lucide-react';
+import { getOrders } from '../api/orders';
 
 const Orders = () => {
     const [activeTab, setActiveTab] = useState('all');
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-    const mockOrders = [
-        { id: 'ORD-8821', customer: '張先生', total: 1850, status: 'paid', date: '2026-01-29 10:15' },
-        { id: 'ORD-8822', customer: '李小姐', total: 450, status: 'pending', date: '2026-01-29 10:30' },
-        { id: 'ORD-8823', customer: '王老闆', total: 2800, status: 'paid', date: '2026-01-29 10:45' },
-        { id: 'ORD-8824', customer: '陳先生', total: 120, status: 'cancelled', date: '2026-01-29 09:12' },
-    ];
+    useEffect(() => {
+        fetchOrders();
+    }, []);
+
+    const fetchOrders = async () => {
+        setLoading(true);
+        try {
+            const result = await getOrders();
+            if (result.success) {
+                setOrders(result.data);
+            } else {
+                setError('無法讀取訂單列表');
+            }
+        } catch (err) {
+            setError('伺服器連線失敗');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
         <motion.div
@@ -65,25 +85,42 @@ const Orders = () => {
             </div>
 
             {/* Orders List */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {mockOrders.filter(o => activeTab === 'all' || o.status === activeTab).map(order => (
-                    <div key={order.id} className="glass-panel" style={{ padding: '1.2rem', display: 'grid', gridTemplateColumns: '1fr 1.5fr 1fr 1fr 1fr 0.5fr', alignItems: 'center' }}>
-                        <div style={{ fontWeight: 600, color: 'var(--primary-light)' }}>#{order.id}</div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                            <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>{order.customer[0]}</div>
-                            {order.customer}
-                        </div>
-                        <div style={{ fontWeight: 700 }}>${order.total.toLocaleString()}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{order.date}</div>
-                        <div>
-                            <StatusBadge status={order.status} />
-                        </div>
-                        <div style={{ textAlign: 'right' }}>
-                            <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><Eye size={18} /></button>
-                        </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: '300px' }}>
+                {loading ? (
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                        <Loader2 className="animate-spin" size={24} /> 讀取中...
                     </div>
-                ))}
+                ) : error ? (
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171' }}>
+                        {error}
+                    </div>
+                ) : orders.filter(o => activeTab === 'all' || o.status === activeTab).length === 0 ? (
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', padding: '3rem' }}>
+                        找不到符合條件的訂單
+                    </div>
+                ) : (
+                    orders.filter(o => activeTab === 'all' || o.status === activeTab).map(order => (
+                        <div key={order._id} className="glass-panel" style={{ padding: '1.2rem', display: 'grid', gridTemplateColumns: '1fr 1.5fr 1fr 1fr 1fr 0.5fr', alignItems: 'center' }}>
+                            <div style={{ fontWeight: 600, color: 'var(--primary-light)' }}>#{order.orderNo}</div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>
+                                    {(order.customerNameSnapshot || 'N')[0]}
+                                </div>
+                                {order.customerNameSnapshot || '匿名客戶'}
+                            </div>
+                            <div style={{ fontWeight: 700 }}>${order.finalAmount?.toLocaleString()}</div>
+                            <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(order.createdAt).toLocaleString()}</div>
+                            <div>
+                                <StatusBadge status={order.status} />
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                                <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><Eye size={18} /></button>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
+
         </motion.div>
     );
 };
