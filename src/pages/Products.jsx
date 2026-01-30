@@ -367,9 +367,7 @@ const Products = () => {
                                         <td style={tdStyle}>{categories.find(c => c._id === p.categoryId)?.name || '未分類'}</td>
                                         <td style={tdStyle}>
                                             <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                <button onClick={() => handleEditProduct(p)} style={actionBtnStyle}><Edit2 size={16} /></button>
-                                                <button style={actionBtnStyle}><Trash2 size={16} color="#f87171" /></button>
-                                                <button style={actionBtnStyle}><ExternalLink size={16} /></button>
+                                                <button onClick={() => handleEditProduct(p)} style={actionBtnStyle} title="編輯產品"><Edit2 size={16} /></button>
                                             </div>
                                         </td>
                                     </tr>
