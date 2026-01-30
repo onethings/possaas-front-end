@@ -1,16 +1,35 @@
 # React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Context: 我正在開發一個 React + Vite 的 POS 前端，後端 API 規範如下：
 
-Currently, two official plugins are available:
+User Role: role: 1 是開發者，role: 6 是店員。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Auth Handling: 使用 Axios Interceptor 處理 401 (重新登入) 與 402 (租戶過期)。
 
-## React Compiler
+Data Scope: 訂單資料包含 items 陣列（內含 priceSnapshot 與 qty）。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Task: 請幫我建立一個「訂單列表頁面」，需包含：
 
-## Expanding the ESLint configuration
+根據 Order.status 顯示不同的 Badge 顏色。
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+如果 req.user.role > 4，則隱藏「刪除訂單」按鈕。
+
+串接 /api/orders 並實作分頁。
+
+技術棧要求
+框架: React 18+ (Vite)
+
+狀態管理: 建議使用 React Query (TanStack Query) 來處理後端頻繁的庫存與訂單更新，並配合快取機制。
+
+樣式: Tailwind CSS。
+
+API Client: Axios (需設定 withCredentials 與攔截器)。
+
+錯誤代碼定義 (Error Codes)
+401: 未授權 / Token 過期。
+
+402: 租戶欠費/到期（進入受限模式）。
+
+403: 帳號停用或權限等級不足。
+
+404: 找不到資源（例如租戶資料遺失）。

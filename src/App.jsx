@@ -3,11 +3,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
 import Orders from './pages/Orders';
 import Tenants from './pages/SuperAdmin/Tenants';
 import OrderTrack from './pages/Public/OrderTrack';
+import Customers from './pages/Customers';
+import Settings from './pages/Settings';
 
 const Placeholder = ({ title }) => (
   <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
@@ -24,6 +27,12 @@ function App() {
         <Route path="/login" element={
           <AuthLayout>
             <LoginPage />
+          </AuthLayout>
+        } />
+
+        <Route path="/register" element={
+          <AuthLayout>
+            <RegisterPage />
           </AuthLayout>
         } />
 
@@ -56,12 +65,12 @@ function App() {
         } />
         <Route path="/customers" element={
           <DashboardLayout>
-            <Placeholder title="客戶資料" />
+            <Customers />
           </DashboardLayout>
         } />
         <Route path="/settings" element={
           <DashboardLayout>
-            <Placeholder title="系統設置" />
+            <Settings />
           </DashboardLayout>
         } />
         <Route path="/admin/tenants" element={

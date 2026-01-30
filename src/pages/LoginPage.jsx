@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, User, Building2, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { login } from '../api/auth';
 
@@ -144,7 +144,7 @@ const LoginPage = () => {
 
                 <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between' }}>
                     <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>忘記密碼？</a>
-                    <a href="#" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>申請試用</a>
+                    <Link to="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>申請試用</Link>
                 </div>
             </form>
         </motion.div>
