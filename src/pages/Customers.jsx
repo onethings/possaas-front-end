@@ -89,8 +89,8 @@ const Customers = () => {
     };
 
     const filteredCustomers = customers.filter(c =>
-        c.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.phone?.includes(searchTerm)
+        (c.name && c.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (c.phone && c.phone.includes(searchTerm))
     );
 
     return (

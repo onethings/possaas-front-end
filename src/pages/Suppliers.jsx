@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Search, Truck, Phone, Mail, MapPin, Loader2, Edit2, Trash2 } from 'lucide-react';
-import { getSuppliers, createSupplier } from '../api/suppliers';
+import { getSuppliers, createSupplier, updateSupplier, deleteSupplier } from '../api/suppliers';
 
 const Suppliers = () => {
     const [suppliers, setSuppliers] = useState([]);
@@ -31,19 +31,40 @@ const Suppliers = () => {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const result = await createSupplier(newSupplier);
+            let result;
+            if (newSupplier._id) {
+                result = await updateSupplier(newSupplier._id, newSupplier);
+            } else {
+                result = await createSupplier(newSupplier);
+            }
+
             if (result.success) {
                 setModalOpen(false);
                 setNewSupplier({ name: '', contactPerson: '', email: '', phone: '', address: '' });
                 fetchSuppliers();
             }
         } catch (error) {
-            console.error('Create Supplier Error:', error);
-            const msg = error.response?.data?.message || error.message || '新增失敗';
-            alert(`新增失敗: ${msg}`);
+            console.error('Create/Update Supplier Error:', error);
+            const msg = error.response?.data?.message || error.message || '操作失敗';
+            alert(`操作失敗: ${msg}`);
         } finally {
             setSubmitting(false);
         }
+    };
+
+    const handleDelete = async (id) => {
+        if (!confirm('確定刪除此供應商？')) return;
+        try {
+            const result = await deleteSupplier(id);
+            if (result.success) fetchSuppliers();
+        } catch (error) {
+            alert('刪除失敗');
+        }
+    };
+
+    const handleEdit = (s) => {
+        setNewSupplier(s);
+        setModalOpen(true);
     };
 
     const filtered = suppliers.filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -52,7 +73,7 @@ const Suppliers = () => {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2 style={{ fontSize: '1.5rem' }}>供應商管理</h2>
-                <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <button onClick={() => { setNewSupplier({ name: '', contactPerson: '', email: '', phone: '', address: '' }); setModalOpen(true); }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Plus size={18} /> 新增供應商
                 </button>
             </div>
@@ -81,8 +102,8 @@ const Suppliers = () => {
                                 <h3 style={{ fontSize: '1.1rem' }}>{s.name}</h3>
                             </div>
                             <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                <button style={actionBtnStyle}><Edit2 size={16} /></button>
-                                <button style={actionBtnStyle}><Trash2 size={16} color="#f87171" /></button>
+                                <button onClick={() => handleEdit(s)} style={actionBtnStyle}><Edit2 size={16} /></button>
+                                <button onClick={() => handleDelete(s._id)} style={actionBtnStyle}><Trash2 size={16} color="#f87171" /></button>
                             </div>
                         </div>
                         <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -97,7 +118,7 @@ const Suppliers = () => {
             {isModalOpen && (
                 <div style={modalOverlayStyle}>
                     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '400px', padding: '2rem' }}>
-                        <h3>新增供應商</h3>
+                        <h3>{newSupplier._id ? '編輯供應商' : '新增供應商'}</h3>
                         <form onSubmit={handleCreate} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
                                 <label>名稱</label>
@@ -121,7 +142,7 @@ const Suppliers = () => {
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                                 <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
-                                <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1 }}>{submitting ? <Loader2 size={18} className="animate-spin" /> : '確認'}</button>
+                                <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1 }}>{submitting ? <Loader2 size={18} className="animate-spin" /> : (newSupplier._id ? '更新' : '確認')}</button>
                             </div>
                         </form>
                     </motion.div>
