@@ -45,7 +45,17 @@ const PurchaseOrders = () => {
         setSubmitting(true);
         try {
             const totalAmount = newPO.items.reduce((sum, item) => sum + (item.qty * item.costPrice), 0);
-            const result = await createPurchaseOrder({ ...newPO, orderNo: `PO-${Date.now()}`, totalAmount });
+            const poData = {
+                ...newPO,
+                supplierId: newPO.supplierId || null,
+                orderNo: `PO-${Date.now()}`,
+                totalAmount,
+                items: newPO.items.map(item => ({
+                    ...item,
+                    productId: item.productId || null
+                }))
+            };
+            const result = await createPurchaseOrder(poData);
             if (result.success) {
                 setModalOpen(false);
                 fetchInitialData();

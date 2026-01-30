@@ -71,11 +71,18 @@ const Products = () => {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const result = await createProduct({
+            const productData = {
                 ...newProduct,
+                categoryId: newProduct.categoryId || null,
                 price: parseFloat(newProduct.price) || 0,
-                stock: parseInt(newProduct.stock) || 0
-            });
+                stock: parseInt(newProduct.stock) || 0,
+                variants: newProduct.variants.map(v => ({
+                    ...v,
+                    price: parseFloat(v.price) || 0,
+                    stock: parseInt(v.stock) || 0
+                }))
+            };
+            const result = await createProduct(productData);
             if (result.success) {
                 setModalOpen(false);
                 resetForm();
