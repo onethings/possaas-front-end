@@ -12,9 +12,12 @@ import {
     Layers,
     Sliders,
     ChevronDown,
-    ChevronUp
+    ChevronUp,
+    Download,
+    Upload,
+    X
 } from 'lucide-react';
-import { getProducts, createProduct, updateProduct } from '../api/products';
+import { getProducts, createProduct, updateProduct, deleteProducts, exportProductsCSV, importProductsCSV } from '../api/products';
 import { getCategories, createCategory } from '../api/categories';
 import { getModifiers, createModifier } from '../api/modifiers';
 
@@ -28,6 +31,11 @@ const Products = () => {
     const [submitting, setSubmitting] = useState(false);
     const [isIdModalOpen, setModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
+    const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
+    const [newCategory, setNewCategory] = useState({ name: '', color: '#6366f1' });
+    const [selectedProducts, setSelectedProducts] = useState([]);
+    const [isImportModalOpen, setImportModalOpen] = useState(false);
+    const [csvFile, setCsvFile] = useState(null);
 
     const [newProduct, setNewProduct] = useState({
         name: '',
@@ -145,6 +153,94 @@ const Products = () => {
         setModalOpen(true);
     };
 
+    const handleCreateCategory = async (e) => {
+        e.preventDefault();
+        try {
+            const result = await createCategory(newCategory);
+            if (result.success) {
+                setCategories([...categories, result.data]);
+                setNewProduct({ ...newProduct, categoryId: result.data._id });
+                setCategoryModalOpen(false);
+                setNewCategory({ name: '', color: '#6366f1' });
+            }
+        } catch (error) {
+            alert('新增分類失敗');
+        }
+    };
+
+    const handleDeleteSelected = async () => {
+        if (selectedProducts.length === 0) return;
+
+        if (!window.confirm(`確定要刪除選中的 ${selectedProducts.length} 個產品嗎？`)) return;
+
+        try {
+            const result = await deleteProducts(selectedProducts);
+            if (result.success) {
+                setSelectedProducts([]);
+                fetchInitialData();
+                alert(result.message);
+            }
+        } catch (error) {
+            alert('刪除失敗');
+        }
+    };
+
+    const handleExportCSV = async () => {
+        try {
+            const blob = await exportProductsCSV();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `products_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            alert('匯出失敗');
+        }
+    };
+
+    const handleImportCSV = async () => {
+        if (!csvFile) {
+            alert('請選擇 CSV 檔案');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            try {
+                const csvData = e.target.result;
+                const result = await importProductsCSV(csvData);
+                if (result.success) {
+                    setImportModalOpen(false);
+                    setCsvFile(null);
+                    fetchInitialData();
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert('匯入失敗: ' + (error.response?.data?.message || error.message));
+            }
+        };
+        reader.readAsText(csvFile);
+    };
+
+    const toggleSelectAll = () => {
+        if (selectedProducts.length === filteredProducts.length) {
+            setSelectedProducts([]);
+        } else {
+            setSelectedProducts(filteredProducts.map(p => p._id));
+        }
+    };
+
+    const toggleSelectProduct = (productId) => {
+        if (selectedProducts.includes(productId)) {
+            setSelectedProducts(selectedProducts.filter(id => id !== productId));
+        } else {
+            setSelectedProducts([...selectedProducts, productId]);
+        }
+    };
+
     const addVariant = () => {
         setNewProduct({
             ...newProduct,
@@ -167,6 +263,17 @@ const Products = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2 style={{ fontSize: '1.5rem' }}>產品目錄</h2>
                 <div style={{ display: 'flex', gap: '1rem' }}>
+                    <button onClick={() => setImportModalOpen(true)} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Upload size={18} /> 匯入 CSV
+                    </button>
+                    <button onClick={handleExportCSV} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Download size={18} /> 匯出 CSV
+                    </button>
+                    {selectedProducts.length > 0 && (
+                        <button onClick={handleDeleteSelected} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderColor: '#f87171', color: '#f87171' }}>
+                            <Trash2 size={18} /> 刪除 ({selectedProducts.length})
+                        </button>
+                    )}
                     <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <Plus size={18} /> 新增產品
                     </button>
@@ -209,6 +316,14 @@ const Products = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                         <thead>
                             <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+                                <th style={{ ...thStyle, width: '50px' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedProducts.length === filteredProducts.length && filteredProducts.length > 0}
+                                        onChange={toggleSelectAll}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                </th>
                                 <th style={thStyle}>SKU / 條碼</th>
                                 <th style={thStyle}>產品名稱</th>
                                 <th style={thStyle}>價格</th>
@@ -220,13 +335,21 @@ const Products = () => {
                         <tbody>
                             {filteredProducts.length === 0 ? (
                                 <tr>
-                                    <td colSpan="6" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                                    <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                                         找不到符合條件的產品
                                     </td>
                                 </tr>
                             ) : (
                                 filteredProducts.map((p) => (
                                     <tr key={p._id || p.sku} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                        <td style={tdStyle}>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedProducts.includes(p._id)}
+                                                onChange={() => toggleSelectProduct(p._id)}
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                        </td>
                                         <td style={tdStyle}><code style={{ color: 'var(--primary-light)' }}>{p.sku || 'N/A'}</code></td>
                                         <td style={tdStyle}>{p.name}</td>
                                         <td style={tdStyle}>${p.price?.toLocaleString()}</td>
@@ -274,16 +397,27 @@ const Products = () => {
                             <div className="input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                                 <div>
                                     <label>分類</label>
-                                    <select
-                                        value={newProduct.categoryId}
-                                        onChange={e => setNewProduct({ ...newProduct, categoryId: e.target.value })}
-                                        style={selectStyle}
-                                    >
-                                        <option value="">請選擇分類</option>
-                                        {categories.map(cat => (
-                                            <option key={cat._id} value={cat._id}>{cat.name}</option>
-                                        ))}
-                                    </select>
+                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                        <select
+                                            value={newProduct.categoryId}
+                                            onChange={e => setNewProduct({ ...newProduct, categoryId: e.target.value })}
+                                            style={{ ...selectStyle, flex: 1 }}
+                                        >
+                                            <option value="">請選擇分類</option>
+                                            {categories.map(cat => (
+                                                <option key={cat._id} value={cat._id}>{cat.name}</option>
+                                            ))}
+                                        </select>
+                                        <button
+                                            type="button"
+                                            onClick={() => setCategoryModalOpen(true)}
+                                            className="btn-secondary"
+                                            style={{ padding: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '40px' }}
+                                            title="新增分類"
+                                        >
+                                            <Plus size={18} />
+                                        </button>
+                                    </div>
                                 </div>
                                 <div>
                                     <label>銷售單位</label>
@@ -361,6 +495,86 @@ const Products = () => {
                                 </button>
                             </div>
                         </form>
+                    </motion.div>
+                </div>
+            )}
+
+            {/* Category Modal */}
+            {isCategoryModalOpen && (
+                <div style={modalOverlayStyle}>
+                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '400px', padding: '2rem' }}>
+                        <h3 style={{ marginBottom: '1.5rem' }}>新增分類</h3>
+                        <form onSubmit={handleCreateCategory} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div className="input-group">
+                                <label>分類名稱</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={newCategory.name}
+                                    onChange={e => setNewCategory({ ...newCategory, name: e.target.value })}
+                                    placeholder="例如: 飲料、甜點"
+                                />
+                            </div>
+                            <div className="input-group">
+                                <label>顏色標籤</label>
+                                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                    <input
+                                        type="color"
+                                        value={newCategory.color}
+                                        onChange={e => setNewCategory({ ...newCategory, color: e.target.value })}
+                                        style={{ width: '60px', height: '40px', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '4px', cursor: 'pointer' }}
+                                    />
+                                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{newCategory.color}</span>
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                                <button type="button" onClick={() => { setCategoryModalOpen(false); setNewCategory({ name: '', color: '#6366f1' }); }} className="btn-secondary" style={{ flex: 1 }}>取消</button>
+                                <button type="submit" className="btn-primary" style={{ flex: 1 }}>確認新增</button>
+                            </div>
+                        </form>
+                    </motion.div>
+                </div>
+            )}
+
+            {/* CSV Import Modal */}
+            {isImportModalOpen && (
+                <div style={modalOverlayStyle}>
+                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '500px', padding: '2rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                            <h3>匯入產品 CSV</h3>
+                            <button onClick={() => { setImportModalOpen(false); setCsvFile(null); }} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+                                <X size={24} />
+                            </button>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div className="input-group">
+                                <label>選擇 CSV 檔案</label>
+                                <input
+                                    type="file"
+                                    accept=".csv"
+                                    onChange={(e) => setCsvFile(e.target.files[0])}
+                                    style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white' }}
+                                />
+                            </div>
+                            {csvFile && (
+                                <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
+                                    <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                                        檔案名稱: <span style={{ color: 'white' }}>{csvFile.name}</span>
+                                    </p>
+                                    <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+                                        檔案大小: <span style={{ color: 'white' }}>{(csvFile.size / 1024).toFixed(2)} KB</span>
+                                    </p>
+                                </div>
+                            )}
+                            <div style={{ padding: '1rem', background: 'rgba(99, 102, 241, 0.1)', borderRadius: '8px', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
+                                <p style={{ fontSize: '0.85rem', color: '#a5b4fc', marginBottom: '0.5rem' }}>CSV 格式要求：</p>
+                                <p style={{ fontSize: '0.8rem', color: '#a5b4fc' }}>SKU,產品名稱,價格,成本,庫存,分類,描述,條碼,銷售單位</p>
+                            </div>
+                            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                                <button type="button" onClick={() => { setImportModalOpen(false); setCsvFile(null); }} className="btn-secondary" style={{ flex: 1 }}>取消</button>
+                                <button onClick={handleImportCSV} disabled={!csvFile} className="btn-primary" style={{ flex: 1 }}>確認匯入</button>
+                            </div>
+                        </div>
                     </motion.div>
                 </div>
             )}

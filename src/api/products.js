@@ -27,3 +27,18 @@ export const updateProduct = async (id, productData) => {
     const response = await api.put(`/api/products/${id}`, productData);
     return response.data;
 };
+
+export const deleteProducts = async (productIds) => {
+    const response = await api.delete('/api/products/batch', { data: { productIds } });
+    return response.data;
+};
+
+export const exportProductsCSV = async () => {
+    const response = await api.get('/api/products/export/csv', { responseType: 'blob' });
+    return response.data;
+};
+
+export const importProductsCSV = async (csvData) => {
+    const response = await api.post('/api/products/import/csv', { csvData });
+    return response.data;
+};
