@@ -13,16 +13,20 @@ import {
     History,
     Loader2,
     CheckCircle2,
-    AlertCircle
+    AlertCircle,
+    ShoppingBag
 } from 'lucide-react';
 import { getProducts } from '../api/products';
 import { getCustomers } from '../api/customers';
 import { getDiscounts } from '../api/discounts';
 import { createOrder } from '../api/orders';
 import { getMyTenant } from '../api/tenants';
+import { getCategories } from '../api/categories';
 
 const POS = () => {
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [activeCategory, setActiveCategory] = useState('all');
     const [customers, setCustomers] = useState([]);
     const [discounts, setDiscounts] = useState([]);
     const [tenantConfig, setTenantConfig] = useState(null);
@@ -42,13 +46,15 @@ const POS = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [prodRes, custRes, discRes, tenantRes] = await Promise.all([
+            const [prodRes, catRes, custRes, discRes, tenantRes] = await Promise.all([
                 getProducts(),
+                getCategories(),
                 getCustomers(),
                 getDiscounts(),
                 getMyTenant()
             ]);
             if (prodRes.success) setProducts(prodRes.data);
+            if (catRes.success) setCategories(catRes.data);
             if (custRes.success) setCustomers(custRes.data);
             if (discRes.success) setDiscounts(discRes.data);
             if (tenantRes.success) setTenantConfig(tenantRes.data.config);
@@ -116,7 +122,7 @@ const POS = () => {
         setSubmitting(true);
         try {
             const orderData = {
-                storeId: localStorage.getItem('storeId') || products[0]?.storeId || '000000000000000000000000', // Fallback for demo
+                storeId: localStorage.getItem('storeId') || products[0]?.storeId || 'MAIN',
                 orderNo: `POS-${Date.now()}`,
                 items: cart.map(item => ({
                     productId: item.productId,
@@ -154,16 +160,18 @@ const POS = () => {
         }
     };
 
-    const filteredProducts = products.filter(p =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.sku?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredProducts = products.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            p.sku?.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesCategory = activeCategory === 'all' || p.categoryId === activeCategory || p.categoryId?._id === activeCategory;
+        return matchesSearch && matchesCategory;
+    });
 
     return (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '1.5rem', height: 'calc(100vh - 120px)' }}>
             {/* Product Section */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', overflow: 'hidden' }}>
-                <div className="glass-panel" style={{ padding: '0.8rem 1.2rem' }}>
+                <div className="glass-panel" style={{ padding: '0.8rem 1.2rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                     <div style={{ position: 'relative' }}>
                         <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                         <input
@@ -173,6 +181,33 @@ const POS = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
+                </div>
+
+                {/* Category Bar */}
+                <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '4px' }} className="no-scrollbar">
+                    <button
+                        onClick={() => setActiveCategory('all')}
+                        style={{
+                            ...categoryPillStyle,
+                            background: activeCategory === 'all' ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
+                            color: activeCategory === 'all' ? 'white' : 'var(--text-muted)'
+                        }}
+                    >
+                        <ShoppingBag size={14} /> 全部
+                    </button>
+                    {categories.map(cat => (
+                        <button
+                            key={cat._id}
+                            onClick={() => setActiveCategory(cat._id)}
+                            style={{
+                                ...categoryPillStyle,
+                                background: activeCategory === cat._id ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
+                                color: activeCategory === cat._id ? 'white' : 'var(--text-muted)'
+                            }}
+                        >
+                            {cat.name}
+                        </button>
+                    ))}
                 </div>
 
                 <div style={{ flex: 1, overflowY: 'auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1rem', paddingRight: '0.5rem' }}>
@@ -214,7 +249,7 @@ const POS = () => {
             <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                 <div style={{ padding: '1.2rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700 }}>
-                        <ShoppingCart size={20} /> 購物車 ({cart.length})
+                        <ShoppingCart size={20} /> 購物車 ({cart.reduce((a, b) => a + b.qty, 0)})
                     </div>
                     <button onClick={() => setCart([])} style={{ background: 'none', border: 'none', color: '#f87171', fontSize: '0.8rem', cursor: 'pointer' }}>清空</button>
                 </div>
@@ -265,7 +300,7 @@ const POS = () => {
                                     setSelectedCustomer(cust);
                                 }}
                             >
-                                <option value="">選擇客戶 (結果: {customers.filter(c => c.name.includes(custSearchTerm)).length})</option>
+                                <option value="">選擇客戶 (結果: {customers.filter(c => c.name.toLowerCase().includes(custSearchTerm.toLowerCase())).length})</option>
                                 {customers
                                     .filter(c => c.name.toLowerCase().includes(custSearchTerm.toLowerCase()))
                                     .map(c => <option key={c._id} value={c._id}>{c.name} ({c.points || 0}pt)</option>)
@@ -355,6 +390,7 @@ const searchStyle = { padding: '0.6rem 1rem 0.6rem 40px', background: 'rgba(0,0,
 const variantButtonStyle = { width: '100%', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '4px', color: 'white', padding: '6px', fontSize: '0.75rem', cursor: 'pointer', textAlign: 'left' };
 const qtyButtonStyle = { background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' };
 const miniSelectStyle = { flex: 1, padding: '0.5rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'white', fontSize: '0.75rem', outline: 'none' };
+const categoryPillStyle = { padding: '6px 14px', borderRadius: '20px', border: 'none', fontSize: '0.85rem', cursor: 'pointer', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '6px', transition: '0.2s' };
 const successToastStyle = { position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)', padding: '1rem 1.5rem', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '1rem', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 40px rgba(0,0,0,0.4)', zIndex: 2000 };
 
 export default POS;
