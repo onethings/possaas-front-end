@@ -11,19 +11,36 @@ import {
     X,
     Bell,
     Search,
-    UserCheck
+    UserCheck,
+    ClipboardList,
+    Truck,
+    FileText,
+    Ticket,
+    Tags,
+    BarChart,
+    Timer
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const navItems = [
     { icon: LayoutDashboard, label: '概覽', path: '/dashboard' },
+    { icon: Ticket, label: '收銀終端 (POS)', path: '/pos' },
     { icon: Package, label: '產品管理', path: '/products' },
+    { icon: ClipboardList, label: '庫存盤點', path: '/inventory/counts' },
+    { icon: FileText, label: '採購進貨', path: '/inventory/purchase-orders' },
+    { icon: Truck, label: '供應商', path: '/inventory/suppliers' },
+    { icon: Tags, label: '折扣管理', path: '/discounts' },
     { icon: ShoppingCart, label: '訂單管理', path: '/orders' },
     { icon: Users, label: '客戶資料', path: '/customers' },
     { icon: UserCheck, label: '員工管理', path: '/staff' },
+    { icon: Timer, label: '出勤打卡', path: '/staff/timecards' },
+    { icon: BarChart, label: '員工績效', path: '/staff/reports' },
     { icon: Settings, label: '系統設置', path: '/settings' },
 ];
+
+
+
 
 const DashboardLayout = ({ children }) => {
     const { user, logout } = useAuth();

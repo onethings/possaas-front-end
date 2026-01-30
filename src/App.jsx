@@ -13,6 +13,16 @@ import OrderTrack from './pages/Public/OrderTrack';
 import Customers from './pages/Customers';
 import StaffManagement from './pages/StaffManagement';
 import Settings from './pages/Settings';
+import Suppliers from './pages/Suppliers';
+import PurchaseOrders from './pages/PurchaseOrders';
+import InventoryCounts from './pages/InventoryCounts';
+import POS from './pages/POS';
+import Discounts from './pages/Discounts';
+import Timecards from './pages/Timecards';
+import StaffReports from './pages/StaffReports';
+
+
+
 
 const Placeholder = ({ title }) => (
   <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
@@ -96,13 +106,65 @@ function App() {
             </DashboardLayout>
           </ProtectedRoute>
         } />
+        <Route path="/pos" element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <POS />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/staff/timecards" element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Timecards />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/staff/reports" element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <StaffReports />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/discounts" element={
+
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Discounts />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
         <Route path="/settings" element={
+
           <ProtectedRoute>
             <DashboardLayout>
               <Settings />
             </DashboardLayout>
           </ProtectedRoute>
         } />
+        <Route path="/inventory/counts" element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <InventoryCounts />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/inventory/purchase-orders" element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <PurchaseOrders />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/inventory/suppliers" element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Suppliers />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+
         <Route path="/admin/tenants" element={
           <ProtectedRoute>
             <DashboardLayout>

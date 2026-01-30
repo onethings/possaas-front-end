@@ -94,7 +94,9 @@ const Customers = () => {
                                 <th style={thStyle}>聯絡電話</th>
                                 <th style={thStyle}>Email</th>
                                 <th style={thStyle}>通訊地址</th>
+                                <th style={thStyle}>累積點數</th>
                                 <th style={thStyle}>操作</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -105,6 +107,10 @@ const Customers = () => {
                                     <td style={tdStyle}>{c.email || 'N/A'}</td>
                                     <td style={tdStyle}>{c.address || 'N/A'}</td>
                                     <td style={tdStyle}>
+                                        <span style={{ fontWeight: 700, color: 'var(--primary-light)' }}>{c.points || 0} pt</span>
+                                    </td>
+                                    <td style={tdStyle}>
+
                                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                                             <button style={actionBtnStyle}><Edit2 size={16} /></button>
                                             <button style={actionBtnStyle}><Trash2 size={16} color="#f87171" /></button>
