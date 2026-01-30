@@ -40,7 +40,9 @@ const Discounts = () => {
                 fetchDiscounts();
             }
         } catch (error) {
-            alert('新增失敗');
+            console.error('Create Discount Error:', error);
+            const msg = error.response?.data?.message || error.message || '新增失敗';
+            alert(`新增失敗: ${msg}`);
         } finally {
             setSubmitting(false);
         }

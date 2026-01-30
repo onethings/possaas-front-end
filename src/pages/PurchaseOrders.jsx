@@ -152,25 +152,35 @@ const PurchaseOrders = () => {
                                 <label style={{ fontSize: '0.9rem', marginBottom: '0.5rem', display: 'block' }}>產品明細</label>
                                 {newPO.items.map((item, idx) => (
                                     <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 40px', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                                        <select style={selectStyle} value={item.productId} onChange={e => {
-                                            const items = [...newPO.items];
-                                            items[idx].productId = e.target.value;
-                                            setNewPO({ ...newPO, items });
-                                        }}>
-                                            <option value="">選擇產品</option>
-                                            {products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
-                                        </select>
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <select style={selectStyle} value={item.productId} onChange={e => {
+                                                const items = [...newPO.items];
+                                                items[idx].productId = e.target.value;
+                                                setNewPO({ ...newPO, items });
+                                            }}>
+                                                <option value="">選擇產品</option>
+                                                {products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
+                                            </select>
+                                            <button
+                                                type="button"
+                                                onClick={() => window.open('/products', '_blank')}
+                                                title="新增產品 (另開視窗)"
+                                                style={{ background: 'var(--primary)', border: 'none', borderRadius: '4px', width: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'white' }}
+                                            >
+                                                <Plus size={16} />
+                                            </button>
+                                        </div>
                                         <input type="number" placeholder="數量" value={item.qty} onChange={e => {
                                             const items = [...newPO.items];
                                             items[idx].qty = parseFloat(e.target.value);
                                             setNewPO({ ...newPO, items });
-                                        }} />
+                                        }} style={inputStyle} />
                                         <input type="number" placeholder="進價" value={item.costPrice} onChange={e => {
                                             const items = [...newPO.items];
                                             items[idx].costPrice = parseFloat(e.target.value);
                                             setNewPO({ ...newPO, items });
-                                        }} />
-                                        <button type="button" onClick={() => setNewPO({ ...newPO, items: newPO.items.filter((_, i) => i !== idx) })} style={{ background: 'none', border: 'none', color: '#f87171' }}><XCircle size={18} /></button>
+                                        }} style={inputStyle} />
+                                        <button type="button" onClick={() => setNewPO({ ...newPO, items: newPO.items.filter((_, i) => i !== idx) })} style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer' }}><XCircle size={18} /></button>
                                     </div>
                                 ))}
                                 <button type="button" onClick={() => setNewPO({ ...newPO, items: [...newPO.items, { productId: '', qty: 1, costPrice: 0 }] })} className="btn-secondary" style={{ padding: '4px 12px', fontSize: '0.8rem' }}>+ 新增品項</button>
@@ -190,6 +200,7 @@ const PurchaseOrders = () => {
 
 const thStyle = { padding: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.1)' };
 const tdStyle = { padding: '1.2rem', fontSize: '0.95rem' };
+const inputStyle = { padding: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', outline: 'none', width: '100%' };
 const selectStyle = { padding: '0.75rem 1rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', outline: 'none', width: '100%' };
 const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 };
 

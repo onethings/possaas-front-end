@@ -17,6 +17,38 @@ const Orders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+
+    const handleExport = () => {
+        const headers = ['訂單編號', '客戶', '金額', '狀態', '日期'];
+        const csvContent = [
+            headers.join(','),
+            ...orders.filter(o => filterDate(o)).map(o => [
+                o.orderNo,
+                o.customerNameSnapshot || '匿名',
+                o.finalAmount,
+                o.status,
+                new Date(o.createdAt).toLocaleDateString()
+            ].join(','))
+        ].join('\n');
+
+        const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `orders_export_${new Date().toISOString().slice(0, 10)}.csv`;
+        link.click();
+    };
+
+    const filterDate = (order) => {
+        if (!startDate && !endDate) return true;
+        const orderDate = new Date(order.createdAt);
+        const start = startDate ? new Date(startDate) : new Date('2000-01-01');
+        const end = endDate ? new Date(endDate) : new Date();
+        end.setHours(23, 59, 59);
+        return orderDate >= start && orderDate <= end;
+    };
 
     useEffect(() => {
         fetchOrders();
@@ -50,10 +82,21 @@ const Orders = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2 style={{ fontSize: '1.5rem' }}>訂單管理</h2>
                 <div style={{ display: 'flex', gap: '1rem' }}>
-                    <button className="glass-card" style={{ padding: '0.6rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                        <Calendar size={18} />日期範疇
-                    </button>
-                    <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '0.2rem 0.5rem' }}>
+                        <Calendar size={16} style={{ margin: '0 0.5rem', color: 'var(--text-muted)' }} />
+                        <input
+                            type="date"
+                            style={{ background: 'transparent', border: 'none', color: 'white', outline: 'none', fontSize: '0.9rem' }}
+                            onChange={(e) => setStartDate(e.target.value)}
+                        />
+                        <span style={{ margin: '0 0.5rem', color: 'var(--text-muted)' }}>-</span>
+                        <input
+                            type="date"
+                            style={{ background: 'transparent', border: 'none', color: 'white', outline: 'none', fontSize: '0.9rem' }}
+                            onChange={(e) => setEndDate(e.target.value)}
+                        />
+                    </div>
+                    <button onClick={handleExport} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <Download size={18} /> 匯出報表
                     </button>
                 </div>
@@ -94,12 +137,12 @@ const Orders = () => {
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171' }}>
                         {error}
                     </div>
-                ) : orders.filter(o => activeTab === 'all' || o.status === activeTab).length === 0 ? (
+                ) : orders.filter(o => (activeTab === 'all' || o.status === activeTab) && filterDate(o)).length === 0 ? (
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', padding: '3rem' }}>
                         目前無資料
                     </div>
                 ) : (
-                    orders.filter(o => activeTab === 'all' || o.status === activeTab).map(order => (
+                    orders.filter(o => (activeTab === 'all' || o.status === activeTab) && filterDate(o)).map(order => (
                         <div key={order._id} className="glass-panel" style={{ padding: '1.2rem', display: 'grid', gridTemplateColumns: '1fr 1.5fr 1fr 1fr 1fr 0.5fr', alignItems: 'center' }}>
                             <div style={{ fontWeight: 600, color: 'var(--primary-light)' }}>#{order.orderNo}</div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
