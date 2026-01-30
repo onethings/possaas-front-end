@@ -6,7 +6,7 @@ export const getStaff = async () => {
 };
 
 export const registerStaff = async (staffData) => {
-    const response = await api.post('/api/users/register-staff', staffData);
+    const response = await api.post('/users/register-staff', staffData);
     return response.data;
 };
 

@@ -8,6 +8,7 @@ const Customers = () => {
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [newCustomer, setNewCustomer] = useState({
         name: '',
         phone: '',
@@ -33,6 +34,7 @@ const Customers = () => {
 
     const handleCreateCustomer = async (e) => {
         e.preventDefault();
+        setSubmitting(true);
         try {
             const result = await createCustomer(newCustomer);
             if (result.success) {
@@ -42,6 +44,8 @@ const Customers = () => {
             }
         } catch (error) {
             alert(error.response?.data?.message || '新增失敗');
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -136,8 +140,10 @@ const Customers = () => {
                                 <input type="text" value={newCustomer.address} onChange={e => setNewCustomer({ ...newCustomer, address: e.target.value })} placeholder="台北市..." />
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-                                <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
-                                <button type="submit" className="btn-primary" style={{ flex: 1 }}>確認新增</button>
+                                <button type="button" disabled={submitting} onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
+                                <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                    {submitting ? <Loader2 size={18} className="animate-spin" /> : '確認新增'}
+                                </button>
                             </div>
                         </form>
                     </motion.div>

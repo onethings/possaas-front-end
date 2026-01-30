@@ -8,6 +8,7 @@ const StaffManagement = () => {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setModalOpen] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [newStaff, setNewStaff] = useState({ username: '', password: '', level: 5 });
 
     useEffect(() => {
@@ -28,6 +29,7 @@ const StaffManagement = () => {
 
     const handleAddStaff = async (e) => {
         e.preventDefault();
+        setSubmitting(true);
         try {
             const result = await registerStaff(newStaff);
             if (result.success) {
@@ -37,6 +39,8 @@ const StaffManagement = () => {
             }
         } catch (error) {
             alert(error.response?.data?.message || '新增失敗');
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -155,8 +159,10 @@ const StaffManagement = () => {
                                 </select>
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                                <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
-                                <button type="submit" className="btn-primary" style={{ flex: 1 }}>確認新增</button>
+                                <button type="button" disabled={submitting} onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
+                                <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                    {submitting ? <Loader2 size={18} className="animate-spin" /> : '確認新增'}
+                                </button>
                             </div>
                         </form>
                     </motion.div>
