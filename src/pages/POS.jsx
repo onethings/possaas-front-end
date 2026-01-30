@@ -59,8 +59,10 @@ const POS = () => {
             if (discRes.success) setDiscounts(discRes.data);
             if (tenantRes.success) setTenantConfig(tenantRes.data.config);
         } catch (error) {
-            console.error(error);
+        } catch (error) {
+            console.error('Data loading error:', error);
         } finally {
+            console.log('Categories loaded:', categories);
             setLoading(false);
         }
     };
