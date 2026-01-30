@@ -18,3 +18,7 @@ export const adjustStock = async (productId, changeQty, reason) => {
     });
     return response.data;
 };
+export const createProduct = async (productData) => {
+    const response = await api.post('/api/products', productData);
+    return response.data;
+};

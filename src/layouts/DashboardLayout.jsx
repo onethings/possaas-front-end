@@ -10,7 +10,8 @@ import {
     Menu,
     X,
     Bell,
-    Search
+    Search,
+    UserCheck
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -20,6 +21,7 @@ const navItems = [
     { icon: Package, label: '產品管理', path: '/products' },
     { icon: ShoppingCart, label: '訂單管理', path: '/orders' },
     { icon: Users, label: '客戶資料', path: '/customers' },
+    { icon: UserCheck, label: '員工管理', path: '/staff' },
     { icon: Settings, label: '系統設置', path: '/settings' },
 ];
 

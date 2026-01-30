@@ -77,7 +77,11 @@ const Settings = () => {
                     </section>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
-                        <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <button
+                            onClick={() => alert('設置已成功保存！')}
+                            className="btn-primary"
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                        >
                             <Save size={18} /> 保存更改
                         </button>
                     </div>

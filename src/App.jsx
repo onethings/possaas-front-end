@@ -11,6 +11,7 @@ import Orders from './pages/Orders';
 import Tenants from './pages/SuperAdmin/Tenants';
 import OrderTrack from './pages/Public/OrderTrack';
 import Customers from './pages/Customers';
+import StaffManagement from './pages/StaffManagement';
 import Settings from './pages/Settings';
 
 const Placeholder = ({ title }) => (
@@ -85,6 +86,13 @@ function App() {
           <ProtectedRoute>
             <DashboardLayout>
               <Customers />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/staff" element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <StaffManagement />
             </DashboardLayout>
           </ProtectedRoute>
         } />

@@ -96,7 +96,7 @@ const Orders = () => {
                     </div>
                 ) : orders.filter(o => activeTab === 'all' || o.status === activeTab).length === 0 ? (
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', padding: '3rem' }}>
-                        找不到符合條件的訂單
+                        目前無資料
                     </div>
                 ) : (
                     orders.filter(o => activeTab === 'all' || o.status === activeTab).map(order => (

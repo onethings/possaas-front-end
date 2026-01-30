@@ -3,20 +3,27 @@ import { motion } from 'framer-motion';
 import {
     Plus,
     Search,
-    MoreVertical,
     Edit2,
     Trash2,
     ExternalLink,
     Filter,
     Loader2
 } from 'lucide-react';
-import { getProducts } from '../api/products';
+import { getProducts, createProduct } from '../api/products';
 
 const Products = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [newProduct, setNewProduct] = useState({
+        sku: '',
+        name: '',
+        price: '',
+        stock: '',
+        category: ''
+    });
 
     useEffect(() => {
         fetchProducts();
@@ -39,8 +46,26 @@ const Products = () => {
         }
     };
 
+    const handleCreateProduct = async (e) => {
+        e.preventDefault();
+        try {
+            const result = await createProduct({
+                ...newProduct,
+                price: parseFloat(newProduct.price),
+                stock: parseInt(newProduct.stock)
+            });
+            if (result.success) {
+                setModalOpen(false);
+                setNewProduct({ sku: '', name: '', price: '', stock: '', category: '' });
+                fetchProducts();
+            }
+        } catch (error) {
+            alert(error.response?.data?.message || '新增失敗');
+        }
+    };
+
     const filteredProducts = products.filter(p =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.sku?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -54,7 +79,7 @@ const Products = () => {
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2 style={{ fontSize: '1.5rem' }}>產品目錄</h2>
-                <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Plus size={18} /> 新增產品
                 </button>
             </div>
@@ -85,6 +110,11 @@ const Products = () => {
                 ) : error ? (
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171' }}>
                         {error}
+                    </div>
+                ) : products.length === 0 ? (
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', padding: '4rem', color: 'var(--text-muted)' }}>
+                        <p>請先新增產品</p>
+                        <button onClick={() => setModalOpen(true)} className="btn-secondary">立即新增</button>
                     </div>
                 ) : (
                     <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
@@ -138,10 +168,50 @@ const Products = () => {
                 )}
             </div>
 
+            {/* Modal */}
+            {isModalOpen && (
+                <div style={modalOverlayStyle}>
+                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={modalContentStyle}>
+                        <h3 style={{ marginBottom: '1.5rem' }}>新增產品</h3>
+                        <form onSubmit={handleCreateProduct} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div className="input-group">
+                                <label>產品名稱</label>
+                                <input type="text" required value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} placeholder="例如: 經典美式咖啡" />
+                            </div>
+                            <div className="input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                <div>
+                                    <label>SKU / 條碼</label>
+                                    <input type="text" required value={newProduct.sku} onChange={e => setNewProduct({ ...newProduct, sku: e.target.value })} placeholder="SKU001" />
+                                </div>
+                                <div>
+                                    <label>分類</label>
+                                    <input type="text" value={newProduct.category} onChange={e => setNewProduct({ ...newProduct, category: e.target.value })} placeholder="飲料" />
+                                </div>
+                            </div>
+                            <div className="input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                <div>
+                                    <label>銷售價格</label>
+                                    <input type="number" required value={newProduct.price} onChange={e => setNewProduct({ ...newProduct, price: e.target.value })} placeholder="0.00" />
+                                </div>
+                                <div>
+                                    <label>初始庫存</label>
+                                    <input type="number" required value={newProduct.stock} onChange={e => setNewProduct({ ...newProduct, stock: e.target.value })} placeholder="0" />
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+                                <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
+                                <button type="submit" className="btn-primary" style={{ flex: 1 }}>確認新增</button>
+                            </div>
+                        </form>
+                    </motion.div>
+                </div>
+            )}
         </motion.div>
     );
 };
 
+const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 };
+const modalContentStyle = { width: '500px', padding: '2rem' };
 const thStyle = { padding: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' };
 const tdStyle = { padding: '1.2rem', fontSize: '0.95rem' };
 const searchStyle = { padding: '0.6rem 1rem 0.6rem 40px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', width: '100%', outline: 'none' };
