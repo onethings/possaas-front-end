@@ -14,7 +14,7 @@ import {
     ChevronDown,
     ChevronUp
 } from 'lucide-react';
-import { getProducts, createProduct } from '../api/products';
+import { getProducts, createProduct, updateProduct } from '../api/products';
 import { getCategories, createCategory } from '../api/categories';
 import { getModifiers, createModifier } from '../api/modifiers';
 
@@ -27,6 +27,7 @@ const Products = () => {
     const [error, setError] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [isIdModalOpen, setModalOpen] = useState(false);
+    const [editingProduct, setEditingProduct] = useState(null);
 
     const [newProduct, setNewProduct] = useState({
         name: '',
@@ -82,14 +83,24 @@ const Products = () => {
                     stock: parseInt(v.stock) || 0
                 }))
             };
-            const result = await createProduct(productData);
+
+            let result;
+            if (editingProduct) {
+                // Update existing product
+                result = await updateProduct(editingProduct._id, productData);
+            } else {
+                // Create new product
+                result = await createProduct(productData);
+            }
+
             if (result.success) {
                 setModalOpen(false);
                 resetForm();
+                setEditingProduct(null);
                 fetchInitialData();
             }
         } catch (error) {
-            alert(error.response?.data?.message || '新增失敗');
+            alert(error.response?.data?.message || (editingProduct ? '更新失敗' : '新增失敗'));
         } finally {
             setSubmitting(false);
         }
@@ -111,6 +122,27 @@ const Products = () => {
             isComposite: false,
             components: []
         });
+        setEditingProduct(null);
+    };
+
+    const handleEditProduct = (product) => {
+        setEditingProduct(product);
+        setNewProduct({
+            name: product.name || '',
+            sku: product.sku || '',
+            price: product.price || '',
+            stock: product.stock || '',
+            categoryId: product.categoryId || '',
+            description: product.description || '',
+            barcode: product.barcode || '',
+            soldBy: product.soldBy || 'each',
+            hasVariants: product.hasVariants || false,
+            variants: product.variants || [],
+            modifiers: product.modifiers || [],
+            isComposite: product.isComposite || false,
+            components: product.components || []
+        });
+        setModalOpen(true);
     };
 
     const addVariant = () => {
@@ -212,7 +244,7 @@ const Products = () => {
                                         <td style={tdStyle}>{categories.find(c => c._id === p.categoryId)?.name || '未分類'}</td>
                                         <td style={tdStyle}>
                                             <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                <button style={actionBtnStyle}><Edit2 size={16} /></button>
+                                                <button onClick={() => handleEditProduct(p)} style={actionBtnStyle}><Edit2 size={16} /></button>
                                                 <button style={actionBtnStyle}><Trash2 size={16} color="#f87171" /></button>
                                                 <button style={actionBtnStyle}><ExternalLink size={16} /></button>
                                             </div>
@@ -229,8 +261,8 @@ const Products = () => {
             {isIdModalOpen && (
                 <div style={modalOverlayStyle}>
                     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={modalContentStyle}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-                            <h3>新增產品</h3>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', alignItems: 'center' }}>
+                            <h3>{editingProduct ? '編輯產品' : '新增產品'}</h3>
                             <button onClick={resetForm} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>重置</button>
                         </div>
                         <form onSubmit={handleCreateProduct} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: '70vh', overflowY: 'auto', paddingRight: '0.5rem' }}>
@@ -323,9 +355,9 @@ const Products = () => {
                             )}
 
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-                                <button type="button" disabled={submitting} onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
+                                <button type="button" disabled={submitting} onClick={() => { setModalOpen(false); resetForm(); }} className="btn-secondary" style={{ flex: 1 }}>取消</button>
                                 <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                                    {submitting ? <Loader2 size={18} className="animate-spin" /> : '確認新增'}
+                                    {submitting ? <Loader2 size={18} className="animate-spin" /> : (editingProduct ? '確認更新' : '確認新增')}
                                 </button>
                             </div>
                         </form>
