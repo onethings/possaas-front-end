@@ -1,4 +1,4 @@
-import axios from './axiosConfig';
+import axios from './axios';
 
 export const getDiscounts = async () => {
     const response = await axios.get('/discounts');
