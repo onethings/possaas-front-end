@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
 import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import LoginPage from './pages/LoginPage';
@@ -18,6 +19,15 @@ const Placeholder = ({ title }) => (
     <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>此功能將在下一版本完善。</p>
   </div>
 );
+
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) return null;
+  if (!user) return <Navigate to="/login" replace />;
+
+  return children;
+};
 
 function App() {
   return (
@@ -44,39 +54,53 @@ function App() {
 
         {/* Protected Dashboard Routes */}
         <Route path="/" element={
-          <DashboardLayout>
-            <Dashboard />
-          </DashboardLayout>
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Dashboard />
+            </DashboardLayout>
+          </ProtectedRoute>
         } />
         <Route path="/dashboard" element={
-          <DashboardLayout>
-            <Dashboard />
-          </DashboardLayout>
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Dashboard />
+            </DashboardLayout>
+          </ProtectedRoute>
         } />
         <Route path="/products" element={
-          <DashboardLayout>
-            <Products />
-          </DashboardLayout>
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Products />
+            </DashboardLayout>
+          </ProtectedRoute>
         } />
         <Route path="/orders" element={
-          <DashboardLayout>
-            <Orders />
-          </DashboardLayout>
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Orders />
+            </DashboardLayout>
+          </ProtectedRoute>
         } />
         <Route path="/customers" element={
-          <DashboardLayout>
-            <Customers />
-          </DashboardLayout>
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Customers />
+            </DashboardLayout>
+          </ProtectedRoute>
         } />
         <Route path="/settings" element={
-          <DashboardLayout>
-            <Settings />
-          </DashboardLayout>
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Settings />
+            </DashboardLayout>
+          </ProtectedRoute>
         } />
         <Route path="/admin/tenants" element={
-          <DashboardLayout>
-            <Tenants />
-          </DashboardLayout>
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Tenants />
+            </DashboardLayout>
+          </ProtectedRoute>
         } />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
