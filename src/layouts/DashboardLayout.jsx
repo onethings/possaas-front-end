@@ -13,6 +13,7 @@ import {
     Search
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const navItems = [
     { icon: LayoutDashboard, label: '概覽', path: '/dashboard' },
@@ -23,6 +24,7 @@ const navItems = [
 ];
 
 const DashboardLayout = ({ children }) => {
+    const { user, logout } = useAuth();
     const [isSidebarOpen, setSidebarOpen] = useState(true);
     const location = useLocation();
 
@@ -78,18 +80,20 @@ const DashboardLayout = ({ children }) => {
                 </nav>
 
                 <div style={{ padding: '1rem' }}>
-                    <button style={{
-                        width: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: '0.8rem',
-                        borderRadius: 'var(--radius-md)',
-                        background: 'transparent',
-                        border: 'none',
-                        color: '#ff4d4d',
-                        cursor: 'pointer',
-                        gap: '1rem'
-                    }}>
+                    <button
+                        onClick={logout}
+                        style={{
+                            width: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '0.8rem',
+                            borderRadius: 'var(--radius-md)',
+                            background: 'transparent',
+                            border: 'none',
+                            color: '#ff4d4d',
+                            cursor: 'pointer',
+                            gap: '1rem'
+                        }}>
                         <LogOut size={20} />
                         {isSidebarOpen && <span>登出系統</span>}
                     </button>
@@ -115,10 +119,12 @@ const DashboardLayout = ({ children }) => {
                             <div style={{ position: 'absolute', top: -2, right: -2, width: 8, height: 8, background: 'var(--primary)', borderRadius: '50%' }}></div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer' }}>
-                            <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary), var(--secondary))' }}></div>
+                            <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary), var(--secondary))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+                                {user?.username?.charAt(0).toUpperCase()}
+                            </div>
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>管理者</span>
-                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Admin@Demo</span>
+                                <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{user?.username}</span>
+                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{user?.tenantId}</span>
                             </div>
                         </div>
                     </div>
