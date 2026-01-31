@@ -59,7 +59,7 @@ const POS = () => {
     const fetchData = async () => {
         setLoading(true);
         const now = Date.now();
-        console.log("🔍 [第30版] 韌性同步啟動：確保產品優先顯示");
+        console.log("🔍 [第31版] 韌性同步啟動：確保產品優先顯示");
 
         // 1. 先宣告一個變數存 ID
         let finalId = localStorage.getItem('storeId');
@@ -168,15 +168,15 @@ const POS = () => {
     const handleCheckout = async (status = 'paid') => {
         const finalStoreId = localStorage.getItem('storeId');
         if (!finalStoreId || finalStoreId.length !== 24) {
-            alert('ID 錯誤，請同步');
+            alert('ID 格式錯誤，請點擊 🔄 同步。');
             return;
         }
 
         setSubmitting(true);
         try {
             const orderData = {
-                storeId: finalStoreId,
-                tenantId: finalStoreId,
+                storeId: finalStoreId, // 24位元 ObjectId
+                // ❌ 移除 tenantId，API 不給傳
                 orderNo: `POS-${Date.now()}`,
                 items: cart.map(item => {
                     const baseItem = {
@@ -186,13 +186,10 @@ const POS = () => {
                         priceSnapshot: Number(item.price),
                         subtotal: Number((item.price * item.qty).toFixed(2))
                     };
-
-                    // 只有當真的有 variantId 時才加上去，且確保是字串
                     if (item.variantId) {
                         baseItem.variantId = String(item.variantId);
                         baseItem.variantNameSnapshot = item.variantName || "";
                     }
-
                     return baseItem;
                 }),
                 totalAmount: Number(subtotal.toFixed(2)),
@@ -206,7 +203,9 @@ const POS = () => {
                 alert('結帳成功！');
             }
         } catch (error) {
-            alert(`API 報錯: ${error.response?.data?.message || '格式錯誤'}`);
+            // 如果還是報錯，把整串 message 印出來看
+            const errorMsg = error.response?.data?.message || error.message;
+            alert(`API 拒絕請求: ${JSON.stringify(errorMsg)}`);
         } finally {
             setSubmitting(false);
         }
