@@ -167,29 +167,35 @@ const POS = () => {
 
     const handleCheckout = async (status = 'paid') => {
         const finalStoreId = localStorage.getItem('storeId');
-
-        if (cart.length === 0) return;
+        if (!finalStoreId || finalStoreId === 'undefined') {
+            alert("無法獲取商店 ID，請刷新頁面重試。");
+            return;
+        }
 
         setSubmitting(true);
         try {
-            // 生成日期字串，格式如：20260131
-            const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-            // 生成 4 位隨機數或時間戳後綴
-            const randomSuffix = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            // 生成單號 (符合你資料庫看到的格式)
+            const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            const randomPart = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            const generatedOrderNo = `ORD-${datePart}-${randomPart}`;
 
             const orderData = {
                 storeId: finalStoreId,
-                // 修正錯誤：補上後端要求的 orderNo
-                orderNo: `ORD-${dateStr}-${randomSuffix}`,
+                orderNo: generatedOrderNo,
+                // 修正點：items 必須包含 nameSnapshot, priceSnapshot, subtotal
                 items: cart.map(item => ({
                     productId: item.productId,
-                    qty: Number(item.qty)
+                    qty: Number(item.qty),
+                    nameSnapshot: item.name, // <--- 補上這個
+                    priceSnapshot: Number(item.price), // <--- 補上這個
+                    subtotal: Number((item.price * item.qty).toFixed(2)) // <--- 補上這個
                 })),
-                // 根據數據庫結構，建議也補上金額欄位以確保數據完整性
                 totalAmount: Number(subtotal.toFixed(2)),
                 discountAmount: Number(discountAmount.toFixed(2)),
                 finalAmount: Number(total.toFixed(2))
             };
+
+            console.log("📤 正式提交數據:", orderData);
 
             const result = await createOrder(orderData);
 
@@ -199,12 +205,13 @@ const POS = () => {
                 setAppliedDiscount(null);
                 setShowSuccess(true);
                 setTimeout(() => setShowSuccess(false), 3000);
-                console.log("✅ 結帳成功");
+                console.log("✅ 結帳成功！單號：", generatedOrderNo);
             }
         } catch (error) {
             const msg = error.response?.data?.message || error.message;
-            // 如果還有欄位報錯，Joi 會繼續提示下一個缺失的欄位
+            // 如果還有欄位報錯，我們會在這裡看到它是哪個欄位
             alert(`API 驗證失敗: ${JSON.stringify(msg)}`);
+            console.error("❌ 報錯詳情:", error.response?.data);
         } finally {
             setSubmitting(false);
         }
