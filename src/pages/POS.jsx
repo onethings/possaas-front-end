@@ -14,7 +14,9 @@ import {
     Loader2,
     CheckCircle2,
     AlertCircle,
-    ShoppingBag
+    ShoppingBag,
+    LayoutGrid,
+    List
 } from 'lucide-react';
 import { getProducts } from '../api/products';
 import { getCustomers } from '../api/customers';
@@ -38,10 +40,19 @@ const POS = () => {
     const [appliedDiscount, setAppliedDiscount] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [viewMode, setViewMode] = useState(() => {
+        return localStorage.getItem('posViewMode') || 'grid';
+    });
+
+
 
     useEffect(() => {
         fetchData();
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem('posViewMode', viewMode);
+    }, [viewMode]);
 
     const fetchData = async () => {
         setLoading(true);
@@ -204,6 +215,22 @@ const POS = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
+                    {/* === 插入開始：切換按鈕 === */}
+                    <div style={{ display: 'flex', gap: '8px', marginLeft: '12px' }}>
+                        <button
+                            onClick={() => setViewMode('grid')}
+                            style={{ background: 'none', border: 'none', color: viewMode === 'grid' ? 'var(--primary)' : '#666', cursor: 'pointer' }}
+                        >
+                            <LayoutGrid size={20} />
+                        </button>
+                        <button
+                            onClick={() => setViewMode('list')}
+                            style={{ background: 'none', border: 'none', color: viewMode === 'list' ? 'var(--primary)' : '#666', cursor: 'pointer' }}
+                        >
+                            <List size={20} />
+                        </button>
+                    </div>
+                    {/* === 插入結束 === */}
                 </div>
 
                 {/* Category Bar */}
@@ -244,44 +271,86 @@ const POS = () => {
                     ))}
                 </div>
 
-                {/* 在類別列下方暫時加入 */}
-                <div style={{ color: '#f87171', fontSize: '12px', padding: '4px', background: 'rgba(248, 113, 113, 0.1)', borderRadius: '4px' }}>
-                    Debug: API 返回了 {categories.length} 個類別，第一個名稱：{categories[0]?.name || '無'}
-                </div>
 
-                <div style={{ flex: 1, overflowY: 'auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1rem', paddingRight: '0.5rem' }}>
+                <div style={{
+                    flex: 1,
+                    overflowY: 'auto',
+                    display: 'grid',
+                    // 這裡改為根據 viewMode 動態調整網格
+                    gridTemplateColumns: viewMode === 'grid' ? 'repeat(auto-fill, minmax(180px, 1fr))' : '1fr',
+                    gap: '1rem',
+                    paddingRight: '0.5rem'
+                }}>
                     {loading ? (
                         <div style={{ gridColumn: '1/-1', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200px' }}>
                             <Loader2 className="animate-spin" />
                         </div>
                     ) : (
-                        filteredProducts.map(p => (
-                            <motion.div
-                                key={p._id}
-                                className="glass-panel"
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => !p.hasVariants && addToCart(p)}
-                                style={{ padding: '1rem', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '0.5rem', position: 'relative' }}
-                            >
-                                <div style={{ fontSize: '0.9rem', fontWeight: 600, height: '2.4rem', overflow: 'hidden' }}>{p.name}</div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                                    <span style={{ color: 'var(--primary-light)', fontWeight: 700 }}>${p.price || p.variants?.[0]?.price}</span>
-                                    {p.hasVariants && <span style={{ fontSize: '0.7rem', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px' }}>多規格</span>}
-                                </div>
-                                {p.hasVariants && (
-                                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.8)', opacity: 0, transition: '0.3s', display: 'flex', flexDirection: 'column', gap: '4px', padding: '0.5rem', overflowY: 'auto' }} className="variant-overlay">
-                                        {p.variants.map(v => (
-                                            <button key={v._id} onClick={(e) => { e.stopPropagation(); addToCart(p, v); }} style={variantButtonStyle}>
-                                                {v.name} (${v.price})
-                                            </button>
-                                        ))}
+                        <AnimatePresence mode="popLayout">
+                            {filteredProducts.map(p => (
+                                <motion.div
+                                    key={p._id}
+                                    layout // 讓方塊變長條時有平滑動畫
+                                    className="glass-panel"
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    onClick={() => !p.hasVariants && addToCart(p)}
+                                    style={{
+                                        padding: '1rem',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        // 關鍵：grid 用 column (上下)，list 用 row (左右)
+                                        flexDirection: viewMode === 'grid' ? 'column' : 'row',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        gap: '0.8rem',
+                                        position: 'relative',
+                                        minHeight: viewMode === 'grid' ? '120px' : '60px'
+                                    }}
+                                >
+                                    {/* 產品名稱區 */}
+                                    <div style={{ textAlign: viewMode === 'grid' ? 'center' : 'left', flex: 1 }}>
+                                        <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>{p.name}</div>
+                                        {viewMode === 'list' && p.sku && (
+                                            <div style={{ fontSize: '0.7rem', opacity: 0.5 }}>SKU: {p.sku}</div>
+                                        )}
                                     </div>
-                                )}
-                            </motion.div>
-                        ))
+
+                                    {/* 價格區 */}
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: viewMode === 'grid' ? 'column' : 'row',
+                                        alignItems: 'center',
+                                        gap: '8px'
+                                    }}>
+                                        <span style={{ color: 'var(--primary-light)', fontWeight: 700 }}>
+                                            ${p.price || p.variants?.[0]?.price}
+                                        </span>
+                                        {p.hasVariants && (
+                                            <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px' }}>
+                                                多規格
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    {/* 您原本的多規格覆蓋層保留 */}
+                                    {p.hasVariants && (
+                                        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.8)', opacity: 0, transition: '0.3s', display: 'flex', flexDirection: 'column', gap: '4px', padding: '0.5rem', overflowY: 'auto', zIndex: 10 }} className="variant-overlay">
+                                            {p.variants.map(v => (
+                                                <button key={v._id} onClick={(e) => { e.stopPropagation(); addToCart(p, v); }} style={variantButtonStyle}>
+                                                    {v.name} (${v.price})
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     )}
                 </div>
+
+
+
             </div>
 
             {/* Cart Section */}
