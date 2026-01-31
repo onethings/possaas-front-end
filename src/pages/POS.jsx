@@ -157,40 +157,52 @@ const POS = () => {
         if (cart.length === 0) return;
         setSubmitting(true);
         try {
+            // 1. 確保 storeId 有值，避免送出 'MAIN' 導致後端報錯
+            const currentStoreId = localStorage.getItem('storeId') || (products.length > 0 ? products[0].storeId : null);
+
+            if (!currentStoreId) {
+                alert('找不到店鋪資訊，請重新整理頁面。');
+                return;
+            }
+
             const orderData = {
-                storeId: localStorage.getItem('storeId') || products[0]?.storeId || 'MAIN',
+                storeId: currentStoreId,
                 orderNo: `POS-${Date.now()}`,
                 items: cart.map(item => ({
                     productId: item.productId,
-                    variantId: item.variantId,
-                    qty: item.qty,
+                    variantId: item.variantId || null, // 確保 null 而非 undefined
+                    qty: Number(item.qty),
                     nameSnapshot: item.name,
-                    variantNameSnapshot: item.variantName,
-                    priceSnapshot: item.price,
-                    subtotal: item.price * item.qty
+                    variantNameSnapshot: item.variantName || '',
+                    priceSnapshot: Number(item.price),
+                    subtotal: Number((item.price * item.qty).toFixed(2))
                 })),
-                totalAmount: subtotal,
-                taxAmount: taxAmount,
-                discountAmount: discountAmount,
-                finalAmount: total,
-                customerId: selectedCustomer?._id,
-                pointsEarned: tenantConfig?.loyaltyEnabled
-                    ? Math.floor(total / (tenantConfig?.loyaltyRate || 10))
-                    : 0,
+                // 2. 強制數字格式，避免浮點數計算誤差
+                totalAmount: Number(subtotal.toFixed(2)),
+                taxAmount: Number(taxAmount.toFixed(2)),
+                discountAmount: Number(discountAmount.toFixed(2)),
+                finalAmount: Number(total.toFixed(2)),
+                customerId: selectedCustomer?._id || null,
                 status: status
             };
 
-
+            // 呼叫 api/orders.js 中的函數
             const result = await createOrder(orderData);
+
             if (result.success) {
                 setShowSuccess(true);
                 setCart([]);
                 setAppliedDiscount(null);
                 setSelectedCustomer(null);
                 setTimeout(() => setShowSuccess(false), 3000);
+            } else {
+                // 顯示後端回傳的具體錯誤訊息
+                alert(`結帳失敗: ${result.message || '資料格式錯誤'}`);
             }
         } catch (error) {
-            alert('結帳失敗');
+            // 3. 診斷控制台：按 F12 檢查 Network 標籤可看到具體原因
+            console.error('結帳詳細錯誤:', error.response?.data || error.message);
+            alert('結帳失敗，請檢查網路連線或伺服器回應。');
         } finally {
             setSubmitting(false);
         }
@@ -507,6 +519,7 @@ const POS = () => {
                         >
                             <History size={18} /> 掛單
                         </button>
+                        <button onClick={() => console.log(calculateTotals())}>檢查計算數據</button>
                         <button
                             disabled={submitting || cart.length === 0}
                             onClick={() => handleCheckout('paid')}
