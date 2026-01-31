@@ -167,35 +167,26 @@ const POS = () => {
 
     const handleCheckout = async (status = 'paid') => {
         const finalStoreId = localStorage.getItem('storeId');
-        if (!finalStoreId || finalStoreId.length !== 24) {
-            alert('ID 格式錯誤，請點擊 🔄 同步。');
-            return;
-        }
 
         setSubmitting(true);
         try {
             const orderData = {
-                storeId: finalStoreId, // 24位元 ObjectId
-                // ❌ 移除 tenantId，API 不給傳
+                storeId: finalStoreId, // 這是後端 Schema 規定的，必須留著
                 orderNo: `POS-${Date.now()}`,
-                items: cart.map(item => {
-                    const baseItem = {
-                        productId: item.productId,
-                        qty: Number(item.qty),
-                        nameSnapshot: item.name,
-                        priceSnapshot: Number(item.price),
-                        subtotal: Number((item.price * item.qty).toFixed(2))
-                    };
-                    if (item.variantId) {
-                        baseItem.variantId = String(item.variantId);
-                        baseItem.variantNameSnapshot = item.variantName || "";
-                    }
-                    return baseItem;
-                }),
+                items: cart.map(item => ({
+                    productId: item.productId,
+                    qty: Number(item.qty),
+                    nameSnapshot: item.name,
+                    priceSnapshot: Number(item.price),
+                    subtotal: Number((item.price * item.qty).toFixed(2))
+                })),
                 totalAmount: Number(subtotal.toFixed(2)),
                 finalAmount: Number(total.toFixed(2)),
                 status: status
             };
+
+            // --- 徹底移除 tenantId (API 不允許傳) ---
+            // --- 徹底移除 variantId (如果它是 null 會報錯) ---
 
             const result = await createOrder(orderData);
             if (result.success) {
@@ -203,9 +194,9 @@ const POS = () => {
                 alert('結帳成功！');
             }
         } catch (error) {
-            // 如果還是報錯，把整串 message 印出來看
-            const errorMsg = error.response?.data?.message || error.message;
-            alert(`API 拒絕請求: ${JSON.stringify(errorMsg)}`);
+            // 如果還報錯，我們直接把那個「討厭的欄位名稱」印出來
+            const msg = error.response?.data?.message || error.message;
+            alert(`API 又在吵什麼: ${JSON.stringify(msg)}`);
         } finally {
             setSubmitting(false);
         }
