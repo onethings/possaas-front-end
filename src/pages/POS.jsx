@@ -58,32 +58,48 @@ const POS = () => {
 
     const fetchData = async () => {
         setLoading(true);
-        console.log("🔍 [專業模式] 開始同步租戶與產品數據...");
-        try {
-            // 1. 優先獲取租戶資訊 (這是 ID 的權威來源)
-            const tenantRes = await getMyTenant();
-            let safeStoreId = null;
+        const now = Date.now();
+        console.log("🔍 [第27版] 啟動深度同步...");
 
-            if (tenantRes.success && tenantRes.data._id) {
-                safeStoreId = tenantRes.data._id;
-                console.log("🏢 [Debug] 獲取有效 24 位 ID:", safeStoreId);
-                localStorage.setItem('storeId', safeStoreId);
+        try {
+            // --- 1. 優先獲取租戶資訊 (這是 ID 的唯一合法來源) ---
+            const tenantRes = await getMyTenant();
+            let validId = null;
+
+            if (tenantRes.success && tenantRes.data?._id) {
+                validId = tenantRes.data._id;
+                console.log("🏢 [成功] 獲取租戶 ID:", validId);
+                localStorage.setItem('storeId', validId);
+            } else {
+                console.error("❌ [錯誤] getMyTenant API 沒有回傳 _id，請檢查後端 Tenant 模型");
             }
 
-            // 2. 獲取其餘數據
+            // --- 2. 抓取其他數據 ---
             const [prodRes, catRes, custRes, discRes] = await Promise.all([
                 getProducts(), getCategories(), getCustomers(), getDiscounts()
             ]);
 
-            if (prodRes.success) setProducts(prodRes.data);
+            if (prodRes.success) {
+                setProducts(prodRes.data);
+                localStorage.setItem('cache_products', JSON.stringify({ data: prodRes.data, time: now }));
+
+                // 雙保險：如果 tenantRes 失敗，嘗試從產品的第一筆資料偷 ID
+                if (!validId && prodRes.data[0]?.tenantId) {
+                    validId = prodRes.data[0].tenantId;
+                    console.log("🕵️ [補救] 從產品偷到 tenantId:", validId);
+                    localStorage.setItem('storeId', validId);
+                }
+            }
+
             if (catRes.success) setCategories(catRes.data);
             if (custRes.success) setCustomers(custRes.data);
             if (discRes.success) setDiscounts(discRes.data);
 
         } catch (e) {
-            console.error("🔥 [Debug] fetchData 失敗:", e);
+            console.error("🔥 [崩潰] fetchData 執行失敗:", e);
         } finally {
             setLoading(false);
+            console.log("🏁 [完成] 資料同步結束");
         }
     };
 
