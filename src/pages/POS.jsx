@@ -16,7 +16,8 @@ import {
     AlertCircle,
     ShoppingBag,
     LayoutGrid,
-    List
+    List,
+    RefreshCw
 } from 'lucide-react';
 import { getProducts } from '../api/products';
 import { getCustomers } from '../api/customers';
