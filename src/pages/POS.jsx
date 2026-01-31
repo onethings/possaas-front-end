@@ -85,13 +85,26 @@ const POS = () => {
                 getProducts(), getCategories(), getCustomers(), getDiscounts()
             ]);
 
-            if (prodRes.success) {
+            if (prodRes.success && prodRes.data.length > 0) {
                 setProducts(prodRes.data);
-                localStorage.setItem('cache_products', JSON.stringify({ data: prodRes.data, time: now }));
+                localStorage.setItem('cache_products', JSON.stringify({
+                    data: prodRes.data,
+                    time: Date.now()
+                }));
+
+                // 自動鎖定店鋪 ID，解決「找不到店鋪資訊」報錯
+                const firstStoreId = prodRes.data[0].storeId;
+                if (firstStoreId) {
+                    localStorage.setItem('storeId', firstStoreId);
+                    console.log("✅ 已自動鎖定店鋪 ID:", firstStoreId);
+                }
             }
             if (catRes.success) {
                 setCategories(catRes.data);
-                localStorage.setItem('cache_categories', JSON.stringify({ data: catRes.data, time: now }));
+                localStorage.setItem('cache_categories', JSON.stringify({
+                    data: catRes.data,
+                    time: Date.now()
+                }));
             }
             setCustomers(custRes.success ? custRes.data : []);
             setDiscounts(discRes.success ? discRes.data : []);
