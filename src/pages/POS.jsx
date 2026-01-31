@@ -166,37 +166,71 @@ const POS = () => {
 
 
     const handleCheckout = async (status = 'paid') => {
+        // 1. 取得 Store ID (從 localStorage 或 context)
         const finalStoreId = localStorage.getItem('storeId');
+
+        // 2. 基本校驗：如果購物車為空則不執行
+        if (cart.length === 0) {
+            alert("購物車是空的！");
+            return;
+        }
 
         setSubmitting(true);
         try {
+            // 3. 建構符合後端 Schema 的數據結構
+            // 根據 orderRoutes.js，只需要 storeId 和 items (包含 productId, qty)
             const orderData = {
-                storeId: finalStoreId, // 這是後端 Schema 規定的，必須留著
-                orderNo: `POS-${Date.now()}`,
+                storeId: finalStoreId,
                 items: cart.map(item => ({
                     productId: item.productId,
-                    qty: Number(item.qty),
-                    nameSnapshot: item.name,
-                    priceSnapshot: Number(item.price),
-                    subtotal: Number((item.price * item.qty).toFixed(2))
-                })),
-                totalAmount: Number(subtotal.toFixed(2)),
-                finalAmount: Number(total.toFixed(2)),
-                status: status
+                    qty: Number(item.qty) // 確保為數字類型
+                }))
             };
 
-            // --- 徹底移除 tenantId (API 不允許傳) ---
-            // --- 徹底移除 variantId (如果它是 null 會報錯) ---
-
+            // 4. 呼叫 API
             const result = await createOrder(orderData);
+
             if (result.success) {
+                // --- 成功後的「其餘邏輯」開始 ---
+
+                // A. 清空購物車狀態
                 setCart([]);
-                alert('結帳成功！');
+
+                // B. 重置客戶與折扣選擇
+                setSelectedCustomer(null);
+                setAppliedDiscount(null);
+                setCustSearchTerm('');
+
+                // C. 觸發成功動畫/提示 (對應畫面上的 AnimatePresence)
+                setShowSuccess(true);
+
+                // D. 3秒後自動關閉成功提示
+                setTimeout(() => {
+                    setShowSuccess(false);
+                }, 3000);
+
+                // E. (可選) 重新獲取產品資料以更新庫存顯示
+                // fetchData(); 
+
+                console.log("✅ 訂單創建成功:", result.data);
+            } else {
+                // 處理業務邏輯上的失敗 (例如庫存不足)
+                throw new Error(result.message || "下單失敗");
             }
+
         } catch (error) {
-            // 如果還報錯，我們直接把那個「討厭的欄位名稱」印出來
-            const msg = error.response?.data?.message || error.message;
-            alert(`API 又在吵什麼: ${JSON.stringify(msg)}`);
+            // --- 錯誤處理邏輯 ---
+
+            // 取得最深層的錯誤訊息
+            const errorMessage = error.response?.data?.message || error.message;
+
+            // 針對你提到的 "status" is not allowed 進行友情提醒
+            if (typeof errorMessage === 'string' && errorMessage.includes('status')) {
+                console.error("❌ 權限/Schema 衝突：請確認沒有傳送 status 欄位");
+            }
+
+            alert(`結帳出錯: ${JSON.stringify(errorMessage)}`);
+
         } finally {
             setSubmitting(false);
         }
