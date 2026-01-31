@@ -169,7 +169,12 @@ const POS = () => {
     const filteredProducts = products.filter(p => {
         const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             p.sku?.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = activeCategory === 'all' || p.categoryId === activeCategory || p.categoryId?._id === activeCategory;
+
+        // 取得產品的分類 ID (兼容字串或物件格式)
+        const prodCatId = typeof p.categoryId === 'object' ? p.categoryId?._id : p.categoryId;
+
+        const matchesCategory = activeCategory === 'all' || prodCatId === activeCategory;
+
         return matchesSearch && matchesCategory;
     });
 
@@ -225,6 +230,11 @@ const POS = () => {
                             {cat.name}
                         </button>
                     ))}
+                </div>
+
+                {/* 在類別列下方暫時加入 */}
+                <div style={{ color: '#f87171', fontSize: '12px', padding: '4px', background: 'rgba(248, 113, 113, 0.1)', borderRadius: '4px' }}>
+                    Debug: API 返回了 {categories.length} 個類別，第一個名稱：{categories[0]?.name || '無'}
                 </div>
 
                 <div style={{ flex: 1, overflowY: 'auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1rem', paddingRight: '0.5rem' }}>
