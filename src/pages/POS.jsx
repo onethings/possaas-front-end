@@ -167,69 +167,64 @@ const POS = () => {
 
 
     const handleCheckout = async (status = 'paid') => {
-        if (cart.length === 0) return;
-        setSubmitting(true);
-        const currentStoreId =
-            localStorage.getItem('storeId') ||
-            products[0]?.storeId ||
-            cart[0]?.storeId; // 如果購物車有東西，從購物車抓也可以
+    if (cart.length === 0) return;
 
-        if (!currentStoreId) {
-            setSubmitting(false);
-            alert('錯誤：系統無法獲取店鋪標示。請確認至少有一項產品在列表中。');
-            return;
+    // 1. 統一獲取 ID，移除重複宣告
+    const storeIdFromStorage = localStorage.getItem('storeId');
+    const storeIdFromProducts = products.length > 0 ? products[0].storeId : null;
+    const storeIdFromCart = cart.length > 0 ? cart[0].storeId : null;
+    
+    // 三重保險獲取最終 ID
+    const finalStoreId = storeIdFromStorage || storeIdFromProducts || storeIdFromCart;
+
+    // 2. 嚴格檢查
+    if (!finalStoreId) {
+        alert('錯誤：系統無法獲取店鋪標示。請點擊搜尋框右側的同步按鈕 🔄 重新載入數據。');
+        return;
+    }
+
+    setSubmitting(true);
+
+    try {
+        const orderData = {
+            storeId: finalStoreId, 
+            orderNo: `POS-${Date.now()}`,
+            items: cart.map(item => ({
+                productId: item.productId,
+                variantId: item.variantId || null,
+                qty: Number(item.qty),
+                nameSnapshot: item.name,
+                variantNameSnapshot: item.variantName || '',
+                priceSnapshot: Number(item.price),
+                subtotal: Number((item.price * item.qty).toFixed(2))
+            })),
+            totalAmount: Number(subtotal.toFixed(2)),
+            taxAmount: Number(taxAmount.toFixed(2)),
+            discountAmount: Number(discountAmount.toFixed(2)),
+            finalAmount: Number(total.toFixed(2)),
+            customerId: selectedCustomer?._id || null,
+            status: status
+        };
+
+        // 呼叫 api/orders.js 中的函數
+        const result = await createOrder(orderData);
+
+        if (result.success) {
+            setShowSuccess(true);
+            setCart([]);
+            setAppliedDiscount(null);
+            setSelectedCustomer(null);
+            setTimeout(() => setShowSuccess(false), 3000);
+        } else {
+            alert(`結帳失敗: ${result.message || '資料格式錯誤'}`);
         }
-        try {
-            // 1. 確保 storeId 有值，避免送出 'MAIN' 導致後端報錯
-            const currentStoreId = localStorage.getItem('storeId') || (products.length > 0 ? products[0].storeId : null);
-
-            if (!currentStoreId) {
-                alert('找不到店鋪資訊，請重新整理頁面。');
-                return;
-            }
-
-            const orderData = {
-                storeId: currentStoreId,
-                orderNo: `POS-${Date.now()}`,
-                items: cart.map(item => ({
-                    productId: item.productId,
-                    variantId: item.variantId || null, // 確保 null 而非 undefined
-                    qty: Number(item.qty),
-                    nameSnapshot: item.name,
-                    variantNameSnapshot: item.variantName || '',
-                    priceSnapshot: Number(item.price),
-                    subtotal: Number((item.price * item.qty).toFixed(2))
-                })),
-                // 2. 強制數字格式，避免浮點數計算誤差
-                totalAmount: Number(subtotal.toFixed(2)),
-                taxAmount: Number(taxAmount.toFixed(2)),
-                discountAmount: Number(discountAmount.toFixed(2)),
-                finalAmount: Number(total.toFixed(2)),
-                customerId: selectedCustomer?._id || null,
-                status: status
-            };
-
-            // 呼叫 api/orders.js 中的函數
-            const result = await createOrder(orderData);
-
-            if (result.success) {
-                setShowSuccess(true);
-                setCart([]);
-                setAppliedDiscount(null);
-                setSelectedCustomer(null);
-                setTimeout(() => setShowSuccess(false), 3000);
-            } else {
-                // 顯示後端回傳的具體錯誤訊息
-                alert(`結帳失敗: ${result.message || '資料格式錯誤'}`);
-            }
-        } catch (error) {
-            // 3. 診斷控制台：按 F12 檢查 Network 標籤可看到具體原因
-            console.error('結帳詳細錯誤:', error.response?.data || error.message);
-            alert('結帳失敗，請檢查網路連線或伺服器回應。');
-        } finally {
-            setSubmitting(false);
-        }
-    };
+    } catch (error) {
+        console.error('結帳詳細錯誤:', error.response?.data || error.message);
+        alert('結帳失敗，請檢查網路連線或伺服器回應。');
+    } finally {
+        setSubmitting(false);
+    }
+};
 
     const filteredProducts = products.filter(p => {
         const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
