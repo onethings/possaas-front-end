@@ -59,47 +59,58 @@ const POS = () => {
     const fetchData = async () => {
         setLoading(true);
         const now = Date.now();
-        console.log("🔍 [第27版] 啟動深度同步...");
+        console.log("🔍 [第28版] 韌性同步啟動：確保產品優先顯示");
+
+        // 1. 先宣告一個變數存 ID
+        let finalId = localStorage.getItem('storeId');
 
         try {
-            // --- 1. 優先獲取租戶資訊 (這是 ID 的唯一合法來源) ---
-            const tenantRes = await getMyTenant();
-            let validId = null;
-
-            if (tenantRes.success && tenantRes.data?._id) {
-                validId = tenantRes.data._id;
-                console.log("🏢 [成功] 獲取租戶 ID:", validId);
-                localStorage.setItem('storeId', validId);
-            } else {
-                console.error("❌ [錯誤] getMyTenant API 沒有回傳 _id，請檢查後端 Tenant 模型");
+            // --- 嘗試抓租戶 ID，失敗也不要影響後面 ---
+            try {
+                const tenantRes = await getMyTenant();
+                if (tenantRes.success && tenantRes.data?._id) {
+                    finalId = tenantRes.data._id;
+                    console.log("🏢 [Debug] 從 Tenant 獲取 ID:", finalId);
+                }
+            } catch (tenantErr) {
+                console.warn("⚠️ [Debug] Tenant API 炸了 (500)，跳過...");
             }
 
-            // --- 2. 抓取其他數據 ---
+            // --- 2. 抓取其他數據 (這部分必須成功) ---
             const [prodRes, catRes, custRes, discRes] = await Promise.all([
-                getProducts(), getCategories(), getCustomers(), getDiscounts()
+                getProducts().catch(e => ({ success: false, data: [] })),
+                getCategories().catch(e => ({ success: false, data: [] })),
+                getCustomers().catch(e => ({ success: false, data: [] })),
+                getDiscounts().catch(e => ({ success: false, data: [] }))
             ]);
 
-            if (prodRes.success) {
+            // 處理產品顯示
+            if (prodRes.success && prodRes.data.length > 0) {
+                console.log("📦 [Debug] 產品載入成功，數量:", prodRes.data.length);
                 setProducts(prodRes.data);
-                localStorage.setItem('cache_products', JSON.stringify({ data: prodRes.data, time: now }));
 
-                // 雙保險：如果 tenantRes 失敗，嘗試從產品的第一筆資料偷 ID
-                if (!validId && prodRes.data[0]?.tenantId) {
-                    validId = prodRes.data[0].tenantId;
-                    console.log("🕵️ [補救] 從產品偷到 tenantId:", validId);
-                    localStorage.setItem('storeId', validId);
+                // 補救措施：如果 Tenant 失敗，嘗試從產品的 tenantId 補位
+                if (!finalId || finalId === 'undefined') {
+                    finalId = prodRes.data[0].tenantId;
+                    console.log("🕵️ [Debug] 補救成功：從產品數據提取 tenantId:", finalId);
                 }
             }
 
+            // 存入正確的 ID 到 localStorage
+            if (finalId && finalId !== 'undefined') {
+                localStorage.setItem('storeId', finalId);
+            }
+
+            // 設定其餘資料
             if (catRes.success) setCategories(catRes.data);
             if (custRes.success) setCustomers(custRes.data);
             if (discRes.success) setDiscounts(discRes.data);
 
         } catch (e) {
-            console.error("🔥 [崩潰] fetchData 執行失敗:", e);
+            console.error("🔥 [Debug] fetchData 核心流程出錯:", e);
         } finally {
             setLoading(false);
-            console.log("🏁 [完成] 資料同步結束");
+            console.log("🏁 [Debug] 同步流程結束，目前 ID:", localStorage.getItem('storeId'));
         }
     };
 
