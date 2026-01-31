@@ -46,7 +46,8 @@ const POS = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [prodRes, catRes, custRes, discRes, tenantRes] = await Promise.all([
+            // 使用 Promise.allSettled 確保即使部分 API 失敗，其他資料仍能載入
+            const results = await Promise.allSettled([
                 getProducts(),
                 getCategories(),
                 getCustomers(),
@@ -54,23 +55,34 @@ const POS = () => {
                 getMyTenant()
             ]);
 
-            // 直接在判斷式中確認數據
-            if (catRes.success && Array.isArray(catRes.data)) {
-                setCategories(catRes.data);
-                console.log('成功設定類別數量:', catRes.data.length);
+            const [prodRes, catRes, custRes, discRes, tenantRes] = results;
+
+            // 產品資料 (必要)
+            if (prodRes.status === 'fulfilled' && prodRes.value.success) {
+                setProducts(prodRes.value.data);
             }
 
-            if (prodRes.success) setProducts(prodRes.data);
-            if (custRes.success) setCustomers(custRes.data);
-            if (discRes.success) setDiscounts(discRes.data);
-            if (tenantRes.success) setTenantConfig(tenantRes.data.config);
+            // 分類資料 (必要) - 修正您的問題
+            if (catRes.status === 'fulfilled' && catRes.value.success) {
+                setCategories(catRes.value.data);
+                console.log('成功設定類別數量:', catRes.value.data.length);
+            }
+
+            // 其他資料 (選用)
+            if (custRes.status === 'fulfilled' && custRes.value.success) setCustomers(custRes.value.data);
+            if (discRes.status === 'fulfilled' && discRes.value.success) setDiscounts(discRes.value.data);
+            if (tenantRes.status === 'fulfilled' && tenantRes.value.success) {
+                setTenantConfig(tenantRes.value.data.config);
+            } else {
+                console.warn("租戶設定載入失敗，但不影響基礎功能");
+            }
+
         } catch (error) {
-            console.error('Data loading error:', error);
+            console.error('嚴重的加載錯誤:', error);
         } finally {
             setLoading(false);
         }
     };
-
 
     const addToCart = (product, variant = null) => {
         const cartKey = variant ? `${product._id}-${variant._id}` : product._id;
