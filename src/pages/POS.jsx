@@ -169,17 +169,15 @@ const POS = () => {
     const handleCheckout = async (status = 'paid') => {
         if (cart.length === 0) return;
 
-        // 1. 統一獲取 ID，移除重複宣告的衝突
-        const storeIdFromStorage = localStorage.getItem('storeId');
-        const storeIdFromProducts = products.length > 0 ? products[0].storeId : null;
-        const storeIdFromCart = cart.length > 0 ? cart[0].storeId : null;
+        // --- 唯一獲取來源：不准重複宣告，不准打架 ---
+        const finalStoreId =
+            localStorage.getItem('storeId') ||
+            (products.length > 0 ? products[0].storeId : null) ||
+            (cart.length > 0 ? cart[0].storeId : null);
 
-        // 最終確定的 ID
-        const finalStoreId = storeIdFromStorage || storeIdFromProducts || storeIdFromCart;
-
-        // 2. 嚴格檢查：只要這裡抓不到，就提示同步
+        // 只要這裡沒抓到，才報錯
         if (!finalStoreId) {
-            alert('錯誤：系統無法獲取店鋪標示。請點擊搜尋框右側的同步按鈕 🔄 重新載入數據。');
+            alert('系統真的抓不到店鋪 ID，請點擊搜尋框旁的 🔄 重新載入數據。');
             return;
         }
 
@@ -187,7 +185,7 @@ const POS = () => {
 
         try {
             const orderData = {
-                storeId: finalStoreId, // 使用統一獲取的有效 ID
+                storeId: finalStoreId, // 使用統一鎖定的 ID
                 orderNo: `POS-${Date.now()}`,
                 items: cart.map(item => ({
                     productId: item.productId,
@@ -206,7 +204,7 @@ const POS = () => {
                 status: status
             };
 
-            // 呼叫 api/orders.js 中的 createOrder
+            // 直接調用 API
             const result = await createOrder(orderData);
 
             if (result.success) {
@@ -219,8 +217,8 @@ const POS = () => {
                 alert(`結帳失敗: ${result.message || '資料格式錯誤'}`);
             }
         } catch (error) {
-            console.error('結帳詳細錯誤:', error.response?.data || error.message);
-            alert('結帳失敗，請檢查網路連線或伺服器回應。');
+            console.error('Checkout Error:', error.response?.data || error.message);
+            alert('網路連線失敗，請檢查 API 回應');
         } finally {
             setSubmitting(false);
         }
