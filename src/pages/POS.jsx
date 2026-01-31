@@ -167,64 +167,64 @@ const POS = () => {
 
 
     const handleCheckout = async (status = 'paid') => {
-    if (cart.length === 0) return;
+        if (cart.length === 0) return;
 
-    // 1. 統一獲取 ID，移除重複宣告
-    const storeIdFromStorage = localStorage.getItem('storeId');
-    const storeIdFromProducts = products.length > 0 ? products[0].storeId : null;
-    const storeIdFromCart = cart.length > 0 ? cart[0].storeId : null;
-    
-    // 三重保險獲取最終 ID
-    const finalStoreId = storeIdFromStorage || storeIdFromProducts || storeIdFromCart;
+        // 1. 統一獲取 ID，移除重複宣告的衝突
+        const storeIdFromStorage = localStorage.getItem('storeId');
+        const storeIdFromProducts = products.length > 0 ? products[0].storeId : null;
+        const storeIdFromCart = cart.length > 0 ? cart[0].storeId : null;
 
-    // 2. 嚴格檢查
-    if (!finalStoreId) {
-        alert('錯誤：系統無法獲取店鋪標示。請點擊搜尋框右側的同步按鈕 🔄 重新載入數據。');
-        return;
-    }
+        // 最終確定的 ID
+        const finalStoreId = storeIdFromStorage || storeIdFromProducts || storeIdFromCart;
 
-    setSubmitting(true);
-
-    try {
-        const orderData = {
-            storeId: finalStoreId, 
-            orderNo: `POS-${Date.now()}`,
-            items: cart.map(item => ({
-                productId: item.productId,
-                variantId: item.variantId || null,
-                qty: Number(item.qty),
-                nameSnapshot: item.name,
-                variantNameSnapshot: item.variantName || '',
-                priceSnapshot: Number(item.price),
-                subtotal: Number((item.price * item.qty).toFixed(2))
-            })),
-            totalAmount: Number(subtotal.toFixed(2)),
-            taxAmount: Number(taxAmount.toFixed(2)),
-            discountAmount: Number(discountAmount.toFixed(2)),
-            finalAmount: Number(total.toFixed(2)),
-            customerId: selectedCustomer?._id || null,
-            status: status
-        };
-
-        // 呼叫 api/orders.js 中的函數
-        const result = await createOrder(orderData);
-
-        if (result.success) {
-            setShowSuccess(true);
-            setCart([]);
-            setAppliedDiscount(null);
-            setSelectedCustomer(null);
-            setTimeout(() => setShowSuccess(false), 3000);
-        } else {
-            alert(`結帳失敗: ${result.message || '資料格式錯誤'}`);
+        // 2. 嚴格檢查：只要這裡抓不到，就提示同步
+        if (!finalStoreId) {
+            alert('錯誤：系統無法獲取店鋪標示。請點擊搜尋框右側的同步按鈕 🔄 重新載入數據。');
+            return;
         }
-    } catch (error) {
-        console.error('結帳詳細錯誤:', error.response?.data || error.message);
-        alert('結帳失敗，請檢查網路連線或伺服器回應。');
-    } finally {
-        setSubmitting(false);
-    }
-};
+
+        setSubmitting(true);
+
+        try {
+            const orderData = {
+                storeId: finalStoreId, // 使用統一獲取的有效 ID
+                orderNo: `POS-${Date.now()}`,
+                items: cart.map(item => ({
+                    productId: item.productId,
+                    variantId: item.variantId || null,
+                    qty: Number(item.qty),
+                    nameSnapshot: item.name,
+                    variantNameSnapshot: item.variantName || '',
+                    priceSnapshot: Number(item.price),
+                    subtotal: Number((item.price * item.qty).toFixed(2))
+                })),
+                totalAmount: Number(subtotal.toFixed(2)),
+                taxAmount: Number(taxAmount.toFixed(2)),
+                discountAmount: Number(discountAmount.toFixed(2)),
+                finalAmount: Number(total.toFixed(2)),
+                customerId: selectedCustomer?._id || null,
+                status: status
+            };
+
+            // 呼叫 api/orders.js 中的 createOrder
+            const result = await createOrder(orderData);
+
+            if (result.success) {
+                setShowSuccess(true);
+                setCart([]);
+                setAppliedDiscount(null);
+                setSelectedCustomer(null);
+                setTimeout(() => setShowSuccess(false), 3000);
+            } else {
+                alert(`結帳失敗: ${result.message || '資料格式錯誤'}`);
+            }
+        } catch (error) {
+            console.error('結帳詳細錯誤:', error.response?.data || error.message);
+            alert('結帳失敗，請檢查網路連線或伺服器回應。');
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     const filteredProducts = products.filter(p => {
         const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
