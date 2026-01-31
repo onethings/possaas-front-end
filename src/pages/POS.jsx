@@ -169,6 +169,16 @@ const POS = () => {
     const handleCheckout = async (status = 'paid') => {
         if (cart.length === 0) return;
         setSubmitting(true);
+        const currentStoreId =
+            localStorage.getItem('storeId') ||
+            products[0]?.storeId ||
+            cart[0]?.storeId; // 如果購物車有東西，從購物車抓也可以
+
+        if (!currentStoreId) {
+            setSubmitting(false);
+            alert('錯誤：系統無法獲取店鋪標示。請確認至少有一項產品在列表中。');
+            return;
+        }
         try {
             // 1. 確保 storeId 有值，避免送出 'MAIN' 導致後端報錯
             const currentStoreId = localStorage.getItem('storeId') || (products.length > 0 ? products[0].storeId : null);
