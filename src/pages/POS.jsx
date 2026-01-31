@@ -212,8 +212,10 @@ const POS = () => {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '1.5rem', height: 'calc(100vh - 120px)' }}>
             {/* Product Section */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', overflow: 'hidden' }}>
-                <div className="glass-panel" style={{ padding: '0.8rem 1.2rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                    <div style={{ position: 'relative' }}>
+
+                {/* 搜尋與控制列 */}
+                <div className="glass-panel" style={{ padding: '0.8rem 1.2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <div style={{ position: 'relative', flex: 1 }}>
                         <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                         <input
                             placeholder="搜尋產品或掃描條碼..."
@@ -222,46 +224,23 @@ const POS = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    {/* === 新增：手動同步按鈕 === */}
-                    <button
-                        onClick={() => {
-                            // 清除緩存並重新抓取
-                            localStorage.removeItem('cache_products');
-                            localStorage.removeItem('cache_categories');
-                            fetchData();
-                        }}
-                        className="btn-sync" // 可以自定義一個旋轉動畫
-                        style={{
-                            background: 'none',
-                            border: 'none',
-                            color: 'var(--text-muted)',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center'
-                        }}
-                        title="同步最新資料"
-                    >
-                        <RefreshCw
-                            size={18}
-                            className={loading ? "animate-spin" : ""} // 載入時會自動旋轉
-                        />
-                    </button>
-                    {/* === 插入開始：切換按鈕 === */}
-                    <div style={{ display: 'flex', gap: '8px', marginLeft: '12px' }}>
+
+                    {/* 按鈕組：確保有獨立空間 */}
+                    <div style={{ display: 'flex', gap: '15px', alignItems: 'center', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '15px' }}>
                         <button
-                            onClick={() => setViewMode('grid')}
-                            style={{ background: 'none', border: 'none', color: viewMode === 'grid' ? 'var(--primary)' : '#666', cursor: 'pointer' }}
+                            onClick={() => { localStorage.removeItem('cache_products'); localStorage.removeItem('cache_categories'); fetchData(); }}
+                            style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer' }}
+                            title="同步數據"
                         >
+                            <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
+                        </button>
+                        <button onClick={() => setViewMode('grid')} style={{ background: 'none', border: 'none', color: viewMode === 'grid' ? 'var(--primary)' : '#666', cursor: 'pointer' }}>
                             <LayoutGrid size={20} />
                         </button>
-                        <button
-                            onClick={() => setViewMode('list')}
-                            style={{ background: 'none', border: 'none', color: viewMode === 'list' ? 'var(--primary)' : '#666', cursor: 'pointer' }}
-                        >
+                        <button onClick={() => setViewMode('list')} style={{ background: 'none', border: 'none', color: viewMode === 'list' ? 'var(--primary)' : '#666', cursor: 'pointer' }}>
                             <List size={20} />
                         </button>
                     </div>
-                    {/* === 插入結束 === */}
                 </div>
 
                 {/* Category Bar */}
@@ -323,33 +302,37 @@ const POS = () => {
                                     key={p._id}
                                     layout
                                     className="glass-panel"
+                                    whileHover={{ scale: 1.02 }}
+                                    onClick={() => {
+                                        // 重點：如果沒有多規格，點擊卡片直接加入購物車
+                                        if (!p.hasVariants) {
+                                            addToCart(p);
+                                        }
+                                    }}
                                     style={{
                                         padding: '1rem',
                                         cursor: 'pointer',
                                         display: 'flex',
-                                        // 方塊模式用 column，清單模式用 row
                                         flexDirection: viewMode === 'grid' ? 'column' : 'row',
-                                        // 方塊模式置中靠攏，改善您說的距離太遠問題
                                         justifyContent: viewMode === 'grid' ? 'center' : 'space-between',
                                         alignItems: 'center',
-                                        gap: '8px', // 價格緊貼名稱
+                                        gap: '8px',
                                         position: 'relative',
-                                        // 強制正方形比例
                                         aspectRatio: viewMode === 'grid' ? '1 / 1' : 'auto',
-                                        minHeight: viewMode === 'grid' ? 'auto' : '64px'
+                                        minHeight: viewMode === 'grid' ? 'auto' : '64px',
+                                        overflow: 'hidden'
                                     }}
                                 >
-                                    {/* 產品名稱區 */}
+                                    {/* 內容區：名稱 */}
                                     <div style={{
                                         textAlign: viewMode === 'grid' ? 'center' : 'left',
                                         flex: viewMode === 'grid' ? 'none' : 1,
-                                        marginBottom: viewMode === 'grid' ? '4px' : '0'
                                     }}>
                                         <div style={{
                                             fontSize: '0.9rem',
                                             fontWeight: 600,
                                             display: '-webkit-box',
-                                            WebkitLineClamp: 2, // 最多顯示兩行名，避免長名稱撐破方塊
+                                            WebkitLineClamp: 2,
                                             WebkitBoxOrient: 'vertical',
                                             overflow: 'hidden'
                                         }}>
@@ -360,7 +343,7 @@ const POS = () => {
                                         )}
                                     </div>
 
-                                    {/* 價格區 - 緊貼在名稱下方 */}
+                                    {/* 內容區：價格 */}
                                     <div style={{
                                         display: 'flex',
                                         flexDirection: 'column',
@@ -376,11 +359,31 @@ const POS = () => {
                                         )}
                                     </div>
 
-                                    {/* 您原本的多規格覆蓋層保留 */}
+                                    {/* 多規格覆蓋層 (Variant Overlay) */}
                                     {p.hasVariants && (
-                                        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.8)', opacity: 0, transition: '0.3s', display: 'flex', flexDirection: 'column', gap: '4px', padding: '0.5rem', overflowY: 'auto', zIndex: 10 }} className="variant-overlay">
+                                        <div
+                                            className="variant-overlay"
+                                            style={{
+                                                position: 'absolute',
+                                                inset: 0,
+                                                background: 'rgba(0,0,0,0.85)',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: '4px',
+                                                padding: '0.5rem',
+                                                zIndex: 10,
+                                                // 讓它在 Hover 時由 CSS 顯示 (或直接顯示，視您的設計而定)
+                                            }}
+                                        >
                                             {p.variants.map(v => (
-                                                <button key={v._id} onClick={(e) => { e.stopPropagation(); addToCart(p, v); }} style={variantButtonStyle}>
+                                                <button
+                                                    key={v._id}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // 阻止事件冒泡到外層 onClick
+                                                        addToCart(p, v);
+                                                    }}
+                                                    style={variantButtonStyle}
+                                                >
                                                     {v.name} (${v.price})
                                                 </button>
                                             ))}
