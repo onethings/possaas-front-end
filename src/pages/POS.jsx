@@ -57,61 +57,71 @@ const POS = () => {
     }, [viewMode]);
 
     const fetchData = async () => {
-        const CACHE_TIME = 24 * 60 * 60 * 1000; // 24小時
-        const now = Date.now();
-
-        // 讀取快取
-        const cachedProds = JSON.parse(localStorage.getItem('cache_products'));
-        const cachedCats = JSON.parse(localStorage.getItem('cache_categories'));
-
-        // 判斷是否使用快取：有資料且未過期
-        if (cachedProds && cachedCats && (now - cachedProds.time < CACHE_TIME)) {
-            console.log("🚀 使用 24h 快取數據，載入速度提升 100%");
-            setProducts(cachedProds.data);
-            setCategories(cachedCats.data);
-            setLoading(false);
-
-            // 雖然用了快取，但後台還是可以偷偷更新其他不常變動的數據 (如客戶、折扣)
-            const [custRes, discRes] = await Promise.all([getCustomers(), getDiscounts()]);
-            setCustomers(custRes.success ? custRes.data : []);
-            setDiscounts(discRes.success ? discRes.data : []);
-            return;
-        }
-
-        // 若無快取或已過期，執行正常請求
         setLoading(true);
+        const now = Date.now();
+        console.log("🔍 [Debug] fetchData 開始執行...");
+
         try {
+            // --- 快取檢查階段 ---
+            const cachedProducts = localStorage.getItem('cache_products');
+            if (cachedProducts) {
+                const { data, time } = JSON.parse(cachedProducts);
+                console.log(`📦 [Debug] 發現快取產品，時間: ${new Date(time).toLocaleString()}, 數量: ${data?.length}`);
+
+                if (now - time < 24 * 60 * 60 * 1000) {
+                    setProducts(data);
+                    if (data && data.length > 0 && data[0].storeId) {
+                        const cId = data[0].storeId;
+                        console.log("🔑 [Debug] 從快取成功提取 StoreID:", cId);
+                        localStorage.setItem('storeId', cId);
+                    } else {
+                        console.warn("⚠️ [Debug] 快取裡竟然沒有 storeId 欄位！");
+                    }
+                    // 注意：這裡不 return，確保後面的 categories 也能更新
+                } else {
+                    console.log("⏰ [Debug] 快取已過期，準備從 API 抓取新資料");
+                }
+            }
+
+            // --- API 抓取階段 ---
+            console.log("🌐 [Debug] 正在呼叫 Promise.all 抓取 API...");
             const [prodRes, catRes, custRes, discRes] = await Promise.all([
                 getProducts(), getCategories(), getCustomers(), getDiscounts()
             ]);
 
+            // 產品處理
             if (prodRes.success && prodRes.data.length > 0) {
+                const apiId = prodRes.data[0].storeId;
+                console.log("✅ [Debug] 產品 API 成功，StoreID:", apiId);
                 setProducts(prodRes.data);
-                localStorage.setItem('cache_products', JSON.stringify({
-                    data: prodRes.data,
-                    time: Date.now()
-                }));
+                localStorage.setItem('cache_products', JSON.stringify({ data: prodRes.data, time: now }));
+                localStorage.setItem('storeId', apiId);
+            } else {
+                console.error("❌ [Debug] 產品 API 失敗或資料為空:", prodRes);
+            }
 
-                // 自動鎖定店鋪 ID，解決「找不到店鋪資訊」報錯
-                const firstStoreId = prodRes.data[0].storeId;
-                if (firstStoreId) {
-                    localStorage.setItem('storeId', firstStoreId);
-                    console.log("✅ 已自動鎖定店鋪 ID:", firstStoreId);
-                }
-            }
+            // 分類處理
             if (catRes.success) {
+                console.log("✅ [Debug] 分類 API 成功，數量:", catRes.data.length);
                 setCategories(catRes.data);
-                localStorage.setItem('cache_categories', JSON.stringify({
-                    data: catRes.data,
-                    time: Date.now()
-                }));
+                localStorage.setItem('cache_categories', JSON.stringify({ data: catRes.data, time: now }));
             }
-            setCustomers(custRes.success ? custRes.data : []);
-            setDiscounts(discRes.success ? discRes.data : []);
+
+            // 客戶與折扣處理
+            if (custRes.success) {
+                console.log("✅ [Debug] 客戶 API 成功");
+                setCustomers(custRes.data);
+            }
+            if (discRes.success) {
+                console.log("✅ [Debug] 折扣 API 成功");
+                setDiscounts(discRes.data);
+            }
+
         } catch (e) {
-            console.error("載入失敗", e);
+            console.error("🔥 [Debug] fetchData 崩潰:", e);
         } finally {
             setLoading(false);
+            console.log("🏁 [Debug] fetchData 執行結束");
         }
     };
 
@@ -167,25 +177,33 @@ const POS = () => {
 
 
     const handleCheckout = async (status = 'paid') => {
-        if (cart.length === 0) return;
+        console.log("🛒 [Debug] ============ 結帳程序啟動 ============");
 
-        // --- 唯一獲取來源：不准重複宣告，不准打架 ---
-        const finalStoreId =
-            localStorage.getItem('storeId') ||
-            (products.length > 0 ? products[0].storeId : null) ||
-            (cart.length > 0 ? cart[0].storeId : null);
+        // 抓取所有可能的 ID 來源
+        const idFromStorage = localStorage.getItem('storeId');
+        const idFromProducts = (products && products.length > 0) ? products[0].storeId : null;
+        const idFromCart = (cart && cart.length > 0) ? cart[0].storeId : null;
 
-        // 只要這裡沒抓到，才報錯
-        if (!finalStoreId) {
-            alert('系統真的抓不到店鋪 ID，請點擊搜尋框旁的 🔄 重新載入數據。');
+        console.log("📊 [Debug] 權限 ID 掃描結果:", {
+            "1.本地快取": idFromStorage,
+            "2.產品列表": idFromProducts,
+            "3.購物車內": idFromCart
+        });
+
+        const finalId = idFromStorage || idFromProducts || idFromCart;
+
+        if (!finalId) {
+            console.error("🚫 [Debug] ID 徹底遺失，結帳中斷！");
+            alert('系統真的抓不到店鋪 ID，請打開 F12 控制台看 Log 訊息。');
             return;
         }
 
+        console.log("🚀 [Debug] 最終選用 ID:", finalId);
         setSubmitting(true);
 
         try {
             const orderData = {
-                storeId: finalStoreId, // 使用統一鎖定的 ID
+                storeId: finalId,
                 orderNo: `POS-${Date.now()}`,
                 items: cart.map(item => ({
                     productId: item.productId,
@@ -204,8 +222,10 @@ const POS = () => {
                 status: status
             };
 
-            // 直接調用 API
+            console.log("📤 [Debug] 準備送往 API 的 Payload:", JSON.stringify(orderData, null, 2));
+
             const result = await createOrder(orderData);
+            console.log("🎊 [Debug] API 回應結果:", result);
 
             if (result.success) {
                 setShowSuccess(true);
@@ -214,13 +234,15 @@ const POS = () => {
                 setSelectedCustomer(null);
                 setTimeout(() => setShowSuccess(false), 3000);
             } else {
-                alert(`結帳失敗: ${result.message || '資料格式錯誤'}`);
+                alert(`結帳失敗: ${result.message || '格式錯誤'}`);
             }
         } catch (error) {
-            console.error('Checkout Error:', error.response?.data || error.message);
-            alert('網路連線失敗，請檢查 API 回應');
+            const errorDetail = error.response?.data || error.message;
+            console.error("🔥 [Debug] API 請求炸了:", errorDetail);
+            alert(`API 報錯: ${JSON.stringify(errorDetail)}`);
         } finally {
             setSubmitting(false);
+            console.log("🛒 [Debug] ============ 結帳程序結束 ============");
         }
     };
 
