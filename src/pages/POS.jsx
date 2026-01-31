@@ -166,38 +166,48 @@ const POS = () => {
 
 
     const handleCheckout = async (status = 'paid') => {
-        // 從 Storage 拿最準確的租戶 ID 作為 storeId
         const finalStoreId = localStorage.getItem('storeId');
 
-        if (!finalStoreId || finalStoreId === 'undefined') {
-            alert('錯誤：無法識別分店權限。請點擊 🔄 同步租戶資訊。');
+        if (!finalStoreId || finalStoreId === 'undefined' || finalStoreId.length !== 24) {
+            alert('ID 格式錯誤，請點擊 🔄 同步。');
             return;
         }
 
         setSubmitting(true);
         try {
             const orderData = {
-                storeId: finalStoreId, // 確保它是 24 位的 ObjectId
+                storeId: finalStoreId,
+                tenantId: finalStoreId, // 根據你的 Model，tenantId 也是必填
                 orderNo: `POS-${Date.now()}`,
                 items: cart.map(item => ({
                     productId: item.productId,
+                    variantId: item.variantId || null,
                     qty: Number(item.qty),
+                    // --- 補齊後端要求的 Snapshot 欄位 ---
+                    nameSnapshot: item.name,
+                    variantNameSnapshot: item.variantName || "",
                     priceSnapshot: Number(item.price),
                     subtotal: Number((item.price * item.qty).toFixed(2))
                 })),
                 totalAmount: Number(subtotal.toFixed(2)),
+                taxAmount: Number(taxAmount || 0),
+                discountAmount: Number(discountAmount || 0),
                 finalAmount: Number(total.toFixed(2)),
+                customerId: selectedCustomer?._id || null,
                 status: status
             };
 
             const result = await createOrder(orderData);
             if (result.success) {
                 setCart([]);
+                setSelectedCustomer(null);
                 alert('結帳成功！');
+            } else {
+                alert(`結帳失敗: ${result.message}`);
             }
         } catch (error) {
-            console.error("🔥 結帳失敗:", error.response?.data);
-            alert(`API 拒絕請求: ${error.response?.data?.message}`);
+            console.error("🔥 結帳 API 報錯:", error.response?.data);
+            alert(`API 報錯: ${error.response?.data?.message || '請求失敗'}`);
         } finally {
             setSubmitting(false);
         }
