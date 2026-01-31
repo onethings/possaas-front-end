@@ -53,15 +53,20 @@ const POS = () => {
                 getDiscounts(),
                 getMyTenant()
             ]);
+
+            // 直接在判斷式中確認數據
+            if (catRes.success && Array.isArray(catRes.data)) {
+                setCategories(catRes.data);
+                console.log('成功設定類別數量:', catRes.data.length);
+            }
+
             if (prodRes.success) setProducts(prodRes.data);
-            if (catRes.success) setCategories(catRes.data);
             if (custRes.success) setCustomers(custRes.data);
             if (discRes.success) setDiscounts(discRes.data);
             if (tenantRes.success) setTenantConfig(tenantRes.data.config);
         } catch (error) {
             console.error('Data loading error:', error);
         } finally {
-            console.log('Categories loaded:', categories);
             setLoading(false);
         }
     };
@@ -185,17 +190,28 @@ const POS = () => {
                 </div>
 
                 {/* Category Bar */}
-                <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '4px' }} className="no-scrollbar">
+                <div style={{
+                    display: 'flex',
+                    gap: '0.5rem',
+                    overflowX: 'auto',
+                    padding: '8px 0',
+                    minHeight: '40px', // 確保有固定高度防止塌陷
+                    width: '100%'
+                }} className="no-scrollbar">
                     <button
                         onClick={() => setActiveCategory('all')}
                         style={{
                             ...categoryPillStyle,
-                            background: activeCategory === 'all' ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-                            color: activeCategory === 'all' ? 'white' : 'var(--text-muted)'
+                            background: activeCategory === 'all' ? 'var(--primary)' : 'rgba(255,255,255,0.1)',
+                            color: 'white'
                         }}
                     >
                         <ShoppingBag size={14} /> 全部
                     </button>
+
+                    {/* 加入一個簡單的檢查，若沒資料時顯示提示 */}
+                    {categories.length === 0 && <span style={{ color: 'gray', fontSize: '0.8rem' }}>載入中...</span>}
+
                     {categories.map(cat => (
                         <button
                             key={cat._id}
@@ -203,7 +219,7 @@ const POS = () => {
                             style={{
                                 ...categoryPillStyle,
                                 background: activeCategory === cat._id ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-                                color: activeCategory === cat._id ? 'white' : 'var(--text-muted)'
+                                color: activeCategory === cat._id ? 'white' : 'rgba(255,255,255,0.6)'
                             }}
                         >
                             {cat.name}
@@ -391,7 +407,19 @@ const searchStyle = { padding: '0.6rem 1rem 0.6rem 40px', background: 'rgba(0,0,
 const variantButtonStyle = { width: '100%', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '4px', color: 'white', padding: '6px', fontSize: '0.75rem', cursor: 'pointer', textAlign: 'left' };
 const qtyButtonStyle = { background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' };
 const miniSelectStyle = { flex: 1, padding: '0.5rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: 'white', fontSize: '0.75rem', outline: 'none' };
-const categoryPillStyle = { padding: '6px 14px', borderRadius: '20px', border: 'none', fontSize: '0.85rem', cursor: 'pointer', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '6px', transition: '0.2s' };
+const categoryPillStyle = {
+    padding: '6px 14px',
+    borderRadius: '20px',
+    border: 'none',
+    fontSize: '0.85rem',
+    cursor: 'pointer',
+    whiteSpace: 'nowrap', // 防止文字換行
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    transition: '0.2s',
+    flexShrink: 0  // <--- 關鍵：防止按鈕在捲動列中被壓縮
+};
 const successToastStyle = { position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)', padding: '1rem 1.5rem', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '1rem', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 40px rgba(0,0,0,0.4)', zIndex: 2000 };
 
 export default POS;
