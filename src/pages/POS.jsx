@@ -59,7 +59,7 @@ const POS = () => {
     const fetchData = async () => {
         setLoading(true);
         const now = Date.now();
-        console.log("🔍 [第28版] 韌性同步啟動：確保產品優先顯示");
+        console.log("🔍 [第30版] 韌性同步啟動：確保產品優先顯示");
 
         // 1. 先宣告一個變數存 ID
         let finalId = localStorage.getItem('storeId');
@@ -167,9 +167,8 @@ const POS = () => {
 
     const handleCheckout = async (status = 'paid') => {
         const finalStoreId = localStorage.getItem('storeId');
-
-        if (!finalStoreId || finalStoreId === 'undefined' || finalStoreId.length !== 24) {
-            alert('ID 格式錯誤，請點擊 🔄 同步。');
+        if (!finalStoreId || finalStoreId.length !== 24) {
+            alert('ID 錯誤，請同步');
             return;
         }
 
@@ -177,37 +176,37 @@ const POS = () => {
         try {
             const orderData = {
                 storeId: finalStoreId,
-                tenantId: finalStoreId, // 根據你的 Model，tenantId 也是必填
+                tenantId: finalStoreId,
                 orderNo: `POS-${Date.now()}`,
-                items: cart.map(item => ({
-                    productId: item.productId,
-                    variantId: item.variantId || null,
-                    qty: Number(item.qty),
-                    // --- 補齊後端要求的 Snapshot 欄位 ---
-                    nameSnapshot: item.name,
-                    variantNameSnapshot: item.variantName || "",
-                    priceSnapshot: Number(item.price),
-                    subtotal: Number((item.price * item.qty).toFixed(2))
-                })),
+                items: cart.map(item => {
+                    const baseItem = {
+                        productId: item.productId,
+                        qty: Number(item.qty),
+                        nameSnapshot: item.name,
+                        priceSnapshot: Number(item.price),
+                        subtotal: Number((item.price * item.qty).toFixed(2))
+                    };
+
+                    // 只有當真的有 variantId 時才加上去，且確保是字串
+                    if (item.variantId) {
+                        baseItem.variantId = String(item.variantId);
+                        baseItem.variantNameSnapshot = item.variantName || "";
+                    }
+
+                    return baseItem;
+                }),
                 totalAmount: Number(subtotal.toFixed(2)),
-                taxAmount: Number(taxAmount || 0),
-                discountAmount: Number(discountAmount || 0),
                 finalAmount: Number(total.toFixed(2)),
-                customerId: selectedCustomer?._id || null,
                 status: status
             };
 
             const result = await createOrder(orderData);
             if (result.success) {
                 setCart([]);
-                setSelectedCustomer(null);
                 alert('結帳成功！');
-            } else {
-                alert(`結帳失敗: ${result.message}`);
             }
         } catch (error) {
-            console.error("🔥 結帳 API 報錯:", error.response?.data);
-            alert(`API 報錯: ${error.response?.data?.message || '請求失敗'}`);
+            alert(`API 報錯: ${error.response?.data?.message || '格式錯誤'}`);
         } finally {
             setSubmitting(false);
         }
