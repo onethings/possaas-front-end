@@ -187,6 +187,7 @@ const POS = () => {
                     productId: item.productId,
                     qty: Number(item.qty),
                     nameSnapshot: item.name, // <--- 補上這個
+                    variantNameSnapshot: item.variantName || '', // <--- 新增這個
                     priceSnapshot: Number(item.price), // <--- 補上這個
                     subtotal: Number((item.price * item.qty).toFixed(2)) // <--- 補上這個
                 })),
