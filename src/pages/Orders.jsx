@@ -15,6 +15,7 @@ import { getOrders } from '../api/orders';
 const Orders = () => {
     const [activeTab, setActiveTab] = useState('all');
     const [orders, setOrders] = useState([]);
+    const [selectedOrder, setSelectedOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -143,7 +144,7 @@ const Orders = () => {
                     </div>
                 ) : (
                     orders.filter(o => (activeTab === 'all' || o.status === activeTab) && filterDate(o)).map(order => (
-                        <div key={order._id} className="glass-panel" style={{ padding: '1.2rem', display: 'grid', gridTemplateColumns: '1fr 1.5fr 1fr 1fr 1fr 0.5fr', alignItems: 'center' }}>
+                        <div key={order._id} className="glass-panel" style={{ padding: '1.2rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr 1fr 1fr 0.5fr', alignItems: 'center' }}>
                             <div style={{ fontWeight: 600, color: 'var(--primary-light)' }}>#{order.orderNo}</div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                                 <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>
@@ -157,12 +158,87 @@ const Orders = () => {
                                 <StatusBadge status={order.status} />
                             </div>
                             <div style={{ textAlign: 'right' }}>
-                                <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><Eye size={18} /></button>
+                                <button 
+                                    onClick={() => setSelectedOrder(order)}
+                                    style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', transition: 'color 0.2s' }}
+                                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary-light)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                                >
+                                    <Eye size={18} />
+                                </button>
                             </div>
                         </div>
                     ))
                 )}
             </div>
+
+            {/* Order Detail Modal */}
+            {selectedOrder && (
+                <div 
+                    style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', backdropFilter: 'blur(4px)' }} 
+                    onClick={() => setSelectedOrder(null)}
+                >
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        className="glass-panel" 
+                        style={{ width: '100%', maxWidth: '600px', maxHeight: '85vh', overflow: 'hidden', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>
+                            <div>
+                                <h3 style={{ fontSize: '1.2rem', marginBottom: '0.2rem' }}>訂單詳情 #{selectedOrder.orderNo}</h3>
+                                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{new Date(selectedOrder.createdAt).toLocaleString()}</p>
+                            </div>
+                            <button 
+                                onClick={() => setSelectedOrder(null)}
+                                style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'white', cursor: 'pointer', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            >
+                                <XCircle size={20} />
+                            </button>
+                        </div>
+
+                        <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 1fr', gap: '1rem', color: 'var(--text-muted)', fontSize: '0.85rem', paddingBottom: '0.5rem' }}>
+                                <div>產品名稱</div>
+                                <div style={{ textAlign: 'center' }}>單價</div>
+                                <div style={{ textAlign: 'center' }}>數量</div>
+                                <div style={{ textAlign: 'right' }}>小計</div>
+                            </div>
+                            {selectedOrder.items?.map((item, idx) => (
+                                <div key={idx} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 1fr', gap: '1rem', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.8rem' }}>
+                                    <div style={{ fontSize: '0.95rem' }}>
+                                        {item.nameSnapshot}
+                                        {item.variantNameSnapshot && <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{item.variantNameSnapshot}</span>}
+                                    </div>
+                                    <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>${(item.priceSnapshot || 0).toLocaleString()}</div>
+                                    <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>{item.qty}</div>
+                                    <div style={{ textAlign: 'right', fontWeight: 600 }}>${((item.priceSnapshot || 0) * (item.qty || 0)).toLocaleString()}</div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
+                                <span>小計</span>
+                                <span>${(selectedOrder.totalAmount || 0).toLocaleString()}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f87171' }}>
+                                <span>折扣</span>
+                                <span>-${(selectedOrder.discountAmount || 0).toLocaleString()}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 700, marginTop: '0.5rem', color: 'white' }}>
+                                <span>實收金額</span>
+                                <span style={{ color: 'var(--primary-light)' }}>${(selectedOrder.finalAmount || 0).toLocaleString()}</span>
+                            </div>
+                        </div>
+                        
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+                            <button onClick={() => setSelectedOrder(null)} className="btn-secondary" style={{ padding: '0.6rem 2rem' }}>關閉</button>
+                        </div>
+                    </motion.div>
+                </div>
+            )}
 
         </motion.div>
     );

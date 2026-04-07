@@ -32,6 +32,7 @@ const navItems = [
     { icon: Truck, label: '供應商', path: '/inventory/suppliers' },
     { icon: Tags, label: '折扣管理', path: '/discounts' },
     { icon: ShoppingCart, label: '訂單管理', path: '/orders' },
+    { icon: BarChart, label: '營收報表', path: '/revenue-report' },
     { icon: Users, label: '客戶資料', path: '/customers' },
     { icon: UserCheck, label: '員工管理', path: '/staff' },
     { icon: Timer, label: '出勤打卡', path: '/staff/timecards' },

@@ -20,6 +20,7 @@ import POS from './pages/POS';
 import Discounts from './pages/Discounts';
 import Timecards from './pages/Timecards';
 import StaffReports from './pages/StaffReports';
+import RevenueReport from './pages/RevenueReport';
 
 
 
@@ -89,6 +90,13 @@ function App() {
           <ProtectedRoute>
             <DashboardLayout>
               <Orders />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/revenue-report" element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <RevenueReport />
             </DashboardLayout>
           </ProtectedRoute>
         } />

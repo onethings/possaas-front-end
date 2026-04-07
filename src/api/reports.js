@@ -9,3 +9,8 @@ export const getDailyReport = async (date) => {
     const response = await api.get(`/api/reports/daily?date=${date}`);
     return response.data;
 };
+
+export const getRevenueReport = async (start, end) => {
+    const response = await api.get(`/api/reports/revenue?start=${start}&end=${end}`);
+    return response.data;
+};
