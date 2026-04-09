@@ -63,6 +63,8 @@ const LoginPage = () => {
                     <div style={{ position: 'relative' }}>
                         <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
                         <input
+                            id="username"
+                            name="username"
                             type="text"
                             placeholder="admin@example.com"
                             style={inputStyle}
@@ -78,6 +80,8 @@ const LoginPage = () => {
                     <div style={{ position: 'relative' }}>
                         <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
                         <input
+                            id="password"
+                            name="password"
                             type={showPassword ? "text" : "password"}
                             placeholder="••••••••"
                             style={inputStyle}
@@ -104,6 +108,8 @@ const LoginPage = () => {
                         <div style={{ position: 'relative' }}>
                             <Building2 size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
                             <input
+                                id="tenantId"
+                                name="tenantId"
                                 type="text"
                                 placeholder="例如: superstore-01"
                                 style={inputStyle}

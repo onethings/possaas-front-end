@@ -19,6 +19,11 @@ export const TenantProvider = ({ children }) => {
 
     useEffect(() => {
         const fetchTenantConfig = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setLoadingTenantConfig(false);
+                return;
+            }
             try {
                 const result = await getMyTenant();
                 if (result.success && result.data && result.data.config) {
