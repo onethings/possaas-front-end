@@ -23,18 +23,28 @@ const LoginPage = () => {
         setLoading(true);
         setError('');
         try {
+            console.log("Submitting login for:", formData.username, "tenant:", formData.tenantId);
             const result = await login(formData.username, formData.password, formData.tenantId || null);
-            if (result.success) {
+            console.log("Login result:", result);
+            
+            if (result && result.success) {
                 loginUser(result.user, result.token);
                 navigate('/dashboard');
+            } else {
+                console.warn("Login result was not successful:", result);
+                setError(result?.message || '登入失敗，伺服器回傳錯誤');
+                if (result?.requireTenant) {
+                    setShowTenant(true);
+                }
             }
         } catch (err) {
+            console.error("Login caught error:", err);
             const data = err.response?.data;
             if (data?.requireTenant) {
                 setShowTenant(true);
                 setError(data.message);
             } else {
-                setError(data?.message || '登入失敗，請檢查您的帳號、密碼或公司編號');
+                setError(data?.message || err.message || '登入失敗，請檢查您的帳號、密碼或公司編號');
             }
         } finally {
             setLoading(false);
@@ -59,7 +69,7 @@ const LoginPage = () => {
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                 <div className="input-group">
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Email 地址</label>
+                    <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Email 地址</label>
                     <div style={{ position: 'relative' }}>
                         <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
                         <input
@@ -70,13 +80,14 @@ const LoginPage = () => {
                             style={inputStyle}
                             value={formData.username}
                             onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                            autoComplete="username"
                             required
                         />
                     </div>
                 </div>
 
                 <div className="input-group">
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>密碼</label>
+                    <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>密碼</label>
                     <div style={{ position: 'relative' }}>
                         <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
                         <input
@@ -87,6 +98,7 @@ const LoginPage = () => {
                             style={inputStyle}
                             value={formData.password}
                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            autoComplete="current-password"
                             required
                         />
                         <div
@@ -104,7 +116,7 @@ const LoginPage = () => {
                         animate={{ height: 'auto', opacity: 1 }}
                         className="input-group"
                     >
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>公司編號 (Company ID)</label>
+                        <label htmlFor="tenantId" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>公司編號 (Company ID)</label>
                         <div style={{ position: 'relative' }}>
                             <Building2 size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
                             <input
@@ -115,6 +127,7 @@ const LoginPage = () => {
                                 style={inputStyle}
                                 value={formData.tenantId}
                                 onChange={(e) => setFormData({ ...formData, tenantId: e.target.value })}
+                                autoComplete="off"
                                 required
                             />
                         </div>

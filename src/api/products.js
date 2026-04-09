@@ -34,11 +34,16 @@ export const deleteProducts = async (productIds) => {
 };
 
 export const exportProductsCSV = async () => {
-    const response = await api.get('/api/products/export/csv', { responseType: 'blob' });
+    const response = await api.get('/api/csv/export/products', { responseType: 'blob' });
     return response.data;
 };
 
-export const importProductsCSV = async (csvData) => {
-    const response = await api.post('/api/products/import/csv', { csvData });
+export const importProductsCSV = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.post('/api/csv/import/products', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
 };
+

@@ -18,7 +18,8 @@ import {
     Ticket,
     Tags,
     BarChart,
-    Timer
+    Timer,
+    Code
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -38,6 +39,7 @@ const navItems = [
     { icon: Timer, label: '出勤打卡', path: '/staff/timecards' },
     { icon: BarChart, label: '員工績效', path: '/staff/reports' },
     { icon: Settings, label: '系統設置', path: '/settings' },
+    { icon: Code, label: 'API 與整合', path: '/developer' },
 ];
 
 

@@ -209,23 +209,22 @@ const Products = () => {
             return;
         }
 
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-            try {
-                const csvData = e.target.result;
-                const result = await importProductsCSV(csvData);
-                if (result.success) {
-                    setImportModalOpen(false);
-                    setCsvFile(null);
-                    fetchInitialData();
-                    alert(result.message);
-                }
-            } catch (error) {
-                alert('匯入失敗: ' + (error.response?.data?.message || error.message));
+        setSubmitting(true);
+        try {
+            const result = await importProductsCSV(csvFile);
+            if (result.success) {
+                setImportModalOpen(false);
+                setCsvFile(null);
+                fetchInitialData();
+                alert(result.message);
             }
-        };
-        reader.readAsText(csvFile);
+        } catch (error) {
+            alert('匯入失敗: ' + (error.response?.data?.message || error.message));
+        } finally {
+            setSubmitting(false);
+        }
     };
+
 
     const toggleSelectAll = () => {
         if (selectedProducts.length === filteredProducts.length) {

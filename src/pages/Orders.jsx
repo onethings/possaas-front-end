@@ -10,7 +10,8 @@ import {
     XCircle,
     Loader2
 } from 'lucide-react';
-import { getOrders } from '../api/orders';
+import { getOrders, exportOrdersCSV } from '../api/orders';
+
 import { useTenant } from '../contexts/TenantContext';
 
 const Orders = () => {
@@ -23,26 +24,25 @@ const Orders = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
-    const handleExport = () => {
-        const headers = ['訂單編號', '客戶', '金額', '狀態', '日期'];
-        const csvContent = [
-            headers.join(','),
-            ...orders.filter(o => filterDate(o)).map(o => [
-                o.orderNo,
-                o.customerNameSnapshot || '匿名',
-                o.finalAmount,
-                o.status,
-                new Date(o.createdAt).toLocaleDateString()
-            ].join(','))
-        ].join('\n');
-
-        const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `orders_export_${new Date().toISOString().slice(0, 10)}.csv`;
-        link.click();
+    const handleExport = async () => {
+        setLoading(true);
+        try {
+            const blob = await exportOrdersCSV(startDate, endDate);
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `orders_${startDate || 'all'}_${endDate || ''}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            alert('匯出失敗');
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     const filterDate = (order) => {
         if (!startDate && !endDate) return true;
