@@ -25,14 +25,15 @@ import { getDiscounts } from '../api/discounts';
 import { createOrder } from '../api/orders';
 import { getMyTenant } from '../api/tenants';
 import { getCategories } from '../api/categories';
+import { useTenant } from '../contexts/TenantContext';
 
 const POS = () => {
+    const { tenantConfig } = useTenant();
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [activeCategory, setActiveCategory] = useState('all');
     const [customers, setCustomers] = useState([]);
     const [discounts, setDiscounts] = useState([]);
-    const [tenantConfig, setTenantConfig] = useState(null);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [custSearchTerm, setCustSearchTerm] = useState('');
@@ -372,7 +373,7 @@ const POS = () => {
                                         alignItems: viewMode === 'grid' ? 'center' : 'flex-end'
                                     }}>
                                         <span style={{ color: 'var(--primary-light)', fontWeight: 700, fontSize: '1.1rem' }}>
-                                            ${p.price || p.variants?.[0]?.price}
+                                            {tenantConfig.currency}{p.price || p.variants?.[0]?.price}
                                         </span>
                                         {p.hasVariants && (
                                             <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '4px' }}>
@@ -406,7 +407,7 @@ const POS = () => {
                                                     }}
                                                     style={variantButtonStyle}
                                                 >
-                                                    {v.name} (${v.price})
+                                                    {v.name} ({tenantConfig.currency}{v.price})
                                                 </button>
                                             ))}
                                         </div>
@@ -442,14 +443,14 @@ const POS = () => {
                                 <div style={{ flex: 1 }}>
                                     <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>{item.name}</div>
                                     {item.variantName && <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{item.variantName}</div>}
-                                    <div style={{ fontSize: '0.85rem', color: 'var(--primary-light)' }}>${item.price}</div>
+                                    <div style={{ fontSize: '0.85rem', color: 'var(--primary-light)' }}>{tenantConfig.currency}{item.price}</div>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2px 8px' }}>
                                     <button onClick={() => updateQty(item.cartKey, -1)} style={qtyButtonStyle}><Minus size={14} /></button>
                                     <span style={{ minWidth: '20px', textAlign: 'center', fontSize: '0.9rem' }}>{item.qty}</span>
                                     <button onClick={() => updateQty(item.cartKey, 1)} style={qtyButtonStyle}><Plus size={14} /></button>
                                 </div>
-                                <div style={{ fontWeight: 600, minWidth: '50px', textAlign: 'right' }}>${(item.price * item.qty).toLocaleString()}</div>
+                                <div style={{ fontWeight: 600, minWidth: '50px', textAlign: 'right' }}>{tenantConfig.currency}{(item.price * item.qty).toLocaleString()}</div>
                             </div>
                         ))
                     )}
@@ -499,23 +500,23 @@ const POS = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.9rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <span style={{ color: 'var(--text-muted)' }}>小計</span>
-                            <span>${subtotal.toLocaleString()}</span>
+                            <span>{tenantConfig.currency}{subtotal.toLocaleString()}</span>
                         </div>
                         {appliedDiscount && (
                             <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f87171' }}>
                                 <span>折扣 ({appliedDiscount.name})</span>
-                                <span>-${discountAmount.toLocaleString()}</span>
+                                <span>-{tenantConfig.currency}{discountAmount.toLocaleString()}</span>
                             </div>
                         )}
                         {taxAmount > 0 && (
                             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
                                 <span>稅額 ({tenantConfig?.taxRate || 0}%)</span>
-                                <span>+${taxAmount.toLocaleString()}</span>
+                                <span>+{tenantConfig.currency}{taxAmount.toLocaleString()}</span>
                             </div>
                         )}
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 800, marginTop: '0.4rem' }}>
                             <span>總計</span>
-                            <span style={{ color: 'var(--primary-light)' }}>${total.toLocaleString()}</span>
+                            <span style={{ color: 'var(--primary-light)' }}>{tenantConfig.currency}{total.toLocaleString()}</span>
                         </div>
                     </div>
 

@@ -18,9 +18,11 @@ import {
 } from 'lucide-react';
 import { getRevenueReport } from '../api/reports';
 import { useAuth } from '../contexts/AuthContext';
+import { useTenant } from '../contexts/TenantContext';
 
 const RevenueReport = () => {
     const { user } = useAuth();
+    const { tenantConfig } = useTenant();
     
     // Date State
     const getToday = () => new Date().toISOString().split('T')[0];
@@ -203,6 +205,7 @@ const RevenueReport = () => {
                     label="預估利潤"
                     value={summary?.estimatedProfit}
                     color="var(--primary)"
+                    currencySymbol={tenantConfig.currency}
                     onClick={() => setSelectedMetric('profit')}
                 />
                 <MetricCard
@@ -210,6 +213,7 @@ const RevenueReport = () => {
                     label="銷售收入"
                     value={summary?.salesIncome}
                     color="#60a5fa"
+                    currencySymbol={tenantConfig.currency}
                     onClick={() => setSelectedMetric('sales')}
                 />
                 <MetricCard
@@ -217,6 +221,7 @@ const RevenueReport = () => {
                     label="總折扣"
                     value={summary?.totalDiscount}
                     color="#fbbf24"
+                    currencySymbol={tenantConfig.currency}
                     onClick={() => setSelectedMetric('discount')}
                 />
                 <MetricCard
@@ -224,6 +229,7 @@ const RevenueReport = () => {
                     label="退貨支出"
                     value={summary?.returnExpenditure}
                     color="#f87171"
+                    currencySymbol={tenantConfig.currency}
                     onClick={() => setSelectedMetric('return')}
                 />
                 <MetricCard
@@ -231,6 +237,7 @@ const RevenueReport = () => {
                     label="店面支出"
                     value={summary?.storeExpenditure}
                     color="#a78bfa"
+                    currencySymbol={tenantConfig.currency}
                     onClick={() => setSelectedMetric('store')}
                 />
                 <MetricCard
@@ -238,6 +245,7 @@ const RevenueReport = () => {
                     label="進貨支出"
                     value={summary?.stockPurchaseExpenditure}
                     color="#2dd4bf"
+                    currencySymbol={tenantConfig.currency}
                     onClick={() => setSelectedMetric('stock')}
                 />
             </div>
@@ -301,7 +309,7 @@ const RevenueReport = () => {
                                                 <tr key={i}>
                                                     <td>{p.name || '未知產品'}</td>
                                                     <td>{p.qty} 件</td>
-                                                    <td>${p.revenue.toLocaleString()}</td>
+                                                    <td>{tenantConfig.currency}{p.revenue.toLocaleString()}</td>
                                                 </tr>
                                             ))
                                         ) : selectedMetric === 'category_analysis' ? (
@@ -309,23 +317,23 @@ const RevenueReport = () => {
                                                 <tr key={i}>
                                                     <td>{c.name || '未分類'}</td>
                                                     <td>{c.qty} 件</td>
-                                                    <td>${c.revenue.toLocaleString()}</td>
+                                                    <td>{tenantConfig.currency}{c.revenue.toLocaleString()}</td>
                                                 </tr>
                                             ))
                                         ) : (
                                             data.details.reports.map((r, i) => (
                                                 <tr key={i}>
                                                     <td>{r.date}</td>
-                                                    {selectedMetric === 'sales' && <td>${r.totalRevenue.toLocaleString()}</td>}
-                                                    {selectedMetric === 'sales' && <td style={{ color: '#4ade80' }}>${(r.totalRevenue - r.totalCost).toLocaleString()}</td>}
-                                                    {selectedMetric === 'sales' && <td style={{ color: '#fbbf24' }}>${r.totalDiscount.toLocaleString()}</td>}
-                                                    {selectedMetric === 'profit' && <td>${(r.totalRevenue - r.totalCost - r.totalExpenses).toLocaleString()}</td>}
-                                                    {selectedMetric === 'trend_analysis' && <td>${r.totalRevenue.toLocaleString()}</td>}
-                                                    {selectedMetric === 'trend_analysis' && <td style={{ color: '#4ade80' }}>${(r.totalRevenue - r.totalCost - r.totalExpenses).toLocaleString()}</td>}
-                                                    {selectedMetric === 'discount' && <td>${r.totalDiscount.toLocaleString()}</td>}
-                                                    {selectedMetric === 'return' && <td>${(r.returnAmount || 0).toLocaleString()}</td>}
-                                                    {selectedMetric === 'store' && <td>${(r.totalExpenses).toLocaleString()}</td>}
-                                                    {selectedMetric === 'stock' && <td>${(r.stockExpense || 0).toLocaleString()}</td>}
+                                                    {selectedMetric === 'sales' && <td>{tenantConfig.currency}{r.totalRevenue.toLocaleString()}</td>}
+                                                    {selectedMetric === 'sales' && <td style={{ color: '#4ade80' }}>{tenantConfig.currency}{(r.totalRevenue - r.totalCost).toLocaleString()}</td>}
+                                                    {selectedMetric === 'sales' && <td style={{ color: '#fbbf24' }}>{tenantConfig.currency}{r.totalDiscount.toLocaleString()}</td>}
+                                                    {selectedMetric === 'profit' && <td>{tenantConfig.currency}{(r.totalRevenue - r.totalCost - r.totalExpenses).toLocaleString()}</td>}
+                                                    {selectedMetric === 'trend_analysis' && <td>{tenantConfig.currency}{r.totalRevenue.toLocaleString()}</td>}
+                                                    {selectedMetric === 'trend_analysis' && <td style={{ color: '#4ade80' }}>{tenantConfig.currency}{(r.totalRevenue - r.totalCost - r.totalExpenses).toLocaleString()}</td>}
+                                                    {selectedMetric === 'discount' && <td>{tenantConfig.currency}{r.totalDiscount.toLocaleString()}</td>}
+                                                    {selectedMetric === 'return' && <td>{tenantConfig.currency}{(r.returnAmount || 0).toLocaleString()}</td>}
+                                                    {selectedMetric === 'store' && <td>{tenantConfig.currency}{(r.totalExpenses).toLocaleString()}</td>}
+                                                    {selectedMetric === 'stock' && <td>{tenantConfig.currency}{(r.stockExpense || 0).toLocaleString()}</td>}
                                                 </tr>
                                             ))
                                         )}
@@ -340,7 +348,7 @@ const RevenueReport = () => {
     );
 };
 
-const MetricCard = ({ icon: Icon, label, value, color, onClick }) => (
+const MetricCard = ({ icon: Icon, label, value, color, currencySymbol, onClick }) => (
     <motion.div
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -355,8 +363,7 @@ const MetricCard = ({ icon: Icon, label, value, color, onClick }) => (
             <span style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{label}</span>
         </div>
         <div style={{ fontSize: '2rem', fontWeight: 800 }}>
-            ${value?.toLocaleString() || 0}
-            <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginLeft: '0.5rem', fontWeight: 400 }}>TWD</span>
+            {currencySymbol}{value?.toLocaleString() || 0}
         </div>
         <div style={{ marginTop: '0.8rem', display: 'flex', justifyContent: 'flex-end' }}>
             <ChevronDown size={18} color="var(--text-muted)" style={{ opacity: 0.5 }} />

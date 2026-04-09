@@ -4,8 +4,10 @@ import { Plus, Search, FileText, CheckCircle, Clock, XCircle, Loader2, ArrowRigh
 import { getPurchaseOrders, createPurchaseOrder, receivePurchaseOrder } from '../api/purchaseOrders';
 import { getSuppliers } from '../api/suppliers';
 import { getProducts } from '../api/products';
+import { useTenant } from '../contexts/TenantContext';
 
 const PurchaseOrders = () => {
+    const { tenantConfig } = useTenant();
     const [pos, setPos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [suppliers, setSuppliers] = useState([]);
@@ -114,7 +116,7 @@ const PurchaseOrders = () => {
                                 <tr key={po._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                                     <td style={tdStyle}><code>{po.orderNo}</code></td>
                                     <td style={tdStyle}>{po.supplierId?.name || '未知'}</td>
-                                    <td style={tdStyle}>${po.totalAmount.toLocaleString()}</td>
+                                    <td style={tdStyle}>{tenantConfig.currency}{po.totalAmount.toLocaleString()}</td>
                                     <td style={tdStyle}>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: status.color, fontSize: '0.85rem' }}>
                                             {status.icon} {status.label}

@@ -23,6 +23,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { getReportSummary } from '../api/reports';
 import { useAuth } from '../contexts/AuthContext';
+import { useTenant } from '../contexts/TenantContext';
 
 ChartJS.register(
     CategoryScale,
@@ -37,6 +38,7 @@ ChartJS.register(
 
 const Dashboard = () => {
     const { user } = useAuth();
+    const { tenantConfig } = useTenant();
     const [summary, setSummary] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -103,7 +105,7 @@ const Dashboard = () => {
             legend: { display: false },
             tooltip: {
                 callbacks: {
-                    label: (context) => `銷售額: $${context.parsed.y.toLocaleString()}`
+                    label: (context) => `銷售額: ${tenantConfig.currency}${context.parsed.y.toLocaleString()}`
                 }
             }
         },
@@ -112,7 +114,7 @@ const Dashboard = () => {
                 grid: { color: 'rgba(255,255,255,0.05)' },
                 ticks: {
                     color: 'hsl(0,0%,70%)',
-                    callback: (value) => `$${value.toLocaleString()}`
+                    callback: (value) => `${tenantConfig.currency}${value.toLocaleString()}`
                 }
             },
             x: { grid: { display: false }, ticks: { color: 'hsl(0,0%,70%)' } },
@@ -146,13 +148,13 @@ const Dashboard = () => {
                     <>
                         <StatCard icon={Users} label="管理的租戶" value={agentStats.subTenantCount || 0} change="+0" positive />
                         <StatCard icon={Users} label="管理的帳號" value={agentStats.totalUsersManaged || 0} change="+0" positive />
-                        <StatCard icon={DollarSign} label="預估庫存價值" value={`$${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Live" positive />
+                        <StatCard icon={DollarSign} label="預估庫存價值" value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Live" positive />
                         <StatCard icon={ShoppingBag} label="管理產品數" value={businessData.inventory?.totalItems || 0} change="Items" positive />
                     </>
                 ) : (
                     <>
-                        <StatCard icon={DollarSign} label="本日銷售" value={`$${businessData.latestSales?.toLocaleString() || 0}`} change="Live" positive />
-                        <StatCard icon={TrendingUp} label="庫存總價值" value={`$${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Stock" positive />
+                        <StatCard icon={DollarSign} label="本日銷售" value={`${tenantConfig.currency}${businessData.latestSales?.toLocaleString() || 0}`} change="Live" positive />
+                        <StatCard icon={TrendingUp} label="庫存總價值" value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Stock" positive />
                         <StatCard icon={ShoppingBag} label="在庫件數" value={businessData.inventory?.totalItems || 0} change="Units" positive={businessData.inventory?.totalItems > 0} />
                         <StatCard icon={Users} label="目前用戶" value={summary.personal?.username || 'Admin'} change="Online" positive />
                     </>
@@ -178,7 +180,7 @@ const Dashboard = () => {
                                     key={p.productId?._id || idx}
                                     name={p.productId?.name || '未知產品'}
                                     sales={p.qty}
-                                    price={`$${p.revenue?.toLocaleString()}`}
+                                    price={`${tenantConfig.currency}${p.revenue?.toLocaleString()}`}
                                 />
                             ))
                         ) : (

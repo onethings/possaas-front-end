@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Tag, Trash2, Loader2, Percent, DollarSign } from 'lucide-react';
 import { getDiscounts, createDiscount, deleteDiscount } from '../api/discounts';
+import { useTenant } from '../contexts/TenantContext';
 
 const Discounts = () => {
+    const { tenantConfig } = useTenant();
     const [discounts, setDiscounts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setModalOpen] = useState(false);
@@ -82,7 +84,7 @@ const Discounts = () => {
                                 <div>
                                     <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>{d.name}</div>
                                     <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                                        {d.type === 'PERCENTAGE' ? `${d.value}% 折扣` : `固定金額 -$${d.value}`}
+                                        {d.type === 'PERCENTAGE' ? `${d.value}% 折扣` : `固定金額 -${tenantConfig.currency}${d.value}`}
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +107,7 @@ const Discounts = () => {
                                 <label>類型</label>
                                 <select style={selectStyle} value={newDiscount.type} onChange={e => setNewDiscount({ ...newDiscount, type: e.target.value })}>
                                     <option value="PERCENTAGE">百分比 (%)</option>
-                                    <option value="FIXED">固定金額 ($)</option>
+                                    <option value="FIXED">固定金額 ({tenantConfig.currency})</option>
                                 </select>
                             </div>
                             <div className="input-group">

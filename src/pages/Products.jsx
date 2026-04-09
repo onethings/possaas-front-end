@@ -20,8 +20,10 @@ import {
 import { getProducts, createProduct, updateProduct, deleteProducts, exportProductsCSV, importProductsCSV } from '../api/products';
 import { getCategories, createCategory } from '../api/categories';
 import { getModifiers, createModifier } from '../api/modifiers';
+import { useTenant } from '../contexts/TenantContext';
 
 const Products = () => {
+    const { tenantConfig } = useTenant();
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -352,7 +354,7 @@ const Products = () => {
                                         </td>
                                         <td style={tdStyle}><code style={{ color: 'var(--primary-light)' }}>{p.sku || 'N/A'}</code></td>
                                         <td style={tdStyle}>{p.name}</td>
-                                        <td style={tdStyle}>${p.price?.toLocaleString()}</td>
+                                        <td style={tdStyle}>{tenantConfig.currency}{p.price?.toLocaleString()}</td>
                                         <td style={tdStyle}>
                                             <span style={{
                                                 padding: '2px 8px',

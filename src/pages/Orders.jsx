@@ -11,8 +11,10 @@ import {
     Loader2
 } from 'lucide-react';
 import { getOrders } from '../api/orders';
+import { useTenant } from '../contexts/TenantContext';
 
 const Orders = () => {
+    const { tenantConfig } = useTenant();
     const [activeTab, setActiveTab] = useState('all');
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -152,7 +154,7 @@ const Orders = () => {
                                 </div>
                                 {order.customerNameSnapshot || '匿名客戶'}
                             </div>
-                            <div style={{ fontWeight: 700 }}>${order.finalAmount?.toLocaleString()}</div>
+                            <div style={{ fontWeight: 700 }}>{tenantConfig.currency}{order.finalAmount?.toLocaleString()}</div>
                             <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(order.createdAt).toLocaleString()}</div>
                             <div>
                                 <StatusBadge status={order.status} />
@@ -211,9 +213,9 @@ const Orders = () => {
                                         {item.nameSnapshot}
                                         {item.variantNameSnapshot && <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{item.variantNameSnapshot}</span>}
                                     </div>
-                                    <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>${(item.priceSnapshot || 0).toLocaleString()}</div>
+                                    <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>{tenantConfig.currency}{(item.priceSnapshot || 0).toLocaleString()}</div>
                                     <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>{item.qty}</div>
-                                    <div style={{ textAlign: 'right', fontWeight: 600 }}>${((item.priceSnapshot || 0) * (item.qty || 0)).toLocaleString()}</div>
+                                    <div style={{ textAlign: 'right', fontWeight: 600 }}>{tenantConfig.currency}{((item.priceSnapshot || 0) * (item.qty || 0)).toLocaleString()}</div>
                                 </div>
                             ))}
                         </div>
@@ -221,15 +223,15 @@ const Orders = () => {
                         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
                                 <span>小計</span>
-                                <span>${(selectedOrder.totalAmount || 0).toLocaleString()}</span>
+                                <span>{tenantConfig.currency}{(selectedOrder.totalAmount || 0).toLocaleString()}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f87171' }}>
                                 <span>折扣</span>
-                                <span>-${(selectedOrder.discountAmount || 0).toLocaleString()}</span>
+                                <span>-{tenantConfig.currency}{(selectedOrder.discountAmount || 0).toLocaleString()}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 700, marginTop: '0.5rem', color: 'white' }}>
                                 <span>實收金額</span>
-                                <span style={{ color: 'var(--primary-light)' }}>${(selectedOrder.finalAmount || 0).toLocaleString()}</span>
+                                <span style={{ color: 'var(--primary-light)' }}>{tenantConfig.currency}{(selectedOrder.finalAmount || 0).toLocaleString()}</span>
                             </div>
                         </div>
                         

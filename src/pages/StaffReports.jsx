@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BarChart, Users, TrendingUp, DollarSign, Loader2, Calendar } from 'lucide-react';
 import { getReportSummary } from '../api/reports';
+import { useTenant } from '../contexts/TenantContext';
 
 const StaffReports = () => {
+    const { tenantConfig } = useTenant();
     const [report, setReport] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -45,7 +47,7 @@ const StaffReports = () => {
                                 <span style={{ color: 'var(--text-muted)' }}>總銷售額</span>
                                 <DollarSign size={20} color="var(--primary-light)" />
                             </div>
-                            <div style={{ fontSize: '1.8rem', fontWeight: 800 }}>${report.totalRevenue?.toLocaleString()}</div>
+                            <div style={{ fontSize: '1.8rem', fontWeight: 800 }}>{tenantConfig.currency}{report.totalRevenue?.toLocaleString()}</div>
                         </div>
                         <div className="glass-panel" style={{ padding: '1.5rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
@@ -80,8 +82,8 @@ const StaffReports = () => {
                                             {stat.staffName || '員工 ' + (idx + 1)}
                                         </td>
                                         <td style={{ padding: '1.2rem' }}>{stat.orderCount} 筆</td>
-                                        <td style={{ padding: '1.2rem', fontWeight: 700, color: 'var(--primary-light)' }}>${stat.revenue?.toLocaleString()}</td>
-                                        <td style={{ padding: '1.2rem' }}>${(stat.revenue / stat.orderCount || 0).toFixed(2)}</td>
+                                        <td style={{ padding: '1.2rem', fontWeight: 700, color: 'var(--primary-light)' }}>{tenantConfig.currency}{stat.revenue?.toLocaleString()}</td>
+                                        <td style={{ padding: '1.2rem' }}>{tenantConfig.currency}{(stat.revenue / stat.orderCount || 0).toFixed(2)}</td>
                                     </tr>
                                 )) : (
                                     <tr>

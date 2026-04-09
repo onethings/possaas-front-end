@@ -117,7 +117,27 @@ const Settings = () => {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                             <div className="input-group">
                                 <label style={labelStyle}>貨幣符號</label>
-                                <input style={inputStyle} value={config.currency} onChange={(e) => setConfig({ ...config, currency: e.target.value })} />
+                                <select 
+                                    style={inputStyle} 
+                                    value={config.currency} 
+                                    onChange={(e) => setConfig({ ...config, currency: e.target.value })}
+                                >
+                                    <option value="USD">USD ($)</option>
+                                    <option value="TWD">TWD (NT$)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                    <option value="JPY">JPY (¥)</option>
+                                    <option value="GBP">GBP (£)</option>
+                                    <option value="CNY">CNY (¥)</option>
+                                    <option value="KRW">KRW (₩)</option>
+                                    <option value="MMK">MMK (Ks)</option>
+                                    <option value="SGD">SGD (S$)</option>
+                                    <option value="HKD">HKD (HK$)</option>
+                                    <option value="AUD">AUD (A$)</option>
+                                    <option value="CAD">CAD (C$)</option>
+                                    <option value="₹">INR (₹)</option>
+                                    <option value="BRL">BRL (R$)</option>
+                                    <option value="ZAR">ZAR (R)</option>
+                                </select>
                             </div>
                             <div className="input-group">
                                 <label style={labelStyle}>時區</label>
