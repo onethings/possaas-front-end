@@ -365,7 +365,7 @@ const Products = () => {
                                                 {p.stock || 0} 件
                                             </span>
                                         </td>
-                                        <td style={tdStyle}>{categories.find(c => c._id === p.categoryId)?.name || '未分類'}</td>
+                                        <td style={tdStyle}>{(typeof p.categoryId === 'object' ? p.categoryId?.name : categories.find(c => c._id === p.categoryId)?.name) || '未分類'}</td>
                                         <td style={tdStyle}>
                                             <div style={{ display: 'flex', gap: '0.5rem' }}>
                                                 <button onClick={() => handleEditProduct(p)} style={actionBtnStyle} title="編輯產品"><Edit2 size={16} /></button>
