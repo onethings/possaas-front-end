@@ -82,6 +82,8 @@ const Suppliers = () => {
                 <div style={{ position: 'relative' }}>
                     <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                     <input
+                        id="supplier-search"
+                        name="supplier-search"
                         type="text"
                         placeholder="搜尋供應商名稱..."
                         value={searchTerm}
@@ -121,24 +123,24 @@ const Suppliers = () => {
                         <h3>{newSupplier._id ? '編輯供應商' : '新增供應商'}</h3>
                         <form onSubmit={handleCreate} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
-                                <label>名稱</label>
-                                <input required value={newSupplier.name} onChange={e => setNewSupplier({ ...newSupplier, name: e.target.value })} />
+                                <label htmlFor="sup-name">名稱</label>
+                                <input id="sup-name" name="name" required value={newSupplier.name} onChange={e => setNewSupplier({ ...newSupplier, name: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label>聯絡人</label>
-                                <input value={newSupplier.contactPerson} onChange={e => setNewSupplier({ ...newSupplier, contactPerson: e.target.value })} />
+                                <label htmlFor="sup-contact">聯絡人</label>
+                                <input id="sup-contact" name="contactPerson" value={newSupplier.contactPerson} onChange={e => setNewSupplier({ ...newSupplier, contactPerson: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label>電話</label>
-                                <input value={newSupplier.phone} onChange={e => setNewSupplier({ ...newSupplier, phone: e.target.value })} />
+                                <label htmlFor="sup-phone">電話</label>
+                                <input id="sup-phone" name="phone" value={newSupplier.phone} onChange={e => setNewSupplier({ ...newSupplier, phone: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label>Email</label>
-                                <input type="email" value={newSupplier.email} onChange={e => setNewSupplier({ ...newSupplier, email: e.target.value })} />
+                                <label htmlFor="sup-email">Email</label>
+                                <input id="sup-email" name="email" type="email" value={newSupplier.email} onChange={e => setNewSupplier({ ...newSupplier, email: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label>地址</label>
-                                <input value={newSupplier.address} onChange={e => setNewSupplier({ ...newSupplier, address: e.target.value })} />
+                                <label htmlFor="sup-address">地址</label>
+                                <input id="sup-address" name="address" value={newSupplier.address} onChange={e => setNewSupplier({ ...newSupplier, address: e.target.value })} />
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                                 <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>

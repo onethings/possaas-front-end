@@ -88,12 +88,16 @@ const Orders = () => {
                     <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '0.2rem 0.5rem' }}>
                         <Calendar size={16} style={{ margin: '0 0.5rem', color: 'var(--text-muted)' }} />
                         <input
+                            id="order-start-date"
+                            name="startDate"
                             type="date"
                             style={{ background: 'transparent', border: 'none', color: 'white', outline: 'none', fontSize: '0.9rem' }}
                             onChange={(e) => setStartDate(e.target.value)}
                         />
                         <span style={{ margin: '0 0.5rem', color: 'var(--text-muted)' }}>-</span>
                         <input
+                            id="order-end-date"
+                            name="endDate"
                             type="date"
                             style={{ background: 'transparent', border: 'none', color: 'white', outline: 'none', fontSize: '0.9rem' }}
                             onChange={(e) => setEndDate(e.target.value)}

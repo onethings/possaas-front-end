@@ -143,8 +143,8 @@ const PurchaseOrders = () => {
                         <h3>新增採購單</h3>
                         <form onSubmit={handleCreate} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
-                                <label>供應商</label>
-                                <select required style={selectStyle} value={newPO.supplierId} onChange={e => setNewPO({ ...newPO, supplierId: e.target.value })}>
+                                <label htmlFor="po-supplier">供應商</label>
+                                <select id="po-supplier" name="supplierId" required style={selectStyle} value={newPO.supplierId} onChange={e => setNewPO({ ...newPO, supplierId: e.target.value })}>
                                     <option value="">請選擇供應商</option>
                                     {suppliers.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
                                 </select>
@@ -155,11 +155,17 @@ const PurchaseOrders = () => {
                                 {newPO.items.map((item, idx) => (
                                     <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 40px', gap: '0.5rem', marginBottom: '0.5rem' }}>
                                         <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <select style={selectStyle} value={item.productId} onChange={e => {
-                                                const items = [...newPO.items];
-                                                items[idx].productId = e.target.value;
-                                                setNewPO({ ...newPO, items });
-                                            }}>
+                                            <select 
+                                                id={`po-prod-${idx}`}
+                                                name="productId"
+                                                style={selectStyle} 
+                                                value={item.productId} 
+                                                onChange={e => {
+                                                    const items = [...newPO.items];
+                                                    items[idx].productId = e.target.value;
+                                                    setNewPO({ ...newPO, items });
+                                                }}
+                                            >
                                                 <option value="">選擇產品</option>
                                                 {products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
                                             </select>
@@ -172,16 +178,32 @@ const PurchaseOrders = () => {
                                                 <Plus size={16} />
                                             </button>
                                         </div>
-                                        <input type="number" placeholder="數量" value={item.qty} onChange={e => {
-                                            const items = [...newPO.items];
-                                            items[idx].qty = parseFloat(e.target.value);
-                                            setNewPO({ ...newPO, items });
-                                        }} style={inputStyle} />
-                                        <input type="number" placeholder="進價" value={item.costPrice} onChange={e => {
-                                            const items = [...newPO.items];
-                                            items[idx].costPrice = parseFloat(e.target.value);
-                                            setNewPO({ ...newPO, items });
-                                        }} style={inputStyle} />
+                                         <input 
+                                             id={`po-qty-${idx}`}
+                                             name={`qty-${idx}`}
+                                             type="number" 
+                                             placeholder="數量" 
+                                             value={item.qty} 
+                                             onChange={e => {
+                                                 const items = [...newPO.items];
+                                                 items[idx].qty = parseFloat(e.target.value);
+                                                 setNewPO({ ...newPO, items });
+                                             }} 
+                                             style={inputStyle} 
+                                         />
+                                         <input 
+                                             id={`po-cost-${idx}`}
+                                             name={`costPrice-${idx}`}
+                                             type="number" 
+                                             placeholder="進價" 
+                                             value={item.costPrice} 
+                                             onChange={e => {
+                                                 const items = [...newPO.items];
+                                                 items[idx].costPrice = parseFloat(e.target.value);
+                                                 setNewPO({ ...newPO, items });
+                                             }} 
+                                             style={inputStyle} 
+                                         />
                                         <button type="button" onClick={() => setNewPO({ ...newPO, items: newPO.items.filter((_, i) => i !== idx) })} style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer' }}><XCircle size={18} /></button>
                                     </div>
                                 ))}

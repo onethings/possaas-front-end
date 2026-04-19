@@ -286,6 +286,8 @@ const Products = () => {
                 <div style={{ position: 'relative', flex: 1 }}>
                     <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                     <input
+                        id="product-search"
+                        name="product-search"
                         type="text"
                         placeholder="搜尋名稱或 SKU..."
                         value={searchTerm}
@@ -389,15 +391,17 @@ const Products = () => {
                         </div>
                         <form onSubmit={handleCreateProduct} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: '70vh', overflowY: 'auto', paddingRight: '0.5rem' }}>
                             <div className="input-group">
-                                <label>產品名稱</label>
-                                <input type="text" required value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} placeholder="例如: 經典美式咖啡" />
+                                <label htmlFor="prod-name">產品名稱</label>
+                                <input id="prod-name" name="name" type="text" required value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} placeholder="例如: 經典美式咖啡" />
                             </div>
 
                             <div className="input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                                 <div>
-                                    <label>分類</label>
+                                    <label htmlFor="prod-category">分類</label>
                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                                         <select
+                                            id="prod-category"
+                                            name="categoryId"
                                             value={newProduct.categoryId}
                                             onChange={e => setNewProduct({ ...newProduct, categoryId: e.target.value })}
                                             style={{ ...selectStyle, flex: 1 }}
@@ -419,8 +423,10 @@ const Products = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <label>銷售單位</label>
+                                    <label htmlFor="prod-unit">銷售單位</label>
                                     <select
+                                        id="prod-unit"
+                                        name="soldBy"
                                         value={newProduct.soldBy}
                                         onChange={e => setNewProduct({ ...newProduct, soldBy: e.target.value })}
                                         style={selectStyle}
@@ -434,12 +440,12 @@ const Products = () => {
                             {!newProduct.hasVariants && (
                                 <div className="input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                                     <div>
-                                        <label>SKU / 條碼</label>
-                                        <input type="text" required value={newProduct.sku} onChange={e => setNewProduct({ ...newProduct, sku: e.target.value })} placeholder="SKU001" />
+                                        <label htmlFor="prod-sku">SKU / 條碼</label>
+                                        <input id="prod-sku" name="sku" type="text" required value={newProduct.sku} onChange={e => setNewProduct({ ...newProduct, sku: e.target.value })} placeholder="SKU001" />
                                     </div>
                                     <div>
-                                        <label>銷售價格</label>
-                                        <input type="number" required value={newProduct.price} onChange={e => setNewProduct({ ...newProduct, price: e.target.value })} placeholder="0.00" />
+                                        <label htmlFor="prod-price">銷售價格</label>
+                                        <input id="prod-price" name="price" type="number" required value={newProduct.price} onChange={e => setNewProduct({ ...newProduct, price: e.target.value })} placeholder="0.00" />
                                     </div>
                                 </div>
                             )}

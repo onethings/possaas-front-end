@@ -118,6 +118,8 @@ const Customers = () => {
                 <div style={{ position: 'relative' }}>
                     <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                     <input
+                        id="customer-search"
+                        name="customer-search"
                         type="text"
                         placeholder="搜尋客戶姓名或電話..."
                         value={searchTerm}
@@ -183,20 +185,20 @@ const Customers = () => {
                         <h3 style={{ marginBottom: '1.5rem' }}>{editId ? '編輯客戶' : '新增客戶'}</h3>
                         <form onSubmit={handleCreateOrUpdate} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
-                                <label>客戶姓名</label>
-                                <input type="text" required value={newCustomer.name} onChange={e => setNewCustomer({ ...newCustomer, name: e.target.value })} placeholder="例如: 王小明" />
+                                <label htmlFor="cust-name">客戶姓名</label>
+                                <input id="cust-name" name="name" type="text" required value={newCustomer.name} onChange={e => setNewCustomer({ ...newCustomer, name: e.target.value })} placeholder="例如: 王小明" />
                             </div>
                             <div className="input-group">
-                                <label>聯絡電話</label>
-                                <input type="text" value={newCustomer.phone} onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })} placeholder="0912345678" />
+                                <label htmlFor="cust-phone">聯絡電話</label>
+                                <input id="cust-phone" name="phone" type="text" value={newCustomer.phone} onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })} placeholder="0912345678" />
                             </div>
                             <div className="input-group">
-                                <label>Email</label>
-                                <input type="email" value={newCustomer.email} onChange={e => setNewCustomer({ ...newCustomer, email: e.target.value })} placeholder="example@mail.com" />
+                                <label htmlFor="cust-email">Email</label>
+                                <input id="cust-email" name="email" type="email" value={newCustomer.email} onChange={e => setNewCustomer({ ...newCustomer, email: e.target.value })} placeholder="example@mail.com" />
                             </div>
                             <div className="input-group">
-                                <label>通訊地址</label>
-                                <input type="text" value={newCustomer.address} onChange={e => setNewCustomer({ ...newCustomer, address: e.target.value })} placeholder="台北市..." />
+                                <label htmlFor="cust-address">通訊地址</label>
+                                <input id="cust-address" name="address" type="text" value={newCustomer.address} onChange={e => setNewCustomer({ ...newCustomer, address: e.target.value })} placeholder="台北市..." />
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
                                 <button type="button" disabled={submitting} onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>

@@ -7,9 +7,19 @@ export const useTenant = () => {
     return useContext(TenantContext);
 };
 
+const getCurrencySymbol = (code) => {
+    const symbols = {
+        USD: '$', TWD: 'NT$', EUR: '€', JPY: '¥', GBP: '£',
+        CNY: '¥', KRW: '₩', MMK: 'Ks', SGD: 'S$', HKD: 'HK$',
+        AUD: 'A$', CAD: 'C$', INR: '₹', BRL: 'R$', ZAR: 'R'
+    };
+    return symbols[code] || code || '$';
+};
+
 export const TenantProvider = ({ children }) => {
     const [tenantConfig, setTenantConfig] = useState({
         currency: '$',
+        currencyCode: 'USD',
         timezone: 'UTC',
         taxRate: 0,
         loyaltyEnabled: false,
@@ -27,7 +37,10 @@ export const TenantProvider = ({ children }) => {
             try {
                 const result = await getMyTenant();
                 if (result.success && result.data && result.data.config) {
-                    setTenantConfig(prev => ({ ...prev, ...result.data.config }));
+                    const config = { ...result.data.config };
+                    config.currencyCode = config.currency || 'USD';
+                    config.currency = getCurrencySymbol(config.currencyCode);
+                    setTenantConfig(prev => ({ ...prev, ...config }));
                 }
             } catch (error) {
                 console.error("Failed to fetch tenant config:", error);

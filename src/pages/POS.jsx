@@ -241,6 +241,8 @@ const POS = () => {
                     <div style={{ position: 'relative', flex: 1 }}>
                         <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                         <input
+                            id="pos-product-search"
+                            name="searchTerm"
                             placeholder="搜尋產品或掃描條碼..."
                             style={searchStyle}
                             value={searchTerm}
@@ -462,6 +464,8 @@ const POS = () => {
                         <div style={{ position: 'relative' }}>
                             <User size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }} />
                             <input
+                                id="pos-customer-search"
+                                name="custSearchTerm"
                                 placeholder="搜尋客戶姓名..."
                                 style={{ ...miniSelectStyle, paddingLeft: '30px', width: '100%' }}
                                 value={custSearchTerm}

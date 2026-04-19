@@ -100,19 +100,19 @@ const Discounts = () => {
                         <h3>新增折扣</h3>
                         <form onSubmit={handleCreate} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
-                                <label>名稱</label>
-                                <input required value={newDiscount.name} onChange={e => setNewDiscount({ ...newDiscount, name: e.target.value })} placeholder="例如: 週末特惠" />
+                                <label htmlFor="disc-name">名稱</label>
+                                <input id="disc-name" name="name" required value={newDiscount.name} onChange={e => setNewDiscount({ ...newDiscount, name: e.target.value })} placeholder="例如: 週末特惠" />
                             </div>
                             <div className="input-group">
-                                <label>類型</label>
-                                <select style={selectStyle} value={newDiscount.type} onChange={e => setNewDiscount({ ...newDiscount, type: e.target.value })}>
+                                <label htmlFor="disc-type">類型</label>
+                                <select id="disc-type" name="type" style={selectStyle} value={newDiscount.type} onChange={e => setNewDiscount({ ...newDiscount, type: e.target.value })}>
                                     <option value="PERCENTAGE">百分比 (%)</option>
                                     <option value="FIXED">固定金額 ({tenantConfig.currency})</option>
                                 </select>
                             </div>
                             <div className="input-group">
-                                <label>數值</label>
-                                <input type="number" step="0.01" required value={newDiscount.value} onChange={e => setNewDiscount({ ...newDiscount, value: e.target.value })} placeholder="例如: 10" />
+                                <label htmlFor="disc-value">數值</label>
+                                <input id="disc-value" name="value" type="number" step="0.01" required value={newDiscount.value} onChange={e => setNewDiscount({ ...newDiscount, value: e.target.value })} placeholder="例如: 10" />
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                                 <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
