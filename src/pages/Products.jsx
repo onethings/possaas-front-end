@@ -18,7 +18,7 @@ import {
     Upload,
     X
 } from 'lucide-react';
-import { getProducts, createProduct, updateProduct, deleteProducts, exportProductsCSV, importProductsCSV } from '../api/products';
+import { getProducts, createProduct, updateProduct, deleteProducts, exportProductsCSV, importProductsCSV, uploadImage } from '../api/products';
 import { getCategories, createCategory } from '../api/categories';
 import { getModifiers, createModifier } from '../api/modifiers';
 import { useTenant } from '../contexts/TenantContext';
@@ -44,6 +44,8 @@ const Products = () => {
         name: '',
         sku: '',
         price: '',
+        repairPrice: '',
+        image: '',
         stock: '',
         categoryId: '',
         description: '',
@@ -87,10 +89,12 @@ const Products = () => {
                 ...newProduct,
                 categoryId: newProduct.categoryId || null,
                 price: parseFloat(newProduct.price) || 0,
+                repairPrice: parseFloat(newProduct.repairPrice) || 0,
                 stock: parseInt(newProduct.stock) || 0,
                 variants: newProduct.variants.map(v => ({
                     ...v,
                     price: parseFloat(v.price) || 0,
+                    repairPrice: parseFloat(v.repairPrice) || 0,
                     stock: parseInt(v.stock) || 0
                 }))
             };
@@ -122,6 +126,8 @@ const Products = () => {
             name: '',
             sku: '',
             price: '',
+            repairPrice: '',
+            image: '',
             stock: '',
             categoryId: '',
             description: '',
@@ -142,6 +148,8 @@ const Products = () => {
             name: product.name || '',
             sku: product.sku || '',
             price: product.price || '',
+            repairPrice: product.repairPrice || '',
+            image: product.image || '',
             stock: product.stock || '',
             categoryId: (typeof product.categoryId === 'object' && product.categoryId !== null) 
                         ? product.categoryId._id 
@@ -156,6 +164,23 @@ const Products = () => {
             components: product.components || []
         });
         setModalOpen(true);
+    };
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        setSubmitting(true);
+        try {
+            const result = await uploadImage(file);
+            if (result.success && result.url) {
+                setNewProduct({ ...newProduct, image: result.url });
+            }
+        } catch (error) {
+            alert('圖片上傳失敗');
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     const handleCreateCategory = async (e) => {
@@ -248,7 +273,7 @@ const Products = () => {
     const addVariant = () => {
         setNewProduct({
             ...newProduct,
-            variants: [...newProduct.variants, { name: '', sku: '', price: '', stock: '' }]
+            variants: [...newProduct.variants, { name: '', sku: '', price: '', repairPrice: '', stock: '' }]
         });
     };
 
@@ -399,6 +424,19 @@ const Products = () => {
                                 <input id="prod-name" name="name" type="text" autoComplete="off" required value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} placeholder="例如: 經典美式咖啡" />
                             </div>
 
+                            <div className="input-group">
+                                <label>產品圖片 (餐飲業預覽用)</label>
+                                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                    {newProduct.image && (
+                                        <div style={{ width: '60px', height: '60px', borderRadius: '8px', overflow: 'hidden', background: 'rgba(255,255,255,0.1)' }}>
+                                            <img src={newProduct.image} alt="預覽" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        </div>
+                                    )}
+                                    <input type="file" accept="image/*" onChange={handleImageUpload} style={{ flex: 1, padding: '0.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '4px' }} />
+                                </div>
+                            </div>
+
+
                             <div className="input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                                 <div>
                                     <label htmlFor="prod-category">分類</label>
@@ -442,7 +480,7 @@ const Products = () => {
                             </div>
 
                             {!newProduct.hasVariants && (
-                                <div className="input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                <div className="input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
                                     <div>
                                         <label htmlFor="prod-sku">SKU / 條碼</label>
                                         <input id="prod-sku" name="sku" type="text" required value={newProduct.sku} onChange={e => setNewProduct({ ...newProduct, sku: e.target.value })} placeholder="SKU001" />
@@ -450,6 +488,10 @@ const Products = () => {
                                     <div>
                                         <label htmlFor="prod-price">銷售價格</label>
                                         <input id="prod-price" name="price" type="number" required value={newProduct.price} onChange={e => setNewProduct({ ...newProduct, price: e.target.value })} placeholder="0.00" />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="prod-repair-price">維修價格 (非必選)</label>
+                                        <input id="prod-repair-price" name="repairPrice" type="number" value={newProduct.repairPrice} onChange={e => setNewProduct({ ...newProduct, repairPrice: e.target.value })} placeholder="0.00" />
                                     </div>
                                 </div>
                             )}
@@ -472,7 +514,7 @@ const Products = () => {
                                         <button type="button" onClick={addVariant} className="btn-secondary" style={{ padding: '4px 8px', fontSize: '0.8rem' }}>+ 新增規格</button>
                                     </div>
                                     {newProduct.variants.map((v, idx) => (
-                                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 40px', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 40px', gap: '0.5rem', marginBottom: '0.5rem' }}>
                                             <input placeholder="規格名稱" value={v.name} onChange={e => {
                                                 const vts = [...newProduct.variants];
                                                 vts[idx].name = e.target.value;
@@ -483,9 +525,14 @@ const Products = () => {
                                                 vts[idx].sku = e.target.value;
                                                 setNewProduct({ ...newProduct, variants: vts });
                                             }} />
-                                            <input placeholder="價格" type="number" value={v.price} onChange={e => {
+                                            <input placeholder="銷售價" type="number" value={v.price} onChange={e => {
                                                 const vts = [...newProduct.variants];
                                                 vts[idx].price = e.target.value;
+                                                setNewProduct({ ...newProduct, variants: vts });
+                                            }} />
+                                            <input placeholder="維修價" type="number" value={v.repairPrice || ''} onChange={e => {
+                                                const vts = [...newProduct.variants];
+                                                vts[idx].repairPrice = e.target.value;
                                                 setNewProduct({ ...newProduct, variants: vts });
                                             }} />
                                             <button type="button" onClick={() => {
