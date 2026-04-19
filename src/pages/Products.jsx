@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import {
     Plus,
@@ -289,6 +290,7 @@ const Products = () => {
                         id="product-search"
                         name="product-search"
                         type="text"
+                        autoComplete="off"
                         placeholder="搜尋名稱或 SKU..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -382,7 +384,7 @@ const Products = () => {
             </div>
 
             {/* Modal */}
-            {isIdModalOpen && (
+            {isIdModalOpen && createPortal(
                 <div style={modalOverlayStyle}>
                     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={modalContentStyle}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', alignItems: 'center' }}>
@@ -392,7 +394,7 @@ const Products = () => {
                         <form onSubmit={handleCreateProduct} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: '70vh', overflowY: 'auto', paddingRight: '0.5rem' }}>
                             <div className="input-group">
                                 <label htmlFor="prod-name">產品名稱</label>
-                                <input id="prod-name" name="name" type="text" required value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} placeholder="例如: 經典美式咖啡" />
+                                <input id="prod-name" name="name" type="text" autoComplete="off" required value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} placeholder="例如: 經典美式咖啡" />
                             </div>
 
                             <div className="input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -501,11 +503,12 @@ const Products = () => {
                             </div>
                         </form>
                     </motion.div>
-                </div>
+                </div>,
+                document.body
             )}
 
             {/* Category Modal */}
-            {isCategoryModalOpen && (
+            {isCategoryModalOpen && createPortal(
                 <div style={modalOverlayStyle}>
                     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '400px', padding: '2rem' }}>
                         <h3 style={{ marginBottom: '1.5rem' }}>新增分類</h3>
@@ -538,11 +541,12 @@ const Products = () => {
                             </div>
                         </form>
                     </motion.div>
-                </div>
+                </div>,
+                document.body
             )}
 
             {/* CSV Import Modal */}
-            {isImportModalOpen && (
+            {isImportModalOpen && createPortal(
                 <div style={modalOverlayStyle}>
                     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '500px', padding: '2rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
@@ -581,7 +585,8 @@ const Products = () => {
                             </div>
                         </div>
                     </motion.div>
-                </div>
+                </div>,
+                document.body
             )}
         </motion.div>
     );
