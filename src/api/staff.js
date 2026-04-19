@@ -10,7 +10,17 @@ export const registerStaff = async (staffData) => {
     return response.data;
 };
 
+export const updateStaff = async (id, staffData) => {
+    const response = await api.patch(`/api/users/${id}`, staffData);
+    return response.data;
+};
+
 export const updateStaffStatus = async (id, status) => {
     const response = await api.patch(`/api/users/${id}/status`, { status });
+    return response.data;
+};
+
+export const resetStaffPassword = async (id) => {
+    const response = await api.post(`/api/users/${id}/reset-password`);
     return response.data;
 };
