@@ -143,7 +143,9 @@ const Products = () => {
             sku: product.sku || '',
             price: product.price || '',
             stock: product.stock || '',
-            categoryId: product.categoryId || '',
+            categoryId: (typeof product.categoryId === 'object' && product.categoryId !== null) 
+                        ? product.categoryId._id 
+                        : (product.categoryId || ''),
             description: product.description || '',
             barcode: product.barcode || '',
             soldBy: product.soldBy || 'each',
