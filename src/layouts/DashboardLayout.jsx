@@ -129,6 +129,8 @@ const DashboardLayout = ({ children }) => {
                     <div style={{ position: 'relative', width: '300px' }}>
                         <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                         <input
+                            id="global-search"
+                            name="global-search"
                             type="text"
                             placeholder="搜尋訂單、產品..."
                             style={{ padding: '0.6rem 1rem 0.6rem 40px', background: 'rgba(0,0,0,0.2)', border: 'none', borderRadius: 'var(--radius-md)', color: 'white', width: '100%' }}

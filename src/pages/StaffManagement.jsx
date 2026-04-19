@@ -122,6 +122,8 @@ const StaffManagement = () => {
                 <div style={{ position: 'relative' }}>
                     <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                     <input
+                        id="staff-search"
+                        name="staff-search"
                         type="text"
                         placeholder="搜尋姓名或帳號..."
                         value={searchTerm}
