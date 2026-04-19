@@ -39,7 +39,11 @@ const InventoryCounts = () => {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const result = await createAdjustment(adjustment);
+            // 清理變數：如果 variantId 是空字串，則不傳送，避免後端 ObjectId 轉換失敗
+            const payload = { ...adjustment };
+            if (!payload.variantId) delete payload.variantId;
+
+            const result = await createAdjustment(payload);
             if (result.success) {
                 setModalOpen(false);
                 setAdjustment({ productId: '', variantId: '', changeQty: 0, reason: 'correction', note: '' });
