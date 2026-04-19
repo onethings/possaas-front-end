@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Shield, ShieldAlert, Loader2, Edit2, Lock, Key } from 'lucide-react';
 import { getStaff, registerStaff, updateStaff, updateStaffStatus, resetStaffPassword } from '../api/staff';
 import { useAuth } from '../contexts/AuthContext';
