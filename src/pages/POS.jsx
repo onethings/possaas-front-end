@@ -474,6 +474,8 @@ const POS = () => {
                         </div>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                             <select
+                                id="pos-customer-select"
+                                name="customerSelection"
                                 style={miniSelectStyle}
                                 value={selectedCustomer?._id || ''}
                                 onChange={(e) => {
@@ -488,6 +490,8 @@ const POS = () => {
                                 }
                             </select>
                             <select
+                                id="pos-discount-select"
+                                name="discountSelection"
                                 style={miniSelectStyle}
                                 value={appliedDiscount?._id || ''}
                                 onChange={(e) => {

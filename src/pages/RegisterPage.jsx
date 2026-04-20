@@ -92,10 +92,12 @@ const RegisterPage = () => {
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div className="input-group">
-                    <label style={labelStyle}>公司名稱</label>
+                    <label htmlFor="reg-name" style={labelStyle}>公司名稱</label>
                     <div style={{ position: 'relative' }}>
                         <Building2 size={18} style={iconStyle} />
                         <input
+                            id="reg-name"
+                            name="companyName"
                             type="text"
                             placeholder="例如: 超級零售集團"
                             style={inputStyle}
@@ -107,10 +109,12 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="input-group">
-                    <label style={labelStyle}>公司編號 (Tenant ID)</label>
+                    <label htmlFor="reg-tenantId" style={labelStyle}>公司編號 (Tenant ID)</label>
                     <div style={{ position: 'relative' }}>
                         <User size={18} style={iconStyle} />
                         <input
+                            id="reg-tenantId"
+                            name="tenantId"
                             type="text"
                             placeholder="例如: superstore-01 (唯一識別碼)"
                             style={inputStyle}
@@ -122,10 +126,12 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="input-group">
-                    <label style={labelStyle}>管理員 Email</label>
+                    <label htmlFor="reg-adminEmail" style={labelStyle}>管理員 Email</label>
                     <div style={{ position: 'relative' }}>
                         <Mail size={18} style={iconStyle} />
                         <input
+                            id="reg-adminEmail"
+                            name="adminEmail"
                             type="email"
                             placeholder="admin@example.com"
                             style={inputStyle}
@@ -137,10 +143,12 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="input-group">
-                    <label style={labelStyle}>設置密碼</label>
+                    <label htmlFor="reg-adminPassword" style={labelStyle}>設置密碼</label>
                     <div style={{ position: 'relative' }}>
                         <Lock size={18} style={iconStyle} />
                         <input
+                            id="reg-adminPassword"
+                            name="adminPassword"
                             type={showPassword ? "text" : "password"}
                             placeholder="••••••••"
                             style={inputStyle}
@@ -158,10 +166,12 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="input-group">
-                    <label style={labelStyle}>確認密碼</label>
+                    <label htmlFor="reg-confirmPassword" style={labelStyle}>確認密碼</label>
                     <div style={{ position: 'relative' }}>
                         <Lock size={18} style={iconStyle} />
                         <input
+                            id="reg-confirmPassword"
+                            name="confirmPassword"
                             type={showConfirmPassword ? "text" : "password"}
                             placeholder="••••••••"
                             style={inputStyle}
