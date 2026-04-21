@@ -211,17 +211,22 @@ const Orders = () => {
                                 <div style={{ textAlign: 'center' }}>數量</div>
                                 <div style={{ textAlign: 'right' }}>小計</div>
                             </div>
-                            {selectedOrder.items?.map((item, idx) => (
-                                <div key={idx} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 1fr', gap: '1rem', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.8rem' }}>
-                                    <div style={{ fontSize: '0.95rem' }}>
-                                        {item.nameSnapshot}
-                                        {item.variantNameSnapshot && <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{item.variantNameSnapshot}</span>}
-                                    </div>
-                                    <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>{tenantConfig.currency}{(item.priceSnapshot || 0).toLocaleString()}</div>
-                                    <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>{item.qty}</div>
-                                    <div style={{ textAlign: 'right', fontWeight: 600 }}>{tenantConfig.currency}{((item.priceSnapshot || 0) * (item.qty || 0)).toLocaleString()}</div>
-                                </div>
-                            ))}
+                                {selectedOrder.items?.map((item, idx) => {
+                                    const unitPrice = item.price ?? item.priceSnapshot ?? item.unitPrice ?? 0;
+                                    const subtotal = item.subtotal ?? (unitPrice * (item.qty || 0));
+                                    
+                                    return (
+                                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 1fr', gap: '1rem', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.8rem' }}>
+                                            <div style={{ fontSize: '0.95rem' }}>
+                                                {item.nameSnapshot}
+                                                {item.variantNameSnapshot && <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{item.variantNameSnapshot}</span>}
+                                            </div>
+                                            <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>{tenantConfig.currency}{unitPrice.toLocaleString()}</div>
+                                            <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>{item.qty}</div>
+                                            <div style={{ textAlign: 'right', fontWeight: 600 }}>{tenantConfig.currency}{subtotal.toLocaleString()}</div>
+                                        </div>
+                                    );
+                                })}
                         </div>
 
                         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
