@@ -151,7 +151,14 @@ const Orders = () => {
                 ) : (
                     orders.filter(o => (activeTab === 'all' || o.status === activeTab) && filterDate(o)).map(order => (
                         <div key={order._id} className="glass-panel" style={{ padding: '1.2rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr 1fr 1fr 0.5fr', alignItems: 'center' }}>
-                            <div style={{ fontWeight: 600, color: 'var(--primary-light)' }}>#{order.orderNo}</div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                <div style={{ fontWeight: 600, color: 'var(--primary-light)' }}>#{order.orderNo}</div>
+                                {order.isBackdated && (
+                                    <span style={{ fontSize: '0.65rem', background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
+                                        補單
+                                    </span>
+                                )}
+                            </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                                 <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>
                                     {(order.customerNameSnapshot || 'N')[0]}
