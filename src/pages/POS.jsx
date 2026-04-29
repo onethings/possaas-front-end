@@ -17,7 +17,8 @@ import {
     ShoppingBag,
     LayoutGrid,
     List,
-    RefreshCw
+    RefreshCw,
+    Calendar
 } from 'lucide-react';
 import { getProducts } from '../api/products';
 import { getCustomers } from '../api/customers';
