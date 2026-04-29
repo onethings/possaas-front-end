@@ -43,6 +43,7 @@ const POS = () => {
     const [submitting, setSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [viewMode, setViewMode] = useState(() => localStorage.getItem('posViewMode') || 'grid');
+    const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
     const CACHE_KEY_PRODUCTS = 'pos_cache_products';
     const CACHE_KEY_CATEGORIES = 'pos_cache_categories';
     const CACHE_TIME = 24 * 60 * 60 * 1000; // 24小時（毫秒）
@@ -176,7 +177,8 @@ const POS = () => {
         setSubmitting(true);
         try {
             // 生成單號 (符合你資料庫看到的格式)
-            const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            // 補單邏輯：單號中的日期部分應為選擇的日期
+            const datePart = orderDate.replace(/-/g, '');
             const randomPart = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
             const generatedOrderNo = `ORD-${datePart}-${randomPart}`;
 
@@ -194,7 +196,8 @@ const POS = () => {
                 })),
                 totalAmount: Number(subtotal.toFixed(2)),
                 discountAmount: Number(discountAmount.toFixed(2)),
-                finalAmount: Number(total.toFixed(2))
+                finalAmount: Number(total.toFixed(2)),
+                customDate: orderDate // 送出補單日期
             };
 
             console.log("📤 正式提交數據:", orderData);
@@ -502,6 +505,17 @@ const POS = () => {
                                 <option value="">選擇折扣</option>
                                 {discounts.map(d => <option key={d._id} value={d._id}>{d.name}</option>)}
                             </select>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '8px' }}>
+                            <Calendar size={14} style={{ opacity: 0.6 }} />
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>結帳日期</span>
+                            <input
+                                type="date"
+                                value={orderDate}
+                                max={new Date().toISOString().split('T')[0]}
+                                onChange={(e) => setOrderDate(e.target.value)}
+                                style={{ ...miniSelectStyle, border: 'none', background: 'transparent' }}
+                            />
                         </div>
                     </div>
 
