@@ -132,22 +132,62 @@ const RevenueReport = () => {
     const downloadCSV = () => {
         if (!data) return;
         
-        let headers = ['日期', '銷售額', '銷售成本', '毛利潤', '折扣', '支出'];
-        let rows = data.details.reports.map(r => [
-            r.date,
-            r.totalRevenue,
-            r.totalCost,
-            r.totalRevenue - r.totalCost,
-            r.totalDiscount,
-            r.totalExpenses
-        ]);
+        let headers, rows, sumRow;
 
-        const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+        if (activeTab === 'products' && data.analysis?.topProducts) {
+            headers = ['商品名稱', '售出數量', '銷售總額', '商品利潤'];
+            const products = data.analysis.topProducts;
+            rows = products.map(p => [
+                p.name || '未知產品',
+                p.qty,
+                p.revenue,
+                Math.round(p.revenue - (p.cost || 0))
+            ]);
+            const sumQty = products.reduce((s, p) => s + (p.qty || 0), 0);
+            const sumRev = products.reduce((s, p) => s + (p.revenue || 0), 0);
+            const sumCost = products.reduce((s, p) => s + (p.cost || 0), 0);
+            sumRow = ['合計', sumQty, sumRev, Math.round(sumRev - sumCost)];
+        } else if (activeTab === 'categories' && data.analysis?.categorySummary) {
+            headers = ['類別名稱', '商品總數', '銷售總額', '類別利潤'];
+            const cats = data.analysis.categorySummary;
+            rows = cats.map(c => [
+                c.name || '未分類',
+                c.qty,
+                c.revenue,
+                Math.round(c.revenue - (c.cost || 0))
+            ]);
+            const sumQty = cats.reduce((s, c) => s + (c.qty || 0), 0);
+            const sumRev = cats.reduce((s, c) => s + (c.revenue || 0), 0);
+            const sumCost = cats.reduce((s, c) => s + (c.cost || 0), 0);
+            sumRow = ['合計', sumQty, sumRev, Math.round(sumRev - sumCost)];
+        } else {
+            headers = ['日期', '銷售額', '銷售成本', '毛利潤', '折扣', '支出'];
+            const reports = data.details.reports;
+            rows = reports.map(r => [
+                r.date,
+                r.totalRevenue,
+                r.totalCost,
+                r.totalRevenue - r.totalCost,
+                r.totalDiscount,
+                r.totalExpenses
+            ]);
+            const sumRev = reports.reduce((s, r) => s + (r.totalRevenue || 0), 0);
+            const sumCost = reports.reduce((s, r) => s + (r.totalCost || 0), 0);
+            const sumDisc = reports.reduce((s, r) => s + (r.totalDiscount || 0), 0);
+            const sumExp = reports.reduce((s, r) => s + (r.totalExpenses || 0), 0);
+            sumRow = ['合計', sumRev, sumCost, sumRev - sumCost, sumDisc, sumExp];
+        }
+
+        const csvContent = "\uFEFF" + [
+            headers.join(','),
+            ...rows.map(r => r.join(',')),
+            sumRow.join(',')
+        ].join('\n');
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         const url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", `revenue_report_${dateRange.start}_${dateRange.end}.csv`);
+        link.setAttribute("download", `revenue_report_${activeTab}_${dateRange.start}_${dateRange.end}.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
@@ -351,12 +391,30 @@ const RevenueReport = () => {
                                     </tr>
                                 );
                             })}
+                            {activeTab === 'overview' && data.details.reports.length > 0 && (() => {
+                                const reps = data.details.reports;
+                                const sumRev = reps.reduce((s, r) => s + (r.totalRevenue || 0), 0);
+                                const sumCost = reps.reduce((s, r) => s + (r.totalCost || 0), 0);
+                                const sumProfit = sumRev - sumCost;
+                                const sumExp = reps.reduce((s, r) => s + (r.totalExpenses || 0), 0);
+                                const sumMargin = sumRev > 0 ? (sumProfit / sumRev) * 100 : 0;
+                                return (
+                                    <tr style={{ background: 'rgba(96, 165, 250, 0.06)' }}>
+                                        <td style={{ fontWeight: 800 }}>合計</td>
+                                        <td className="text-right" style={{ fontWeight: 800 }}>{tenantConfig.currency}{sumRev.toLocaleString()}</td>
+                                        <td className="text-right" style={{ fontWeight: 800 }}>{tenantConfig.currency}{sumCost.toLocaleString()}</td>
+                                        <td className="text-right" style={{ fontWeight: 800, color: '#4ade80' }}>{tenantConfig.currency}{sumProfit.toLocaleString()}</td>
+                                        <td className="text-right" style={{ fontWeight: 800 }}>{tenantConfig.currency}{sumExp.toLocaleString()}</td>
+                                        <td className="text-center"><span style={marginBadgeStyle(sumMargin)}>{sumMargin.toFixed(1)}%</span></td>
+                                    </tr>
+                                );
+                            })()}
                             {activeTab === 'products' && data.analysis.topProducts.map((p, i) => (
                                 <tr key={i}>
                                     <td style={{ fontWeight: 500 }}>{p.name || '未知產品'}</td>
                                     <td className="text-center">{p.qty} 件</td>
                                     <td className="text-right">{tenantConfig.currency}{p.revenue.toLocaleString()}</td>
-                                    <td className="text-right" style={{ color: '#4ade80' }}>{tenantConfig.currency}{(p.revenue * 0.3).toLocaleString()}</td>
+                                    <td className="text-right" style={{ color: '#4ade80' }}>{tenantConfig.currency}{(p.revenue - (p.cost || 0)).toLocaleString()}</td>
                                     <td className="text-center">
                                         <div style={{ height: '4px', width: '60px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', margin: '0 auto' }}>
                                             <div style={{ height: '100%', width: `${Math.min(100, (p.revenue / (summary?.salesIncome || 1)) * 500)}%`, background: 'var(--primary)', borderRadius: '2px' }} />
@@ -364,15 +422,45 @@ const RevenueReport = () => {
                                     </td>
                                 </tr>
                             ))}
+                            {activeTab === 'products' && data.analysis.topProducts.length > 0 && (() => {
+                                const prods = data.analysis.topProducts;
+                                const sumQty = prods.reduce((s, p) => s + (p.qty || 0), 0);
+                                const sumRev = prods.reduce((s, p) => s + (p.revenue || 0), 0);
+                                const sumCost = prods.reduce((s, p) => s + (p.cost || 0), 0);
+                                return (
+                                    <tr style={{ background: 'rgba(96, 165, 250, 0.06)' }}>
+                                        <td style={{ fontWeight: 800 }}>合計</td>
+                                        <td className="text-center" style={{ fontWeight: 800 }}>{sumQty} 件</td>
+                                        <td className="text-right" style={{ fontWeight: 800 }}>{tenantConfig.currency}{sumRev.toLocaleString()}</td>
+                                        <td className="text-right" style={{ fontWeight: 800, color: '#4ade80' }}>{tenantConfig.currency}{(sumRev - sumCost).toLocaleString()}</td>
+                                        <td></td>
+                                    </tr>
+                                );
+                            })()}
                             {activeTab === 'categories' && data.analysis.categorySummary.map((c, i) => (
                                 <tr key={i}>
                                     <td style={{ fontWeight: 500 }}>{c.name || '未分類'}</td>
                                     <td className="text-center">{c.qty} 件</td>
                                     <td className="text-right">{tenantConfig.currency}{c.revenue.toLocaleString()}</td>
-                                    <td className="text-right" style={{ color: '#60a5fa' }}>{tenantConfig.currency}{(c.revenue * 0.25).toLocaleString()}</td>
+                                    <td className="text-right" style={{ color: '#60a5fa' }}>{tenantConfig.currency}{(c.revenue - (c.cost || 0)).toLocaleString()}</td>
                                     <td className="text-center">{((c.revenue / (summary?.salesIncome || 1)) * 100).toFixed(1)}%</td>
                                 </tr>
                             ))}
+                            {activeTab === 'categories' && data.analysis.categorySummary.length > 0 && (() => {
+                                const cats = data.analysis.categorySummary;
+                                const sumQty = cats.reduce((s, c) => s + (c.qty || 0), 0);
+                                const sumRev = cats.reduce((s, c) => s + (c.revenue || 0), 0);
+                                const sumCost = cats.reduce((s, c) => s + (c.cost || 0), 0);
+                                return (
+                                    <tr style={{ background: 'rgba(96, 165, 250, 0.06)' }}>
+                                        <td style={{ fontWeight: 800 }}>合計</td>
+                                        <td className="text-center" style={{ fontWeight: 800 }}>{sumQty} 件</td>
+                                        <td className="text-right" style={{ fontWeight: 800 }}>{tenantConfig.currency}{sumRev.toLocaleString()}</td>
+                                        <td className="text-right" style={{ fontWeight: 800, color: '#60a5fa' }}>{tenantConfig.currency}{(sumRev - sumCost).toLocaleString()}</td>
+                                        <td className="text-center" style={{ fontWeight: 800 }}>100%</td>
+                                    </tr>
+                                );
+                            })()}
                         </tbody>
                     </table>
                 </div>
