@@ -129,55 +129,7 @@ const RevenueReport = () => {
         });
     };
 
-    const downloadCSV = () => {
-        if (!data) return;
-        
-        let headers, rows, sumRow;
-
-        if (activeTab === 'products' && data.analysis?.topProducts) {
-            headers = ['商品名稱', '售出數量', '銷售總額', '商品利潤'];
-            const products = data.analysis.topProducts;
-            rows = products.map(p => [
-                p.name || '未知產品',
-                p.qty,
-                p.revenue,
-                Math.round(p.revenue - (p.cost || 0))
-            ]);
-            const sumQty = products.reduce((s, p) => s + (p.qty || 0), 0);
-            const sumRev = products.reduce((s, p) => s + (p.revenue || 0), 0);
-            const sumCost = products.reduce((s, p) => s + (p.cost || 0), 0);
-            sumRow = ['合計', sumQty, sumRev, Math.round(sumRev - sumCost)];
-        } else if (activeTab === 'categories' && data.analysis?.categorySummary) {
-            headers = ['類別名稱', '商品總數', '銷售總額', '類別利潤'];
-            const cats = data.analysis.categorySummary;
-            rows = cats.map(c => [
-                c.name || '未分類',
-                c.qty,
-                c.revenue,
-                Math.round(c.revenue - (c.cost || 0))
-            ]);
-            const sumQty = cats.reduce((s, c) => s + (c.qty || 0), 0);
-            const sumRev = cats.reduce((s, c) => s + (c.revenue || 0), 0);
-            const sumCost = cats.reduce((s, c) => s + (c.cost || 0), 0);
-            sumRow = ['合計', sumQty, sumRev, Math.round(sumRev - sumCost)];
-        } else {
-            headers = ['日期', '銷售額', '銷售成本', '毛利潤', '折扣', '支出'];
-            const reports = data.details.reports;
-            rows = reports.map(r => [
-                r.date,
-                r.totalRevenue,
-                r.totalCost,
-                r.totalRevenue - r.totalCost,
-                r.totalDiscount,
-                r.totalExpenses
-            ]);
-            const sumRev = reports.reduce((s, r) => s + (r.totalRevenue || 0), 0);
-            const sumCost = reports.reduce((s, r) => s + (r.totalCost || 0), 0);
-            const sumDisc = reports.reduce((s, r) => s + (r.totalDiscount || 0), 0);
-            const sumExp = reports.reduce((s, r) => s + (r.totalExpenses || 0), 0);
-            sumRow = ['合計', sumRev, sumCost, sumRev - sumCost, sumDisc, sumExp];
-        }
-
+    const _downloadCSV = (headers, rows, sumRow, filename) => {
         const csvContent = "\uFEFF" + [
             headers.join(','),
             ...rows.map(r => r.join(',')),
@@ -187,11 +139,45 @@ const RevenueReport = () => {
         const link = document.createElement("a");
         const url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", `revenue_report_${activeTab}_${dateRange.start}_${dateRange.end}.csv`);
+        link.setAttribute("download", filename);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    };
+
+    const exportOverviewCSV = () => {
+        if (!data?.details?.reports) return;
+        const reports = data.details.reports;
+        const headers = ['日期', '銷售額', '銷售成本', '毛利潤', '折扣', '支出'];
+        const rows = reports.map(r => [r.date, r.totalRevenue, r.totalCost, r.totalRevenue - r.totalCost, r.totalDiscount, r.totalExpenses]);
+        const sumRev = reports.reduce((s, r) => s + (r.totalRevenue || 0), 0);
+        const sumCost = reports.reduce((s, r) => s + (r.totalCost || 0), 0);
+        const sumDisc = reports.reduce((s, r) => s + (r.totalDiscount || 0), 0);
+        const sumExp = reports.reduce((s, r) => s + (r.totalExpenses || 0), 0);
+        _downloadCSV(headers, rows, ['合計', sumRev, sumCost, sumRev - sumCost, sumDisc, sumExp], `daily_report_${dateRange.start}_${dateRange.end}.csv`);
+    };
+
+    const exportProductsCSV = () => {
+        if (!data?.analysis?.topProducts) return;
+        const products = data.analysis.topProducts;
+        const headers = ['商品名稱', '售出數量', '銷售總額', '商品利潤'];
+        const rows = products.map(p => [p.name || '未知產品', p.qty, p.revenue, Math.round(p.revenue - (p.cost || 0))]);
+        const sumQty = products.reduce((s, p) => s + (p.qty || 0), 0);
+        const sumRev = products.reduce((s, p) => s + (p.revenue || 0), 0);
+        const sumCost = products.reduce((s, p) => s + (p.cost || 0), 0);
+        _downloadCSV(headers, rows, ['合計', sumQty, sumRev, Math.round(sumRev - sumCost)], `product_report_${dateRange.start}_${dateRange.end}.csv`);
+    };
+
+    const exportCategoriesCSV = () => {
+        if (!data?.analysis?.categorySummary) return;
+        const cats = data.analysis.categorySummary;
+        const headers = ['類別名稱', '商品總數', '銷售總額', '類別利潤'];
+        const rows = cats.map(c => [c.name || '未分類', c.qty, c.revenue, Math.round(c.revenue - (c.cost || 0))]);
+        const sumQty = cats.reduce((s, c) => s + (c.qty || 0), 0);
+        const sumRev = cats.reduce((s, c) => s + (c.revenue || 0), 0);
+        const sumCost = cats.reduce((s, c) => s + (c.cost || 0), 0);
+        _downloadCSV(headers, rows, ['合計', sumQty, sumRev, Math.round(sumRev - sumCost)], `category_report_${dateRange.start}_${dateRange.end}.csv`);
     };
 
     // Chart Data Preparation
@@ -289,10 +275,7 @@ const RevenueReport = () => {
                     ))}
                 </div>
 
-                <button className="btn-primary" onClick={downloadCSV} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Download size={18} /> 匯出報表
-                </button>
-            </div>
+                    
 
             {/* Metrics Dashboard */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.2rem' }}>
@@ -336,12 +319,20 @@ const RevenueReport = () => {
                 </div>
             </div>
 
-            {/* Detail Tables Section */}
             <div className="glass-panel" style={{ padding: '0' }}>
-                <div style={{ padding: '1.2rem 1.5rem', borderBottom: '1px solid var(--glass-border)', display: 'flex', gap: '2rem' }}>
-                    <TabButton active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} label="每日收支明細" />
-                    <TabButton active={activeTab === 'products'} onClick={() => setActiveTab('products')} label="熱銷商品排行" />
-                    <TabButton active={activeTab === 'categories'} onClick={() => setActiveTab('categories')} label="類別數據分析" />
+                <div style={{ padding: '1.2rem 1.5rem', borderBottom: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem' }}>
+                    <div style={{ display: 'flex', gap: '2rem' }}>
+                        <TabButton active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} label="每日收支明細" />
+                        <TabButton active={activeTab === 'products'} onClick={() => setActiveTab('products')} label="熱銷商品排行" />
+                        <TabButton active={activeTab === 'categories'} onClick={() => setActiveTab('categories')} label="類別數據分析" />
+                    </div>
+                    <button
+                        className="btn-primary"
+                        onClick={activeTab === 'products' ? exportProductsCSV : activeTab === 'categories' ? exportCategoriesCSV : exportOverviewCSV}
+                        style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.5rem 1rem', fontSize: '0.85rem' }}
+                    >
+                        <Download size={16} /> 匹出{activeTab === 'products' ? '商品' : activeTab === 'categories' ? '類別' : '明細'}報表
+                    </button>
                 </div>
                 
                 <div style={{ padding: '1rem', overflowX: 'auto' }}>
