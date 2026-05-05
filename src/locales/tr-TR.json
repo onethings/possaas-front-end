@@ -1,21 +1,471 @@
 {
   "login": {
-    "welcome": "Tekrar hoş geldiniz",
-    "subtitle": "Devam etmek için yönetici panelinize giriş yapın",
+    "welcome": "Tekrar Hoş Geldiniz",
+    "subtitle": "Devam etmek için yönetici panelinde oturum açın",
     "email": "E-posta Adresi",
     "password": "Şifre",
-    "companyId": "Şirket ID",
-    "submit": "Sisteme Giriş",
-    "errorDefault": "Giriş başarısız, lütfen bilgilerinizi kontrol edin"
+    "companyId": "Şirket Kimliği (ID)",
+    "submit": "Giriş Yap",
+    "errorDefault": "Giriş başarısız. Lütfen hesabınızı, şifrenizi veya şirket kimliğinizi kontrol edin."
   },
-  "customer_management": "Müşteri Yönetimi",
+  "customer_management": "Müşteri Veri Yönetimi",
   "add_customer": "Müşteri Ekle",
-  "search_placeholder_name_phone": "İsim veya telefon ara...",
-  "delete_selected_confirm": "Seçilen {{count}} müşteriyi silmek istediğinize emin misiniz?",
+  "search_placeholder_name_phone": "İsim veya telefon ile müşteri ara...",
+  "delete_selected_confirm": "Seçili {{count}} müşteriyi silmek istediğinizden emin misiniz?",
   "sales_trend": "Satış Trendi",
   "status_paid": "Ödendi",
   "status_pending": "Beklemede",
-  "checkout_now": "Şimdi Öde",
+  "checkout_now": "Ödemeye Geç",
   "reason_correction": "Stok Düzeltme",
-  "multi_variants": "Çoklu Varyant"
+  "multi_variants": "Çoklu Varyant",
+  "common": {
+    "loading": "Veriler yükleniyor...",
+    "retry": "Yeniden Dene",
+    "error_load_data": "Veri yükleme hatası",
+    "last_update": "Son güncelleme",
+    "no_data_today": "Bugün için veri bulunamadı",
+    "logout": "Çıkış Yap",
+    "search_placeholder": "Sipariş, ürün ara...",
+    "sync_data": "Verileri Senkronize Et",
+    "results": "Sonuçlar",
+    "clear": "Temizle",
+    "delete": "Sil",
+    "filter": "Filtrele",
+    "actions": "İşlemler",
+    "reset": "Sıfırla",
+    "preview": "Önizleme",
+    "cancel": "İptal",
+    "confirm_update": "Güncellemeyi Onayla",
+    "confirm_add": "Eklemeyi Onayla",
+    "unknown": "Bilinmiyor"
+  },
+  "pos": {
+    "search_placeholder": "Ürün ara veya barkod tara...",
+    "category_all": "Hepsi",
+    "multi_variants": "Çoklu Varyant",
+    "cart": "Sepet",
+    "cart_empty": "Henüz ürün eklenmedi",
+    "search_customer": "Müşteri adı ara...",
+    "select_customer": "Müşteri Seç",
+    "select_discount": "İndirim Seç",
+    "checkout_date": "Ödeme Tarihi",
+    "subtotal": "Ara Toplam",
+    "discount": "İndirim",
+    "tax_amount": "Vergi Tutarı",
+    "total": "Toplam",
+    "hold_order": "Siparişi Beklet",
+    "checkout_now": "Ödeme Al",
+    "checkout_success": "Ödeme başarıyla tamamlandı",
+    "order_created_msg": "Sipariş oluşturuldu ve stok güncellendi",
+    "error_no_store_id": "Mağaza kimliği alınamadı. Lütfen sayfayı yenileyin.",
+    "checkout_failed": "Ödeme başarısız"
+  },
+  "products": {
+    "title": "Ürün Kataloğu",
+    "import_csv": "CSV İçe Aktar",
+    "export_csv": "CSV Dışa Aktar",
+    "add_product": "Ürün Ekle",
+    "edit_product": "Ürünü Düzenle",
+    "search_placeholder": "İsim veya SKU ara...",
+    "no_products_msg": "Lütfen önce ürün ekleyin",
+    "add_now": "Şimdi ekle",
+    "sku_barcode": "SKU / Barkod",
+    "product_name": "Ürün Adı",
+    "price": "Fiyat",
+    "stock": "Stok",
+    "category": "Kategori",
+    "no_match_msg": "Eşleşen ürün bulunamadı",
+    "units": "adet",
+    "uncategorized": "Kategorisiz",
+    "product_image": "Ürün Görseli (Kurtarma için önizleme)",
+    "select_category": "Kategori seç",
+    "add_category": "Kategori Ekle",
+    "category_name": "Kategori Adı",
+    "category_placeholder": "Örn: İçecekler, Tatlılar",
+    "color_tag": "Renk Etiketi",
+    "sold_by": "Satış Birimi",
+    "sold_each": "Adetle Satış",
+    "sold_weight": "Ağırlıkla Satış",
+    "repair_price": "Onarım Fiyatı (Opsiyonel)",
+    "has_variants_msg": "Bu ürünün birden fazla varyantı var (örn: beden, renk)",
+    "variants": "Ürün Varyantları",
+    "add_variant": "Varyant Ekle",
+    "variant_name": "Varyant Adı",
+    "name_placeholder": "Örn: Klasik Americano",
+    "import": {
+      "title": "CSV'den Ürün İçe Aktar",
+      "select_file": "CSV Dosyası Seç",
+      "file_name": "Dosya adı:",
+      "file_size": "Dosya boyutu:",
+      "format_requirement": "CSV format gereksinimleri:",
+      "required_columns": [
+        "SKU",
+        "Ürün Adı",
+        "Fiyat",
+        "Maliyet",
+        "Stok",
+        "Kategori",
+        "Açıklama",
+        "Barkod",
+        "Satış Birimi"
+      ],
+      "submit": "İçe Aktarmayı Onayla"
+    },
+    "update_failed": "Güncelleme başarısız",
+    "add_failed": "Ekleme başarısız",
+    "image_upload_failed": "Görsel yükleme başarısız",
+    "add_category_failed": "Kategori ekleme başarısız",
+    "delete_failed": "Silme işlemi başarısız",
+    "export_failed": "Dışa aktarma başarısız",
+    "import_failed": "İçe aktarma başarısız",
+    "select_csv_msg": "Lütfen bir CSV dosyası seçin",
+    "delete_selected_confirm": "Seçili {{count}} ürünü silmek istediğinizden emin misiniz?"
+  },
+  "purchase_orders": {
+    "add_failed": "Ekleme başarısız",
+    "confirm_receive": "Ürünlerin kabulünü onaylıyor musunuz? Bu işlem ilgili ürünlerin stoklarını güncelleyecektir.",
+    "receive_failed": "Kabul işlemi başarısız",
+    "status_received": "Alındı",
+    "status_ordered": "Sipariş Edildi",
+    "status_cancelled": "İptal Edildi",
+    "status_draft": "Taslak",
+    "title": "Satın Alma Siparişleri (PO)",
+    "add": "Yeni PO Ekle",
+    "order_no": "Sipariş No",
+    "suppliers": "Tedarikçiler",
+    "amount": "Tutar",
+    "status": "Durum",
+    "date": "Tarih",
+    "actions": "İşlemler",
+    "receive": "Stok Kabulü",
+    "select_supplier": "Tedarikçi seç",
+    "items": "Ürün Detayları",
+    "select_product": "Ürün Seç",
+    "add_product": "Ürün Ekle (Yeni pencere)",
+    "quantity": "Miktar",
+    "cost_price": "Maliyet Fiyatı",
+    "add_item": "Kalem Ekle",
+    "create_draft": "Taslak Oluştur"
+  },
+  "register": {
+    "title": "<1>POS SaaS</1> ile yolculuğunuza başlayın",
+    "subtitle": "Başlamak için şirket hesabınızı kaydedin",
+    "company_name": "Şirket Adı",
+    "company_name_placeholder": "Örn: Örnek Perakende Grubu",
+    "tenant_id": "Şirket Kimliği (Tenant ID)",
+    "tenant_id_placeholder": "Örn: superstore-01 (Benzersiz kimlik)",
+    "admin_email": "Yönetici E-postası",
+    "admin_email_placeholder": "admin@ornek.com",
+    "password": "Şifre Belirle",
+    "confirm_password": "Şifreyi Onayla",
+    "password_placeholder": "••••••••",
+    "submit": "Şimdi Kaydol",
+    "has_account": "Zaten bir hesabınız var mı?",
+    "login_now": "Buradan giriş yapın",
+    "success_title": "Kayıt Başarılı!",
+    "success_msg": "Şirket hesabınız oluşturuldu. Giriş sayfasına yönlendiriliyorsunuz...",
+    "goto_login": "Giriş Sayfasına Git",
+    "error_password_mismatch": "Şifreler eşleşmiyor",
+    "error_default": "Kayıt başarısız, lütfen tekrar deneyin"
+  },
+  "reports": {
+    "revenue_title": "Operasyonel Raporlar",
+    "date_start": "Başlangıç Tarihi",
+    "date_end": "Bitiş Tarihi",
+    "presets": {
+      "today": "Bugün",
+      "yesterday": "Dün",
+      "thisWeek": "Bu Hafta",
+      "thisMonth": "Bu Ay",
+      "lastMonth": "Geçen Ay",
+      "last7": "Son 7 Gün",
+      "last30": "Son 30 Gün"
+    },
+    "metrics": {
+      "total_revenue": "Toplam Gelir",
+      "gross_profit": "Brüt Kar",
+      "discounts": "Uygulanan İndirimler",
+      "expenditure": "Mağaza Giderleri"
+    },
+    "charts": {
+      "trend_title": "Satış Tahmini ve Trendler",
+      "category_pie": "Kategori Bazlı Gelir Payı",
+      "revenue": "Gelir",
+      "profit": "Kar"
+    },
+    "tabs": {
+      "daily_detail": "Günlük Gelir/Gider Detayları",
+      "hot_products": "En Çok Satan Ürünler",
+      "category_analysis": "Kategori Veri Analizi"
+    },
+    "table": {
+      "date": "Tarih",
+      "net_sales": "Net Satış",
+      "cost": "Satış Maliyeti (COGS)",
+      "profit": "Brüt Kar",
+      "expenses": "Giderler",
+      "margin": "Marj",
+      "product_name": "Ürün Adı",
+      "qty_sold": "Satılan Mik.",
+      "total_sales": "Toplam Satış",
+      "performance": "Performans",
+      "category_name": "Kategori Adı",
+      "total_items": "Toplam Kalem",
+      "share": "Pay",
+      "total": "Toplam",
+      "unknown_product": "Bilinmeyen Ürün",
+      "uncategorized": "Kategorisiz"
+    },
+    "export": {
+      "button": "{{type}} Raporunu Dışa Aktar",
+      "type_detail": "Detay",
+      "type_product": "Ürün",
+      "type_category": "Kategori"
+    },
+    "errors": {
+      "load_fail": "Rapor verileri yüklenemedi",
+      "connection_fail": "Bağlantı hatası"
+    }
+  },
+  "settings": {
+    "title": "Sistem Ayarları",
+    "subtitle": "Mağaza kurallarını ve sadakat programını yönetin",
+    "tabs": {
+      "general": "Genel Ayarlar",
+      "loyalty": "Sadakat Programı",
+      "tax": "Vergi Ayarları",
+      "security": "Güvenlik ve Yetkiler"
+    },
+    "loyalty": {
+      "title": "Sadakat Programı",
+      "enable_points": "Ödül Puanlarını Etkinleştir",
+      "enable_desc": "Müşteriler satın alma tutarlarına göre puan kazanır",
+      "rate_label": "Ödül Oranı (1 puan için harcanması gereken tutar)"
+    },
+    "tax": {
+      "title": "Vergi Yapılandırması",
+      "rate_label": "Varsayılan Vergi Oranı (%)"
+    },
+    "regional": {
+      "title": "Bölge ve Para Birimi",
+      "currency_label": "Para Birimi Simgesi",
+      "timezone_label": "Saat Dilimi"
+    },
+    "save_btn": "Değişiklikleri Kaydet",
+    "save_success": "Ayarlar başarıyla kaydedildi!",
+    "save_fail": "Kaydetme başarısız"
+  },
+  "staff": {
+    "title": "Personel Yönetimi",
+    "add_staff": "Personel Ekle",
+    "search_placeholder": "İsim veya hesap ile ara...",
+    "no_data": "Personel verisi bulunamadı",
+    "table": {
+      "name": "İsim",
+      "account": "Giriş Hesabı",
+      "role": "Rol",
+      "status": "Durum",
+      "joined_at": "Katılım Tarihi",
+      "actions": "İşlemler"
+    },
+    "status": {
+      "active": "Aktif",
+      "disabled": "Devre Dışı"
+    },
+    "roles": {
+      "level_1": "Sistem Süper Yöneticisi",
+      "level_2": "Bölge Temsilcisi",
+      "level_3": "Distribütör",
+      "level_4": "Mağaza Müdürü",
+      "level_5": "Kasiyer",
+      "level_6": "Stok Sorumlusu",
+      "default": "Genel Personel"
+    },
+    "modal": {
+      "title_add": "Personel Hesabı Ekle",
+      "title_edit": "Personel Bilgilerini Düzenle",
+      "label_name": "Personel Adı",
+      "label_username": "Kullanıcı Adı",
+      "label_password_add": "Varsayılan Şifre",
+      "label_password_edit": "Şifreyi Değiştir (aynı kalsın istiyorsanız boş bırakın)",
+      "placeholder_name": "Örn: Ahmet Yılmaz",
+      "placeholder_username": "Örn: ahmet_pos",
+      "placeholder_password_add": "Şifre girin",
+      "placeholder_password_edit": "Yeni şifre girin",
+      "label_role": "Rol Seviyesi",
+      "role_immutable": "{{role}} (Değiştirilemez)"
+    },
+    "alerts": {
+      "reset_confirm": "'{{name}}' kullanıcısının şifresini Aa1357 olarak sıfırlamak istediğinizden emin misiniz?",
+      "reset_success": "Şifre Aa1357 olarak sıfırlandı",
+      "reset_fail": "Sıfırlama başarısız",
+      "update_status_fail": "Durum güncelleme başarısız",
+      "action_fail": "İşlem başarısız"
+    }
+  },
+  "staff_reports": {
+    "title": "Personel Performans Raporu",
+    "today_overview": "Bugüne Genel Bakış",
+    "no_data": "Henüz veri oluşturulmadı",
+    "stats": {
+      "total_revenue": "Toplam Satış Geliri",
+      "total_orders": "Toplam Sipariş"
+    },
+    "table": {
+      "title": "Personel Satış Sıralaması",
+      "staff_name": "Personel Adı",
+      "order_count": "Sipariş Sayısı",
+      "revenue": "Toplam Satış",
+      "avg_order_value": "Ortalama Sipariş Değeri",
+      "order_unit": "sip.",
+      "empty": "Personel satış verisi bulunamadı",
+      "fallback_name": "Personel {{index}}"
+    }
+  },
+  "suppliers": {
+    "title": "Tedarikçi Yönetimi",
+    "add_btn": "Tedarikçi Ekle",
+    "search_placeholder": "Tedarikçi adı ara...",
+    "empty_state": "Tedarikçi verisi bulunamadı",
+    "card": {
+      "contact_person": "İlgili Kişi",
+      "not_available": "Mevcut değil"
+    },
+    "modal": {
+      "title_add": "Tedarikçi Ekle",
+      "title_edit": "Tedarikçiyi Düzenle",
+      "label_name": "Tedarikçi Adı",
+      "label_contact": "İletişim Kişisi",
+      "label_phone": "Telefon",
+      "label_email": "E-posta",
+      "label_address": "Adres"
+    },
+    "alerts": {
+      "delete_confirm": "Bu tedarikçiyi silmek istiyor musunuz?",
+      "delete_fail": "Silme işlemi başarısız",
+      "action_fail": "İşlem hatası: {{msg}}"
+    }
+  },
+  "timecards": {
+    "title": "Zaman Çizelgesi Yönetimi",
+    "status": {
+      "working": "Şu an görevde",
+      "off_duty": "Şu an görevde değil",
+      "clock_in_time": "Giriş saati: {{time}}",
+      "in_progress": "Devam ediyor..."
+    },
+    "buttons": {
+      "clock_in": "Mesaiyi Başlat",
+      "clock_out": "Mesaiyi Bitir"
+    },
+    "history": {
+      "title": "Mesai Geçmişi",
+      "table": {
+        "date": "Tarih",
+        "clock_in": "Giriş",
+        "clock_out": "Çıkış",
+        "total_hours": "Toplam Süre (Saat)"
+      }
+    },
+    "alerts": {
+      "action_fail": "İşlem başarısız"
+    }
+  },
+  "discounts": {
+    "title": "İndirim Yönetimi",
+    "add_btn": "İndirim Ekle",
+    "empty_state": "Hiç indirim oluşturulmadı",
+    "types": {
+      "percentage": "Yüzde (%)",
+      "fixed": "Sabit Tutar ({{currency}})",
+      "desc_percentage": "%{{value}} indirim",
+      "desc_fixed": "-{{currency}}{{value}} sabit indirim"
+    },
+    "modal": {
+      "title": "İndirim Ekle",
+      "label_name": "İndirim Adı",
+      "label_type": "Tür",
+      "label_value": "Değer",
+      "placeholder_name": "Örn: Hafta Sonu Özel",
+      "placeholder_value": "Örn: 10"
+    },
+    "alerts": {
+      "delete_confirm": "Bu indirimi silmek istiyor musunuz?",
+      "delete_fail": "Silme işlemi başarısız",
+      "add_fail": "Ekleme başarısız: {{msg}}"
+    }
+  },
+  "inventory": {
+    "title": "Stok Sayımı ve Düzenlemeleri",
+    "add_adjustment": "Düzenleme Ekle",
+    "search_placeholder": "Stok kontrolü için ürün ara...",
+    "table": {
+      "product_name": "Ürün Adı",
+      "sku": "SKU",
+      "current_stock": "Mevcut Stok",
+      "unit": "Birim"
+    },
+    "modal": {
+      "title": "Stok Düzenlemesi Ekle",
+      "product": "Ürün",
+      "select_product": "Ürün Seç",
+      "variant": "Varyant",
+      "select_variant": "Varyant Seç",
+      "stock_display": " (Stok: {{stock}})",
+      "qty_label": "Düzenleme miktarı (artırmak için pozitif, azaltmak için negatif)",
+      "reason": "Neden",
+      "note": "Not",
+      "submit": "Düzenlemeyi Onayla"
+    },
+    "reasons": {
+      "correction": "Denetim Düzeltmesi",
+      "damage": "Hasar / Bozulma",
+      "received": "Mal Kabulü",
+      "inventory_count": "Envanter Sayımı",
+      "other": "Diğer"
+    },
+    "units": {
+      "kg": "kg",
+      "pcs": "adet"
+    },
+    "alerts": {
+      "adjust_fail": "Düzenleme başarısız"
+    }
+  },
+  "dashboard": {
+    "title": "Operasyonel Özet",
+    "total_tenants": "Toplam Tenant",
+    "active_tenants": "Aktif Tenantlar",
+    "total_products": "Sistemdeki Ürünler",
+    "archive_progress": "Arşiv İlerlemesi",
+    "managed_tenants": "Yönetilen Tenantlar",
+    "managed_accounts": "Yönetilen Hesaplar",
+    "est_inventory_value": "Tahmini Stok Değeri",
+    "managed_product_count": "Yönetilen Ürün Sayısı",
+    "today_sales": "Bugünkü Satışlar",
+    "inventory_total_value": "Toplam Envanter Değeri",
+    "stock_count": "Stok Adedi",
+    "current_user": "Mevcut Kullanıcı",
+    "sales_trend": "Satış Trendi",
+    "popular_products": "Popüler Ürünler",
+    "no_popular_products": "Popüler ürün verisi yok",
+    "sold": "Satıldı"
+  },
+  "nav": {
+    "overview": "Genel Bakış",
+    "pos": "Satış Noktası (POS)",
+    "product_mgmt": "Ürün Yönetimi",
+    "inventory_count": "Stok Denetimi",
+    "purchase_order": "Satın Alma ve Stok",
+    "suppliers": "Tedarikçiler",
+    "discount_mgmt": "İndirim Yönetimi",
+    "order_mgmt": "Sipariş Yönetimi",
+    "revenue_report": "Operasyonel Raporlar",
+    "customer_data": "Müşteri Verileri",
+    "staff_mgmt": "Personel Yönetimi",
+    "attendance": "Zaman Takibi",
+    "staff_performance": "Performans Yönetimi",
+    "system_settings": "Sistem Ayarları",
+    "api_integration": "API ve Entegrasyon"
+  }
 }

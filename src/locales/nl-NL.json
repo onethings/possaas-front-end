@@ -5,17 +5,467 @@
     "email": "E-mailadres",
     "password": "Wachtwoord",
     "companyId": "Bedrijfs-ID",
-    "submit": "Systeem Inloggen",
-    "errorDefault": "Inloggen mislukt, controleer uw inloggegevens"
+    "submit": "Inloggen",
+    "errorDefault": "Inloggen mislukt. Controleer uw account, wachtwoord of bedrijfs-ID."
   },
-  "customer_management": "Klantenbeheer",
-  "add_customer": "Klant toevoegen",
-  "search_placeholder_name_phone": "Zoek naam of telefoon...",
-  "delete_selected_confirm": "Bevestig verwijderen van {{count}} geselecteerde klanten?",
-  "sales_trend": "Verkoop趋势",
+  "customer_management": "Klantgegevensbeheer",
+  "add_customer": "Klant Toevoegen",
+  "search_placeholder_name_phone": "Zoek klant op naam of telefoon...",
+  "delete_selected_confirm": "Weet u zeker dat u de {{count}} geselecteerde klanten wilt verwijderen?",
+  "sales_trend": "Verkooptrend",
   "status_paid": "Betaald",
   "status_pending": "In afwachting",
   "checkout_now": "Nu afrekenen",
   "reason_correction": "Voorraadcorrectie",
-  "multi_variants": "Meerdere varianten"
+  "multi_variants": "Multi-varianten",
+  "common": {
+    "loading": "Gegevens laden...",
+    "retry": "Opnieuw proberen",
+    "error_load_data": "Gegevens laden mislukt",
+    "last_update": "Laatst bijgewerkt",
+    "no_data_today": "Geen gegevens beschikbaar voor vandaag",
+    "logout": "Uitloggen",
+    "search_placeholder": "Zoek bestellingen, producten...",
+    "sync_data": "Gegevens synchroniseren",
+    "results": "Resultaten",
+    "clear": "Wissen",
+    "delete": "Verwijderen",
+    "filter": "Filteren",
+    "actions": "Acties",
+    "reset": "Resetten",
+    "preview": "Voorbeeld",
+    "cancel": "Annuleren",
+    "confirm_update": "Update bevestigen",
+    "confirm_add": "Toevoegen bevestigen",
+    "unknown": "Onbekend"
+  },
+  "pos": {
+    "search_placeholder": "Zoek product of scan barcode...",
+    "category_all": "Alle",
+    "multi_variants": "Multi-varianten",
+    "cart": "Winkelwagen",
+    "cart_empty": "Nog geen items toegevoegd",
+    "search_customer": "Zoek klantnaam...",
+    "select_customer": "Klant Selecteren",
+    "select_discount": "Korting Selecteren",
+    "checkout_date": "Afrekendatum",
+    "subtotal": "Subtotaal",
+    "discount": "Korting",
+    "tax_amount": "BTW-bedrag",
+    "total": "Totaal",
+    "hold_order": "Bestelling parkeren",
+    "checkout_now": "Nu betalen",
+    "checkout_success": "Betaling geslaagd",
+    "order_created_msg": "Bestelling aangemaakt en voorraad bijgewerkt",
+    "error_no_store_id": "Kan winkel-ID niet ophalen. Vernieuw de pagina.",
+    "checkout_failed": "Betaling mislukt"
+  },
+  "products": {
+    "title": "Productcatalogus",
+    "import_csv": "CSV Importeren",
+    "export_csv": "CSV Exporteren",
+    "add_product": "Product Toevoegen",
+    "edit_product": "Product Bewerken",
+    "search_placeholder": "Zoek naam of SKU...",
+    "no_products_msg": "Voeg eerst producten toe",
+    "add_now": "Nu toevoegen",
+    "sku_barcode": "SKU / Barcode",
+    "product_name": "Productnaam",
+    "price": "Prijs",
+    "stock": "Voorraad",
+    "category": "Categorie",
+    "no_match_msg": "Geen overeenkomende producten",
+    "units": "stuks",
+    "uncategorized": "Niet gecategoriseerd",
+    "product_image": "Productafbeelding (Voorbeeld voor herstel)",
+    "select_category": "Selecteer categorie",
+    "add_category": "Categorie Toevoegen",
+    "category_name": "Categorienaam",
+    "category_placeholder": "Bijv: Dranken, Desserts",
+    "color_tag": "Kleurlabel",
+    "sold_by": "Verkoopeenheid",
+    "sold_each": "Verkoop per stuk",
+    "sold_weight": "Verkoop op gewicht",
+    "repair_price": "Reparatieprijs (Optioneel)",
+    "has_variants_msg": "Dit product heeft meerdere varianten (bijv: maat, kleur)",
+    "variants": "Productvarianten",
+    "add_variant": "Variant Toevoegen",
+    "variant_name": "Variantnaam",
+    "name_placeholder": "Bijv: Klassieke Americano",
+    "import": {
+      "title": "Producten importeren uit CSV",
+      "select_file": "Selecteer CSV-bestand",
+      "file_name": "Bestandsnaam:",
+      "file_size": "Bestandsgrootte:",
+      "format_requirement": "CSV-formaat vereisten:",
+      "required_columns": [
+        "SKU",
+        "Productnaam",
+        "Prijs",
+        "Inkoopprijs",
+        "Voorraad",
+        "Categorie",
+        "Beschrijving",
+        "Barcode",
+        "Verkoopeenheid"
+      ],
+      "submit": "Import Bevestigen"
+    },
+    "update_failed": "Update mislukt",
+    "add_failed": "Toevoegen mislukt",
+    "image_upload_failed": "Uploaden afbeelding mislukt",
+    "add_category_failed": "Categorie toevoegen mislukt",
+    "delete_failed": "Verwijderen mislukt",
+    "export_failed": "Exporteren mislukt",
+    "import_failed": "Importeren mislukt",
+    "select_csv_msg": "Selecteer een CSV-bestand",
+    "delete_selected_confirm": "Weet u zeker dat u de {{count}} geselecteerde producten wilt verwijderen?"
+  },
+  "purchase_orders": {
+    "add_failed": "Toevoegen mislukt",
+    "confirm_receive": "Ontvangst van goederen bevestigen? Dit werkt de voorraad van de producten bij.",
+    "receive_failed": "Ontvangst mislukt",
+    "status_received": "Ontvangen",
+    "status_ordered": "Besteld",
+    "status_cancelled": "Geannuleerd",
+    "status_draft": "Concept",
+    "title": "Inkooporders (PO)",
+    "add": "Nieuwe PO Toevoegen",
+    "order_no": "Ordernr.",
+    "suppliers": "Leveranciers",
+    "amount": "Bedrag",
+    "status": "Status",
+    "date": "Datum",
+    "actions": "Acties",
+    "receive": "Voorraad Ontvangen",
+    "select_supplier": "Selecteer leverancier",
+    "items": "Productdetails",
+    "select_product": "Selecteer Product",
+    "add_product": "Product Toevoegen (Nieuw venster)",
+    "quantity": "Aantal",
+    "cost_price": "Inkoopprijs",
+    "add_item": "Item Toevoegen",
+    "create_draft": "Concept Aanmaken"
+  },
+  "register": {
+    "title": "Begin uw reis met <1>POS SaaS</1>",
+    "subtitle": "Registreer uw bedrijfsaccount om aan de slag te gaan",
+    "company_name": "Bedrijfsnaam",
+    "company_name_placeholder": "Bijv: De Groot Retail Groep",
+    "tenant_id": "Bedrijfs-ID (Tenant ID)",
+    "tenant_id_placeholder": "Bijv: superstore-01 (Unieke identificatie)",
+    "admin_email": "Admin E-mail",
+    "admin_email_placeholder": "admin@voorbeeld.nl",
+    "password": "Wachtwoord Instellen",
+    "confirm_password": "Wachtwoord Bevestigen",
+    "password_placeholder": "••••••••",
+    "submit": "Nu Registreren",
+    "has_account": "Heeft u al een account?",
+    "login_now": "Hier inloggen",
+    "success_title": "Registratie Geslaagd!",
+    "success_msg": "Uw bedrijfsaccount is aangemaakt. U wordt doorgeleid naar de login...",
+    "goto_login": "Ga naar Inloggen",
+    "error_password_mismatch": "Wachtwoorden komen niet overeen",
+    "error_default": "Registratie mislukt, probeer het opnieuw"
+  },
+  "reports": {
+    "revenue_title": "Operationele Rapporten",
+    "date_start": "Begindatum",
+    "date_end": "Einddatum",
+    "presets": {
+      "today": "Vandaag",
+      "yesterday": "Gisteren",
+      "thisWeek": "Deze week",
+      "thisMonth": "Deze maand",
+      "lastMonth": "Vorige maand",
+      "last7": "Laatste 7 dagen",
+      "last30": "Laatste 30 dagen"
+    },
+    "metrics": {
+      "total_revenue": "Totale Omzet",
+      "gross_profit": "Brutowinst",
+      "discounts": "Verleende Kortingen",
+      "expenditure": "Winkeluitgaven"
+    },
+    "charts": {
+      "trend_title": "Verkoopvoorspelling & Trends",
+      "category_pie": "Omzetaandeel per Categorie",
+      "revenue": "Omzet",
+      "profit": "Winst"
+    },
+    "tabs": {
+      "daily_detail": "Dagelijkse Inkomsten/Uitgaven Details",
+      "hot_products": "Bestverkochte Producten",
+      "category_analysis": "Categorie Data-analyse"
+    },
+    "table": {
+      "date": "Datum",
+      "net_sales": "Netto Omzet",
+      "cost": "Inkoopwaarde (COGS)",
+      "profit": "Brutowinst",
+      "expenses": "Uitgaven",
+      "margin": "Marge",
+      "product_name": "Productnaam",
+      "qty_sold": "Aantal Verkocht",
+      "total_sales": "Totale Verkoop",
+      "performance": "Prestaties",
+      "category_name": "Categorienaam",
+      "total_items": "Totaal Items",
+      "share": "Aandeel",
+      "total": "Totaal",
+      "unknown_product": "Onbekend Product",
+      "uncategorized": "Niet gecategoriseerd"
+    },
+    "export": {
+      "button": "Exporteer {{type}} Rapport",
+      "type_detail": "Details",
+      "type_product": "Product",
+      "type_category": "Categorie"
+    },
+    "errors": {
+      "load_fail": "Laden rapportgegevens mislukt",
+      "connection_fail": "Verbindingsfout"
+    }
+  },
+  "settings": {
+    "title": "Systeeminstellingen",
+    "subtitle": "Beheer uw winkelregels en loyaliteitsprogramma",
+    "tabs": {
+      "general": "Algemene Instellingen",
+      "loyalty": "Loyaliteitsprogramma",
+      "tax": "Belastinginstellingen",
+      "security": "Beveiliging & Rechten"
+    },
+    "loyalty": {
+      "title": "Loyaliteitsprogramma",
+      "enable_points": "Spaarpunten Inschakelen",
+      "enable_desc": "Klanten verdienen punten op basis van hun aankoopbedrag",
+      "rate_label": "Beloningspercentage (Hoeveel besteden voor 1 punt)"
+    },
+    "tax": {
+      "title": "Belastingconfiguratie",
+      "rate_label": "Standaard Belastingtarief (%)"
+    },
+    "regional": {
+      "title": "Regio & Valuta",
+      "currency_label": "Valutasymbool",
+      "timezone_label": "Tijdzone"
+    },
+    "save_btn": "Wijzigingen Opslaan",
+    "save_success": "Instellingen succesvol opgeslagen!",
+    "save_fail": "Opslaan mislukt"
+  },
+  "staff": {
+    "title": "Personeelsbeheer",
+    "add_staff": "Medewerker Toevoegen",
+    "search_placeholder": "Zoek op naam of account...",
+    "no_data": "Geen personeelsgegevens beschikbaar",
+    "table": {
+      "name": "Naam",
+      "account": "Login Account",
+      "role": "Rol",
+      "status": "Status",
+      "joined_at": "In dienst sinds",
+      "actions": "Acties"
+    },
+    "status": {
+      "active": "Actief",
+      "disabled": "Uitgeschakeld"
+    },
+    "roles": {
+      "level_1": "Systeem Superadmin",
+      "level_2": "Regionaal Agent",
+      "level_3": "Distributeur",
+      "level_4": "Winkelmanager",
+      "level_5": "Kassier",
+      "level_6": "Voorraadbeheerder",
+      "default": "Algemeen Medewerker"
+    },
+    "modal": {
+      "title_add": "Medewerkersaccount Toevoegen",
+      "title_edit": "Medewerkersinfo Bewerken",
+      "label_name": "Naam Medewerker",
+      "label_username": "Gebruikersnaam",
+      "label_password_add": "Standaardwachtwoord",
+      "label_password_edit": "Wachtwoord Wijzigen (leeg laten voor geen wijziging)",
+      "placeholder_name": "Bijv: Jan Janssen",
+      "placeholder_username": "Bijv: jan_pos",
+      "placeholder_password_add": "Voer wachtwoord in",
+      "placeholder_password_edit": "Voer nieuw wachtwoord in",
+      "label_role": "Rolniveau",
+      "role_immutable": "{{role}} (Niet wijzigbaar)"
+    },
+    "alerts": {
+      "reset_confirm": "Weet u zeker dat u het wachtwoord van '{{name}}' wilt resetten naar Aa1357?",
+      "reset_success": "Wachtwoord gereset naar Aa1357",
+      "reset_fail": "Reset mislukt",
+      "update_status_fail": "Status update mislukt",
+      "action_fail": "Actie mislukt"
+    }
+  },
+  "staff_reports": {
+    "title": "Personeelsprestatie Rapport",
+    "today_overview": "Overzicht van Vandaag",
+    "no_data": "Nog geen gegevens gegenereerd",
+    "stats": {
+      "total_revenue": "Totale Verkoopopbrengst",
+      "total_orders": "Totaal Aantal Bestellingen"
+    },
+    "table": {
+      "title": "Verkoopranglijst Personeel",
+      "staff_name": "Naam Medewerker",
+      "order_count": "Aantal Bestellingen",
+      "revenue": "Totale Verkoop",
+      "avg_order_value": "Gemiddelde Bestelwaarde",
+      "order_unit": "best.",
+      "empty": "Geen verkoopgegevens van personeel beschikbaar",
+      "fallback_name": "Medewerker {{index}}"
+    }
+  },
+  "suppliers": {
+    "title": "Leveranciersbeheer",
+    "add_btn": "Leverancier Toevoegen",
+    "search_placeholder": "Zoek leveranciersnaam...",
+    "empty_state": "Geen leveranciersgegevens beschikbaar",
+    "card": {
+      "contact_person": "Contactpersoon",
+      "not_available": "Niet beschikbaar"
+    },
+    "modal": {
+      "title_add": "Leverancier Toevoegen",
+      "title_edit": "Leverancier Bewerken",
+      "label_name": "Naam Leverancier",
+      "label_contact": "Contactpersoon",
+      "label_phone": "Telefoon",
+      "label_email": "E-mail",
+      "label_address": "Adres"
+    },
+    "alerts": {
+      "delete_confirm": "Deze leverancier verwijderen?",
+      "delete_fail": "Verwijderen mislukt",
+      "action_fail": "Actie mislukt: {{msg}}"
+    }
+  },
+  "timecards": {
+    "title": "Aanwezigheidsbeheer",
+    "status": {
+      "working": "Momenteel aan het werk",
+      "off_duty": "Momenteel niet aan het werk",
+      "clock_in_time": "Inkloktijd: {{time}}",
+      "in_progress": "Bezig..."
+    },
+    "buttons": {
+      "clock_in": "Inklokken",
+      "clock_out": "Uitklokken"
+    },
+    "history": {
+      "title": "Aanwezigheidshistorie",
+      "table": {
+        "date": "Datum",
+        "clock_in": "Ingeklokt",
+        "clock_out": "Uitgeklokt",
+        "total_hours": "Totaal Uren (u)"
+      }
+    },
+    "alerts": {
+      "action_fail": "Actie mislukt"
+    }
+  },
+  "discounts": {
+    "title": "Kortingsbeheer",
+    "add_btn": "Korting Toevoegen",
+    "empty_state": "Nog geen kortingen aangemaakt",
+    "types": {
+      "percentage": "Percentage (%)",
+      "fixed": "Vast Bedrag ({{currency}})",
+      "desc_percentage": "{{value}}% korting",
+      "desc_fixed": "Vaste korting -{{currency}}{{value}}"
+    },
+    "modal": {
+      "title": "Korting Toevoegen",
+      "label_name": "Naam",
+      "label_type": "Type",
+      "label_value": "Waarde",
+      "placeholder_name": "Bijv: Weekend Special",
+      "placeholder_value": "Bijv: 10"
+    },
+    "alerts": {
+      "delete_confirm": "Deze korting verwijderen?",
+      "delete_fail": "Verwijderen mislukt",
+      "add_fail": "Toevoegen mislukt: {{msg}}"
+    }
+  },
+  "inventory": {
+    "title": "Voorraadaudit & Correcties",
+    "add_adjustment": "Correctie Toevoegen",
+    "search_placeholder": "Zoek product voor voorraadcheck...",
+    "table": {
+      "product_name": "Productnaam",
+      "sku": "SKU",
+      "current_stock": "Huidige Voorraad",
+      "unit": "Eenheid"
+    },
+    "modal": {
+      "title": "Voorraadcorrectie Toevoegen",
+      "product": "Product",
+      "select_product": "Selecteer Product",
+      "variant": "Variant",
+      "select_variant": "Selecteer Variant",
+      "stock_display": " (Voorraad: {{stock}})",
+      "qty_label": "Correctie aantal (positief verhoogt, negatief verlaagt)",
+      "reason": "Reden",
+      "note": "Opmerking",
+      "submit": "Correctie Bevestigen"
+    },
+    "reasons": {
+      "correction": "Auditcorrectie",
+      "damage": "Beschadiging / Bedorven",
+      "received": "Goederen Ontvangen",
+      "inventory_count": "Voorraadtelling",
+      "other": "Overig"
+    },
+    "units": {
+      "kg": "kg",
+      "pcs": "stuks"
+    },
+    "alerts": {
+      "adjust_fail": "Correctie mislukt"
+    }
+  },
+  "dashboard": {
+    "title": "Operationeel Overzicht",
+    "total_tenants": "Totaal Tenants",
+    "active_tenants": "Actieve Tenants",
+    "total_products": "Systeemproducten",
+    "archive_progress": "Archiefvoortgang",
+    "managed_tenants": "Beheerde Tenants",
+    "managed_accounts": "Beheerde Accounts",
+    "est_inventory_value": "Geschatte Voorraadwaarde",
+    "managed_product_count": "Aantal Beheerde Producten",
+    "today_sales": "Verkoop Vandaag",
+    "inventory_total_value": "Totale Voorraadwaarde",
+    "stock_count": "Aantal op Voorraad",
+    "current_user": "Huidige Gebruiker",
+    "sales_trend": "Verkooptrend",
+    "popular_products": "Populaire Producten",
+    "no_popular_products": "Geen gegevens voor populaire producten",
+    "sold": "Verkocht"
+  },
+  "nav": {
+    "overview": "Overzicht",
+    "pos": "Kassa (POS)",
+    "product_mgmt": "Productbeheer",
+    "inventory_count": "Voorraadaudit",
+    "purchase_order": "Inkoop & Voorraad",
+    "suppliers": "Leveranciers",
+    "discount_mgmt": "Kortingsbeheer",
+    "order_mgmt": "Bestellingsbeheer",
+    "revenue_report": "Operationele Rapporten",
+    "customer_data": "Klantgegevens",
+    "staff_mgmt": "Personeelsbeheer",
+    "attendance": "Aanwezigheid Registreren",
+    "staff_performance": "Prestaties",
+    "system_settings": "Systeeminstellingen",
+    "api_integration": "API & Integratie"
+  }
 }

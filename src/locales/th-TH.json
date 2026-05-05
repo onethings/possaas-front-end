@@ -1,21 +1,471 @@
 {
   "login": {
     "welcome": "ยินดีต้อนรับกลับมา",
-    "subtitle": "เข้าสู่ระบบแผงควบคุมผู้ดูแลระบบของคุณเพื่อดำเนินการต่อ",
+    "subtitle": "กรุณาเข้าสู่ระบบแผงควบคุมผู้ดูแลระบบเพื่อดำเนินการต่อ",
     "email": "ที่อยู่อีเมล",
     "password": "รหัสผ่าน",
-    "companyId": "รหัสบริษัท",
+    "companyId": "ไอดีบริษัท (Company ID)",
     "submit": "เข้าสู่ระบบ",
-    "errorDefault": "การเข้าสู่ระบบล้มเหลว โปรดตรวจสอบข้อมูลประจำตัวของคุณ"
+    "errorDefault": "การเข้าสู่ระบบล้มเหลว กรุณาตรวจสอบบัญชี รหัสผ่าน หรือไอดีบริษัทของคุณ"
   },
-  "customer_management": "การจัดการลูกค้า",
+  "customer_management": "การจัดการข้อมูลลูกค้า",
   "add_customer": "เพิ่มลูกค้า",
-  "search_placeholder_name_phone": "ค้นหาชื่อหรือโทรศัพท์...",
-  "delete_selected_confirm": "ยืนยันการลบลูกค้า {{count}} รายที่เลือก?",
+  "search_placeholder_name_phone": "ค้นหาชื่อลูกค้าหรือเบอร์โทรศัพท์...",
+  "delete_selected_confirm": "คุณแน่ใจหรือไม่ว่าต้องการลบลูกค้าที่เลือกจำนวน {{count}} ราย?",
   "sales_trend": "แนวโน้มยอดขาย",
-  "status_paid": "จ่ายแล้ว",
+  "status_paid": "ชำระเงินแล้ว",
   "status_pending": "รอดำเนินการ",
   "checkout_now": "ชำระเงินทันที",
-  "reason_correction": "การแก้ไขสต็อก",
-  "multi_variants": "หลายรูปแบบ"
+  "reason_correction": "การปรับปรุงสต็อก",
+  "multi_variants": "มีหลายตัวเลือก",
+  "common": {
+    "loading": "กำลังโหลดข้อมูล...",
+    "retry": "ลองใหม่",
+    "error_load_data": "ไม่สามารถโหลดข้อมูลได้",
+    "last_update": "อัปเดตล่าสุดเมื่อ",
+    "no_data_today": "ไม่มีข้อมูลสำหรับวันนี้",
+    "logout": "ออกจากระบบ",
+    "search_placeholder": "ค้นหาคำสั่งซื้อ, สินค้า...",
+    "sync_data": "ซิงค์ข้อมูล",
+    "results": "ผลลัพธ์",
+    "clear": "ล้างค่า",
+    "delete": "ลบ",
+    "filter": "ตัวกรอง",
+    "actions": "ดำเนินการ",
+    "reset": "รีเซ็ต",
+    "preview": "ตัวอย่าง",
+    "cancel": "ยกเลิก",
+    "confirm_update": "ยืนยันการอัปเดต",
+    "confirm_add": "ยืนยันการเพิ่ม",
+    "unknown": "ไม่ทราบข้อมูล"
+  },
+  "pos": {
+    "search_placeholder": "ค้นหาสินค้าหรือสแกนบาร์โค้ด...",
+    "category_all": "ทั้งหมด",
+    "multi_variants": "มีหลายตัวเลือก",
+    "cart": "รถเข็น",
+    "cart_empty": "ยังไม่มีสินค้าในรถเข็น",
+    "search_customer": "ค้นหาชื่อลูกค้า...",
+    "select_customer": "เลือกลูกค้า",
+    "select_discount": "เลือกส่วนลด",
+    "checkout_date": "วันที่ชำระเงิน",
+    "subtotal": "ยอดรวมย่อย",
+    "discount": "ส่วนลด",
+    "tax_amount": "ภาษี",
+    "total": "ยอดรวมทั้งสิ้น",
+    "hold_order": "พักการขาย",
+    "checkout_now": "ชำระเงิน",
+    "checkout_success": "ชำระเงินสำเร็จ",
+    "order_created_msg": "สร้างคำสั่งซื้อและอัปเดตสต็อกเรียบร้อยแล้ว",
+    "error_no_store_id": "ไม่พบไอดีร้านค้า กรุณารีเฟรชหน้าเว็บ",
+    "checkout_failed": "การชำระเงินล้มเหลว"
+  },
+  "products": {
+    "title": "แคตตาล็อกสินค้า",
+    "import_csv": "นำเข้า CSV",
+    "export_csv": "ส่งออก CSV",
+    "add_product": "เพิ่มสินค้า",
+    "edit_product": "แก้ไขสินค้า",
+    "search_placeholder": "ค้นหาชื่อหรือ SKU...",
+    "no_products_msg": "กรุณาเพิ่มสินค้าก่อนใช้งาน",
+    "add_now": "เพิ่มตอนนี้",
+    "sku_barcode": "SKU / บาร์โค้ด",
+    "product_name": "ชื่อสินค้า",
+    "price": "ราคา",
+    "stock": "สต็อก",
+    "category": "หมวดหมู่",
+    "no_match_msg": "ไม่พบสินค้าที่ตรงกัน",
+    "units": "หน่วย",
+    "uncategorized": "ไม่มีหมวดหมู่",
+    "product_image": "รูปภาพสินค้า (ตัวอย่างสำหรับการกู้คืน)",
+    "select_category": "เลือกหมวดหมู่",
+    "add_category": "เพิ่มหมวดหมู่",
+    "category_name": "ชื่อหมวดหมู่",
+    "category_placeholder": "เช่น เครื่องดื่ม, ของหวาน",
+    "color_tag": "แท็กสี",
+    "sold_by": "หน่วยการขาย",
+    "sold_each": "ขายเป็นชิ้น",
+    "sold_weight": "ขายตามน้ำหนัก",
+    "repair_price": "ค่าซ่อม (ถ้ามี)",
+    "has_variants_msg": "สินค้านี้มีหลายตัวเลือก (เช่น ขนาด, สี)",
+    "variants": "ตัวเลือกสินค้า",
+    "add_variant": "เพิ่มตัวเลือก",
+    "variant_name": "ชื่อตัวเลือก",
+    "name_placeholder": "เช่น อเมริกาโน่คลาสสิก",
+    "import": {
+      "title": "นำเข้าสินค้าจาก CSV",
+      "select_file": "เลือกไฟล์ CSV",
+      "file_name": "ชื่อไฟล์:",
+      "file_size": "ขนาดไฟล์:",
+      "format_requirement": "ข้อกำหนดรูปแบบ CSV:",
+      "required_columns": [
+        "SKU",
+        "ชื่อสินค้า",
+        "ราคา",
+        "ต้นทุน",
+        "สต็อก",
+        "หมวดหมู่",
+        "คำอธิบาย",
+        "บาร์โค้ด",
+        "หน่วยการขาย"
+      ],
+      "submit": "ยืนยันการนำเข้า"
+    },
+    "update_failed": "การอัปเดตล้มเหลว",
+    "add_failed": "การเพิ่มล้มเหลว",
+    "image_upload_failed": "การอัปโหลดรูปภาพล้มเหลว",
+    "add_category_failed": "การเพิ่มหมวดหมู่ล้มเหลว",
+    "delete_failed": "การลบล้มเหลว",
+    "export_failed": "การส่งออกล้มเหลว",
+    "import_failed": "การนำเข้านำล้มเหลว",
+    "select_csv_msg": "กรุณาเลือกไฟล์ CSV",
+    "delete_selected_confirm": "คุณแน่ใจหรือไม่ว่าต้องการลบสินค้าที่เลือกจำนวน {{count}} ชิ้น?"
+  },
+  "purchase_orders": {
+    "add_failed": "การเพิ่มล้มเหลว",
+    "confirm_receive": "ยืนยันการรับสินค้าหรือไม่? การดำเนินการนี้จะอัปเดตสต็อกสินค้าที่เกี่ยวข้อง",
+    "receive_failed": "การรับสินค้าล้มเหลว",
+    "status_received": "รับสินค้าแล้ว",
+    "status_ordered": "สั่งซื้อแล้ว",
+    "status_cancelled": "ยกเลิกแล้ว",
+    "status_draft": "ฉบับร่าง",
+    "title": "ใบสั่งซื้อ (PO)",
+    "add": "เพิ่มใบสั่งซื้อใหม่",
+    "order_no": "เลขที่สั่งซื้อ",
+    "suppliers": "ซัพพลายเออร์",
+    "amount": "ยอดเงิน",
+    "status": "สถานะ",
+    "date": "วันที่",
+    "actions": "ดำเนินการ",
+    "receive": "รับสินค้าเข้าสต็อก",
+    "select_supplier": "เลือกซัพพลายเออร์",
+    "items": "รายละเอียดสินค้า",
+    "select_product": "เลือกสินค้า",
+    "add_product": "เพิ่มสินค้า (หน้าต่างใหม่)",
+    "quantity": "จำนวน",
+    "cost_price": "ราคาทุน",
+    "add_item": "เพิ่มรายการ",
+    "create_draft": "สร้างฉบับร่าง"
+  },
+  "register": {
+    "title": "เริ่มต้นเส้นทางของคุณกับ <1>POS SaaS</1>",
+    "subtitle": "ลงทะเบียนบัญชีบริษัทของคุณเพื่อเริ่มต้นใช้งาน",
+    "company_name": "ชื่อบริษัท",
+    "company_name_placeholder": "เช่น บริษัท ตัวอย่าง รีเทล จำกัด",
+    "tenant_id": "ไอดีบริษัท (Tenant ID)",
+    "tenant_id_placeholder": "เช่น superstore-01 (รหัสเฉพาะ)",
+    "admin_email": "อีเมลผู้ดูแลระบบ",
+    "admin_email_placeholder": "admin@example.com",
+    "password": "ตั้งรหัสผ่าน",
+    "confirm_password": "ยืนยันรหัสผ่าน",
+    "password_placeholder": "••••••••",
+    "submit": "ลงทะเบียนตอนนี้",
+    "has_account": "มีบัญชีอยู่แล้วใช่หรือไม่?",
+    "login_now": "เข้าสู่ระบบที่นี่",
+    "success_title": "ลงทะเบียนสำเร็จ!",
+    "success_msg": "สร้างบัญชีบริษัทของคุณเรียบร้อยแล้ว กำลังนำคุณไปยังหน้าเข้าสู่ระบบ...",
+    "goto_login": "ไปยังหน้าเข้าสู่ระบบ",
+    "error_password_mismatch": "รหัสผ่านไม่ตรงกัน",
+    "error_default": "การลงทะเบียนล้มเหลว กรุณาลองใหม่อีกครั้ง"
+  },
+  "reports": {
+    "revenue_title": "รายงานการดำเนินงาน",
+    "date_start": "วันที่เริ่มต้น",
+    "date_end": "วันที่สิ้นสุด",
+    "presets": {
+      "today": "วันนี้",
+      "yesterday": "เมื่อวาน",
+      "thisWeek": "สัปดาห์นี้",
+      "thisMonth": "เดือนนี้",
+      "lastMonth": "เดือนที่แล้ว",
+      "last7": "7 วันล่าสุด",
+      "last30": "30 วันล่าสุด"
+    },
+    "metrics": {
+      "total_revenue": "รายได้รวม",
+      "gross_profit": "กำไรขั้นต้น",
+      "discounts": "ส่วนลดที่ให้",
+      "expenditure": "ค่าใช้จ่ายร้านค้า"
+    },
+    "charts": {
+      "trend_title": "การพยากรณ์และแนวโน้มยอดขาย",
+      "category_pie": "สัดส่วนรายได้ตามหมวดหมู่",
+      "revenue": "รายได้",
+      "profit": "กำไร"
+    },
+    "tabs": {
+      "daily_detail": "รายละเอียดรายรับ/รายจ่ายรายวัน",
+      "hot_products": "สินค้าขายดี",
+      "category_analysis": "การวิเคราะห์ข้อมูลหมวดหมู่"
+    },
+    "table": {
+      "date": "วันที่",
+      "net_sales": "ยอดขายสุทธิ",
+      "cost": "ต้นทุนขาย (COGS)",
+      "profit": "กำไรขั้นต้น",
+      "expenses": "ค่าใช้จ่าย",
+      "margin": "อัตรากำไร",
+      "product_name": "ชื่อสินค้า",
+      "qty_sold": "จำนวนที่ขายได้",
+      "total_sales": "ยอดขายรวม",
+      "performance": "ผลการดำเนินงาน",
+      "category_name": "ชื่อหมวดหมู่",
+      "total_items": "รายการทั้งหมด",
+      "share": "ส่วนแบ่ง",
+      "total": "รวม",
+      "unknown_product": "ไม่พบสินค้า",
+      "uncategorized": "ไม่มีหมวดหมู่"
+    },
+    "export": {
+      "button": "ส่งออกรายงาน {{type}}",
+      "type_detail": "รายละเอียด",
+      "type_product": "สินค้า",
+      "type_category": "หมวดหมู่"
+    },
+    "errors": {
+      "load_fail": "ไม่สามารถโหลดข้อมูลรายงานได้",
+      "connection_fail": "การเชื่อมต่อล้มเหลว"
+    }
+  },
+  "settings": {
+    "title": "ตั้งค่าระบบ",
+    "subtitle": "จัดการกฎระเบียบของร้านค้าและโปรแกรมสมาชิก",
+    "tabs": {
+      "general": "ตั้งค่าทั่วไป",
+      "loyalty": "โปรแกรมสมาชิก",
+      "tax": "ตั้งค่าภาษี",
+      "security": "ความปลอดภัยและสิทธิ์"
+    },
+    "loyalty": {
+      "title": "โปรแกรมสมาชิก",
+      "enable_points": "เปิดใช้งานแต้มสะสม",
+      "enable_desc": "ลูกค้าจะได้รับแต้มตามยอดการสั่งซื้อ",
+      "rate_label": "อัตราการให้แต้ม (ยอดซื้อต่อ 1 แต้ม)"
+    },
+    "tax": {
+      "title": "การกำหนดค่าภาษี",
+      "rate_label": "อัตราภาษีมาตรฐาน (%)"
+    },
+    "regional": {
+      "title": "ภูมิภาคและสกุลเงิน",
+      "currency_label": "สัญลักษณ์สกุลเงิน",
+      "timezone_label": "เขตเวลา"
+    },
+    "save_btn": "บันทึกการเปลี่ยนแปลง",
+    "save_success": "บันทึกการตั้งค่าสำเร็จ!",
+    "save_fail": "การบันทึกล้มเหลว"
+  },
+  "staff": {
+    "title": "จัดการพนักงาน",
+    "add_staff": "เพิ่มพนักงาน",
+    "search_placeholder": "ค้นหาจากชื่อหรือบัญชี...",
+    "no_data": "ไม่มีข้อมูลพนักงาน",
+    "table": {
+      "name": "ชื่อ",
+      "account": "บัญชีเข้าใช้งาน",
+      "role": "ตำแหน่ง",
+      "status": "สถานะ",
+      "joined_at": "วันที่เริ่มงาน",
+      "actions": "ดำเนินการ"
+    },
+    "status": {
+      "active": "เปิดใช้งาน",
+      "disabled": "ปิดใช้งาน"
+    },
+    "roles": {
+      "level_1": "ผู้ดูแลระบบสูงสุด",
+      "level_2": "ตัวแทนระดับภูมิภาค",
+      "level_3": "ตัวแทนจำหน่าย",
+      "level_4": "ผู้จัดการร้าน",
+      "level_5": "พนักงานขาย (Cashier)",
+      "level_6": "ผู้ดูแลสต็อก",
+      "default": "พนักงานทั่วไป"
+    },
+    "modal": {
+      "title_add": "เพิ่มบัญชีพนักงาน",
+      "title_edit": "แก้ไขข้อมูลพนักงาน",
+      "label_name": "ชื่อพนักงาน",
+      "label_username": "ชื่อผู้ใช้งาน",
+      "label_password_add": "รหัสผ่านเริ่มต้น",
+      "label_password_edit": "เปลี่ยนรหัสผ่าน (เว้นว่างไว้หากไม่ต้องการเปลี่ยน)",
+      "placeholder_name": "เช่น สมชาย มั่นคง",
+      "placeholder_username": "เช่น somchai_pos",
+      "placeholder_password_add": "กรอกรหัสผ่าน",
+      "placeholder_password_edit": "กรอกรหัสผ่านใหม่",
+      "label_role": "ระดับตำแหน่ง",
+      "role_immutable": "{{role}} (ไม่สามารถแก้ไขได้)"
+    },
+    "alerts": {
+      "reset_confirm": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตรหัสผ่านของ '{{name}}' เป็น Aa1357?",
+      "reset_success": "รีเซ็ตรหัสผ่านเป็น Aa1357 เรียบร้อยแล้ว",
+      "reset_fail": "การรีเซ็ตล้มเหลว",
+      "update_status_fail": "การอัปเดตสถานะล้มเหลว",
+      "action_fail": "การดำเนินการล้มเหลว"
+    }
+  },
+  "staff_reports": {
+    "title": "รายงานผลงานพนักงาน",
+    "today_overview": "ภาพรวมวันนี้",
+    "no_data": "ยังไม่มีข้อมูลในขณะนี้",
+    "stats": {
+      "total_revenue": "รายได้จากการขายรวม",
+      "total_orders": "จำนวนคำสั่งซื้อรวม"
+    },
+    "table": {
+      "title": "อันดับยอดขายพนักงาน",
+      "staff_name": "ชื่อพนักงาน",
+      "order_count": "จำนวนคำสั่งซื้อ",
+      "revenue": "ยอดขายรวม",
+      "avg_order_value": "ยอดขายเฉลี่ยต่อบิล",
+      "order_unit": "รายการ",
+      "empty": "ไม่มีข้อมูลการขายของพนักงาน",
+      "fallback_name": "พนักงาน {{index}}"
+    }
+  },
+  "suppliers": {
+    "title": "จัดการซัพพลายเออร์",
+    "add_btn": "เพิ่มซัพพลายเออร์",
+    "search_placeholder": "ค้นหาชื่อซัพพลายเออร์...",
+    "empty_state": "ไม่มีข้อมูลซัพพลายเออร์",
+    "card": {
+      "contact_person": "ผู้ติดต่อ",
+      "not_available": "ไม่มีข้อมูล"
+    },
+    "modal": {
+      "title_add": "เพิ่มซัพพลายเออร์",
+      "title_edit": "แก้ไขซัพพลายเออร์",
+      "label_name": "ชื่อซัพพลายเออร์",
+      "label_contact": "ชื่อผู้ติดต่อ",
+      "label_phone": "เบอร์โทรศัพท์",
+      "label_email": "อีเมล",
+      "label_address": "ที่อยู่"
+    },
+    "alerts": {
+      "delete_confirm": "ลบซัพพลายเออร์รายนี้หรือไม่?",
+      "delete_fail": "การลบล้มเหลว",
+      "action_fail": "การดำเนินการล้มเหลว: {{msg}}"
+    }
+  },
+  "timecards": {
+    "title": "จัดการการเข้างาน",
+    "status": {
+      "working": "กำลังปฏิบัติงาน",
+      "off_duty": "เลิกงานแล้ว",
+      "clock_in_time": "เวลาเข้างาน: {{time}}",
+      "in_progress": "กำลังดำเนินการ..."
+    },
+    "buttons": {
+      "clock_in": "ลงชื่อเข้างาน",
+      "clock_out": "ลงชื่อเลิกงาน"
+    },
+    "history": {
+      "title": "ประวัติการเข้างาน",
+      "table": {
+        "date": "วันที่",
+        "clock_in": "เข้างาน",
+        "clock_out": "เลิกงาน",
+        "total_hours": "รวมชั่วโมง (ชม.)"
+      }
+    },
+    "alerts": {
+      "action_fail": "การดำเนินการล้มเหลว"
+    }
+  },
+  "discounts": {
+    "title": "จัดการส่วนลด",
+    "add_btn": "เพิ่มส่วนลด",
+    "empty_state": "ยังไม่มีการสร้างส่วนลด",
+    "types": {
+      "percentage": "เปอร์เซ็นต์ (%)",
+      "fixed": "ยอดคงที่ ({{currency}})",
+      "desc_percentage": "ลด {{value}}%",
+      "desc_fixed": "ลดคงที่ -{{currency}}{{value}}"
+    },
+    "modal": {
+      "title": "เพิ่มส่วนลด",
+      "label_name": "ชื่อส่วนลด",
+      "label_type": "ประเภท",
+      "label_value": "มูลค่า",
+      "placeholder_name": "เช่น โปรโมชันวันหยุด",
+      "placeholder_value": "เช่น 10"
+    },
+    "alerts": {
+      "delete_confirm": "ลบส่วนลดนี้หรือไม่?",
+      "delete_fail": "การลบล้มเหลว",
+      "add_fail": "การเพิ่มล้มเหลว: {{msg}}"
+    }
+  },
+  "inventory": {
+    "title": "การตรวจสอบและปรับปรุงสต็อก",
+    "add_adjustment": "เพิ่มการปรับปรุง",
+    "search_placeholder": "ค้นหาสินค้าเพื่อตรวจสอบสต็อก...",
+    "table": {
+      "product_name": "ชื่อสินค้า",
+      "sku": "SKU",
+      "current_stock": "สต็อกปัจจุบัน",
+      "unit": "หน่วย"
+    },
+    "modal": {
+      "title": "เพิ่มการปรับปรุงสต็อก",
+      "product": "สินค้า",
+      "select_product": "เลือกสินค้า",
+      "variant": "ตัวเลือก",
+      "select_variant": "เลือกตัวเลือก",
+      "stock_display": " (สต็อก: {{stock}})",
+      "qty_label": "จำนวนที่ปรับปรุง (ค่าบวกเพื่อเพิ่ม, ค่าลบเพื่อลด)",
+      "reason": "เหตุผล",
+      "note": "หมายเหตุ",
+      "submit": "ยืนยันการปรับปรุง"
+    },
+    "reasons": {
+      "correction": "การแก้ไขจากการตรวจสอบ",
+      "damage": "สินค้าเสียหาย / เสีย",
+      "received": "รับสินค้าเข้า",
+      "inventory_count": "การนับสต็อก",
+      "other": "อื่นๆ"
+    },
+    "units": {
+      "kg": "กก.",
+      "pcs": "ชิ้น"
+    },
+    "alerts": {
+      "adjust_fail": "การปรับปรุงล้มเหลว"
+    }
+  },
+  "dashboard": {
+    "title": "สรุปการดำเนินงาน",
+    "total_tenants": "จำนวนผู้ใช้งานทั้งหมด",
+    "active_tenants": "ผู้ใช้งานที่ใช้งานอยู่",
+    "total_products": "สินค้าในระบบ",
+    "archive_progress": "ความคืบหน้าการจัดเก็บข้อมูล",
+    "managed_tenants": "ผู้ใช้งานที่ดูแลอยู่",
+    "managed_accounts": "บัญชีที่ดูแลอยู่",
+    "est_inventory_value": "มูลค่าสต็อกโดยประมาณ",
+    "managed_product_count": "จำนวนสินค้าที่ดูแล",
+    "today_sales": "ยอดขายวันนี้",
+    "inventory_total_value": "มูลค่ารวมสินค้าคงคลัง",
+    "stock_count": "จำนวนสินค้าในสต็อก",
+    "current_user": "ผู้ใช้งานปัจจุบัน",
+    "sales_trend": "แนวโน้มยอดขาย",
+    "popular_products": "สินค้าขายดี",
+    "no_popular_products": "ไม่มีข้อมูลสินค้าขายดี",
+    "sold": "ขายแล้ว"
+  },
+  "nav": {
+    "overview": "ภาพรวม",
+    "pos": "หน้าขาย (POS)",
+    "product_mgmt": "จัดการสินค้า",
+    "inventory_count": "ตรวจสอบสต็อก",
+    "purchase_order": "การสั่งซื้อและคลังสินค้า",
+    "suppliers": "ซัพพลายเออร์",
+    "discount_mgmt": "จัดการส่วนลด",
+    "order_mgmt": "จัดการคำสั่งซื้อ",
+    "revenue_report": "รายงานการดำเนินงาน",
+    "customer_data": "ข้อมูลลูกค้า",
+    "staff_mgmt": "จัดการพนักงาน",
+    "attendance": "บันทึกเวลาเข้างาน",
+    "staff_performance": "การจัดการผลงาน",
+    "system_settings": "ตั้งค่าระบบ",
+    "api_integration": "API และการเชื่อมต่อ"
+  }
 }

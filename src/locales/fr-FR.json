@@ -1,21 +1,471 @@
 {
   "login": {
-    "welcome": "Bienvenue",
-    "subtitle": "Connectez-vous à votre tableau de bord administrateur",
+    "welcome": "Bon retour parmi nous",
+    "subtitle": "Connectez-vous à votre tableau de bord administrateur pour continuer",
     "email": "Adresse e-mail",
     "password": "Mot de passe",
-    "companyId": "ID de l'entreprise",
-    "submit": "Connexion",
-    "errorDefault": "Échec de la connexion, veuillez vérifier vos identifiants"
+    "companyId": "Identifiant d'entreprise",
+    "submit": "Se connecter",
+    "errorDefault": "Échec de la connexion. Veuillez vérifier votre compte, votre mot de passe ou l'identifiant d'entreprise."
   },
   "customer_management": "Gestion des clients",
   "add_customer": "Ajouter un client",
-  "search_placeholder_name_phone": "Rechercher nom ou téléphone...",
-  "delete_selected_confirm": "Confirmer la suppression de {{count}} clients sélectionnés ?",
+  "search_placeholder_name_phone": "Rechercher un nom ou un téléphone...",
+  "delete_selected_confirm": "Êtes-vous sûr de vouloir supprimer les {{count}} clients sélectionnés ?",
   "sales_trend": "Tendance des ventes",
   "status_paid": "Payé",
   "status_pending": "En attente",
-  "checkout_now": "Payer maintenant",
-  "reason_correction": "Correction de stock",
-  "multi_variants": "Multi-variantes"
+  "checkout_now": "Encaisser maintenant",
+  "reason_correction": "Correction d'inventaire",
+  "multi_variants": "Multi-variantes",
+  "common": {
+    "loading": "Chargement des données...",
+    "retry": "Réessayer",
+    "error_load_data": "Impossible de charger les données",
+    "last_update": "Dernière mise à jour",
+    "no_data_today": "Aucune donnée disponible aujourd'hui",
+    "logout": "Déconnexion",
+    "search_placeholder": "Rechercher commandes, produits...",
+    "sync_data": "Synchroniser les données",
+    "results": "Résultats",
+    "clear": "Effacer",
+    "delete": "Supprimer",
+    "filter": "Filtrer",
+    "actions": "Actions",
+    "reset": "Réinitialiser",
+    "preview": "Aperçu",
+    "cancel": "Annuler",
+    "confirm_update": "Confirmer la mise à jour",
+    "confirm_add": "Confirmer l'ajout",
+    "unknown": "Inconnu"
+  },
+  "pos": {
+    "search_placeholder": "Rechercher un produit ou scanner un code-barres...",
+    "category_all": "Tout",
+    "multi_variants": "Multi-variantes",
+    "cart": "Panier",
+    "cart_empty": "Aucun article ajouté",
+    "search_customer": "Rechercher un client...",
+    "select_customer": "Sélectionner un client",
+    "select_discount": "Sélectionner une remise",
+    "checkout_date": "Date d'encaissement",
+    "subtotal": "Sous-total",
+    "discount": "Remise",
+    "tax_amount": "Taxes",
+    "total": "Total",
+    "hold_order": "Mettre en attente",
+    "checkout_now": "Encaisser maintenant",
+    "checkout_success": "Encaissement réussi",
+    "order_created_msg": "Commande créée et stock mis à jour",
+    "error_no_store_id": "Impossible de récupérer l'ID du magasin. Veuillez rafraîchir la page.",
+    "checkout_failed": "Échec de l'encaissement"
+  },
+  "products": {
+    "title": "Catalogue produits",
+    "import_csv": "Importer CSV",
+    "export_csv": "Exporter CSV",
+    "add_product": "Ajouter un produit",
+    "edit_product": "Modifier le produit",
+    "search_placeholder": "Rechercher par nom ou SKU...",
+    "no_products_msg": "Veuillez d'abord ajouter des produits",
+    "add_now": "Ajouter maintenant",
+    "sku_barcode": "SKU / Code-barres",
+    "product_name": "Nom du produit",
+    "price": "Prix",
+    "stock": "Stock",
+    "category": "Catégorie",
+    "no_match_msg": "Aucun produit ne correspond aux critères",
+    "units": "unité(s)",
+    "uncategorized": "Non catégorisé",
+    "product_image": "Image du produit (Aperçu restauration)",
+    "select_category": "Sélectionner une catégorie",
+    "add_category": "Ajouter une catégorie",
+    "category_name": "Nom de la catégorie",
+    "category_placeholder": "Ex: Boissons, Desserts",
+    "color_tag": "Étiquette couleur",
+    "sold_by": "Unité de vente",
+    "sold_each": "Vendu à l'unité",
+    "sold_weight": "Vendu au poids",
+    "repair_price": "Prix de réparation (Optionnel)",
+    "has_variants_msg": "Ce produit possède plusieurs variantes (ex: taille, couleur)",
+    "variants": "Variantes du produit",
+    "add_variant": "Ajouter une variante",
+    "variant_name": "Nom de la variante",
+    "name_placeholder": "Ex: Café Americano Classique",
+    "import": {
+      "title": "Importer des produits via CSV",
+      "select_file": "Sélectionner un fichier CSV",
+      "file_name": "Nom du fichier :",
+      "file_size": "Taille du fichier :",
+      "format_requirement": "Exigences du format CSV :",
+      "required_columns": [
+        "SKU",
+        "Nom du produit",
+        "Prix",
+        "Coût",
+        "Stock",
+        "Catégorie",
+        "Description",
+        "Code-barres",
+        "Unité de vente"
+      ],
+      "submit": "Confirmer l'importation"
+    },
+    "update_failed": "Échec de la mise à jour",
+    "add_failed": "Échec de l'ajout",
+    "image_upload_failed": "Échec de l'envoi de l'image",
+    "add_category_failed": "Échec de l'ajout de la catégorie",
+    "delete_failed": "Échec de la suppression",
+    "export_failed": "Échec de l'exportation",
+    "import_failed": "Échec de l'importation",
+    "select_csv_msg": "Veuillez sélectionner un fichier CSV",
+    "delete_selected_confirm": "Voulez-vous vraiment supprimer les {{count}} produits sélectionnés ?"
+  },
+  "purchase_orders": {
+    "add_failed": "Échec de l'ajout",
+    "confirm_receive": "Confirmer la réception ? Cela mettra à jour le stock des produits concernés.",
+    "receive_failed": "Échec de la réception",
+    "status_received": "Reçu",
+    "status_ordered": "Commandé",
+    "status_cancelled": "Annulé",
+    "status_draft": "Brouillon",
+    "title": "Commandes d'achat",
+    "add": "Nouvelle commande",
+    "order_no": "N° commande",
+    "suppliers": "Fournisseurs",
+    "amount": "Montant",
+    "status": "Statut",
+    "date": "Date",
+    "actions": "Actions",
+    "receive": "Réceptionner le stock",
+    "select_supplier": "Sélectionner un fournisseur",
+    "items": "Détails des articles",
+    "select_product": "Sélectionner un produit",
+    "add_product": "Ajouter produit (nouvelle fenêtre)",
+    "quantity": "Quantité",
+    "cost_price": "Prix d'achat",
+    "add_item": "Ajouter une ligne",
+    "create_draft": "Créer un brouillon"
+  },
+  "register": {
+    "title": "Démarrez votre aventure <1>POS SaaS</1>",
+    "subtitle": "Enregistrez votre compte d'entreprise pour commencer",
+    "company_name": "Nom de l'entreprise",
+    "company_name_placeholder": "Ex: Groupe Retail Prestige",
+    "tenant_id": "Identifiant d'entreprise (Tenant ID)",
+    "tenant_id_placeholder": "Ex: superstore-01 (Identifiant unique)",
+    "admin_email": "E-mail administrateur",
+    "admin_email_placeholder": "admin@exemple.com",
+    "password": "Définir un mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+    "password_placeholder": "••••••••",
+    "submit": "S'inscrire maintenant",
+    "has_account": "Déjà un compte ?",
+    "login_now": "Connectez-vous ici",
+    "success_title": "Inscription réussie !",
+    "success_msg": "Votre compte d'entreprise a été créé. Redirection vers la page de connexion...",
+    "goto_login": "Se connecter maintenant",
+    "error_password_mismatch": "Les mots de passe ne correspondent pas",
+    "error_default": "Échec de l'inscription, veuillez réessayer"
+  },
+  "reports": {
+    "revenue_title": "Rapports d'activité",
+    "date_start": "Date de début",
+    "date_end": "Date de fin",
+    "presets": {
+      "today": "Aujourd'hui",
+      "yesterday": "Hier",
+      "thisWeek": "Cette semaine",
+      "thisMonth": "Ce mois-ci",
+      "lastMonth": "Le mois dernier",
+      "last7": "Les 7 derniers jours",
+      "last30": "Les 30 derniers jours"
+    },
+    "metrics": {
+      "total_revenue": "Chiffre d'affaires",
+      "gross_profit": "Bénéfice brut",
+      "discounts": "Remises accordées",
+      "expenditure": "Dépenses magasin"
+    },
+    "charts": {
+      "trend_title": "Prévisions et tendances des ventes",
+      "category_pie": "Répartition des ventes par catégorie",
+      "revenue": "Revenus",
+      "profit": "Profit"
+    },
+    "tabs": {
+      "daily_detail": "Détails journaliers revenus/dépenses",
+      "hot_products": "Classement des meilleures ventes",
+      "category_analysis": "Analyse des données par catégorie"
+    },
+    "table": {
+      "date": "Date",
+      "net_sales": "Ventes nettes",
+      "cost": "Coût des ventes",
+      "profit": "Marge brute",
+      "expenses": "Dépenses",
+      "margin": "Taux de marge",
+      "product_name": "Nom de l'article",
+      "qty_sold": "Qté vendue",
+      "total_sales": "Ventes totales",
+      "performance": "Performance",
+      "category_name": "Nom catégorie",
+      "total_items": "Total articles",
+      "share": "Part",
+      "total": "Total",
+      "unknown_product": "Produit inconnu",
+      "uncategorized": "Non catégorisé"
+    },
+    "export": {
+      "button": "Exporter le rapport {{type}}",
+      "type_detail": "Détaillé",
+      "type_product": "Produits",
+      "type_category": "Catégories"
+    },
+    "errors": {
+      "load_fail": "Impossible de charger les données du rapport",
+      "connection_fail": "Échec de la connexion"
+    }
+  },
+  "settings": {
+    "title": "Paramètres système",
+    "subtitle": "Gérez les règles de votre magasin et le programme de fidélité",
+    "tabs": {
+      "general": "Général",
+      "loyalty": "Fidélité",
+      "tax": "Fiscalité",
+      "security": "Sécurité et droits"
+    },
+    "loyalty": {
+      "title": "Programme de fidélité",
+      "enable_points": "Activer les points de fidélité",
+      "enable_desc": "Les clients gagnent des points selon le montant de leurs achats",
+      "rate_label": "Taux de récompense (Montant dépensé pour 1 point)"
+    },
+    "tax": {
+      "title": "Configuration des taxes",
+      "rate_label": "Taux de taxe par défaut (%)"
+    },
+    "regional": {
+      "title": "Région et Devise",
+      "currency_label": "Symbole devise",
+      "timezone_label": "Fuseau horaire"
+    },
+    "save_btn": "Enregistrer les modifications",
+    "save_success": "Paramètres enregistrés avec succès !",
+    "save_fail": "Échec de l'enregistrement"
+  },
+  "staff": {
+    "title": "Gestion du personnel",
+    "add_staff": "Ajouter un employé",
+    "search_placeholder": "Rechercher nom ou compte...",
+    "no_data": "Aucune donnée sur le personnel",
+    "table": {
+      "name": "Nom",
+      "account": "Compte de connexion",
+      "role": "Poste",
+      "status": "Statut",
+      "joined_at": "Date d'arrivée",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Actif",
+      "disabled": "Désactivé"
+    },
+    "roles": {
+      "level_1": "Superadmin Système",
+      "level_2": "Agent Régional",
+      "level_3": "Distributeur",
+      "level_4": "Responsable Magasin",
+      "level_5": "Caissier",
+      "level_6": "Superviseur Stock",
+      "default": "Employé"
+    },
+    "modal": {
+      "title_add": "Créer un compte employé",
+      "title_edit": "Modifier les infos de l'employé",
+      "label_name": "Nom complet",
+      "label_username": "Nom d'utilisateur",
+      "label_password_add": "Mot de passe par défaut",
+      "label_password_edit": "Modifier le mot de passe (laisser vide si inchangé)",
+      "placeholder_name": "Ex: Jean Dupont",
+      "placeholder_username": "Ex: jean_pos",
+      "placeholder_password_add": "Entrer le mot de passe",
+      "placeholder_password_edit": "Entrer le nouveau mot de passe",
+      "label_role": "Niveau de rôle",
+      "role_immutable": "{{role}} (non modifiable)"
+    },
+    "alerts": {
+      "reset_confirm": "Voulez-vous vraiment réinitialiser le mot de passe de « {{name}} » sur Aa1357 ?",
+      "reset_success": "Mot de passe réinitialisé sur Aa1357",
+      "reset_fail": "Échec de la réinitialisation",
+      "update_status_fail": "Échec de la mise à jour du statut",
+      "action_fail": "L'opération a échoué"
+    }
+  },
+  "staff_reports": {
+    "title": "Rapport de performance du personnel",
+    "today_overview": "Aperçu du jour",
+    "no_data": "Aucune donnée générée pour le moment",
+    "stats": {
+      "total_revenue": "Chiffre d'affaires total",
+      "total_orders": "Nombre total de commandes"
+    },
+    "table": {
+      "title": "Classement des ventes par employé",
+      "staff_name": "Nom de l'employé",
+      "order_count": "Commandes",
+      "revenue": "Chiffre d'affaires total",
+      "avg_order_value": "Panier moyen",
+      "order_unit": "cmd.",
+      "empty": "Aucune donnée de vente disponible",
+      "fallback_name": "Employé {{index}}"
+    }
+  },
+  "suppliers": {
+    "title": "Gestion des fournisseurs",
+    "add_btn": "Ajouter un fournisseur",
+    "search_placeholder": "Rechercher un fournisseur...",
+    "empty_state": "Aucun fournisseur enregistré",
+    "card": {
+      "contact_person": "Interlocuteur",
+      "not_available": "Non disponible"
+    },
+    "modal": {
+      "title_add": "Ajouter un fournisseur",
+      "title_edit": "Modifier le fournisseur",
+      "label_name": "Nom de l'entreprise",
+      "label_contact": "Nom de contact",
+      "label_phone": "Téléphone",
+      "label_email": "E-mail",
+      "label_address": "Adresse"
+    },
+    "alerts": {
+      "delete_confirm": "Supprimer ce fournisseur ?",
+      "delete_fail": "Échec de la suppression",
+      "action_fail": "L'opération a échoué : {{msg}}"
+    }
+  },
+  "timecards": {
+    "title": "Gestion des temps",
+    "status": {
+      "working": "Actuellement en service",
+      "off_duty": "Actuellement hors service",
+      "clock_in_time": "Prise de poste : {{time}}",
+      "in_progress": "En cours..."
+    },
+    "buttons": {
+      "clock_in": "Pointer l'entrée",
+      "clock_out": "Pointer la sortie"
+    },
+    "history": {
+      "title": "Historique de présence",
+      "table": {
+        "date": "Date",
+        "clock_in": "Entrée",
+        "clock_out": "Sortie",
+        "total_hours": "Total Heures (HR)"
+      }
+    },
+    "alerts": {
+      "action_fail": "L'opération a échoué"
+    }
+  },
+  "discounts": {
+    "title": "Gestion des remises",
+    "add_btn": "Ajouter une remise",
+    "empty_state": "Aucune remise créée",
+    "types": {
+      "percentage": "Pourcentage (%)",
+      "fixed": "Montant fixe ({{currency}})",
+      "desc_percentage": "{{value}}% de remise",
+      "desc_fixed": "Montant fixe -{{currency}}{{value}}"
+    },
+    "modal": {
+      "title": "Ajouter une remise",
+      "label_name": "Nom",
+      "label_type": "Type",
+      "label_value": "Valeur",
+      "placeholder_name": "Ex: Promotion Week-end",
+      "placeholder_value": "Ex: 10"
+    },
+    "alerts": {
+      "delete_confirm": "Supprimer cette remise ?",
+      "delete_fail": "Échec de la suppression",
+      "add_fail": "Échec de l'ajout : {{msg}}"
+    }
+  },
+  "inventory": {
+    "title": "Audit et Ajustement des stocks",
+    "add_adjustment": "Ajouter un ajustement",
+    "search_placeholder": "Rechercher un produit...",
+    "table": {
+      "product_name": "Nom du produit",
+      "sku": "SKU",
+      "current_stock": "Stock actuel",
+      "unit": "Unité"
+    },
+    "modal": {
+      "title": "Ajouter un ajustement de stock",
+      "product": "Produit",
+      "select_product": "Sélectionner un produit",
+      "variant": "Variante",
+      "select_variant": "Sélectionner une variante",
+      "stock_display": " (Stock : {{stock}})",
+      "qty_label": "Quantité d'ajustement (positif pour augmenter, négatif pour réduire)",
+      "reason": "Motif",
+      "note": "Note",
+      "submit": "Confirmer l'ajustement"
+    },
+    "reasons": {
+      "correction": "Correction d'inventaire",
+      "damage": "Casse / Démarque",
+      "received": "Articles reçus",
+      "inventory_count": "Inventaire cyclique",
+      "other": "Autre"
+    },
+    "units": {
+      "kg": "kg",
+      "pcs": "pce"
+    },
+    "alerts": {
+      "adjust_fail": "Échec de l'ajustement"
+    }
+  },
+  "dashboard": {
+    "title": "Aperçu de l'activité",
+    "total_tenants": "Total locataires",
+    "active_tenants": "Locataires actifs",
+    "total_products": "Produits du système",
+    "archive_progress": "Progression archivage",
+    "managed_tenants": "Locataires gérés",
+    "managed_accounts": "Comptes gérés",
+    "est_inventory_value": "Valeur est. du stock",
+    "managed_product_count": "Nombre d'articles gérés",
+    "today_sales": "Ventes du jour",
+    "inventory_total_value": "Valeur totale du stock",
+    "stock_count": "Articles en stock",
+    "current_user": "Utilisateur actuel",
+    "sales_trend": "Tendance des ventes",
+    "popular_products": "Produits populaires",
+    "no_popular_products": "Aucune donnée de produits populaires",
+    "sold": "Vendu"
+  },
+  "nav": {
+    "overview": "Vue d'ensemble",
+    "pos": "Caisse (POS)",
+    "product_mgmt": "Gestion produits",
+    "inventory_count": "Inventaire",
+    "purchase_order": "Achats & Stocks",
+    "suppliers": "Fournisseurs",
+    "discount_mgmt": "Remises",
+    "order_mgmt": "Commandes",
+    "revenue_report": "Rapports",
+    "customer_data": "Clients",
+    "staff_mgmt": "Personnel",
+    "attendance": "Présences",
+    "staff_performance": "Performances",
+    "system_settings": "Paramètres",
+    "api_integration": "API & Intégrations"
+  }
 }

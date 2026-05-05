@@ -1,21 +1,471 @@
 {
   "login": {
     "welcome": "Bentornato",
-    "subtitle": "Accedi alla tua dashboard amministratore per continuare",
-    "email": "Indirizzo Email",
+    "subtitle": "Accedi al tuo pannello di amministrazione per continuare",
+    "email": "Indirizzo e-mail",
     "password": "Password",
     "companyId": "ID Azienda",
-    "submit": "Accedi al Sistema",
-    "errorDefault": "Accesso fallito, verifica le tue credenziali"
+    "submit": "Accedi",
+    "errorDefault": "Accesso fallito. Verifica il tuo account, la password o l'ID azienda."
   },
-  "customer_management": "Gestione Clienti",
+  "customer_management": "Gestione Dati Clienti",
   "add_customer": "Aggiungi Cliente",
-  "search_placeholder_name_phone": "Cerca nome o telefono...",
-  "delete_selected_confirm": "Confermi l'eliminazione di {{count}} clienti selezionati?",
+  "search_placeholder_name_phone": "Cerca nome o telefono cliente...",
+  "delete_selected_confirm": "Sei sicuro di voler eliminare i {{count}} clienti selezionati?",
   "sales_trend": "Andamento Vendite",
   "status_paid": "Pagato",
   "status_pending": "In attesa",
-  "checkout_now": "Paga Ora",
-  "reason_correction": "Rettifica Scorte",
-  "multi_variants": "Multi Varianti"
+  "checkout_now": "Cassa ora",
+  "reason_correction": "Rettifica Inventario",
+  "multi_variants": "Multi-variante",
+  "common": {
+    "loading": "Caricamento dati...",
+    "retry": "Riprova",
+    "error_load_data": "Impossibile caricare i dati",
+    "last_update": "Ultimo aggiornamento",
+    "no_data_today": "Nessun dato disponibile per oggi",
+    "logout": "Disconnetti",
+    "search_placeholder": "Cerca ordini, prodotti...",
+    "sync_data": "Sincronizza Dati",
+    "results": "Risultati",
+    "clear": "Pulisci",
+    "delete": "Elimina",
+    "filter": "Filtra",
+    "actions": "Azioni",
+    "reset": "Ripristina",
+    "preview": "Anteprima",
+    "cancel": "Annulla",
+    "confirm_update": "Conferma aggiornamento",
+    "confirm_add": "Conferma aggiunta",
+    "unknown": "Sconosciuto"
+  },
+  "pos": {
+    "search_placeholder": "Cerca prodotto o scansiona codice...",
+    "category_all": "Tutti",
+    "multi_variants": "Multi-variante",
+    "cart": "Carrello",
+    "cart_empty": "Nessun articolo aggiunto",
+    "search_customer": "Cerca nome cliente...",
+    "select_customer": "Seleziona Cliente",
+    "select_discount": "Seleziona Sconto",
+    "checkout_date": "Data Pagamento",
+    "subtotal": "Subtotale",
+    "discount": "Sconto",
+    "tax_amount": "Imposte",
+    "total": "Totale",
+    "hold_order": "Sospendi Ordine",
+    "checkout_now": "Paga Ora",
+    "checkout_success": "Pagamento Riuscito",
+    "order_created_msg": "Ordine creato e inventario aggiornato",
+    "error_no_store_id": "Impossibile ottenere l'ID Negozio. Aggiorna la pagina.",
+    "checkout_failed": "Pagamento Fallito"
+  },
+  "products": {
+    "title": "Catalogo Prodotti",
+    "import_csv": "Importa CSV",
+    "export_csv": "Esporta CSV",
+    "add_product": "Aggiungi Prodotto",
+    "edit_product": "Modifica Prodotto",
+    "search_placeholder": "Cerca nome o SKU...",
+    "no_products_msg": "Aggiungi prima dei prodotti",
+    "add_now": "Aggiungi Ora",
+    "sku_barcode": "SKU / Codice a barre",
+    "product_name": "Nome Prodotto",
+    "price": "Prezzo",
+    "stock": "Giacenza",
+    "category": "Categoria",
+    "no_match_msg": "Nessun prodotto corrispondente",
+    "units": "pz",
+    "uncategorized": "Senza Categoria",
+    "product_image": "Immagine Prodotto (Anteprima per ripristino)",
+    "select_category": "Seleziona una categoria",
+    "add_category": "Aggiungi Categoria",
+    "category_name": "Nome Categoria",
+    "category_placeholder": "Es: Bevande, Dessert",
+    "color_tag": "Etichetta Colore",
+    "sold_by": "Unità di Vendita",
+    "sold_each": "Vendita a pezzo",
+    "sold_weight": "Vendita a peso",
+    "repair_price": "Prezzo Riparazione (Opzionale)",
+    "has_variants_msg": "Questo prodotto ha più varianti (es: taglia, colore)",
+    "variants": "Varianti Prodotto",
+    "add_variant": "Aggiungi Variante",
+    "variant_name": "Nome Variante",
+    "name_placeholder": "Es: Caffè Americano Classico",
+    "import": {
+      "title": "Importa Prodotti da CSV",
+      "select_file": "Seleziona file CSV",
+      "file_name": "Nome file:",
+      "file_size": "Dimensione file:",
+      "format_requirement": "Requisiti formato CSV:",
+      "required_columns": [
+        "SKU",
+        "Nome Prodotto",
+        "Prezzo",
+        "Costo",
+        "Giacenza",
+        "Categoria",
+        "Descrizione",
+        "Codice a barre",
+        "Unità di Vendita"
+      ],
+      "submit": "Conferma Importazione"
+    },
+    "update_failed": "Aggiornamento fallito",
+    "add_failed": "Aggiunta fallita",
+    "image_upload_failed": "Caricamento immagine fallito",
+    "add_category_failed": "Aggiunta categoria fallita",
+    "delete_failed": "Eliminazione fallita",
+    "export_failed": "Esportazione fallita",
+    "import_failed": "Importazione fallita",
+    "select_csv_msg": "Seleziona un file CSV",
+    "delete_selected_confirm": "Sei sicuro di voler eliminare i {{count}} prodotti selezionati?"
+  },
+  "purchase_orders": {
+    "add_failed": "Aggiunta fallita",
+    "confirm_receive": "Confermare il ricevimento merce? Questo aggiornerà lo stock dei prodotti.",
+    "receive_failed": "Ricevimento fallito",
+    "status_received": "Ricevuto",
+    "status_ordered": "Ordinato",
+    "status_cancelled": "Annullato",
+    "status_draft": "Bozza",
+    "title": "Ordini d'Acquisto (PO)",
+    "add": "Nuovo Ordine d'Acquisto",
+    "order_no": "N. Ordine",
+    "suppliers": "Fornitori",
+    "amount": "Importo",
+    "status": "Stato",
+    "date": "Data",
+    "actions": "Azioni",
+    "receive": "Ricevi Stock",
+    "select_supplier": "Seleziona un fornitore",
+    "items": "Dettagli Articoli",
+    "select_product": "Seleziona Prodotto",
+    "add_product": "Aggiungi Prodotto (Nuova finestra)",
+    "quantity": "Quantità",
+    "cost_price": "Prezzo di Costo",
+    "add_item": "Aggiungi Voce",
+    "create_draft": "Crea Bozza"
+  },
+  "register": {
+    "title": "Inizia il tuo viaggio con <1>POS SaaS</1>",
+    "subtitle": "Registra il tuo account aziendale per iniziare",
+    "company_name": "Nome Azienda",
+    "company_name_placeholder": "Es: Gruppo Retail Supremo",
+    "tenant_id": "ID Azienda (Tenant ID)",
+    "tenant_id_placeholder": "Es: superstore-01 (Identificatore univoco)",
+    "admin_email": "E-mail Amministratore",
+    "admin_email_placeholder": "admin@esempio.com",
+    "password": "Imposta Password",
+    "confirm_password": "Conferma Password",
+    "password_placeholder": "••••••••",
+    "submit": "Registrati Ora",
+    "has_account": "Hai già un account?",
+    "login_now": "Accedi qui",
+    "success_title": "Registrazione Riuscita!",
+    "success_msg": "Il tuo account aziendale è stato creato. Reindirizzamento al login...",
+    "goto_login": "Vai al Login",
+    "error_password_mismatch": "Le password non corrispondono",
+    "error_default": "Registrazione fallita, riprova"
+  },
+  "reports": {
+    "revenue_title": "Rapporti Operativi",
+    "date_start": "Data Inizio",
+    "date_end": "Data Fine",
+    "presets": {
+      "today": "Oggi",
+      "yesterday": "Ieri",
+      "thisWeek": "Questa settimana",
+      "thisMonth": "Questo mese",
+      "lastMonth": "Mese scorso",
+      "last7": "Ultimi 7 giorni",
+      "last30": "Ultimi 30 giorni"
+    },
+    "metrics": {
+      "total_revenue": "Vendite Totali",
+      "gross_profit": "Utile Lordo",
+      "discounts": "Sconti Applicati",
+      "expenditure": "Spese Negozio"
+    },
+    "charts": {
+      "trend_title": "Previsioni e Andamento Vendite",
+      "category_pie": "Vendite per Categoria",
+      "revenue": "Entrate",
+      "profit": "Profitto"
+    },
+    "tabs": {
+      "daily_detail": "Dettaglio Giornaliero Entrate/Uscite",
+      "hot_products": "Classifica Prodotti più Venduti",
+      "category_analysis": "Analisi Dati per Categoria"
+    },
+    "table": {
+      "date": "Data",
+      "net_sales": "Vendite Nette",
+      "cost": "Costo del Venduto",
+      "profit": "Utile Lordo",
+      "expenses": "Spese",
+      "margin": "Margine",
+      "product_name": "Nome Prodotto",
+      "qty_sold": "Q.tà Venduta",
+      "total_sales": "Vendite Totali",
+      "performance": "Rendimento",
+      "category_name": "Nome Categoria",
+      "total_items": "Totale Articoli",
+      "share": "Quota",
+      "total": "Totale",
+      "unknown_product": "Prodotto Sconosciuto",
+      "uncategorized": "Senza Categoria"
+    },
+    "export": {
+      "button": "Esporta Rapporto {{type}}",
+      "type_detail": "Dettaglio",
+      "type_product": "Prodotto",
+      "type_category": "Categoria"
+    },
+    "errors": {
+      "load_fail": "Caricamento dati rapporto fallito",
+      "connection_fail": "Errore di connessione"
+    }
+  },
+  "settings": {
+    "title": "Impostazioni di Sistema",
+    "subtitle": "Gestisci le regole del negozio e il programma fedeltà",
+    "tabs": {
+      "general": "Impostazioni Generali",
+      "loyalty": "Programma Fedeltà",
+      "tax": "Impostazioni Fiscali",
+      "security": "Sicurezza e Permessi"
+    },
+    "loyalty": {
+      "title": "Programma Fedeltà",
+      "enable_points": "Abilita Punti Premio",
+      "enable_desc": "I clienti guadagnano punti in base all'importo della spesa",
+      "rate_label": "Tasso di Premio (Quanto spendere per 1 punto)"
+    },
+    "tax": {
+      "title": "Configurazione Imposte",
+      "rate_label": "Aliquota Fiscale Predefinita (%)"
+    },
+    "regional": {
+      "title": "Regione e Valuta",
+      "currency_label": "Simbolo Valuta",
+      "timezone_label": "Fuso Orario"
+    },
+    "save_btn": "Salva Modifiche",
+    "save_success": "Impostazioni salvate con successo!",
+    "save_fail": "Salvataggio fallito"
+  },
+  "staff": {
+    "title": "Gestione Personale",
+    "add_staff": "Aggiungi Dipendente",
+    "search_placeholder": "Cerca nome o account...",
+    "no_data": "Nessun dato sul personale",
+    "table": {
+      "name": "Nome",
+      "account": "Account Accesso",
+      "role": "Ruolo",
+      "status": "Stato",
+      "joined_at": "Data Ingresso",
+      "actions": "Azioni"
+    },
+    "status": {
+      "active": "Attivo",
+      "disabled": "Disabilitato"
+    },
+    "roles": {
+      "level_1": "Superadmin di Sistema",
+      "level_2": "Agente Regionale",
+      "level_3": "Distributore",
+      "level_4": "Responsabile Negozio",
+      "level_5": "Cassiere",
+      "level_6": "Supervisore Inventario",
+      "default": "Dipendente Comune"
+    },
+    "modal": {
+      "title_add": "Aggiungi Account Dipendente",
+      "title_edit": "Modifica Info Dipendente",
+      "label_name": "Nome Dipendente",
+      "label_username": "Nome Utente",
+      "label_password_add": "Password Predefinita",
+      "label_password_edit": "Cambia Password (lascia vuoto se invariata)",
+      "placeholder_name": "Es: Mario Rossi",
+      "placeholder_username": "Es: mario_pos",
+      "placeholder_password_add": "Inserisci password",
+      "placeholder_password_edit": "Inserisci nuova password",
+      "label_role": "Livello Ruolo",
+      "role_immutable": "{{role}} (Non modificabile)"
+    },
+    "alerts": {
+      "reset_confirm": "Sei sicuro di voler resettare la password di « {{name}} » a Aa1357?",
+      "reset_success": "Password resettata a Aa1357",
+      "reset_fail": "Reset fallito",
+      "update_status_fail": "Aggiornamento stato fallito",
+      "action_fail": "Operazione fallita"
+    }
+  },
+  "staff_reports": {
+    "title": "Rapporto Prestazioni Personale",
+    "today_overview": "Panoramica di Oggi",
+    "no_data": "Nessun dato generato finora",
+    "stats": {
+      "total_revenue": "Totale Ricavi Vendite",
+      "total_orders": "Totale Numero Ordini"
+    },
+    "table": {
+      "title": "Classifica Vendite Dipendenti",
+      "staff_name": "Nome Dipendente",
+      "order_count": "Ordini",
+      "revenue": "Importo Totale Vendite",
+      "avg_order_value": "Valore Medio Ordine",
+      "order_unit": "ord.",
+      "empty": "Nessun dato di vendita per il personale",
+      "fallback_name": "Dipendente {{index}}"
+    }
+  },
+  "suppliers": {
+    "title": "Gestione Fornitori",
+    "add_btn": "Aggiungi Fornitore",
+    "search_placeholder": "Cerca nome fornitore...",
+    "empty_state": "Nessun dato fornitore",
+    "card": {
+      "contact_person": "Persona di Contatto",
+      "not_available": "Non disponibile"
+    },
+    "modal": {
+      "title_add": "Aggiungi Fornitore",
+      "title_edit": "Modifica Fornitore",
+      "label_name": "Nome Fornitore",
+      "label_contact": "Persona di Contatto",
+      "label_phone": "Telefono",
+      "label_email": "E-mail",
+      "label_address": "Indirizzo"
+    },
+    "alerts": {
+      "delete_confirm": "Eliminare questo fornitore?",
+      "delete_fail": "Eliminazione fallita",
+      "action_fail": "Operazione fallita: {{msg}}"
+    }
+  },
+  "timecards": {
+    "title": "Gestione Presenze",
+    "status": {
+      "working": "Attualmente in servizio",
+      "off_duty": "Attualmente fuori servizio",
+      "clock_in_time": "Ora ingresso: {{time}}",
+      "in_progress": "In corso..."
+    },
+    "buttons": {
+      "clock_in": "Registra Ingresso",
+      "clock_out": "Registra Uscita"
+    },
+    "history": {
+      "title": "Storico Presenze",
+      "table": {
+        "date": "Data",
+        "clock_in": "Ingresso",
+        "clock_out": "Uscita",
+        "total_hours": "Totale Ore (HR)"
+      }
+    },
+    "alerts": {
+      "action_fail": "Operazione fallita"
+    }
+  },
+  "discounts": {
+    "title": "Gestione Sconti",
+    "add_btn": "Aggiungi Sconto",
+    "empty_state": "Nessun sconto creato",
+    "types": {
+      "percentage": "Percentuale (%)",
+      "fixed": "Importo Fisso ({{currency}})",
+      "desc_percentage": "{{value}}% di sconto",
+      "desc_fixed": "Sconto fisso -{{currency}}{{value}}"
+    },
+    "modal": {
+      "title": "Aggiungi Sconto",
+      "label_name": "Nome",
+      "label_type": "Tipo",
+      "label_value": "Valore",
+      "placeholder_name": "Es: Speciale Weekend",
+      "placeholder_value": "Es: 10"
+    },
+    "alerts": {
+      "delete_confirm": "Eliminare questo sconto?",
+      "delete_fail": "Eliminazione fallita",
+      "add_fail": "Aggiunta fallita: {{msg}}"
+    }
+  },
+  "inventory": {
+    "title": "Audit e Rettifica Inventario",
+    "add_adjustment": "Aggiungi Rettifica",
+    "search_placeholder": "Cerca prodotto per stock...",
+    "table": {
+      "product_name": "Nome Prodotto",
+      "sku": "SKU",
+      "current_stock": "Giacenza Attuale",
+      "unit": "Unità"
+    },
+    "modal": {
+      "title": "Nuova Rettifica Inventario",
+      "product": "Prodotto",
+      "select_product": "Seleziona Prodotto",
+      "variant": "Variante",
+      "select_variant": "Seleziona Variante",
+      "stock_display": " (Stock: {{stock}})",
+      "qty_label": "Quantità rettifica (positivo aumenta, negativo riduce)",
+      "reason": "Motivo",
+      "note": "Nota",
+      "submit": "Conferma Rettifica"
+    },
+    "reasons": {
+      "correction": "Correzione Audit",
+      "damage": "Danno / Scarto",
+      "received": "Articoli Ricevuti",
+      "inventory_count": "Conteggio Inventario",
+      "other": "Altro"
+    },
+    "units": {
+      "kg": "kg",
+      "pcs": "pz"
+    },
+    "alerts": {
+      "adjust_fail": "Rettifica fallita"
+    }
+  },
+  "dashboard": {
+    "title": "Panoramica Operazioni",
+    "total_tenants": "Totale Tenant",
+    "active_tenants": "Tenant Attivi",
+    "total_products": "Prodotti Sistema",
+    "archive_progress": "Progresso Archiviazione",
+    "managed_tenants": "Tenant Gestiti",
+    "managed_accounts": "Account Gestiti",
+    "est_inventory_value": "Valore Stimato Inventario",
+    "managed_product_count": "Numero Prodotti Gestiti",
+    "today_sales": "Vendite di Oggi",
+    "inventory_total_value": "Valore Totale Inventario",
+    "stock_count": "Unità in Stock",
+    "current_user": "Utente Attuale",
+    "sales_trend": "Andamento Vendite",
+    "popular_products": "Prodotti Popolari",
+    "no_popular_products": "Nessun dato sui prodotti popolari",
+    "sold": "Venduto"
+  },
+  "nav": {
+    "overview": "Panoramica",
+    "pos": "Terminale Cassa (POS)",
+    "product_mgmt": "Gestione Prodotti",
+    "inventory_count": "Audit Inventario",
+    "purchase_order": "Acquisti e Stock",
+    "suppliers": "Fornitori",
+    "discount_mgmt": "Gestione Sconti",
+    "order_mgmt": "Gestione Ordini",
+    "revenue_report": "Rapporti Operativi",
+    "customer_data": "Dati Clienti",
+    "staff_mgmt": "Gestione Personale",
+    "attendance": "Registra Presenze",
+    "staff_performance": "Prestazioni Personale",
+    "system_settings": "Impostazioni Sistema",
+    "api_integration": "API e Integrazioni"
+  }
 }

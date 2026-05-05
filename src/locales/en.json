@@ -1,11 +1,471 @@
 {
   "login": {
     "welcome": "Welcome Back",
-    "subtitle": "Login to your dashboard to continue",
+    "subtitle": "Log in to your admin dashboard to continue",
     "email": "Email Address",
     "password": "Password",
     "companyId": "Company ID",
-    "submit": "Sign In",
-    "errorDefault": "Login failed, please check your credentials"
+    "submit": "Login",
+    "errorDefault": "Login failed. Please check your account, password, or Company ID."
+  },
+  "customer_management": "Customer Management",
+  "add_customer": "Add Customer",
+  "search_placeholder_name_phone": "Search customer name or phone...",
+  "delete_selected_confirm": "Are you sure you want to delete the {{count}} selected customers?",
+  "sales_trend": "Sales Trend",
+  "status_paid": "Paid",
+  "status_pending": "Pending",
+  "checkout_now": "Checkout Now",
+  "reason_correction": "Inventory Correction",
+  "multi_variants": "Multi-variants",
+  "common": {
+    "loading": "Loading data...",
+    "retry": "Retry",
+    "error_load_data": "Unable to load data",
+    "last_update": "Last Update",
+    "no_data_today": "No data available today",
+    "logout": "Logout",
+    "search_placeholder": "Search orders, products...",
+    "sync_data": "Sync Data",
+    "results": "Results",
+    "clear": "Clear",
+    "delete": "Delete",
+    "filter": "Filter",
+    "actions": "Actions",
+    "reset": "Reset",
+    "preview": "Preview",
+    "cancel": "Cancel",
+    "confirm_update": "Confirm Update",
+    "confirm_add": "Confirm Add",
+    "unknown": "Unknown"
+  },
+  "pos": {
+    "search_placeholder": "Search products or scan barcode...",
+    "category_all": "All",
+    "multi_variants": "Multi-variants",
+    "cart": "Shopping Cart",
+    "cart_empty": "No items added yet",
+    "search_customer": "Search customer name...",
+    "select_customer": "Select Customer",
+    "select_discount": "Select Discount",
+    "checkout_date": "Checkout Date",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "tax_amount": "Tax Amount",
+    "total": "Total",
+    "hold_order": "Hold Order",
+    "checkout_now": "Checkout Now",
+    "checkout_success": "Checkout Successful",
+    "order_created_msg": "Order created and inventory updated.",
+    "error_no_store_id": "Unable to retrieve Store ID. Please refresh and try again.",
+    "checkout_failed": "Checkout Failed"
+  },
+  "products": {
+    "title": "Product Catalog",
+    "import_csv": "Import CSV",
+    "export_csv": "Export CSV",
+    "add_product": "Add Product",
+    "edit_product": "Edit Product",
+    "search_placeholder": "Search name or SKU...",
+    "no_products_msg": "Please add products first",
+    "add_now": "Add Now",
+    "sku_barcode": "SKU / Barcode",
+    "product_name": "Product Name",
+    "price": "Price",
+    "stock": "Stock",
+    "category": "Category",
+    "no_match_msg": "No products found matching the criteria",
+    "units": "unit(s)",
+    "uncategorized": "Uncategorized",
+    "product_image": "Product Image (Preview for F&B)",
+    "select_category": "Select Category",
+    "add_category": "Add Category",
+    "category_name": "Category Name",
+    "category_placeholder": "e.g., Drinks, Desserts",
+    "color_tag": "Color Tag",
+    "sold_by": "Sold By",
+    "sold_each": "Sold Individually",
+    "sold_weight": "Sold by Weight",
+    "repair_price": "Repair Price (Optional)",
+    "has_variants_msg": "This product has multiple variants (e.g., size, color)",
+    "variants": "Variants",
+    "add_variant": "Add Variant",
+    "variant_name": "Variant Name",
+    "name_placeholder": "e.g., Classic Americano",
+    "import": {
+      "title": "Import Product CSV",
+      "select_file": "Select CSV File",
+      "file_name": "File Name:",
+      "file_size": "File Size:",
+      "format_requirement": "CSV Format Requirements:",
+      "required_columns": [
+        "SKU",
+        "Product Name",
+        "Price",
+        "Cost",
+        "Stock",
+        "Category",
+        "Description",
+        "Barcode",
+        "Unit"
+      ],
+      "submit": "Confirm Import"
+    },
+    "update_failed": "Update Failed",
+    "add_failed": "Add Failed",
+    "image_upload_failed": "Image Upload Failed",
+    "add_category_failed": "Add Category Failed",
+    "delete_failed": "Delete Failed",
+    "export_failed": "Export Failed",
+    "import_failed": "Import Failed",
+    "select_csv_msg": "Please select a CSV file",
+    "delete_selected_confirm": "Are you sure you want to delete the {{count}} selected products?"
+  },
+  "purchase_orders": {
+    "add_failed": "Add Failed",
+    "confirm_receive": "Confirm receipt? This will update the related product inventory.",
+    "receive_failed": "Receipt Failed",
+    "status_received": "Received",
+    "status_ordered": "Ordered",
+    "status_cancelled": "Cancelled",
+    "status_draft": "Draft",
+    "title": "Purchase Orders",
+    "add": "New Purchase Order",
+    "order_no": "Order No.",
+    "suppliers": "Suppliers",
+    "amount": "Amount",
+    "status": "Status",
+    "date": "Date",
+    "actions": "Actions",
+    "receive": "Receive Items",
+    "select_supplier": "Select Supplier",
+    "items": "Product Details",
+    "select_product": "Select Product",
+    "add_product": "Add Product (New Window)",
+    "quantity": "Quantity",
+    "cost_price": "Cost Price",
+    "add_item": "Add Item",
+    "create_draft": "Create Draft"
+  },
+  "register": {
+    "title": "Start Your <1>POS SaaS</1> Journey",
+    "subtitle": "Register your company account to get started",
+    "company_name": "Company Name",
+    "company_name_placeholder": "e.g., Super Retail Group",
+    "tenant_id": "Company ID (Tenant ID)",
+    "tenant_id_placeholder": "e.g., superstore-01 (Unique Identifier)",
+    "admin_email": "Admin Email",
+    "admin_email_placeholder": "admin@example.com",
+    "password": "Set Password",
+    "confirm_password": "Confirm Password",
+    "password_placeholder": "••••••••",
+    "submit": "Register Now",
+    "has_account": "Already have an account?",
+    "login_now": "Login here",
+    "success_title": "Registration Successful!",
+    "success_msg": "Your company account has been created. Redirecting to login page...",
+    "goto_login": "Login Now",
+    "error_password_mismatch": "Passwords do not match",
+    "error_default": "Registration failed, please try again"
+  },
+  "reports": {
+    "revenue_title": "Operational Reports",
+    "date_start": "Start Date",
+    "date_end": "End Date",
+    "presets": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "last7": "Last 7 Days",
+      "last30": "Last 30 Days"
+    },
+    "metrics": {
+      "total_revenue": "Total Sales",
+      "gross_profit": "Gross Profit",
+      "discounts": "Discounts Given",
+      "expenditure": "Store Expenditure"
+    },
+    "charts": {
+      "trend_title": "Sales Forecast & Trends",
+      "category_pie": "Sales Share by Category",
+      "revenue": "Revenue",
+      "profit": "Profit"
+    },
+    "tabs": {
+      "daily_detail": "Daily Income/Expense Details",
+      "hot_products": "Top Selling Products",
+      "category_analysis": "Category Data Analysis"
+    },
+    "table": {
+      "date": "Date",
+      "net_sales": "Net Sales",
+      "cost": "Cost of Goods Sold",
+      "profit": "Gross Profit",
+      "expenses": "Expenses",
+      "margin": "Profit Margin",
+      "product_name": "Product Name",
+      "qty_sold": "Qty Sold",
+      "total_sales": "Total Sales",
+      "performance": "Performance",
+      "category_name": "Category Name",
+      "total_items": "Total Items",
+      "share": "Share",
+      "total": "Total",
+      "unknown_product": "Unknown Product",
+      "uncategorized": "Uncategorized"
+    },
+    "export": {
+      "button": "Export {{type}} Report",
+      "type_detail": "Detail",
+      "type_product": "Product",
+      "type_category": "Category"
+    },
+    "errors": {
+      "load_fail": "Failed to load report data",
+      "connection_fail": "Connection Failed"
+    }
+  },
+  "settings": {
+    "title": "System Settings",
+    "subtitle": "Manage your store rules and loyalty programs",
+    "tabs": {
+      "general": "General Settings",
+      "loyalty": "Loyalty Program",
+      "tax": "Tax Settings",
+      "security": "Security & Permissions"
+    },
+    "loyalty": {
+      "title": "Loyalty Program",
+      "enable_points": "Enable Reward Points",
+      "enable_desc": "Customers earn points based on their spending amount",
+      "rate_label": "Reward Rate (Spend amount per 1 point)"
+    },
+    "tax": {
+      "title": "Taxes",
+      "rate_label": "Default Tax Rate (%)"
+    },
+    "regional": {
+      "title": "Region & Currency",
+      "currency_label": "Currency Symbol",
+      "timezone_label": "Timezone"
+    },
+    "save_btn": "Save Changes",
+    "save_success": "Settings saved successfully!",
+    "save_fail": "Save Failed"
+  },
+  "staff": {
+    "title": "Staff Management",
+    "add_staff": "Add Staff",
+    "search_placeholder": "Search name or account...",
+    "no_data": "No staff records found",
+    "table": {
+      "name": "Name",
+      "account": "Login Account",
+      "role": "Title",
+      "status": "Status",
+      "joined_at": "Joined At",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "disabled": "Disabled"
+    },
+    "roles": {
+      "level_1": "System Superadmin",
+      "level_2": "Regional Agent",
+      "level_3": "Distributor",
+      "level_4": "Store Manager",
+      "level_5": "Cashier",
+      "level_6": "Inventory Supervisor",
+      "default": "Staff"
+    },
+    "modal": {
+      "title_add": "Add Staff Account",
+      "title_edit": "Edit Staff Information",
+      "label_name": "Staff Name",
+      "label_username": "Username",
+      "label_password_add": "Default Password",
+      "label_password_edit": "Modify Password (Leave blank if unchanged)",
+      "placeholder_name": "e.g., John Doe",
+      "placeholder_username": "e.g., johndoe_pos",
+      "placeholder_password_add": "Enter password",
+      "placeholder_password_edit": "Enter new password",
+      "label_role": "Role Level",
+      "role_immutable": "{{role}} (Immutable)"
+    },
+    "alerts": {
+      "reset_confirm": "Are you sure you want to reset the password for \"{{name}}\" to Aa1357?",
+      "reset_success": "Password has been reset to Aa1357",
+      "reset_fail": "Reset Failed",
+      "update_status_fail": "Update Status Failed",
+      "action_fail": "Operation Failed"
+    }
+  },
+  "staff_reports": {
+    "title": "Staff Performance Report",
+    "today_overview": "Today's Overview",
+    "no_data": "No data generated yet",
+    "stats": {
+      "total_revenue": "Total Revenue",
+      "total_orders": "Total Orders"
+    },
+    "table": {
+      "title": "Staff Sales Ranking",
+      "staff_name": "Staff Name",
+      "order_count": "Orders",
+      "revenue": "Total Sales Amount",
+      "avg_order_value": "Avg Order Value",
+      "order_unit": "Orders",
+      "empty": "No staff sales data available",
+      "fallback_name": "Staff {{index}}"
+    }
+  },
+  "suppliers": {
+    "title": "Supplier Management",
+    "add_btn": "Add Supplier",
+    "search_placeholder": "Search supplier name...",
+    "empty_state": "No supplier data available",
+    "card": {
+      "contact_person": "Contact Person",
+      "not_available": "N/A"
+    },
+    "modal": {
+      "title_add": "Add Supplier",
+      "title_edit": "Edit Supplier",
+      "label_name": "Supplier Name",
+      "label_contact": "Contact Person",
+      "label_phone": "Phone",
+      "label_email": "Email",
+      "label_address": "Address"
+    },
+    "alerts": {
+      "delete_confirm": "Delete this supplier?",
+      "delete_fail": "Delete Failed",
+      "action_fail": "Operation Failed: {{msg}}"
+    }
+  },
+  "timecards": {
+    "title": "Attendance Management",
+    "status": {
+      "working": "Currently On Duty",
+      "off_duty": "Currently Off Duty",
+      "clock_in_time": "Clock-in Time: {{time}}",
+      "in_progress": "In Progress..."
+    },
+    "buttons": {
+      "clock_in": "Clock In",
+      "clock_out": "Clock Out"
+    },
+    "history": {
+      "title": "Attendance History",
+      "table": {
+        "date": "Date",
+        "clock_in": "Clock In",
+        "clock_out": "Clock Out",
+        "total_hours": "Total Hours (HR)"
+      }
+    },
+    "alerts": {
+      "action_fail": "Operation Failed"
+    }
+  },
+  "discounts": {
+    "title": "Discount Management",
+    "add_btn": "Add Discount",
+    "empty_state": "No discounts created yet",
+    "types": {
+      "percentage": "Percentage (%)",
+      "fixed": "Fixed Amount ({{currency}})",
+      "desc_percentage": "{{value}}% Off",
+      "desc_fixed": "Fixed -{{currency}}{{value}}"
+    },
+    "modal": {
+      "title": "Add Discount",
+      "label_name": "Name",
+      "label_type": "Type",
+      "label_value": "Value",
+      "placeholder_name": "e.g., Weekend Special",
+      "placeholder_value": "e.g., 10"
+    },
+    "alerts": {
+      "delete_confirm": "Delete this discount?",
+      "delete_fail": "Delete Failed",
+      "add_fail": "Add Failed: {{msg}}"
+    }
+  },
+  "inventory": {
+    "title": "Inventory Audit & Adjustment",
+    "add_adjustment": "Add Adjustment",
+    "search_placeholder": "Search product to view stock...",
+    "table": {
+      "product_name": "Product Name",
+      "sku": "SKU",
+      "current_stock": "Current Stock",
+      "unit": "Unit"
+    },
+    "modal": {
+      "title": "Add Inventory Adjustment",
+      "product": "Product",
+      "select_product": "Select Product",
+      "variant": "Variant",
+      "select_variant": "Select Variant",
+      "stock_display": " (Stock: {{stock}})",
+      "qty_label": "Adjustment Quantity (Positive to increase, negative to decrease)",
+      "reason": "Reason",
+      "note": "Note",
+      "submit": "Confirm Adjustment"
+    },
+    "reasons": {
+      "correction": "Stocktake Correction",
+      "damage": "Damage/Waste",
+      "received": "Items Received",
+      "inventory_count": "Inventory Count",
+      "other": "Other"
+    },
+    "units": {
+      "kg": "kg",
+      "pcs": "pcs"
+    },
+    "alerts": {
+      "adjust_fail": "Adjustment Failed"
+    }
+  },
+  "dashboard": {
+    "title": "Operational Overview",
+    "total_tenants": "Total Tenants",
+    "active_tenants": "Active Tenants",
+    "total_products": "System-wide Products",
+    "archive_progress": "Archive Progress",
+    "managed_tenants": "Managed Tenants",
+    "managed_accounts": "Managed Accounts",
+    "est_inventory_value": "Est. Inventory Value",
+    "managed_product_count": "Managed Product Count",
+    "today_sales": "Today's Sales",
+    "inventory_total_value": "Total Inventory Value",
+    "stock_count": "Items in Stock",
+    "current_user": "Current User",
+    "sales_trend": "Sales Trend",
+    "popular_products": "Popular Products",
+    "no_popular_products": "No data for popular products",
+    "sold": "Sold"
+  },
+  "nav": {
+    "overview": "Overview",
+    "pos": "POS Terminal",
+    "product_mgmt": "Products",
+    "inventory_count": "Inventory Audit",
+    "purchase_order": "Purchase Orders",
+    "suppliers": "Suppliers",
+    "discount_mgmt": "Discounts",
+    "order_mgmt": "Orders",
+    "revenue_report": "Operational Reports",
+    "customer_data": "Customers",
+    "staff_mgmt": "Staff",
+    "attendance": "Attendance",
+    "staff_performance": "Performance",
+    "system_settings": "Settings",
+    "api_integration": "API & Integrations"
   }
 }

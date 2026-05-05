@@ -1,21 +1,471 @@
 {
   "login": {
-    "welcome": "환영합니다",
+    "welcome": "다시 오신 것을 환영합니다",
     "subtitle": "계속하려면 관리자 대시보드에 로그인하세요",
     "email": "이메일 주소",
     "password": "비밀번호",
     "companyId": "회사 ID",
-    "submit": "시스템 로그인",
-    "errorDefault": "로그인 실패, 자격 증명을 확인하세요"
+    "submit": "로그인",
+    "errorDefault": "로그인에 실패했습니다. 계정, 비밀번호 또는 회사 ID를 확인하세요."
   },
-  "customer_management": "고객 관리",
+  "customer_management": "고객 데이터 관리",
   "add_customer": "고객 추가",
-  "search_placeholder_name_phone": "이름 또는 전화번호 검색...",
+  "search_placeholder_name_phone": "고객 이름 또는 전화번호 검색...",
   "delete_selected_confirm": "선택한 {{count}}명의 고객을 삭제하시겠습니까?",
   "sales_trend": "판매 트렌드",
   "status_paid": "결제 완료",
   "status_pending": "대기 중",
   "checkout_now": "지금 결제",
   "reason_correction": "재고 수정",
-  "multi_variants": "다중 옵션"
+  "multi_variants": "다중 옵션",
+  "common": {
+    "loading": "데이터 로드 중...",
+    "retry": "재시도",
+    "error_load_data": "데이터를 불러오지 못했습니다",
+    "last_update": "최종 업데이트",
+    "no_data_today": "오늘 데이터가 없습니다",
+    "logout": "로그아웃",
+    "search_placeholder": "주문, 상품 검색...",
+    "sync_data": "데이터 동기화",
+    "results": "결과",
+    "clear": "초기화",
+    "delete": "삭제",
+    "filter": "필터",
+    "actions": "작업",
+    "reset": "재설정",
+    "preview": "미리보기",
+    "cancel": "취소",
+    "confirm_update": "업데이트 확인",
+    "confirm_add": "추가 확인",
+    "unknown": "알 수 없음"
+  },
+  "pos": {
+    "search_placeholder": "상품 검색 또는 바코드 스캔...",
+    "category_all": "전체",
+    "multi_variants": "다중 옵션",
+    "cart": "장바구니",
+    "cart_empty": "추가된 상품이 없습니다",
+    "search_customer": "고객 이름 검색...",
+    "select_customer": "고객 선택",
+    "select_discount": "할인 선택",
+    "checkout_date": "결제일",
+    "subtotal": "소계",
+    "discount": "할인",
+    "tax_amount": "세액",
+    "total": "합계",
+    "hold_order": "주문 보류",
+    "checkout_now": "지금 결제",
+    "checkout_success": "결제 성공",
+    "order_created_msg": "주문이 생성되었으며 재고가 업데이트되었습니다",
+    "error_no_store_id": "매장 ID를 가져오지 못했습니다. 페이지를 새로고침하세요.",
+    "checkout_failed": "결제 실패"
+  },
+  "products": {
+    "title": "상품 카탈로그",
+    "import_csv": "CSV 가져오기",
+    "export_csv": "CSV 내보내기",
+    "add_product": "상품 추가",
+    "edit_product": "상품 편집",
+    "search_placeholder": "상품명 또는 SKU 검색...",
+    "no_products_msg": "먼저 상품을 추가해 주세요",
+    "add_now": "지금 추가",
+    "sku_barcode": "SKU / 바코드",
+    "product_name": "상품명",
+    "price": "가격",
+    "stock": "재고",
+    "category": "카테고리",
+    "no_match_msg": "일치하는 상품이 없습니다",
+    "units": "개",
+    "uncategorized": "미분류",
+    "product_image": "상품 이미지 (복구용 미리보기)",
+    "select_category": "카테고리 선택",
+    "add_category": "카테고리 추가",
+    "category_name": "카테고리 이름",
+    "category_placeholder": "예: 음료, 디저트",
+    "color_tag": "컬러 태그",
+    "sold_by": "판매 단위",
+    "sold_each": "낱개 판매",
+    "sold_weight": "중량 판매",
+    "repair_price": "수리비 (선택 사항)",
+    "has_variants_msg": "이 상품은 여러 옵션(예: 사이즈, 색상)이 있습니다",
+    "variants": "상품 옵션",
+    "add_variant": "옵션 추가",
+    "variant_name": "옵션 이름",
+    "name_placeholder": "예: 클래식 아메리카노",
+    "import": {
+      "title": "CSV에서 상품 가져오기",
+      "select_file": "CSV 파일 선택",
+      "file_name": "파일명:",
+      "file_size": "파일 크기:",
+      "format_requirement": "CSV 형식 요구사항:",
+      "required_columns": [
+        "SKU",
+        "상품명",
+        "가격",
+        "원가",
+        "재고",
+        "카테고리",
+        "설명",
+        "바코드",
+        "판매 단위"
+      ],
+      "submit": "가져오기 확인"
+    },
+    "update_failed": "업데이트 실패",
+    "add_failed": "추가 실패",
+    "image_upload_failed": "이미지 업로드 실패",
+    "add_category_failed": "카테고리 추가 실패",
+    "delete_failed": "삭제 실패",
+    "export_failed": "내보내기 실패",
+    "import_failed": "가져오기 실패",
+    "select_csv_msg": "CSV 파일을 선택하세요",
+    "delete_selected_confirm": "선택한 {{count}}개의 상품을 삭제하시겠습니까?"
+  },
+  "purchase_orders": {
+    "add_failed": "추가 실패",
+    "confirm_receive": "입고를 확인하시겠습니까? 관련 상품의 재고가 업데이트됩니다.",
+    "receive_failed": "입고 실패",
+    "status_received": "입고 완료",
+    "status_ordered": "주문 완료",
+    "status_cancelled": "취소됨",
+    "status_draft": "초안",
+    "title": "구매 주문(PO)",
+    "add": "새 PO 추가",
+    "order_no": "주문 번호",
+    "suppliers": "공급처",
+    "amount": "금액",
+    "status": "상태",
+    "date": "날짜",
+    "actions": "작업",
+    "receive": "재고 입고",
+    "select_supplier": "공급처 선택",
+    "items": "상품 상세",
+    "select_product": "상품 선택",
+    "add_product": "상품 추가 (새 창)",
+    "quantity": "수량",
+    "cost_price": "매입 원가",
+    "add_item": "항목 추가",
+    "create_draft": "초안 작성"
+  },
+  "register": {
+    "title": "<1>POS SaaS</1>와 함께 시작하세요",
+    "subtitle": "비즈니스 계정을 등록하여 시작하십시오",
+    "company_name": "회사 이름",
+    "company_name_placeholder": "예: 우수한 리테일 그룹",
+    "tenant_id": "회사 ID (테넌트 ID)",
+    "tenant_id_placeholder": "예: superstore-01 (고유 식별자)",
+    "admin_email": "관리자 이메일",
+    "admin_email_placeholder": "admin@example.com",
+    "password": "비밀번호 설정",
+    "confirm_password": "비밀번호 확인",
+    "password_placeholder": "••••••••",
+    "submit": "지금 등록",
+    "has_account": "이미 계정이 있으신가요?",
+    "login_now": "여기에서 로그인",
+    "success_title": "등록 성공!",
+    "success_msg": "회사 계정이 생성되었습니다. 로그인 페이지로 이동합니다...",
+    "goto_login": "로그인하기",
+    "error_password_mismatch": "비밀번호가 일치하지 않습니다",
+    "error_default": "등록 실패, 다시 시도해 주세요"
+  },
+  "reports": {
+    "revenue_title": "운영 보고서",
+    "date_start": "시작일",
+    "date_end": "종료일",
+    "presets": {
+      "today": "오늘",
+      "yesterday": "어제",
+      "thisWeek": "이번 주",
+      "thisMonth": "이번 달",
+      "lastMonth": "지난달",
+      "last7": "지난 7일",
+      "last30": "지난 30일"
+    },
+    "metrics": {
+      "total_revenue": "총 매출",
+      "gross_profit": "매출 총이익",
+      "discounts": "적용된 할인",
+      "expenditure": "매장 지출"
+    },
+    "charts": {
+      "trend_title": "판매 예측 및 트렌드",
+      "category_pie": "카테고리별 매출 비중",
+      "revenue": "수익",
+      "profit": "이익"
+    },
+    "tabs": {
+      "daily_detail": "일별 수입/지출 상세",
+      "hot_products": "베스트셀러 상품 순위",
+      "category_analysis": "카테고리 데이터 분석"
+    },
+    "table": {
+      "date": "날짜",
+      "net_sales": "순 매출",
+      "cost": "매출 원가",
+      "profit": "총이익",
+      "expenses": "지출",
+      "margin": "마진율",
+      "product_name": "상품명",
+      "qty_sold": "판매 수량",
+      "total_sales": "총 판매액",
+      "performance": "실적",
+      "category_name": "카테고리 이름",
+      "total_items": "총 품목 수",
+      "share": "점유율",
+      "total": "합계",
+      "unknown_product": "알 수 없는 상품",
+      "uncategorized": "미분류"
+    },
+    "export": {
+      "button": "{{type}} 보고서 내보내기",
+      "type_detail": "상세",
+      "type_product": "상품",
+      "type_category": "카테고리"
+    },
+    "errors": {
+      "load_fail": "보고서 데이터를 로드하지 못했습니다",
+      "connection_fail": "연결 오류"
+    }
+  },
+  "settings": {
+    "title": "시스템 설정",
+    "subtitle": "매장 규칙 및 로열티 프로그램을 관리합니다",
+    "tabs": {
+      "general": "일반 설정",
+      "loyalty": "로열티 프로그램",
+      "tax": "세금 설정",
+      "security": "보안 및 권한"
+    },
+    "loyalty": {
+      "title": "로열티 프로그램",
+      "enable_points": "리워드 포인트 활성화",
+      "enable_desc": "고객은 구매 금액에 따라 포인트를 적립합니다",
+      "rate_label": "적립률 (1포인트당 구매 금액)"
+    },
+    "tax": {
+      "title": "세금 구성",
+      "rate_label": "기본 세율 (%)"
+    },
+    "regional": {
+      "title": "지역 및 통화",
+      "currency_label": "통화 기호",
+      "timezone_label": "시간대"
+    },
+    "save_btn": "변경 사항 저장",
+    "save_success": "설정이 성공적으로 저장되었습니다!",
+    "save_fail": "저장 실패"
+  },
+  "staff": {
+    "title": "직원 관리",
+    "add_staff": "직원 추가",
+    "search_placeholder": "이름 또는 계정 검색...",
+    "no_data": "직원 데이터가 없습니다",
+    "table": {
+      "name": "이름",
+      "account": "로그인 계정",
+      "role": "직책",
+      "status": "상태",
+      "joined_at": "입사일",
+      "actions": "작업"
+    },
+    "status": {
+      "active": "활성",
+      "disabled": "비활성"
+    },
+    "roles": {
+      "level_1": "시스템 최고관리자",
+      "level_2": "지역 대리인",
+      "level_3": "배급업자",
+      "level_4": "매장 관리자",
+      "level_5": "계산원",
+      "level_6": "재고 감독자",
+      "default": "일반 직원"
+    },
+    "modal": {
+      "title_add": "직원 계정 추가",
+      "title_edit": "직원 정보 편집",
+      "label_name": "직원 이름",
+      "label_username": "사용자 이름",
+      "label_password_add": "기본 비밀번호",
+      "label_password_edit": "비밀번호 변경 (변경하지 않으려면 비워둠)",
+      "placeholder_name": "예: 홍길동",
+      "placeholder_username": "예: gildong_pos",
+      "placeholder_password_add": "비밀번호 입력",
+      "placeholder_password_edit": "새 비밀번호 입력",
+      "label_role": "직책 레벨",
+      "role_immutable": "{{role}} (수정 불가)"
+    },
+    "alerts": {
+      "reset_confirm": "'{{name}}'의 비밀번호를 Aa1357로 초기화하시겠습니까?",
+      "reset_success": "비밀번호가 Aa1357로 초기화되었습니다",
+      "reset_fail": "초기화 실패",
+      "update_status_fail": "상태 업데이트 실패",
+      "action_fail": "작업 실패"
+    }
+  },
+  "staff_reports": {
+    "title": "직원 실적 보고서",
+    "today_overview": "오늘의 개요",
+    "no_data": "생성된 데이터가 없습니다",
+    "stats": {
+      "total_revenue": "총 판매 수익",
+      "total_orders": "총 주문 수"
+    },
+    "table": {
+      "title": "직원별 판매 순위",
+      "staff_name": "직원 이름",
+      "order_count": "주문 수",
+      "revenue": "총 판매액",
+      "avg_order_value": "평균 주문 금액",
+      "order_unit": "건",
+      "empty": "현재 직원 판매 데이터가 없습니다",
+      "fallback_name": "직원 {{index}}"
+    }
+  },
+  "suppliers": {
+    "title": "공급처 관리",
+    "add_btn": "공급처 추가",
+    "search_placeholder": "공급처 이름 검색...",
+    "empty_state": "공급처 데이터가 없습니다",
+    "card": {
+      "contact_person": "담당자",
+      "not_available": "없음"
+    },
+    "modal": {
+      "title_add": "공급처 추가",
+      "title_edit": "공급처 편집",
+      "label_name": "공급처 이름",
+      "label_contact": "담당자명",
+      "label_phone": "전화번호",
+      "label_email": "이메일",
+      "label_address": "주소"
+    },
+    "alerts": {
+      "delete_confirm": "이 공급처를 삭제하시겠습니까?",
+      "delete_fail": "삭제 실패",
+      "action_fail": "작업 실패: {{msg}}"
+    }
+  },
+  "timecards": {
+    "title": "근태 관리",
+    "status": {
+      "working": "근무 중",
+      "off_duty": "근무 종료",
+      "clock_in_time": "출근 시간: {{time}}",
+      "in_progress": "진행 중..."
+    },
+    "buttons": {
+      "clock_in": "출근 기록",
+      "clock_out": "퇴근 기록"
+    },
+    "history": {
+      "title": "근태 기록 이력",
+      "table": {
+        "date": "날짜",
+        "clock_in": "출근",
+        "clock_out": "퇴근",
+        "total_hours": "총 근무 시간 (HR)"
+      }
+    },
+    "alerts": {
+      "action_fail": "작업 실패"
+    }
+  },
+  "discounts": {
+    "title": "할인 관리",
+    "add_btn": "할인 추가",
+    "empty_state": "생성된 할인이 없습니다",
+    "types": {
+      "percentage": "백분율 (%)",
+      "fixed": "고정 금액 ({{currency}})",
+      "desc_percentage": "{{value}}% 할인",
+      "desc_fixed": "고정 금액 할인 -{{currency}}{{value}}"
+    },
+    "modal": {
+      "title": "할인 추가",
+      "label_name": "이름",
+      "label_type": "유형",
+      "label_value": "값",
+      "placeholder_name": "예: 주말 특가",
+      "placeholder_value": "예: 10"
+    },
+    "alerts": {
+      "delete_confirm": "이 할인을 삭제하시겠습니까?",
+      "delete_fail": "삭제 실패",
+      "add_fail": "추가 실패: {{msg}}"
+    }
+  },
+  "inventory": {
+    "title": "재고 실사 및 조정",
+    "add_adjustment": "조정 추가",
+    "search_placeholder": "재고를 확인할 상품 검색...",
+    "table": {
+      "product_name": "상품명",
+      "sku": "SKU",
+      "current_stock": "현재 재고",
+      "unit": "단위"
+    },
+    "modal": {
+      "title": "재고 조정 추가",
+      "product": "상품",
+      "select_product": "상품 선택",
+      "variant": "옵션",
+      "select_variant": "옵션 선택",
+      "stock_display": " (재고: {{stock}})",
+      "qty_label": "조정 수량 (양수는 증가, 음수는 감소)",
+      "reason": "사유",
+      "note": "비고",
+      "submit": "조정 확인"
+    },
+    "reasons": {
+      "correction": "실사 수정",
+      "damage": "파손 / 폐기",
+      "received": "상품 입고",
+      "inventory_count": "재고 조사",
+      "other": "기타"
+    },
+    "units": {
+      "kg": "kg",
+      "pcs": "개"
+    },
+    "alerts": {
+      "adjust_fail": "조정 실패"
+    }
+  },
+  "dashboard": {
+    "title": "운영 요약",
+    "total_tenants": "총 테넌트",
+    "active_tenants": "활성 테넌트",
+    "total_products": "시스템 상품",
+    "archive_progress": "아카이브 진행률",
+    "managed_tenants": "관리 중인 테넌트",
+    "managed_accounts": "관리 중인 계정",
+    "est_inventory_value": "추정 재고 자산",
+    "managed_product_count": "관리 상품 수",
+    "today_sales": "오늘의 매출",
+    "inventory_total_value": "총 재고 가치",
+    "stock_count": "재고 수량",
+    "current_user": "현재 사용자",
+    "sales_trend": "판매 트렌드",
+    "popular_products": "인기 상품",
+    "no_popular_products": "인기 상품 데이터가 없습니다",
+    "sold": "판매됨"
+  },
+  "nav": {
+    "overview": "개요",
+    "pos": "판매 시점 관리 (POS)",
+    "product_mgmt": "상품 관리",
+    "inventory_count": "재고 실사",
+    "purchase_order": "발주 및 재고",
+    "suppliers": "공급처",
+    "discount_mgmt": "할인 관리",
+    "order_mgmt": "주문 관리",
+    "revenue_report": "운영 보고서",
+    "customer_data": "고객 데이터",
+    "staff_mgmt": "직원 관리",
+    "attendance": "근태 기록",
+    "staff_performance": "실적 관리",
+    "system_settings": "시스템 설정",
+    "api_integration": "API 및 통합"
+  }
 }

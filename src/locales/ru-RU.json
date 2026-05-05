@@ -1,21 +1,471 @@
 {
   "login": {
     "welcome": "С возвращением",
-    "subtitle": "Войдите в панель управления администратора",
+    "subtitle": "Войдите в панель управления администратора, чтобы продолжить",
     "email": "Электронная почта",
     "password": "Пароль",
     "companyId": "ID компании",
-    "submit": "Войти в систему",
-    "errorDefault": "Ошибка входа, проверьте свои учетные данные"
+    "submit": "Войти",
+    "errorDefault": "Ошибка входа. Проверьте учетную запись, пароль или ID компании."
   },
-  "customer_management": "Управление клиентами",
+  "customer_management": "Управление данными клиентов",
   "add_customer": "Добавить клиента",
-  "search_placeholder_name_phone": "Поиск по имени или телефону...",
-  "delete_selected_confirm": "Удалить {{count}} выбранных клиентов?",
-  "sales_trend": "Тенденции продаж",
+  "search_placeholder_name_phone": "Поиск клиента по имени или телефону...",
+  "delete_selected_confirm": "Вы уверены, что хотите удалить {{count}} выбранных клиентов?",
+  "sales_trend": "Тренды продаж",
   "status_paid": "Оплачено",
   "status_pending": "В ожидании",
-  "checkout_now": "Оформить сейчас",
+  "checkout_now": "Оформить заказ",
   "reason_correction": "Корректировка запасов",
-  "multi_variants": "Множество вариантов"
+  "multi_variants": "Несколько вариантов",
+  "common": {
+    "loading": "Загрузка данных...",
+    "retry": "Повторить",
+    "error_load_data": "Ошибка загрузки данных",
+    "last_update": "Последнее обновление",
+    "no_data_today": "Нет данных на сегодня",
+    "logout": "Выйти",
+    "search_placeholder": "Поиск заказов, товаров...",
+    "sync_data": "Синхронизировать данные",
+    "results": "Результаты",
+    "clear": "Очистить",
+    "delete": "Удалить",
+    "filter": "Фильтр",
+    "actions": "Действия",
+    "reset": "Сбросить",
+    "preview": "Предпросмотр",
+    "cancel": "Отмена",
+    "confirm_update": "Подтвердить обновление",
+    "confirm_add": "Подтвердить добавление",
+    "unknown": "Неизвестно"
+  },
+  "pos": {
+    "search_placeholder": "Поиск товара или сканирование штрих-кода...",
+    "category_all": "Все",
+    "multi_variants": "Несколько вариантов",
+    "cart": "Корзина",
+    "cart_empty": "Товары не добавлены",
+    "search_customer": "Поиск клиента...",
+    "select_customer": "Выбрать клиента",
+    "select_discount": "Выбрать скидку",
+    "checkout_date": "Дата оплаты",
+    "subtotal": "Подытог",
+    "discount": "Скидка",
+    "tax_amount": "Сумма налога",
+    "total": "Итого",
+    "hold_order": "Отложить заказ",
+    "checkout_now": "Оплатить сейчас",
+    "checkout_success": "Оплата прошла успешно",
+    "order_created_msg": "Заказ создан, остатки обновлены",
+    "error_no_store_id": "Не удалось получить ID магазина. Пожалуйста, обновите страницу.",
+    "checkout_failed": "Ошибка оплаты"
+  },
+  "products": {
+    "title": "Каталог товаров",
+    "import_csv": "Импорт CSV",
+    "export_csv": "Экспорт CSV",
+    "add_product": "Добавить товар",
+    "edit_product": "Редактировать товар",
+    "search_placeholder": "Поиск по названию или SKU...",
+    "no_products_msg": "Сначала добавьте товары",
+    "add_now": "Добавить сейчас",
+    "sku_barcode": "SKU / Штрих-код",
+    "product_name": "Название товара",
+    "price": "Цена",
+    "stock": "Запас",
+    "category": "Категория",
+    "no_match_msg": "Товары не найдены",
+    "units": "шт.",
+    "uncategorized": "Без категории",
+    "product_image": "Изображение товара (превью)",
+    "select_category": "Выберите категорию",
+    "add_category": "Добавить категорию",
+    "category_name": "Название категории",
+    "category_placeholder": "Напр: Напитки, Десерты",
+    "color_tag": "Цветовая метка",
+    "sold_by": "Единица продажи",
+    "sold_each": "Продажа поштучно",
+    "sold_weight": "Продажа на вес",
+    "repair_price": "Стоимость ремонта (опционально)",
+    "has_variants_msg": "У этого товара есть несколько вариантов (напр: размер, цвет)",
+    "variants": "Варианты товара",
+    "add_variant": "Добавить вариант",
+    "variant_name": "Название варианта",
+    "name_placeholder": "Напр: Классический американо",
+    "import": {
+      "title": "Импорт товаров из CSV",
+      "select_file": "Выбрать файл CSV",
+      "file_name": "Имя файла:",
+      "file_size": "Размер файла:",
+      "format_requirement": "Требования к формату CSV:",
+      "required_columns": [
+        "SKU",
+        "Название товара",
+        "Цена",
+        "Себестоимость",
+        "Запас",
+        "Категория",
+        "Описание",
+        "Штрих-код",
+        "Единица продажи"
+      ],
+      "submit": "Подтвердить импорт"
+    },
+    "update_failed": "Ошибка обновления",
+    "add_failed": "Ошибка добавления",
+    "image_upload_failed": "Ошибка загрузки изображения",
+    "add_category_failed": "Ошибка добавления категории",
+    "delete_failed": "Ошибка удаления",
+    "export_failed": "Ошибка экспорта",
+    "import_failed": "Ошибка импорта",
+    "select_csv_msg": "Пожалуйста, выберите CSV файл",
+    "delete_selected_confirm": "Вы уверены, что хотите удалить {{count}} выбранных товаров?"
+  },
+  "purchase_orders": {
+    "add_failed": "Ошибка добавления",
+    "confirm_receive": "Подтвердить получение товара? Это обновит остатки соответствующих товаров.",
+    "receive_failed": "Ошибка получения",
+    "status_received": "Получено",
+    "status_ordered": "Заказано",
+    "status_cancelled": "Отменено",
+    "status_draft": "Черновик",
+    "title": "Заказы на закупку (PO)",
+    "add": "Создать новый PO",
+    "order_no": "№ Заказа",
+    "suppliers": "Поставщики",
+    "amount": "Сумма",
+    "status": "Статус",
+    "date": "Дата",
+    "actions": "Действия",
+    "receive": "Принять на склад",
+    "select_supplier": "Выбрать поставщика",
+    "items": "Детали товаров",
+    "select_product": "Выбрать товар",
+    "add_product": "Добавить товар (новое окно)",
+    "quantity": "Количество",
+    "cost_price": "Цена закупки",
+    "add_item": "Добавить позицию",
+    "create_draft": "Создать черновик"
+  },
+  "register": {
+    "title": "Начните работу с <1>POS SaaS</1>",
+    "subtitle": "Зарегистрируйте аккаунт компании, чтобы начать",
+    "company_name": "Название компании",
+    "company_name_placeholder": "Напр: Super Retail Group",
+    "tenant_id": "ID компании (Tenant ID)",
+    "tenant_id_placeholder": "Напр: superstore-01 (уникальный ID)",
+    "admin_email": "Email администратора",
+    "admin_email_placeholder": "admin@example.ru",
+    "password": "Установите пароль",
+    "confirm_password": "Подтвердите пароль",
+    "password_placeholder": "••••••••",
+    "submit": "Зарегистрироваться",
+    "has_account": "Уже есть аккаунт?",
+    "login_now": "Войти здесь",
+    "success_title": "Регистрация успешна!",
+    "success_msg": "Аккаунт вашей компании создан. Перенаправление на страницу входа...",
+    "goto_login": "Перейти ко входу",
+    "error_password_mismatch": "Пароли не совпадают",
+    "error_default": "Ошибка регистрации, попробуйте снова"
+  },
+  "reports": {
+    "revenue_title": "Операционные отчеты",
+    "date_start": "Дата начала",
+    "date_end": "Дата окончания",
+    "presets": {
+      "today": "Сегодня",
+      "yesterday": "Вчера",
+      "thisWeek": "Эта неделя",
+      "thisMonth": "Этот месяц",
+      "lastMonth": "Прошлый месяц",
+      "last7": "Последние 7 дней",
+      "last30": "Последние 30 дней"
+    },
+    "metrics": {
+      "total_revenue": "Общая выручка",
+      "gross_profit": "Валовая прибыль",
+      "discounts": "Предоставленные скидки",
+      "expenditure": "Расходы магазина"
+    },
+    "charts": {
+      "trend_title": "Прогноз продаж и тренды",
+      "category_pie": "Доля выручки по категориям",
+      "revenue": "Выручка",
+      "profit": "Прибыль"
+    },
+    "tabs": {
+      "daily_detail": "Детализация доходов/расходов по дням",
+      "hot_products": "Топ продаваемых товаров",
+      "category_analysis": "Анализ данных по категориям"
+    },
+    "table": {
+      "date": "Дата",
+      "net_sales": "Чистые продажи",
+      "cost": "Себестоимость (COGS)",
+      "profit": "Валовая прибыль",
+      "expenses": "Расходы",
+      "margin": "Маржа",
+      "product_name": "Название товара",
+      "qty_sold": "Продано шт.",
+      "total_sales": "Всего продаж",
+      "performance": "Эффективность",
+      "category_name": "Название категории",
+      "total_items": "Всего позиций",
+      "share": "Доля",
+      "total": "Итого",
+      "unknown_product": "Неизвестный товар",
+      "uncategorized": "Без категории"
+    },
+    "export": {
+      "button": "Экспорт отчета ({{type}})",
+      "type_detail": "Детальный",
+      "type_product": "Товарный",
+      "type_category": "Категорийный"
+    },
+    "errors": {
+      "load_fail": "Ошибка загрузки данных отчета",
+      "connection_fail": "Ошибка соединения"
+    }
+  },
+  "settings": {
+    "title": "Системные настройки",
+    "subtitle": "Управление правилами магазина и программой лояльности",
+    "tabs": {
+      "general": "Общие настройки",
+      "loyalty": "Программа лояльности",
+      "tax": "Настройки налогов",
+      "security": "Безопасность и доступы"
+    },
+    "loyalty": {
+      "title": "Программа лояльности",
+      "enable_points": "Включить бонусные баллы",
+      "enable_desc": "Клиенты получают баллы в зависимости от суммы покупки",
+      "rate_label": "Курс начисления (сумма за 1 балл)"
+    },
+    "tax": {
+      "title": "Конфигурация налогов",
+      "rate_label": "Налоговая ставка по умолчанию (%)"
+    },
+    "regional": {
+      "title": "Регион и валюта",
+      "currency_label": "Символ валюты",
+      "timezone_label": "Часовой пояс"
+    },
+    "save_btn": "Сохранить изменения",
+    "save_success": "Настройки успешно сохранены!",
+    "save_fail": "Ошибка сохранения"
+  },
+  "staff": {
+    "title": "Управление персоналом",
+    "add_staff": "Добавить сотрудника",
+    "search_placeholder": "Поиск по имени или аккаунту...",
+    "no_data": "Данные о персонале отсутствуют",
+    "table": {
+      "name": "Имя",
+      "account": "Аккаунт для входа",
+      "role": "Роль",
+      "status": "Статус",
+      "joined_at": "Дата приема",
+      "actions": "Действия"
+    },
+    "status": {
+      "active": "Активен",
+      "disabled": "Отключен"
+    },
+    "roles": {
+      "level_1": "Суперадмин системы",
+      "level_2": "Региональный агент",
+      "level_3": "Дистрибьютор",
+      "level_4": "Менеджер магазина",
+      "level_5": "Кассир",
+      "level_6": "Кладовщик",
+      "default": "Сотрудник"
+    },
+    "modal": {
+      "title_add": "Добавить учетную запись сотрудника",
+      "title_edit": "Редактировать данные сотрудника",
+      "label_name": "Имя сотрудника",
+      "label_username": "Имя пользователя",
+      "label_password_add": "Пароль по умолчанию",
+      "label_password_edit": "Сменить пароль (оставьте пустым, если не меняете)",
+      "placeholder_name": "Напр: Иван Иванов",
+      "placeholder_username": "Напр: ivan_pos",
+      "placeholder_password_add": "Введите пароль",
+      "placeholder_password_edit": "Введите новый пароль",
+      "label_role": "Уровень роли",
+      "role_immutable": "{{role}} (неизменяемо)"
+    },
+    "alerts": {
+      "reset_confirm": "Вы уверены, что хотите сбросить пароль для '{{name}}' на Aa1357?",
+      "reset_success": "Пароль сброшен на Aa1357",
+      "reset_fail": "Ошибка сброса",
+      "update_status_fail": "Ошибка обновления статуса",
+      "action_fail": "Действие не выполнено"
+    }
+  },
+  "staff_reports": {
+    "title": "Отчет по эффективности персонала",
+    "today_overview": "Обзор за сегодня",
+    "no_data": "Данные еще не сформированы",
+    "stats": {
+      "total_revenue": "Общая выручка от продаж",
+      "total_orders": "Всего заказов"
+    },
+    "table": {
+      "title": "Рейтинг продаж сотрудников",
+      "staff_name": "Имя сотрудника",
+      "order_count": "Кол-во заказов",
+      "revenue": "Общая сумма продаж",
+      "avg_order_value": "Средний чек",
+      "order_unit": "зак.",
+      "empty": "Нет данных по продажам персонала",
+      "fallback_name": "Сотрудник {{index}}"
+    }
+  },
+  "suppliers": {
+    "title": "Управление поставщиками",
+    "add_btn": "Добавить поставщика",
+    "search_placeholder": "Поиск поставщика...",
+    "empty_state": "Данные о поставщиках отсутствуют",
+    "card": {
+      "contact_person": "Контактное лицо",
+      "not_available": "Нет данных"
+    },
+    "modal": {
+      "title_add": "Добавить поставщика",
+      "title_edit": "Редактировать поставщика",
+      "label_name": "Название поставщика",
+      "label_contact": "Контактное лицо",
+      "label_phone": "Телефон",
+      "label_email": "Email",
+      "label_address": "Адрес"
+    },
+    "alerts": {
+      "delete_confirm": "Удалить этого поставщика?",
+      "delete_fail": "Ошибка удаления",
+      "action_fail": "Ошибка действия: {{msg}}"
+    }
+  },
+  "timecards": {
+    "title": "Учет рабочего времени",
+    "status": {
+      "working": "На смене",
+      "off_duty": "Смена закрыта",
+      "clock_in_time": "Время начала: {{time}}",
+      "in_progress": "В процессе..."
+    },
+    "buttons": {
+      "clock_in": "Начать смену",
+      "clock_out": "Завершить смену"
+    },
+    "history": {
+      "title": "История посещений",
+      "table": {
+        "date": "Дата",
+        "clock_in": "Начало",
+        "clock_out": "Конец",
+        "total_hours": "Всего часов (ч)"
+      }
+    },
+    "alerts": {
+      "action_fail": "Действие не выполнено"
+    }
+  },
+  "discounts": {
+    "title": "Управление скидками",
+    "add_btn": "Добавить скидку",
+    "empty_state": "Скидки не созданы",
+    "types": {
+      "percentage": "Процент (%)",
+      "fixed": "Фиксированная сумма ({{currency}})",
+      "desc_percentage": "Скидка {{value}}%",
+      "desc_fixed": "Скидка {{currency}}{{value}}"
+    },
+    "modal": {
+      "title": "Добавить скидку",
+      "label_name": "Название",
+      "label_type": "Тип",
+      "label_value": "Значение",
+      "placeholder_name": "Напр: Акция выходного дня",
+      "placeholder_value": "Напр: 10"
+    },
+    "alerts": {
+      "delete_confirm": "Удалить эту скидку?",
+      "delete_fail": "Ошибка удаления",
+      "add_fail": "Ошибка добавления: {{msg}}"
+    }
+  },
+  "inventory": {
+    "title": "Инвентаризация и корректировки",
+    "add_adjustment": "Добавить корректировку",
+    "search_placeholder": "Поиск товара для проверки остатков...",
+    "table": {
+      "product_name": "Название товара",
+      "sku": "SKU",
+      "current_stock": "Текущий запас",
+      "unit": "Ед. изм."
+    },
+    "modal": {
+      "title": "Добавить корректировку запасов",
+      "product": "Товар",
+      "select_product": "Выбрать товар",
+      "variant": "Вариант",
+      "select_variant": "Выбрать вариант",
+      "stock_display": " (Запас: {{stock}})",
+      "qty_label": "Кол-во для корректировки (положительное — приход, отрицательное — расход)",
+      "reason": "Причина",
+      "note": "Примечание",
+      "submit": "Подтвердить корректировку"
+    },
+    "reasons": {
+      "correction": "Корректировка аудита",
+      "damage": "Повреждение / Брак",
+      "received": "Поступление товара",
+      "inventory_count": "Пересчет запасов",
+      "other": "Другое"
+    },
+    "units": {
+      "kg": "кг",
+      "pcs": "шт."
+    },
+    "alerts": {
+      "adjust_fail": "Ошибка корректировки"
+    }
+  },
+  "dashboard": {
+    "title": "Операционный обзор",
+    "total_tenants": "Всего арендаторов",
+    "active_tenants": "Активные арендаторы",
+    "total_products": "Товаров в системе",
+    "archive_progress": "Прогресс архивации",
+    "managed_tenants": "Управляемые арендаторы",
+    "managed_accounts": "Управляемые аккаунты",
+    "est_inventory_value": "Оценочная стоимость запасов",
+    "managed_product_count": "Кол-во управляемых товаров",
+    "today_sales": "Продажи за сегодня",
+    "inventory_total_value": "Общая стоимость склада",
+    "stock_count": "Количество единиц",
+    "current_user": "Текущий пользователь",
+    "sales_trend": "Тренды продаж",
+    "popular_products": "Популярные товары",
+    "no_popular_products": "Нет данных по популярным товарам",
+    "sold": "Продано"
+  },
+  "nav": {
+    "overview": "Обзор",
+    "pos": "Точка продажи (POS)",
+    "product_mgmt": "Управление товарами",
+    "inventory_count": "Аудит склада",
+    "purchase_order": "Закупки и склад",
+    "suppliers": "Поставщики",
+    "discount_mgmt": "Управление скидками",
+    "order_mgmt": "Управление заказами",
+    "revenue_report": "Операционные отчеты",
+    "customer_data": "Данные клиентов",
+    "staff_mgmt": "Управление персоналом",
+    "attendance": "Учет посещаемости",
+    "staff_performance": "Эффективность штата",
+    "system_settings": "Настройки системы",
+    "api_integration": "API и интеграции"
+  }
 }

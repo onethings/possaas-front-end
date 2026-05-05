@@ -1,21 +1,471 @@
 {
   "login": {
-    "welcome": "Chào mừng trở lại",
-    "subtitle": "Đăng nhập vào bảng điều khiển quản trị của bạn để tiếp tục",
+    "welcome": "Chào mừng bạn trở lại",
+    "subtitle": "Đăng nhập vào bảng quản trị để tiếp tục",
     "email": "Địa chỉ Email",
     "password": "Mật khẩu",
     "companyId": "Mã công ty",
-    "submit": "Đăng nhập hệ thống",
-    "errorDefault": "Đăng nhập thất bại, vui lòng kiểm tra lại thông tin"
+    "submit": "Đăng nhập",
+    "errorDefault": "Đăng nhập thất bại, vui lòng kiểm tra tài khoản, mật khẩu hoặc mã công ty của bạn"
   },
-  "customer_management": "Quản lý khách hàng",
+  "customer_management": "Quản lý dữ liệu khách hàng",
   "add_customer": "Thêm khách hàng",
-  "search_placeholder_name_phone": "Tìm kiếm tên hoặc điện thoại...",
-  "delete_selected_confirm": "Xác nhận xóa {{count}} khách hàng đã chọn?",
-  "sales_trend": "Xu hướng bán hàng",
-  "status_paid": "Đã thanh toán",
+  "search_placeholder_name_phone": "Tìm tên hoặc số điện thoại khách hàng...",
+  "delete_selected_confirm": "Bạn có chắc chắn muốn xóa {{count}} khách hàng đã chọn?",
+  "sales_trend": "Xu hướng doanh thu",
+  "status_paid": "Đà thanh toán",
   "status_pending": "Đang chờ",
   "checkout_now": "Thanh toán ngay",
-  "reason_correction": "Điều chỉnh kho",
-  "multi_variants": "Nhiều biến thể"
+  "reason_correction": "Điều chỉnh kiểm kho",
+  "multi_variants": "Nhiều phiên bản",
+  "common": {
+    "loading": "Đang tải dữ liệu...",
+    "retry": "Thử lại",
+    "error_load_data": "Không thể tải dữ liệu",
+    "last_update": "Cập nhật lần cuối",
+    "no_data_today": "Hôm nay chưa có dữ liệu",
+    "logout": "Đăng xuất hệ thống",
+    "search_placeholder": "Tìm đơn hàng, sản phẩm...",
+    "sync_data": "Đồng bộ dữ liệu",
+    "results": "Kết quả",
+    "clear": "Xóa sạch",
+    "delete": "Xóa",
+    "filter": "Bộ lọc",
+    "actions": "Thao tác",
+    "reset": "Đặt lại",
+    "preview": "Xem trước",
+    "cancel": "Hủy bỏ",
+    "confirm_update": "Xác nhận cập nhật",
+    "confirm_add": "Xác nhận thêm mới",
+    "unknown": "Không xác định"
+  },
+  "pos": {
+    "search_placeholder": "Tìm sản phẩm hoặc quét mã vạch...",
+    "category_all": "Tất cả",
+    "multi_variants": "Nhiều phiên bản",
+    "cart": "Giỏ hàng",
+    "cart_empty": "Chưa có sản phẩm nào",
+    "search_customer": "Tìm tên khách hàng...",
+    "select_customer": "Chọn khách hàng",
+    "select_discount": "Chọn giảm giá",
+    "checkout_date": "Ngày thanh toán",
+    "subtotal": "Tạm tính",
+    "discount": "Giảm giá",
+    "tax_amount": "Thuế",
+    "total": "Tổng cộng",
+    "hold_order": "Lưu đơn",
+    "checkout_now": "Thanh toán ngay",
+    "checkout_success": "Thanh toán thành công",
+    "order_created_msg": "Đơn hàng đã được tạo và cập nhật kho hàng",
+    "error_no_store_id": "Không tìm thấy ID cửa hàng, vui lòng tải lại trang.",
+    "checkout_failed": "Thanh toán thất bại"
+  },
+  "products": {
+    "title": "Danh mục sản phẩm",
+    "import_csv": "Nhập CSV",
+    "export_csv": "Xuất CSV",
+    "add_product": "Thêm sản phẩm",
+    "edit_product": "Sửa sản phẩm",
+    "search_placeholder": "Tìm tên hoặc SKU...",
+    "no_products_msg": "Vui lòng thêm sản phẩm trước",
+    "add_now": "Thêm ngay",
+    "sku_barcode": "SKU / Mã vạch",
+    "product_name": "Tên sản phẩm",
+    "price": "Giá bán",
+    "stock": "Tồn kho",
+    "category": "Phân loại",
+    "no_match_msg": "Không tìm thấy sản phẩm phù hợp",
+    "units": "Cái/Chiếc",
+    "uncategorized": "Chưa phân loại",
+    "product_image": "Hình ảnh sản phẩm (Xem trước cho ngành ăn uống)",
+    "select_category": "Vui lòng chọn phân loại",
+    "add_category": "Thêm phân loại",
+    "category_name": "Tên phân loại",
+    "category_placeholder": "Ví dụ: Đồ uống, Tráng miệng",
+    "color_tag": "Nhãn màu sắc",
+    "sold_by": "Đơn vị bán",
+    "sold_each": "Bán theo chiếc",
+    "sold_weight": "Bán theo khối lượng",
+    "repair_price": "Giá sửa chữa (Không bắt buộc)",
+    "has_variants_msg": "Sản phẩm này có nhiều phiên bản (như kích thước, màu sắc)",
+    "variants": "Các phiên bản sản phẩm (Variants)",
+    "add_variant": "Thêm phiên bản",
+    "variant_name": "Tên phiên bản",
+    "name_placeholder": "Ví dụ: Cà phê Mỹ truyền thống",
+    "import": {
+      "title": "Nhập sản phẩm từ CSV",
+      "select_file": "Chọn tệp CSV",
+      "file_name": "Tên tệp:",
+      "file_size": "Kích thước:",
+      "format_requirement": "Yêu cầu định dạng CSV:",
+      "required_columns": [
+        "SKU",
+        "Tên sản phẩm",
+        "Giá bán",
+        "Giá vốn",
+        "Tồn kho",
+        "Phân loại",
+        "Mô tả",
+        "Mã vạch",
+        "Đơn vị bán"
+      ],
+      "submit": "Xác nhận nhập"
+    },
+    "update_failed": "Cập nhật thất bại",
+    "add_failed": "Thêm mới thất bại",
+    "image_upload_failed": "Tải ảnh lên thất bại",
+    "add_category_failed": "Thêm phân loại thất bại",
+    "delete_failed": "Xóa thất bại",
+    "export_failed": "Xuất tệp thất bại",
+    "import_failed": "Nhập tệp thất bại",
+    "select_csv_msg": "Vui lòng chọn tệp CSV",
+    "delete_selected_confirm": "Bạn có chắc muốn xóa {{count}} sản phẩm đã chọn không?"
+  },
+  "purchase_orders": {
+    "add_failed": "Thêm mới thất bại",
+    "confirm_receive": "Xác nhận nhập hàng? Hành động này sẽ cập nhật tồn kho sản phẩm liên quan.",
+    "receive_failed": "Nhập hàng thất bại",
+    "status_received": "Đã nhập hàng",
+    "status_ordered": "Đã đặt hàng",
+    "status_cancelled": "Đã hủy",
+    "status_draft": "Bản nháp",
+    "title": "Đơn mua hàng",
+    "add": "Thêm đơn mua hàng",
+    "order_no": "Mã đơn hàng",
+    "suppliers": "Nhà cung cấp",
+    "amount": "Số tiền",
+    "status": "Trạng thái",
+    "date": "Ngày tháng",
+    "actions": "Thao tác",
+    "receive": "Nhập kho",
+    "select_supplier": "Vui lòng chọn nhà cung cấp",
+    "items": "Chi tiết sản phẩm",
+    "select_product": "Chọn sản phẩm",
+    "add_product": "Thêm sản phẩm (Mở cửa sổ mới)",
+    "quantity": "Số lượng",
+    "cost_price": "Giá nhập",
+    "add_item": "Thêm mặt hàng",
+    "create_draft": "Tạo bản nháp"
+  },
+  "register": {
+    "title": "Bắt đầu hành trình <1>POS SaaS</1> của bạn",
+    "subtitle": "Đăng ký tài khoản công ty để bắt đầu sử dụng",
+    "company_name": "Tên công ty",
+    "company_name_placeholder": "Ví dụ: Tập đoàn bán lẻ siêu cấp",
+    "tenant_id": "Mã công ty (Tenant ID)",
+    "tenant_id_placeholder": "Ví dụ: superstore-01 (Mã định danh duy nhất)",
+    "admin_email": "Email quản trị viên",
+    "admin_email_placeholder": "admin@example.com",
+    "password": "Thiết lập mật khẩu",
+    "confirm_password": "Xác nhận mật khẩu",
+    "password_placeholder": "••••••••",
+    "submit": "Đăng ký ngay",
+    "has_account": "Đã có tài khoản?",
+    "login_now": "Đăng nhập trực tiếp",
+    "success_title": "Đăng ký thành công!",
+    "success_msg": "Tài khoản công ty đã được tạo. Đang chuyển hướng đến trang đăng nhập...",
+    "goto_login": "Đăng nhập ngay",
+    "error_password_mismatch": "Mật khẩu không khớp",
+    "error_default": "Đăng ký thất bại, vui lòng thử lại"
+  },
+  "reports": {
+    "revenue_title": "Báo cáo vận hành",
+    "date_start": "Ngày bắt đầu",
+    "date_end": "Ngày kết thúc",
+    "presets": {
+      "today": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "thisWeek": "Tuần này",
+      "thisMonth": "Tháng này",
+      "lastMonth": "Tháng trước",
+      "last7": "7 ngày qua",
+      "last30": "30 ngày qua"
+    },
+    "metrics": {
+      "total_revenue": "Tổng doanh thu",
+      "gross_profit": "Lợi nhuận gộp",
+      "discounts": "Chiết khấu đã tặng",
+      "expenditure": "Chi phí cửa hàng"
+    },
+    "charts": {
+      "trend_title": "Dự báo và xu hướng doanh số",
+      "category_pie": "Tỷ trọng doanh thu theo danh mục",
+      "revenue": "Doanh thu",
+      "profit": "Lợi nhuận"
+    },
+    "tabs": {
+      "daily_detail": "Chi tiết thu chi hàng ngày",
+      "hot_products": "Xếp hạng sản phẩm bán chạy",
+      "category_analysis": "Phân tích dữ liệu danh mục"
+    },
+    "table": {
+      "date": "Ngày",
+      "net_sales": "Doanh thu thuần",
+      "cost": "Giá vốn hàng bán",
+      "profit": "Lợi nhuận gộp",
+      "expenses": "Chi phí",
+      "margin": "Tỷ suất lợi nhuận",
+      "product_name": "Tên sản phẩm",
+      "qty_sold": "Số lượng bán",
+      "total_sales": "Tổng doanh số",
+      "performance": "Hiệu suất",
+      "category_name": "Tên danh mục",
+      "total_items": "Tổng số mặt hàng",
+      "share": "Tỷ trọng",
+      "total": "Tổng cộng",
+      "unknown_product": "Sản phẩm không xác định",
+      "uncategorized": "Chưa phân loại"
+    },
+    "export": {
+      "button": "Xuất báo cáo {{type}}",
+      "type_detail": "Chi tiết",
+      "type_product": "Sản phẩm",
+      "type_category": "Danh mục"
+    },
+    "errors": {
+      "load_fail": "Không thể tải dữ liệu báo cáo",
+      "connection_fail": "Lỗi kết nối"
+    }
+  },
+  "settings": {
+    "title": "Thiết lập hệ thống",
+    "subtitle": "Quản lý quy tắc cửa hàng và chương trình khách hàng thân thiết",
+    "tabs": {
+      "general": "Thiết lập chung",
+      "loyalty": "Khách hàng thân thiết",
+      "tax": "Thiết lập thuế",
+      "security": "Bảo mật và quyền hạn"
+    },
+    "loyalty": {
+      "title": "Chương trình khách hàng thân thiết (Loyalty)",
+      "enable_points": "Kích hoạt tích điểm tiêu dùng",
+      "enable_desc": "Khách hàng sẽ nhận được điểm dựa trên số tiền của mỗi lần mua hàng",
+      "rate_label": "Tỷ lệ quy đổi (Chi tiêu bao nhiêu để đổi 1 điểm)"
+    },
+    "tax": {
+      "title": "Cấu hình thuế (Taxes)",
+      "rate_label": "Thuế suất mặc định (%)"
+    },
+    "regional": {
+      "title": "Vùng và Tiền tệ",
+      "currency_label": "Ký hiệu tiền tệ",
+      "timezone_label": "Múi giờ"
+    },
+    "save_btn": "Lưu thay đổi",
+    "save_success": "Thiết lập đã được lưu thành công!",
+    "save_fail": "Lưu thất bại"
+  },
+  "staff": {
+    "title": "Quản lý nhân viên",
+    "add_staff": "Thêm nhân viên",
+    "search_placeholder": "Tìm tên hoặc tài khoản...",
+    "no_data": "Hiện tại chưa có dữ liệu nhân viên",
+    "table": {
+      "name": "Họ tên",
+      "account": "Tài khoản đăng nhập",
+      "role": "Chức danh",
+      "status": "Trạng thái",
+      "joined_at": "Ngày gia nhập",
+      "actions": "Thao tác"
+    },
+    "status": {
+      "active": "Đang làm việc",
+      "disabled": "Đã ngừng kích hoạt"
+    },
+    "roles": {
+      "level_1": "Siêu quản trị hệ thống",
+      "level_2": "Đại lý khu vực",
+      "level_3": "Nhà phân phối",
+      "level_4": "Cửa hàng trưởng/Quản lý",
+      "level_5": "Thu ngân",
+      "level_6": "Quản lý kho",
+      "default": "Nhân viên thông thường"
+    },
+    "modal": {
+      "title_add": "Thêm tài khoản nhân viên",
+      "title_edit": "Sửa thông tin nhân viên",
+      "label_name": "Tên nhân viên",
+      "label_username": "Tên đăng nhập (Username)",
+      "label_password_add": "Mật khẩu mặc định",
+      "label_password_edit": "Đổi mật khẩu (Để trống nếu không đổi)",
+      "placeholder_name": "Ví dụ: Nguyễn Văn A",
+      "placeholder_username": "Ví dụ: vana_pos",
+      "placeholder_password_add": "Vui lòng nhập mật khẩu",
+      "placeholder_password_edit": "Nhập mật khẩu mới",
+      "label_role": "Cấp bậc chức vụ",
+      "role_immutable": "{{role}} (Không thể thay đổi)"
+    },
+    "alerts": {
+      "reset_confirm": "Bạn có chắc muốn đặt lại mật khẩu của nhân viên \"{{name}}\" thành Aa1357 không?",
+      "reset_success": "Mật khẩu đã được đặt lại thành Aa1357",
+      "reset_fail": "Đặt lại thất bại",
+      "update_status_fail": "Cập nhật trạng thái thất bại",
+      "action_fail": "Thao tác thất bại"
+    }
+  },
+  "staff_reports": {
+    "title": "Báo cáo hiệu suất nhân viên",
+    "today_overview": "Tổng quan hôm nay",
+    "no_data": "Chưa có dữ liệu phát sinh",
+    "stats": {
+      "total_revenue": "Tổng doanh thu",
+      "total_orders": "Tổng số đơn hàng"
+    },
+    "table": {
+      "title": "Bảng xếp hạng doanh số nhân viên",
+      "staff_name": "Tên nhân viên",
+      "order_count": "Số đơn hàng",
+      "revenue": "Tổng số tiền bán hàng",
+      "avg_order_value": "Giá trị đơn hàng trung bình",
+      "order_unit": "Đơn",
+      "empty": "Hiện tại chưa có dữ liệu bán hàng của nhân viên",
+      "fallback_name": "Nhân viên {{index}}"
+    }
+  },
+  "suppliers": {
+    "title": "Quản lý nhà cung cấp",
+    "add_btn": "Thêm nhà cung cấp",
+    "search_placeholder": "Tìm tên nhà cung cấp...",
+    "empty_state": "Chưa có dữ liệu nhà cung cấp",
+    "card": {
+      "contact_person": "Người liên hệ",
+      "not_available": "Không có dữ liệu"
+    },
+    "modal": {
+      "title_add": "Thêm nhà cung cấp",
+      "title_edit": "Sửa nhà cung cấp",
+      "label_name": "Tên nhà cung cấp",
+      "label_contact": "Người liên hệ",
+      "label_phone": "Điện thoại",
+      "label_email": "Email",
+      "label_address": "Địa chỉ"
+    },
+    "alerts": {
+      "delete_confirm": "Xác nhận xóa nhà cung cấp này?",
+      "delete_fail": "Xóa thất bại",
+      "action_fail": "Thao tác thất bại: {{msg}}"
+    }
+  },
+  "timecards": {
+    "title": "Quản lý chấm công",
+    "status": {
+      "working": "Hiện đang làm việc",
+      "off_duty": "Hiện chưa vào ca",
+      "clock_in_time": "Thời gian bắt đầu: {{time}}",
+      "in_progress": "Đang thực hiện..."
+    },
+    "buttons": {
+      "clock_in": "Chấm công vào làm",
+      "clock_out": "Chấm công ra về"
+    },
+    "history": {
+      "title": "Lịch sử chấm công",
+      "table": {
+        "date": "Ngày",
+        "clock_in": "Giờ vào",
+        "clock_out": "Giờ ra",
+        "total_hours": "Tổng giờ (HR)"
+      }
+    },
+    "alerts": {
+      "action_fail": "Thao tác thất bại"
+    }
+  },
+  "discounts": {
+    "title": "Quản lý giảm giá",
+    "add_btn": "Thêm giảm giá",
+    "empty_state": "Chưa thiết lập bất kỳ giảm giá nào",
+    "types": {
+      "percentage": "Phần trăm (%)",
+      "fixed": "Số tiền cố định ({{currency}})",
+      "desc_percentage": "Giảm {{value}}%",
+      "desc_fixed": "Giảm cố định -{{currency}}{{value}}"
+    },
+    "modal": {
+      "title": "Thêm giảm giá",
+      "label_name": "Tên gọi",
+      "label_type": "Loại",
+      "label_value": "Giá trị",
+      "placeholder_name": "Ví dụ: Ưu đãi cuối tuần",
+      "placeholder_value": "Ví dụ: 10"
+    },
+    "alerts": {
+      "delete_confirm": "Xác nhận xóa giảm giá này?",
+      "delete_fail": "Xóa thất bại",
+      "add_fail": "Thêm thất bại: {{msg}}"
+    }
+  },
+  "inventory": {
+    "title": "Kiểm kho và điều chỉnh",
+    "add_adjustment": "Thêm điều chỉnh",
+    "search_placeholder": "Tìm sản phẩm để xem kho...",
+    "table": {
+      "product_name": "Tên sản phẩm",
+      "sku": "SKU",
+      "current_stock": "Tồn kho hiện tại",
+      "unit": "Đơn vị"
+    },
+    "modal": {
+      "title": "Thêm điều chỉnh kho",
+      "product": "Sản phẩm",
+      "select_product": "Chọn sản phẩm",
+      "variant": "Phiên bản (Variant)",
+      "select_variant": "Chọn phiên bản",
+      "stock_display": " (Tồn kho: {{stock}})",
+      "qty_label": "Số lượng điều chỉnh (Dương là tăng, Âm là giảm)",
+      "reason": "Lý do",
+      "note": "Ghi chú",
+      "submit": "Xác nhận điều chỉnh"
+    },
+    "reasons": {
+      "correction": "Điều chỉnh kiểm kho",
+      "damage": "Hao hụt/Hỏng hóc",
+      "received": "Đã nhận hàng",
+      "inventory_count": "Kiểm kê định kỳ",
+      "other": "Khác"
+    },
+    "units": {
+      "kg": "kg",
+      "pcs": "cái"
+    },
+    "alerts": {
+      "adjust_fail": "Điều chỉnh thất bại"
+    }
+  },
+  "dashboard": {
+    "title": "Tổng quan vận hành",
+    "total_tenants": "Tổng số khách hàng thuê (Tenants)",
+    "active_tenants": "Khách hàng thuê đang hoạt động",
+    "total_products": "Tổng sản phẩm hệ thống",
+    "archive_progress": "Tiến độ lưu trữ",
+    "managed_tenants": "Khách hàng thuê quản lý",
+    "managed_accounts": "Tài khoản quản lý",
+    "est_inventory_value": "Giá trị kho ước tính",
+    "managed_product_count": "Số lượng sản phẩm quản lý",
+    "today_sales": "Doanh số hôm nay",
+    "inventory_total_value": "Tổng giá trị tồn kho",
+    "stock_count": "Số lượng hàng tại kho",
+    "current_user": "Người dùng hiện tại",
+    "sales_trend": "Xu hướng doanh số",
+    "popular_products": "Sản phẩm phổ biến",
+    "no_popular_products": "Chưa có dữ liệu sản phẩm phổ biến",
+    "sold": "Đã bán"
+  },
+  "nav": {
+    "overview": "Tổng quan",
+    "pos": "Điểm bán hàng (POS)",
+    "product_mgmt": "Quản lý sản phẩm",
+    "inventory_count": "Kiểm kê kho",
+    "purchase_order": "Mua hàng & Nhập kho",
+    "suppliers": "Nhà cung cấp",
+    "discount_mgmt": "Quản lý giảm giá",
+    "order_mgmt": "Quản lý đơn hàng",
+    "revenue_report": "Báo cáo vận hành",
+    "customer_data": "Dữ liệu khách hàng",
+    "staff_mgmt": "Quản lý nhân viên",
+    "attendance": "Chấm công",
+    "staff_performance": "Hiệu suất nhân viên",
+    "system_settings": "Thiết lập hệ thống",
+    "api_integration": "API & Tích hợp"
+  }
 }
