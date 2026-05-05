@@ -7,12 +7,16 @@ import { useAuth } from '../contexts/AuthContext';
 import { login } from '../api/auth';
 
 const LoginPage = () => {
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const { loginUser } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
     const [showTenant, setShowTenant] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+    };
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -61,16 +65,30 @@ const LoginPage = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ padding: '3rem 2.5rem', width: '100%' }}
         >
+            {/* 語言切換器選單 */}
+            <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+                <select 
+                    onChange={(e) => changeLanguage(e.target.value)} 
+                    value={i18n.language}
+                    style={selectStyle}
+                >
+                    <option value="en-US">English</option>
+                    <option value="zh-TW">繁體中文</option>
+                    <option value="zh-CN">简体中文</option>
+                    <option value="ja-JP">日本語</option>
+                    {/* 依照你在 i18n.js 定義的 resources 加入更多選項 */}
+                </select>
+            </div>
             <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                 <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-                    歡迎回來 <span className="gradient-text">POS SaaS</span>
+                    {t('login.welcome')} <span className="gradient-text">POS SaaS</span>
                 </h1>
-                <p style={{ color: 'var(--text-muted)' }}>登錄您的管理後台以繼續</p>
+                <p style={{ color: 'var(--text-muted)' }}>{t('login.subtitle')}</p>
             </div>
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                 <div className="input-group">
-                    <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Email 地址</label>
+                    <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('login.emailLabel')}</label>
                     <div style={{ position: 'relative' }}>
                         <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
                         <input
@@ -88,7 +106,7 @@ const LoginPage = () => {
                 </div>
 
                 <div className="input-group">
-                    <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>密碼</label>
+                    <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('login.password')}</label>
                     <div style={{ position: 'relative' }}>
                         <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
                         <input
