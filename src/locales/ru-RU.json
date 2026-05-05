@@ -453,19 +453,19 @@
   },
   "nav": {
     "overview": "Обзор",
-    "pos": "Точка продажи (POS)",
-    "product_mgmt": "Управление товарами",
-    "inventory_count": "Аудит склада",
-    "purchase_order": "Закупки и склад",
+    "pos": "Терминал",
+    "product_mgmt": "Товары",
+    "inventory_count": "Инвентаризация",
+    "purchase_order": "Закупки",
     "suppliers": "Поставщики",
-    "discount_mgmt": "Управление скидками",
-    "order_mgmt": "Управление заказами",
-    "revenue_report": "Операционные отчеты",
-    "customer_data": "Данные клиентов",
-    "staff_mgmt": "Управление персоналом",
-    "attendance": "Учет посещаемости",
-    "staff_performance": "Эффективность штата",
-    "system_settings": "Настройки системы",
-    "api_integration": "API и интеграции"
+    "discount_mgmt": "Скидки",
+    "order_mgmt": "Заказы",
+    "revenue_report": "Отчеты",
+    "customer_data": "Клиенты",
+    "staff_mgmt": "Персонал",
+    "attendance": "Посещаемость",
+    "staff_performance": "KPI",
+    "system_settings": "Настройки",
+    "api_integration": "Интеграции"
   }
 }

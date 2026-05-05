@@ -453,7 +453,7 @@
   },
   "nav": {
     "overview": "Resumen",
-    "pos": "Terminal Punto de Venta (POS)",
+    "pos": "Ventas POS",
     "product_mgmt": "Gestión de productos",
     "inventory_count": "Auditoría de inventario",
     "purchase_order": "Órdenes de compra",
@@ -464,7 +464,7 @@
     "customer_data": "Datos de clientes",
     "staff_mgmt": "Gestión de personal",
     "attendance": "Asistencia",
-    "staff_performance": "Rendimiento de personal",
+    "staff_performance": "Desempeño",
     "system_settings": "Configuración",
     "api_integration": "API e Integración"
   }

@@ -460,10 +460,10 @@
     "suppliers": "Leveranciers",
     "discount_mgmt": "Kortingsbeheer",
     "order_mgmt": "Bestellingsbeheer",
-    "revenue_report": "Operationele Rapporten",
+    "revenue_report": "Rapportage",
     "customer_data": "Klantgegevens",
     "staff_mgmt": "Personeelsbeheer",
-    "attendance": "Aanwezigheid Registreren",
+    "attendance": "Registratie",
     "staff_performance": "Prestaties",
     "system_settings": "Systeeminstellingen",
     "api_integration": "API & Integratie"
