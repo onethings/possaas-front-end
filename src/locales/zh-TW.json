@@ -5,8 +5,12 @@
     "email": "Email 地址",
     "password": "密碼",
     "companyId": "公司編號",
-    "submit": "登入系統",
-    "errorDefault": "登入失敗，請檢查您的帳號、密碼或公司編號"
+    "signIn": "登入系統",
+    "errorDefault": "登入失敗，請檢查您的帳號、密碼或公司編號",
+    "loading":"登入中",
+    "loginWithCompanyId": "使用公司編號登入？",
+    "forgotPassword": "忘記密碼？",
+    "applyTrial": "申請試用"
   },
   "customer_management": "客戶資料管理",
   "add_customer": "新增客戶",
@@ -109,7 +113,7 @@
         "條碼",
         "銷售單位"
       ],
-      "submit": "確認匯入"
+      "signIn": "確認匯入"
     },
     "update_failed": "更新失敗",
     "add_failed": "新增失敗",
@@ -159,7 +163,7 @@
     "password": "設置密碼",
     "confirm_password": "確認密碼",
     "password_placeholder": "••••••••",
-    "submit": "立即註冊",
+    "signIn": "立即註冊",
     "has_account": "已有帳號？",
     "login_now": "直接登入",
     "success_title": "註冊成功！",
@@ -415,7 +419,7 @@
       "qty_label": "調整數量 (正值增加，負值減少)",
       "reason": "原因",
       "note": "備註",
-      "submit": "確認調整"
+      "signIn": "確認調整"
     },
     "reasons": {
       "correction": "盤點更正",

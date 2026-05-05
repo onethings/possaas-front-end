@@ -5,8 +5,12 @@
     "email": "E-Mail-Adresse",
     "password": "Passwort",
     "companyId": "Unternehmens-ID",
-    "submit": "Anmelden",
-    "errorDefault": "Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihr Konto, Passwort oder die Unternehmens-ID."
+    "signIn": "Anmelden",
+    "errorDefault": "Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihr Konto, Passwort oder die Unternehmens-ID.",
+    "loading": "Wird angemeldet...",
+    "loginWithCompanyId": "Mit Firmen-ID anmelden?",
+    "forgotPassword": "Passwort vergessen?",
+    "applyTrial": "Testversion anfordern"
   },
   "customer_management": "Kundenverwaltung",
   "add_customer": "Kunde hinzufügen",
@@ -109,7 +113,7 @@
         "Barcode",
         "Einheit"
       ],
-      "submit": "Import bestätigen"
+      "signIn": "Import bestätigen"
     },
     "update_failed": "Aktualisierung fehlgeschlagen",
     "add_failed": "Hinzufügen fehlgeschlagen",
@@ -159,7 +163,7 @@
     "password": "Passwort festlegen",
     "confirm_password": "Passwort bestätigen",
     "password_placeholder": "••••••••",
-    "submit": "Jetzt registrieren",
+    "signIn": "Jetzt registrieren",
     "has_account": "Bereits ein Konto?",
     "login_now": "Hier anmelden",
     "success_title": "Registrierung erfolgreich!",
@@ -415,7 +419,7 @@
       "qty_label": "Änderungsmenge (positiv = Erhöhung, negativ = Verringerung)",
       "reason": "Grund",
       "note": "Notiz",
-      "submit": "Anpassung bestätigen"
+      "signIn": "Anpassung bestätigen"
     },
     "reasons": {
       "correction": "Inventurkorrektur",

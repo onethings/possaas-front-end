@@ -5,8 +5,12 @@
     "email": "Alamat Email",
     "password": "Kata Sandi",
     "companyId": "ID Perusahaan",
-    "submit": "Masuk",
-    "errorDefault": "Gagal masuk. Silakan periksa akun, kata sandi, atau ID perusahaan Anda."
+    "signIn": "Masuk",
+    "errorDefault": "Gagal masuk. Silakan periksa akun, kata sandi, atau ID perusahaan Anda.",
+    "loading": "Sedang masuk...",
+    "loginWithCompanyId": "Masuk dengan ID Perusahaan?",
+    "forgotPassword": "Lupa kata sandi?",
+    "applyTrial": "Ajukan uji coba"
   },
   "customer_management": "Manajemen Data Pelanggan",
   "add_customer": "Tambah Pelanggan",
@@ -109,7 +113,7 @@
         "Barcode",
         "Unit Penjualan"
       ],
-      "submit": "Konfirmasi Impor"
+      "signIn": "Konfirmasi Impor"
     },
     "update_failed": "Gagal memperbarui",
     "add_failed": "Gagal menambah",
@@ -159,7 +163,7 @@
     "password": "Atur Kata Sandi",
     "confirm_password": "Konfirmasi Kata Sandi",
     "password_placeholder": "••••••••",
-    "submit": "Daftar Sekarang",
+    "signIn": "Daftar Sekarang",
     "has_account": "Sudah punya akun?",
     "login_now": "Masuk di sini",
     "success_title": "Pendaftaran Berhasil!",
@@ -415,7 +419,7 @@
       "qty_label": "Jumlah Penyesuaian (positif menambah, negatif mengurangi)",
       "reason": "Alasan",
       "note": "Catatan",
-      "submit": "Konfirmasi Penyesuaian"
+      "signIn": "Konfirmasi Penyesuaian"
     },
     "reasons": {
       "correction": "Koreksi Audit",

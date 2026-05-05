@@ -5,8 +5,12 @@
     "email": "电子邮箱地址",
     "password": "密码",
     "companyId": "公司 ID",
-    "submit": "登录",
-    "errorDefault": "登录失败。请检查您的账号、密码或公司 ID。"
+    "signIn": "登录",
+    "errorDefault": "登录失败。请检查您的账号、密码或公司 ID。",
+    "loading": "登录中",
+    "loginWithCompanyId": "使用公司编号登录？",
+    "forgotPassword": "忘记密码？",
+    "applyTrial": "申请试用"
   },
   "customer_management": "客户数据管理",
   "add_customer": "添加客户",
@@ -109,7 +113,7 @@
         "条形码",
         "销售单位"
       ],
-      "submit": "确认导入"
+      "signIn": "确认导入"
     },
     "update_failed": "更新失败",
     "add_failed": "添加失败",
@@ -159,7 +163,7 @@
     "password": "设置密码",
     "confirm_password": "确认密码",
     "password_placeholder": "••••••••",
-    "submit": "立即注册",
+    "signIn": "立即注册",
     "has_account": "已有账号？",
     "login_now": "点击此处登录",
     "success_title": "注册成功！",
@@ -415,7 +419,7 @@
       "qty_label": "调整数量 (正数增加，负数减少)",
       "reason": "原因",
       "note": "备注",
-      "submit": "确认调整"
+      "signIn": "确认调整"
     },
     "reasons": {
       "correction": "审核修正",

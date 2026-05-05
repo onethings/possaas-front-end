@@ -5,8 +5,12 @@
     "email": "이메일 주소",
     "password": "비밀번호",
     "companyId": "회사 ID",
-    "submit": "로그인",
-    "errorDefault": "로그인에 실패했습니다. 계정, 비밀번호 또는 회사 ID를 확인하세요."
+    "signIn": "로그인",
+    "errorDefault": "로그인에 실패했습니다. 계정, 비밀번호 또는 회사 ID를 확인하세요.",
+    "loading": "로그인 중...",
+    "loginWithCompanyId": "회사 ID로 로그인하시겠습니까?",
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "applyTrial": "무료 체험 신청"
   },
   "customer_management": "고객 데이터 관리",
   "add_customer": "고객 추가",
@@ -109,7 +113,7 @@
         "바코드",
         "판매 단위"
       ],
-      "submit": "가져오기 확인"
+      "signIn": "가져오기 확인"
     },
     "update_failed": "업데이트 실패",
     "add_failed": "추가 실패",
@@ -159,7 +163,7 @@
     "password": "비밀번호 설정",
     "confirm_password": "비밀번호 확인",
     "password_placeholder": "••••••••",
-    "submit": "지금 등록",
+    "signIn": "지금 등록",
     "has_account": "이미 계정이 있으신가요?",
     "login_now": "여기에서 로그인",
     "success_title": "등록 성공!",
@@ -415,7 +419,7 @@
       "qty_label": "조정 수량 (양수는 증가, 음수는 감소)",
       "reason": "사유",
       "note": "비고",
-      "submit": "조정 확인"
+      "signIn": "조정 확인"
     },
     "reasons": {
       "correction": "실사 수정",

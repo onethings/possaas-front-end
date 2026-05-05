@@ -5,8 +5,12 @@
     "email": "Email Address",
     "password": "Password",
     "companyId": "Company ID",
-    "submit": "Login",
-    "errorDefault": "Login failed. Please check your account, password, or Company ID."
+    "signIn": "Login",
+    "errorDefault": "Login failed. Please check your account, password, or Company ID.",
+    "loading": "Logging in...",
+    "loginWithCompanyId": "Login with Company ID?",
+    "forgotPassword": "Forgot password?",
+    "applyTrial": "Request a Trial"
   },
   "customer_management": "Customer Management",
   "add_customer": "Add Customer",
@@ -109,7 +113,7 @@
         "Barcode",
         "Unit"
       ],
-      "submit": "Confirm Import"
+      "signIn": "Confirm Import"
     },
     "update_failed": "Update Failed",
     "add_failed": "Add Failed",
@@ -159,7 +163,7 @@
     "password": "Set Password",
     "confirm_password": "Confirm Password",
     "password_placeholder": "••••••••",
-    "submit": "Register Now",
+    "signIn": "Register Now",
     "has_account": "Already have an account?",
     "login_now": "Login here",
     "success_title": "Registration Successful!",
@@ -415,7 +419,7 @@
       "qty_label": "Adjustment Quantity (Positive to increase, negative to decrease)",
       "reason": "Reason",
       "note": "Note",
-      "submit": "Confirm Adjustment"
+      "signIn": "Confirm Adjustment"
     },
     "reasons": {
       "correction": "Stocktake Correction",

@@ -5,8 +5,12 @@
     "email": "Địa chỉ Email",
     "password": "Mật khẩu",
     "companyId": "Mã công ty",
-    "submit": "Đăng nhập",
-    "errorDefault": "Đăng nhập thất bại, vui lòng kiểm tra tài khoản, mật khẩu hoặc mã công ty của bạn"
+    "signIn": "Đăng nhập",
+    "errorDefault": "Đăng nhập thất bại, vui lòng kiểm tra tài khoản, mật khẩu hoặc mã công ty của bạn",
+    "loading": "Đang đăng nhập...",
+    "loginWithCompanyId": "Đăng nhập bằng mã công ty?",
+    "forgotPassword": "Quên mật khẩu?",
+    "applyTrial": "Đăng ký dùng thử"
   },
   "customer_management": "Quản lý dữ liệu khách hàng",
   "add_customer": "Thêm khách hàng",
@@ -109,7 +113,7 @@
         "Mã vạch",
         "Đơn vị bán"
       ],
-      "submit": "Xác nhận nhập"
+      "signIn": "Xác nhận nhập"
     },
     "update_failed": "Cập nhật thất bại",
     "add_failed": "Thêm mới thất bại",
@@ -159,7 +163,7 @@
     "password": "Thiết lập mật khẩu",
     "confirm_password": "Xác nhận mật khẩu",
     "password_placeholder": "••••••••",
-    "submit": "Đăng ký ngay",
+    "signIn": "Đăng ký ngay",
     "has_account": "Đã có tài khoản?",
     "login_now": "Đăng nhập trực tiếp",
     "success_title": "Đăng ký thành công!",
@@ -415,7 +419,7 @@
       "qty_label": "Số lượng điều chỉnh (Dương là tăng, Âm là giảm)",
       "reason": "Lý do",
       "note": "Ghi chú",
-      "submit": "Xác nhận điều chỉnh"
+      "signIn": "Xác nhận điều chỉnh"
     },
     "reasons": {
       "correction": "Điều chỉnh kiểm kho",

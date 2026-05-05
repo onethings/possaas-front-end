@@ -5,8 +5,12 @@
     "email": "Indirizzo e-mail",
     "password": "Password",
     "companyId": "ID Azienda",
-    "submit": "Accedi",
-    "errorDefault": "Accesso fallito. Verifica il tuo account, la password o l'ID azienda."
+    "signIn": "Accedi",
+    "errorDefault": "Accesso fallito. Verifica il tuo account, la password o l'ID azienda.",
+    "loading": "Accesso in corso...",
+    "loginWithCompanyId": "Accedi con ID Azienda?",
+    "forgotPassword": "Password dimenticata?",
+    "applyTrial": "Richiedi una prova gratuita"
   },
   "customer_management": "Gestione Dati Clienti",
   "add_customer": "Aggiungi Cliente",
@@ -109,7 +113,7 @@
         "Codice a barre",
         "Unità di Vendita"
       ],
-      "submit": "Conferma Importazione"
+      "signIn": "Conferma Importazione"
     },
     "update_failed": "Aggiornamento fallito",
     "add_failed": "Aggiunta fallita",
@@ -159,7 +163,7 @@
     "password": "Imposta Password",
     "confirm_password": "Conferma Password",
     "password_placeholder": "••••••••",
-    "submit": "Registrati Ora",
+    "signIn": "Registrati Ora",
     "has_account": "Hai già un account?",
     "login_now": "Accedi qui",
     "success_title": "Registrazione Riuscita!",
@@ -415,7 +419,7 @@
       "qty_label": "Quantità rettifica (positivo aumenta, negativo riduce)",
       "reason": "Motivo",
       "note": "Nota",
-      "submit": "Conferma Rettifica"
+      "signIn": "Conferma Rettifica"
     },
     "reasons": {
       "correction": "Correzione Audit",

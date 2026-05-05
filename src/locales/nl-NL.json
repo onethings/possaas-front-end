@@ -5,8 +5,12 @@
     "email": "E-mailadres",
     "password": "Wachtwoord",
     "companyId": "Bedrijfs-ID",
-    "submit": "Inloggen",
-    "errorDefault": "Inloggen mislukt. Controleer uw account, wachtwoord of bedrijfs-ID."
+    "signIn": "Inloggen",
+    "errorDefault": "Inloggen mislukt. Controleer uw account, wachtwoord of bedrijfs-ID.",
+    "loading": "Bezig met inloggen...",
+    "loginWithCompanyId": "Inloggen met bedrijfs-ID?",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "applyTrial": "Proefversie aanvragen"
   },
   "customer_management": "Klantgegevensbeheer",
   "add_customer": "Klant Toevoegen",
@@ -109,7 +113,7 @@
         "Barcode",
         "Verkoopeenheid"
       ],
-      "submit": "Import Bevestigen"
+      "signIn": "Import Bevestigen"
     },
     "update_failed": "Update mislukt",
     "add_failed": "Toevoegen mislukt",
@@ -159,7 +163,7 @@
     "password": "Wachtwoord Instellen",
     "confirm_password": "Wachtwoord Bevestigen",
     "password_placeholder": "••••••••",
-    "submit": "Nu Registreren",
+    "signIn": "Nu Registreren",
     "has_account": "Heeft u al een account?",
     "login_now": "Hier inloggen",
     "success_title": "Registratie Geslaagd!",
@@ -415,7 +419,7 @@
       "qty_label": "Correctie aantal (positief verhoogt, negatief verlaagt)",
       "reason": "Reden",
       "note": "Opmerking",
-      "submit": "Correctie Bevestigen"
+      "signIn": "Correctie Bevestigen"
     },
     "reasons": {
       "correction": "Auditcorrectie",

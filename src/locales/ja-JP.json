@@ -5,8 +5,12 @@
     "email": "メールアドレス",
     "password": "パスワード",
     "companyId": "会社ID",
-    "submit": "ログイン",
-    "errorDefault": "ログインに失敗しました。アカウント、パスワード、または会社IDを確認してください。"
+    "signIn": "ログイン",
+    "errorDefault": "ログインに失敗しました。アカウント、パスワード、または会社IDを確認してください。",
+    "loading": "ログイン中...",
+    "loginWithCompanyId": "企業IDでログインしますか？",
+    "forgotPassword": "パスワードを忘れた場合",
+    "applyTrial": "無料トライアルを申し込む"
   },
   "customer_management": "顧客データ管理",
   "add_customer": "顧客を追加",
@@ -109,7 +113,7 @@
         "バーコード",
         "販売単位"
       ],
-      "submit": "インポートを確定"
+      "signIn": "インポートを確定"
     },
     "update_failed": "更新に失敗しました",
     "add_failed": "追加に失敗しました",
@@ -159,7 +163,7 @@
     "password": "パスワードを設定",
     "confirm_password": "パスワードを再確認",
     "password_placeholder": "••••••••",
-    "submit": "今すぐ登録",
+    "signIn": "今すぐ登録",
     "has_account": "すでにアカウントをお持ちですか？",
     "login_now": "こちらからログイン",
     "success_title": "登録完了！",
@@ -415,7 +419,7 @@
       "qty_label": "調整数量（正の値で増加、負の値で減少）",
       "reason": "理由",
       "note": "備考",
-      "submit": "調整を確定"
+      "signIn": "調整を確定"
     },
     "reasons": {
       "correction": "監査修正",

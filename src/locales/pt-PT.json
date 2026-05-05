@@ -5,8 +5,12 @@
     "email": "Endereço de e-mail",
     "password": "Palavra-passe",
     "companyId": "ID da Empresa",
-    "submit": "Entrar",
-    "errorDefault": "Falha ao iniciar sessão. Verifique a sua conta, palavra-passe ou ID da empresa."
+    "signIn": "Entrar",
+    "errorDefault": "Falha ao iniciar sessão. Verifique a sua conta, palavra-passe ou ID da empresa.",
+    "loading": "A iniciar sessão...",
+    "loginWithCompanyId": "Iniciar sessão com ID da empresa?",
+    "forgotPassword": "Esqueceu-se da palavra-passe?",
+    "applyTrial": "Solicitar versão de teste"
   },
   "customer_management": "Gestão de Dados de Clientes",
   "add_customer": "Adicionar Cliente",
@@ -109,7 +113,7 @@
         "Código de Barras",
         "Vendido por"
       ],
-      "submit": "Confirmar Importação"
+      "signIn": "Confirmar Importação"
     },
     "update_failed": "Falha na atualização",
     "add_failed": "Falha ao adicionar",
@@ -159,7 +163,7 @@
     "password": "Definir Palavra-passe",
     "confirm_password": "Confirmar Palavra-passe",
     "password_placeholder": "••••••••",
-    "submit": "Registar Agora",
+    "signIn": "Registar Agora",
     "has_account": "Já tem uma conta?",
     "login_now": "Inicie sessão aqui",
     "success_title": "Registo efetuado com sucesso!",
@@ -415,7 +419,7 @@
       "qty_label": "Qtd de ajuste (positivo aumenta, negativo reduz)",
       "reason": "Motivo",
       "note": "Nota",
-      "submit": "Confirmar Ajuste"
+      "signIn": "Confirmar Ajuste"
     },
     "reasons": {
       "correction": "Correção de Auditoria",

@@ -5,8 +5,12 @@
     "email": "Correo electrónico",
     "password": "Contraseña",
     "companyId": "ID de empresa",
-    "submit": "Iniciar sesión",
-    "errorDefault": "Error al iniciar sesión. Por favor, verifique su cuenta, contraseña o ID de empresa."
+    "signIn": "Iniciar sesión",
+    "errorDefault": "Error al iniciar sesión. Por favor, verifique su cuenta, contraseña o ID de empresa.",
+    "loading": "Iniciando sesión...",
+    "loginWithCompanyId": "¿Iniciar sesión con el ID de empresa?",
+    "forgotPassword": "¿Has olvidado tu contraseña?",
+    "applyTrial": "Solicitar prueba gratuita"
   },
   "customer_management": "Gestión de clientes",
   "add_customer": "Añadir cliente",
@@ -109,7 +113,7 @@
         "Código de barras",
         "Unidad de venta"
       ],
-      "submit": "Confirmar importación"
+      "signIn": "Confirmar importación"
     },
     "update_failed": "Error al actualizar",
     "add_failed": "Error al añadir",
@@ -159,7 +163,7 @@
     "password": "Establecer contraseña",
     "confirm_password": "Confirmar contraseña",
     "password_placeholder": "••••••••",
-    "submit": "Registrarse ahora",
+    "signIn": "Registrarse ahora",
     "has_account": "¿Ya tiene una cuenta?",
     "login_now": "Inicie sesión aquí",
     "success_title": "¡Registro exitoso!",
@@ -415,7 +419,7 @@
       "qty_label": "Cantidad de ajuste (positivo aumenta, negativo disminuye)",
       "reason": "Motivo",
       "note": "Nota",
-      "submit": "Confirmar ajuste"
+      "signIn": "Confirmar ajuste"
     },
     "reasons": {
       "correction": "Corrección por inventario",

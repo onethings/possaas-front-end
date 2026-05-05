@@ -5,8 +5,12 @@
     "email": "E-posta Adresi",
     "password": "Şifre",
     "companyId": "Şirket Kimliği (ID)",
-    "submit": "Giriş Yap",
-    "errorDefault": "Giriş başarısız. Lütfen hesabınızı, şifrenizi veya şirket kimliğinizi kontrol edin."
+    "signIn": "Giriş Yap",
+    "errorDefault": "Giriş başarısız. Lütfen hesabınızı, şifrenizi veya şirket kimliğinizi kontrol edin.",
+    "loading": "Giriş yapılıyor...",
+    "loginWithCompanyId": "Şirket kodu ile mi giriş yapılsın?",
+    "forgotPassword": "Şifrenizi mi unuttunuz?",
+    "applyTrial": "Deneme sürümü için başvur"
   },
   "customer_management": "Müşteri Veri Yönetimi",
   "add_customer": "Müşteri Ekle",
@@ -109,7 +113,7 @@
         "Barkod",
         "Satış Birimi"
       ],
-      "submit": "İçe Aktarmayı Onayla"
+      "signIn": "İçe Aktarmayı Onayla"
     },
     "update_failed": "Güncelleme başarısız",
     "add_failed": "Ekleme başarısız",
@@ -159,7 +163,7 @@
     "password": "Şifre Belirle",
     "confirm_password": "Şifreyi Onayla",
     "password_placeholder": "••••••••",
-    "submit": "Şimdi Kaydol",
+    "signIn": "Şimdi Kaydol",
     "has_account": "Zaten bir hesabınız var mı?",
     "login_now": "Buradan giriş yapın",
     "success_title": "Kayıt Başarılı!",
@@ -415,7 +419,7 @@
       "qty_label": "Düzenleme miktarı (artırmak için pozitif, azaltmak için negatif)",
       "reason": "Neden",
       "note": "Not",
-      "submit": "Düzenlemeyi Onayla"
+      "signIn": "Düzenlemeyi Onayla"
     },
     "reasons": {
       "correction": "Denetim Düzeltmesi",

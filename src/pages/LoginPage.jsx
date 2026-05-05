@@ -88,7 +88,7 @@ const LoginPage = () => {
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                 <div className="input-group">
-                    <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('login.emailLabel')}</label>
+                    <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('login.email')}</label>
                     <div style={{ position: 'relative' }}>
                         <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
                         <input
@@ -160,7 +160,7 @@ const LoginPage = () => {
                             onClick={() => setShowTenant(true)}
                             style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '0.85rem', cursor: 'pointer', padding: 0 }}
                         >
-                            使用公司編號登入？
+                            {t('login.loginWithCompanyId')}
                         </button>
                     </div>
                 )}
@@ -177,12 +177,12 @@ const LoginPage = () => {
                     disabled={loading}
                     style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: loading ? 0.7 : 1 }}
                 >
-                    {loading ? '登入中...' : '登入系統'} <ArrowRight size={18} />
+                    {loading ? t('login.loading') : t('login.signIn')} <ArrowRight size={18} />
                 </button>
 
                 <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between' }}>
-                    <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>忘記密碼？</a>
-                    <Link to="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>申請試用</Link>
+                    <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>{t('login.forgotPassword')}</a>
+                    <Link to="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>{t('login.applyTrial')}</Link>
                 </div>
             </form>
         </motion.div>

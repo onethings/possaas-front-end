@@ -5,8 +5,12 @@
     "email": "Adresse e-mail",
     "password": "Mot de passe",
     "companyId": "Identifiant d'entreprise",
-    "submit": "Se connecter",
-    "errorDefault": "Échec de la connexion. Veuillez vérifier votre compte, votre mot de passe ou l'identifiant d'entreprise."
+    "signIn": "Se connecter",
+    "errorDefault": "Échec de la connexion. Veuillez vérifier votre compte, votre mot de passe ou l'identifiant d'entreprise.",
+    "loading": "Connexion en cours...",
+    "loginWithCompanyId": "Se connecter avec l'identifiant d'entreprise ?",
+    "forgotPassword": "Mot de passe oublié ?",
+    "applyTrial": "Demander un essai gratuit"
   },
   "customer_management": "Gestion des clients",
   "add_customer": "Ajouter un client",
@@ -109,7 +113,7 @@
         "Code-barres",
         "Unité de vente"
       ],
-      "submit": "Confirmer l'importation"
+      "signIn": "Confirmer l'importation"
     },
     "update_failed": "Échec de la mise à jour",
     "add_failed": "Échec de l'ajout",
@@ -159,7 +163,7 @@
     "password": "Définir un mot de passe",
     "confirm_password": "Confirmer le mot de passe",
     "password_placeholder": "••••••••",
-    "submit": "S'inscrire maintenant",
+    "signIn": "S'inscrire maintenant",
     "has_account": "Déjà un compte ?",
     "login_now": "Connectez-vous ici",
     "success_title": "Inscription réussie !",
@@ -415,7 +419,7 @@
       "qty_label": "Quantité d'ajustement (positif pour augmenter, négatif pour réduire)",
       "reason": "Motif",
       "note": "Note",
-      "submit": "Confirmer l'ajustement"
+      "signIn": "Confirmer l'ajustement"
     },
     "reasons": {
       "correction": "Correction d'inventaire",
