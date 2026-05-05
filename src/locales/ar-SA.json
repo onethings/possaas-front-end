@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "أهلاً بك مجدداً",
+    "subtitle": "سجل الدخول إلى لوحة إدارة المسؤول للمتابعة",
+    "email": "عنوان البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "companyId": "معرف الشركة",
+    "submit": "تسجيل الدخول",
+    "errorDefault": "فشل تسجيل الدخول، يرجى التحقق من بياناتك"
+  },
+  "customer_management": "إدارة العملاء",
+  "add_customer": "إضافة عميل",
+  "search_placeholder_name_phone": "البحث عن الاسم أو الهاتف...",
+  "delete_selected_confirm": "هل تأكد حذف {{count}} من العملاء المحددين؟",
+  "sales_trend": "اتجاه المبيعات",
+  "status_paid": "تم الدفع",
+  "status_pending": "قيد الانتظار",
+  "checkout_now": "الدفع الآن",
+  "reason_correction": "تصحيح المخزون",
+  "multi_variants": "متغيرات متعددة"
+}

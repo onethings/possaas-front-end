@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "स्वागत है",
+    "subtitle": "जारी रखने के लिए अपने व्यवस्थापक डैशबोर्ड में लॉगिन करें",
+    "email": "ईमेल पता",
+    "password": "पासवर्ड",
+    "companyId": "कंपनी आईडी",
+    "submit": "लॉगिन करें",
+    "errorDefault": "लॉगिन विफल रहा, कृपया अपनी साख जांचें"
+  },
+  "customer_management": "ग्राहक प्रबंधन",
+  "add_customer": "ग्राहक जोड़ें",
+  "search_placeholder_name_phone": "नाम या फोन खोजें...",
+  "delete_selected_confirm": "क्या आप चुने गए {{count}} ग्राहकों को हटाना चाहते हैं?",
+  "sales_trend": "बिक्री का रुझान",
+  "status_paid": "भुगतान किया गया",
+  "status_pending": "लंबित",
+  "checkout_now": "अभी चेकआउट करें",
+  "reason_correction": "स्टॉक सुधार",
+  "multi_variants": "बहु-वेरिएंट"
+}

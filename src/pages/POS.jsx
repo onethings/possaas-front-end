@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Search,
@@ -45,6 +46,7 @@ const POS = () => {
     const [showSuccess, setShowSuccess] = useState(false);
     const [viewMode, setViewMode] = useState(() => localStorage.getItem('posViewMode') || 'grid');
     const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
+    const { t } = useTranslation();
     const CACHE_KEY_PRODUCTS = 'pos_cache_products';
     const CACHE_KEY_CATEGORIES = 'pos_cache_categories';
     const CACHE_TIME = 24 * 60 * 60 * 1000; // 24小時（毫秒）
@@ -171,14 +173,13 @@ const POS = () => {
     const handleCheckout = async (status = 'paid') => {
         const finalStoreId = localStorage.getItem('storeId');
         if (!finalStoreId || finalStoreId === 'undefined') {
-            alert("無法獲取商店 ID，請刷新頁面重試。");
+            alert(t('pos.error_no_store_id', '無法獲取商店 ID，請刷新頁面重試。'));
             return;
         }
 
         setSubmitting(true);
         try {
-            // 生成單號 (符合你資料庫看到的格式)
-            // 補單邏輯：單號中的日期部分應為選擇的日期
+            // ... (單號生成邏輯保持不變)
             const datePart = orderDate.replace(/-/g, '');
             const randomPart = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
             const generatedOrderNo = `ORD-${datePart}-${randomPart}`;
@@ -186,22 +187,19 @@ const POS = () => {
             const orderData = {
                 storeId: finalStoreId,
                 orderNo: generatedOrderNo,
-                // 修正點：items 必須包含 nameSnapshot, priceSnapshot, subtotal
                 items: cart.map(item => ({
                     productId: item.productId,
                     qty: Number(item.qty),
-                    nameSnapshot: item.name, // <--- 補上這個
-                    variantNameSnapshot: item.variantName, // <--- 修正：不強制空字串，讓它為 undefined (JSON.stringify 會自動忽略)
-                    priceSnapshot: Number(item.price), // <--- 補上這個
-                    subtotal: Number((item.price * item.qty).toFixed(2)) // <--- 補上這個
+                    nameSnapshot: item.name,
+                    variantNameSnapshot: item.variantName,
+                    priceSnapshot: Number(item.price),
+                    subtotal: Number((item.price * item.qty).toFixed(2))
                 })),
                 totalAmount: Number(subtotal.toFixed(2)),
                 discountAmount: Number(discountAmount.toFixed(2)),
                 finalAmount: Number(total.toFixed(2)),
-                customDate: orderDate // 送出補單日期
+                customDate: orderDate
             };
-
-            console.log("📤 正式提交數據:", orderData);
 
             const result = await createOrder(orderData);
 
@@ -211,13 +209,10 @@ const POS = () => {
                 setAppliedDiscount(null);
                 setShowSuccess(true);
                 setTimeout(() => setShowSuccess(false), 3000);
-                console.log("✅ 結帳成功！單號：", generatedOrderNo);
             }
         } catch (error) {
             const msg = error.response?.data?.message || error.message;
-            // 如果還有欄位報錯，我們會在這裡看到它是哪個欄位
-            alert(`API 驗證失敗: ${JSON.stringify(msg)}`);
-            console.error("❌ 報錯詳情:", error.response?.data);
+            alert(`${t('pos.checkout_failed', '結帳失敗')}: ${JSON.stringify(msg)}`);
         } finally {
             setSubmitting(false);
         }
@@ -226,12 +221,8 @@ const POS = () => {
     const filteredProducts = products.filter(p => {
         const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             p.sku?.toLowerCase().includes(searchTerm.toLowerCase());
-
-        // 取得產品的分類 ID (兼容字串或物件格式)
         const prodCatId = typeof p.categoryId === 'object' ? p.categoryId?._id : p.categoryId;
-
         const matchesCategory = activeCategory === 'all' || prodCatId === activeCategory;
-
         return matchesSearch && matchesCategory;
     });
 
@@ -247,19 +238,18 @@ const POS = () => {
                         <input
                             id="pos-product-search"
                             name="searchTerm"
-                            placeholder="搜尋產品或掃描條碼..."
+                            placeholder={t('pos.search_placeholder', '搜尋產品或掃描條碼...')}
                             style={searchStyle}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
 
-                    {/* 按鈕組：確保有獨立空間 */}
                     <div style={{ display: 'flex', gap: '15px', alignItems: 'center', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '15px' }}>
                         <button
                             onClick={() => { localStorage.removeItem('cache_products'); localStorage.removeItem('cache_categories'); fetchData(); }}
                             style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer' }}
-                            title="同步數據"
+                            title={t('common.sync_data', '同步數據')}
                         >
                             <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
                         </button>
@@ -273,14 +263,7 @@ const POS = () => {
                 </div>
 
                 {/* Category Bar */}
-                <div style={{
-                    display: 'flex',
-                    gap: '0.5rem',
-                    overflowX: 'auto',
-                    padding: '8px 0',
-                    minHeight: '40px', // 確保有固定高度防止塌陷
-                    width: '100%'
-                }} className="no-scrollbar">
+                <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', padding: '8px 0', minHeight: '40px', width: '100%' }} className="no-scrollbar">
                     <button
                         onClick={() => setActiveCategory('all')}
                         style={{
@@ -289,11 +272,10 @@ const POS = () => {
                             color: 'white'
                         }}
                     >
-                        <ShoppingBag size={14} /> 全部
+                        <ShoppingBag size={14} /> {t('pos.category_all', '全部')}
                     </button>
 
-                    {/* 加入一個簡單的檢查，若沒資料時顯示提示 */}
-                    {categories.length === 0 && <span style={{ color: 'gray', fontSize: '0.8rem' }}>載入中...</span>}
+                    {categories.length === 0 && <span style={{ color: 'gray', fontSize: '0.8rem' }}>{t('common.loading')}</span>}
 
                     {categories.map(cat => (
                         <button
@@ -311,15 +293,7 @@ const POS = () => {
                 </div>
 
 
-                <div style={{
-                    flex: 1,
-                    overflowY: 'auto',
-                    display: 'grid',
-                    // 這裡改為根據 viewMode 動態調整網格
-                    gridTemplateColumns: viewMode === 'grid' ? 'repeat(auto-fill, minmax(180px, 1fr))' : '1fr',
-                    gap: '1rem',
-                    paddingRight: '0.5rem'
-                }}>
+                <div style={{ flex: 1, overflowY: 'auto', display: 'grid', gridTemplateColumns: viewMode === 'grid' ? 'repeat(auto-fill, minmax(180px, 1fr))' : '1fr', gap: '1rem', paddingRight: '0.5rem' }}>
                     {loading ? (
                         <div style={{ gridColumn: '1/-1', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200px' }}>
                             <Loader2 className="animate-spin" />
@@ -333,7 +307,6 @@ const POS = () => {
                                     className="glass-panel"
                                     whileHover={{ scale: 1.02 }}
                                     onClick={() => {
-                                        // 重點：如果沒有多規格，點擊卡片直接加入購物車
                                         if (!p.hasVariants) {
                                             addToCart(p);
                                         }
@@ -352,19 +325,8 @@ const POS = () => {
                                         overflow: 'hidden'
                                     }}
                                 >
-                                    {/* 內容區：名稱 */}
-                                    <div style={{
-                                        textAlign: viewMode === 'grid' ? 'center' : 'left',
-                                        flex: viewMode === 'grid' ? 'none' : 1,
-                                    }}>
-                                        <div style={{
-                                            fontSize: '0.9rem',
-                                            fontWeight: 600,
-                                            display: '-webkit-box',
-                                            WebkitLineClamp: 2,
-                                            WebkitBoxOrient: 'vertical',
-                                            overflow: 'hidden'
-                                        }}>
+                                    <div style={{ textAlign: viewMode === 'grid' ? 'center' : 'left', flex: viewMode === 'grid' ? 'none' : 1 }}>
+                                        <div style={{ fontSize: '0.9rem', fontWeight: 600, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                                             {p.name}
                                         </div>
                                         {viewMode === 'list' && p.sku && (
@@ -372,43 +334,24 @@ const POS = () => {
                                         )}
                                     </div>
 
-                                    {/* 內容區：價格 */}
-                                    <div style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: viewMode === 'grid' ? 'center' : 'flex-end'
-                                    }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: viewMode === 'grid' ? 'center' : 'flex-end' }}>
                                         <span style={{ color: 'var(--primary-light)', fontWeight: 700, fontSize: '1.1rem' }}>
                                             {tenantConfig.currency}{p.price || p.variants?.[0]?.price}
                                         </span>
                                         {p.hasVariants && (
                                             <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '4px' }}>
-                                                多規格
+                                                {t('pos.multi_variants', '多規格')}
                                             </span>
                                         )}
                                     </div>
 
-                                    {/* 多規格覆蓋層 (Variant Overlay) */}
                                     {p.hasVariants && (
-                                        <div
-                                            className="variant-overlay"
-                                            style={{
-                                                position: 'absolute',
-                                                inset: 0,
-                                                background: 'rgba(0,0,0,0.85)',
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                                gap: '4px',
-                                                padding: '0.5rem',
-                                                zIndex: 10,
-                                                // 讓它在 Hover 時由 CSS 顯示 (或直接顯示，視您的設計而定)
-                                            }}
-                                        >
+                                        <div className="variant-overlay" style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', flexDirection: 'column', gap: '4px', padding: '0.5rem', zIndex: 10 }}>
                                             {p.variants.map(v => (
                                                 <button
                                                     key={v._id}
                                                     onClick={(e) => {
-                                                        e.stopPropagation(); // 阻止事件冒泡到外層 onClick
+                                                        e.stopPropagation();
                                                         addToCart(p, v);
                                                     }}
                                                     style={variantButtonStyle}
@@ -423,25 +366,22 @@ const POS = () => {
                         </AnimatePresence>
                     )}
                 </div>
-
-
-
             </div>
 
             {/* Cart Section */}
             <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                 <div style={{ padding: '1.2rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700 }}>
-                        <ShoppingCart size={20} /> 購物車 ({cart.reduce((a, b) => a + b.qty, 0)})
+                        <ShoppingCart size={20} /> {t('pos.cart', '購物車')} ({cart.reduce((a, b) => a + b.qty, 0)})
                     </div>
-                    <button onClick={() => setCart([])} style={{ background: 'none', border: 'none', color: '#f87171', fontSize: '0.8rem', cursor: 'pointer' }}>清空</button>
+                    <button onClick={() => setCart([])} style={{ background: 'none', border: 'none', color: '#f87171', fontSize: '0.8rem', cursor: 'pointer' }}>{t('common.clear', '清空')}</button>
                 </div>
 
                 <div style={{ flex: 1, overflowY: 'auto', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                     {cart.length === 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--text-muted)', gap: '1rem' }}>
                             <ShoppingCart size={40} opacity={0.2} />
-                            <span>尚未加入任何商品</span>
+                            <span>{t('pos.cart_empty', '尚未加入任何商品')}</span>
                         </div>
                     ) : (
                         cart.map(item => (
@@ -470,7 +410,7 @@ const POS = () => {
                             <input
                                 id="pos-customer-search"
                                 name="custSearchTerm"
-                                placeholder="搜尋客戶姓名..."
+                                placeholder={t('pos.search_customer', '搜尋客戶姓名...')}
                                 style={{ ...miniSelectStyle, paddingLeft: '30px', width: '100%' }}
                                 value={custSearchTerm}
                                 onChange={(e) => setCustSearchTerm(e.target.value)}
@@ -487,7 +427,7 @@ const POS = () => {
                                     setSelectedCustomer(cust);
                                 }}
                             >
-                                <option value="">選擇客戶 (結果: {customers.filter(c => c.name.toLowerCase().includes(custSearchTerm.toLowerCase())).length})</option>
+                                <option value="">{t('pos.select_customer', '選擇客戶')} ({t('common.results', '結果')}: {customers.filter(c => c.name.toLowerCase().includes(custSearchTerm.toLowerCase())).length})</option>
                                 {customers
                                     .filter(c => c.name.toLowerCase().includes(custSearchTerm.toLowerCase()))
                                     .map(c => <option key={c._id} value={c._id}>{c.name} ({c.points || 0}pt)</option>)
@@ -503,13 +443,13 @@ const POS = () => {
                                     setAppliedDiscount(disc);
                                 }}
                             >
-                                <option value="">選擇折扣</option>
+                                <option value="">{t('pos.select_discount', '選擇折扣')}</option>
                                 {discounts.map(d => <option key={d._id} value={d._id}>{d.name}</option>)}
                             </select>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '8px' }}>
                             <Calendar size={14} style={{ opacity: 0.6 }} />
-                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>結帳日期</span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{t('pos.checkout_date', '結帳日期')}</span>
                             <input
                                 type="date"
                                 value={orderDate}
@@ -522,23 +462,23 @@ const POS = () => {
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.9rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ color: 'var(--text-muted)' }}>小計</span>
+                            <span style={{ color: 'var(--text-muted)' }}>{t('pos.subtotal', '小計')}</span>
                             <span>{tenantConfig.currency}{subtotal.toLocaleString()}</span>
                         </div>
                         {appliedDiscount && (
                             <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f87171' }}>
-                                <span>折扣 ({appliedDiscount.name})</span>
+                                <span>{t('pos.discount', '折扣')} ({appliedDiscount.name})</span>
                                 <span>-{tenantConfig.currency}{discountAmount.toLocaleString()}</span>
                             </div>
                         )}
                         {taxAmount > 0 && (
                             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-                                <span>稅額 ({tenantConfig?.taxRate || 0}%)</span>
+                                <span>{t('pos.tax_amount', '稅額')} ({tenantConfig?.taxRate || 0}%)</span>
                                 <span>+{tenantConfig.currency}{taxAmount.toLocaleString()}</span>
                             </div>
                         )}
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 800, marginTop: '0.4rem' }}>
-                            <span>總計</span>
+                            <span>{t('pos.total', '總計')}</span>
                             <span style={{ color: 'var(--primary-light)' }}>{tenantConfig.currency}{total.toLocaleString()}</span>
                         </div>
                     </div>
@@ -551,16 +491,15 @@ const POS = () => {
                             className="btn-secondary"
                             style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
                         >
-                            <History size={18} /> 掛單
+                            <History size={18} /> {t('pos.hold_order', '掛單')}
                         </button>
-                        <button onClick={() => console.log(calculateTotals())}>檢查計算數據</button>
                         <button
                             disabled={submitting || cart.length === 0}
                             onClick={() => handleCheckout('paid')}
                             className="btn-primary"
                             style={{ flex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', py: '1rem' }}
                         >
-                            {submitting ? <Loader2 className="animate-spin" /> : <><CreditCard size={18} /> 立即結帳</>}
+                            {submitting ? <Loader2 className="animate-spin" /> : <><CreditCard size={18} /> {t('pos.checkout_now', '立即結帳')}</>}
                         </button>
                     </div>
                 </div>
@@ -577,8 +516,8 @@ const POS = () => {
                     >
                         <CheckCircle2 size={24} color="#4ade80" />
                         <div>
-                            <div style={{ fontWeight: 700 }}>結帳成功</div>
-                            <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>訂單已成立並更新庫存</div>
+                            <div style={{ fontWeight: 700 }}>{t('pos.checkout_success', '結帳成功')}</div>
+                            <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>{t('pos.order_created_msg', '訂單已成立並更新庫存')}</div>
                         </div>
                     </motion.div>
                 )}

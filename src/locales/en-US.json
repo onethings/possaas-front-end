@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "Welcome back",
+    "subtitle": "Login to your admin dashboard to continue",
+    "email": "Email Address",
+    "password": "Password",
+    "companyId": "Company ID",
+    "submit": "Login System",
+    "errorDefault": "Login failed, please check your credentials"
+  },
+  "customer_management": "Customer Management",
+  "add_customer": "Add Customer",
+  "search_placeholder_name_phone": "Search customer name or phone...",
+  "delete_selected_confirm": "Confirm delete selected {{count}} customers?",
+  "sales_trend": "Sales Trend",
+  "status_paid": "Paid",
+  "status_pending": "Pending",
+  "checkout_now": "Checkout Now",
+  "reason_correction": "Stock Correction",
+  "multi_variants": "Multi Variants"
+}

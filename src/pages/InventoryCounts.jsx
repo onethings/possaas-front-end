@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ClipboardList, Plus, Search, AlertCircle, Loader2 } from 'lucide-react';
 import { getProducts } from '../api/products';
 import { createAdjustment } from '../api/inventoryAdjustments';
 
 const InventoryCounts = () => {
+    const { t } = useTranslation();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -50,7 +52,7 @@ const InventoryCounts = () => {
                 fetchProducts();
             }
         } catch (error) {
-            alert('調整失敗');
+            alert(t('inventory.alerts.adjust_fail'));
         } finally {
             setSubmitting(false);
         }
@@ -62,9 +64,9 @@ const InventoryCounts = () => {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>庫存盤點與調整</h2>
+                <h2 style={{ fontSize: '1.5rem' }}>{t('inventory.title')}</h2>
                 <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Plus size={18} /> 新增調整
+                    <Plus size={18} /> {t('inventory.add_adjustment')}
                 </button>
             </div>
 
@@ -75,7 +77,7 @@ const InventoryCounts = () => {
                         id="product-search"
                         name="product-search"
                         type="text"
-                        placeholder="搜尋產品以查看庫存..."
+                        placeholder={t('inventory.search_placeholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         style={searchStyle}
@@ -87,10 +89,10 @@ const InventoryCounts = () => {
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                         <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
-                            <th style={thStyle}>產品名稱</th>
-                            <th style={thStyle}>SKU</th>
-                            <th style={thStyle}>當前庫存</th>
-                            <th style={thStyle}>單位</th>
+                            <th style={thStyle}>{t('inventory.table.product_name')}</th>
+                            <th style={thStyle}>{t('inventory.table.sku')}</th>
+                            <th style={thStyle}>{t('inventory.table.current_stock')}</th>
+                            <th style={thStyle}>{t('inventory.table.unit')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,10 +111,10 @@ const InventoryCounts = () => {
             {isModalOpen && (
                 <div style={modalOverlayStyle}>
                     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '450px', padding: '2rem' }}>
-                        <h3>新增庫存調整</h3>
+                        <h3>{t('inventory.modal.title')}</h3>
                         <form onSubmit={handleAdjust} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
-                                <label htmlFor="adj-product">產品</label>
+                                <label htmlFor="adj-product">{t('inventory.modal.product')}</label>
                                 <select 
                                     id="adj-product"
                                     name="productId"
@@ -121,30 +123,32 @@ const InventoryCounts = () => {
                                     value={adjustment.productId} 
                                     onChange={e => setAdjustment({ ...adjustment, productId: e.target.value, variantId: '' })}
                                 >
-                                    <option value="">選擇產品</option>
+                                    <option value="">{t('inventory.modal.select_product')}</option>
                                     {products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
                                 </select>
                             </div>
 
                             {selectedProduct?.hasVariants && (
                                 <div className="input-group">
-                                    <label htmlFor="adj-variant">規格 (Variant)</label>
+                                    <label>{t('inventory.modal.variant')}</label>
                                     <select 
-                                        id="adj-variant"
-                                        name="variantId"
                                         required 
                                         style={selectStyle} 
                                         value={adjustment.variantId} 
                                         onChange={e => setAdjustment({ ...adjustment, variantId: e.target.value })}
                                     >
-                                        <option value="">選擇規格</option>
-                                        {selectedProduct.variants.map(v => <option key={v._id} value={v._id}>{v.name} (庫存: {v.stock})</option>)}
+                                        <option value="">{t('inventory.modal.select_variant')}</option>
+                                        {selectedProduct.variants.map(v => (
+                                            <option key={v._id} value={v._id}>
+                                                {v.name} {t('inventory.modal.stock_display', { stock: v.stock })}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                             )}
 
                             <div className="input-group">
-                                <label htmlFor="adj-qty">調整數量 (正值增加，負值減少)</label>
+                                <label htmlFor="adj-qty">{t('inventory.modal.qty_label')}</label>
                                 <input 
                                     id="adj-qty"
                                     name="changeQty"
@@ -168,16 +172,16 @@ const InventoryCounts = () => {
                                     value={adjustment.reason} 
                                     onChange={e => setAdjustment({ ...adjustment, reason: e.target.value })}
                                 >
-                                    <option value="correction">盤點更正</option>
-                                    <option value="damage">產品損耗/報廢</option>
-                                    <option value="received">收到品項</option>
-                                    <option value="inventory_count">庫存盤點</option>
-                                    <option value="other">其他</option>
+                                    <option value="correction">{t('inventory.reasons.correction')}</option>
+                                    <option value="damage">{t('inventory.reasons.damage')}</option>
+                                    <option value="received">{t('inventory.reasons.received')}</option>
+                                    <option value="inventory_count">{t('inventory.reasons.inventory_count')}</option>
+                                    <option value="other">{t('inventory.reasons.other')}</option>
                                 </select>
                             </div>
 
                             <div className="input-group">
-                                <label htmlFor="adj-note">備註</label>
+                                <label htmlFor="adj-note">{t('inventory.modal.note')}</label>
                                 <textarea 
                                     id="adj-note"
                                     name="note"
@@ -188,8 +192,8 @@ const InventoryCounts = () => {
                             </div>
 
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                                <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
-                                <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1 }}>{submitting ? <Loader2 size={18} className="animate-spin" /> : '確認調整'}</button>
+                                <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>{t('common.cancel')}</button>
+                                <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1 }}>{submitting ? <Loader2 size={18} className="animate-spin" /> : t('inventory.modal.submit')}</button>
                             </div>
                         </form>
                     </motion.div>

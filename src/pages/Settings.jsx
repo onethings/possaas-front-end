@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Settings as SettingsIcon, Globe, Bell, Shield, CreditCard, Save, Loader2, Coins, Receipt } from 'lucide-react';
 import { getMyTenant, updateTenantConfig } from '../api/tenants';
@@ -40,10 +41,10 @@ const Settings = () => {
         try {
             const result = await updateTenantConfig(config);
             if (result.success) {
-                alert('設置已成功保存！');
+                alert(t('settings.save_success'));
             }
         } catch (error) {
-            alert('保存失敗');
+            alert(t('settings.save_fail')); 
         } finally {
             setSubmitting(false);
         }
@@ -59,33 +60,33 @@ const Settings = () => {
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
         >
             <div>
-                <h2 style={{ fontSize: '1.5rem' }}>系統設置</h2>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>管理您的商店規則與忠誠度計畫</p>
+                <h2 style={{ fontSize: '1.5rem' }}>{t('settings.title')}</h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{t('settings.subtitle')}</p>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '2rem' }}>
                 <div className="glass-panel" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <button style={menuItemStyle(true)}><SettingsIcon size={18} /> 一般設置</button>
-                    <button style={menuItemStyle(false)}><Coins size={18} /> 忠誠度計畫</button>
-                    <button style={menuItemStyle(false)}><Receipt size={18} /> 稅務設置</button>
-                    <button style={menuItemStyle(false)}><Shield size={18} /> 安全與權限</button>
+                    <button style={menuItemStyle(true)}><SettingsIcon size={18} /> {t('settings.tabs.general')}</button>
+                    <button style={menuItemStyle(false)}><Coins size={18} /> {t('settings.tabs.loyalty')}</button>
+                    <button style={menuItemStyle(false)}><Receipt size={18} /> {t('settings.tabs.tax')}</button>
+                    <button style={menuItemStyle(false)}><Shield size={18} /> {t('settings.tabs.security')}</button>
                 </div>
 
                 <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                     <section>
                         <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Coins size={18} color="var(--primary-light)" /> 忠誠度計畫 (Loyalty)
+                            <Coins size={18} color="var(--primary-light)" /> {t('settings.loyalty.title')}
                         </h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                             <div style={toggleRowStyle}>
                                 <div>
-                                    <div style={{ fontWeight: 500 }}>啟用消費回饋點數</div>
-                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>客戶每筆消費將根據金額獲得點數</div>
+                                    <div style={{ fontWeight: 500 }}>{t('settings.loyalty.enable_points')}</div>
+                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('settings.loyalty.enable_desc')}</div>
                                 </div>
                                 <input type="checkbox" checked={config.loyaltyEnabled} onChange={(e) => setConfig({ ...config, loyaltyEnabled: e.target.checked })} />
                             </div>
                             <div className="input-group">
-                                <label style={labelStyle}>回饋比例 (花費多少換 1 點)</label>
+                                <label style={labelStyle}>{t('settings.loyalty.rate_label')}</label>
                                 <input
                                     type="number"
                                     style={inputStyle}
@@ -98,10 +99,10 @@ const Settings = () => {
 
                     <section style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '2rem' }}>
                         <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Receipt size={18} color="#fbbf24" /> 稅務配置 (Taxes)
+                            <Receipt size={18} color="#fbbf24" /> {t('settings.tax.title')}
                         </h3>
                         <div className="input-group">
-                            <label style={labelStyle}>預設稅率 (%)</label>
+                            <label style={labelStyle}>{t('settings.tax.rate_label')}</label>
                             <input
                                 type="number"
                                 step="0.01"
@@ -113,10 +114,10 @@ const Settings = () => {
                     </section>
 
                     <section style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '2rem' }}>
-                        <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>地區與貨幣</h3>
+                        <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>{t('settings.regional.title')}</h3>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                             <div className="input-group">
-                                <label style={labelStyle}>貨幣符號</label>
+                                <label style={labelStyle}>{t('settings.regional.currency_label')}</label>
                                 <select 
                                     style={inputStyle} 
                                     value={config.currency} 
@@ -140,7 +141,7 @@ const Settings = () => {
                                 </select>
                             </div>
                             <div className="input-group">
-                                <label style={labelStyle}>時區</label>
+                                <label style={labelStyle}>{t('settings.regional.timezone_label')}</label>
                                 <select style={inputStyle} value={config.timezone} onChange={(e) => setConfig({ ...config, timezone: e.target.value })}>
                                     <option value="Asia/Taipei">Asia/Taipei (GMT+8)</option>
                                     <option value="UTC">UTC</option>
@@ -156,7 +157,7 @@ const Settings = () => {
                             className="btn-primary"
                             style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 2rem' }}
                         >
-                            {submitting ? <Loader2 className="animate-spin" /> : <><Save size={18} /> 保存更改</>}
+                            {submitting ? <Loader2 className="animate-spin" /> : <><Save size={18} /> {t('settings.save_btn')}</>}
                         </button>
                     </div>
                 </div>

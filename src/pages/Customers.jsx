@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Search, Filter, Plus, Mail, Phone, Edit2, Trash2, Loader2, Square, CheckSquare } from 'lucide-react';
 import { getCustomers, createCustomer, updateCustomer, deleteCustomer } from '../api/customers';
@@ -52,20 +53,20 @@ const Customers = () => {
                 fetchCustomers();
             }
         } catch (error) {
-            alert(error.response?.data?.message || (editId ? '更新失敗' : '新增失敗'));
+            alert(error.response?.data?.message || (editId ? t('update_failed') : t('create_failed')));
         } finally {
             setSubmitting(false);
         }
     };
 
     const handleBatchDelete = async () => {
-        if (!confirm(`確定刪除選中的 ${selectedIds.length} 位客戶？`)) return;
+        if (!confirm(t('delete_selected_confirm', { count: selectedIds.length }))) return;
         try {
             await Promise.all(selectedIds.map(id => deleteCustomer(id)));
             setSelectedIds([]);
             fetchCustomers();
         } catch (error) {
-            alert('刪除失敗');
+            alert(error.response?.data?.message || t('delete_failed'));
         }
     };
 
@@ -101,15 +102,15 @@ const Customers = () => {
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>客戶資料管理</h2>
+                <h2 style={{ fontSize: '1.5rem' }}>{t('customer_management')}</h2>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     {selectedIds.length > 0 && (
                         <button onClick={handleBatchDelete} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f87171', borderColor: '#f87171' }}>
-                            <Trash2 size={18} /> 刪除 ({selectedIds.length})
+                            <Trash2 size={18} /> {t('delete')} ({selectedIds.length})
                         </button>
                     )}
                     <button onClick={() => { setEditId(null); setNewCustomer({ name: '', phone: '', email: '', address: '' }); setModalOpen(true); }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Plus size={18} /> 新增客戶
+                        <Plus size={18} /> {t('add_customer')}
                     </button>
                 </div>
             </div>
@@ -121,7 +122,7 @@ const Customers = () => {
                         id="customer-search"
                         name="customer-search"
                         type="text"
-                        placeholder="搜尋客戶姓名或電話..."
+                        placeholder={t('search_placeholder_name_phone')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         style={searchStyle}
@@ -131,9 +132,9 @@ const Customers = () => {
 
             <div className="glass-panel" style={{ overflow: 'hidden', minHeight: '300px', display: 'flex', flexDirection: 'column' }}>
                 {loading ? (
-                    <div style={centerStyle}><Loader2 className="animate-spin" /> 讀取中...</div>
+                    <div style={centerStyle}><Loader2 className="animate-spin" /> {t('loading')}</div>
                 ) : customers.length === 0 ? (
-                    <div style={centerStyle}>目前無資料</div>
+                    <div style={centerStyle}>{t('no_data')}</div>
                 ) : (
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
@@ -143,12 +144,12 @@ const Customers = () => {
                                         {selectedIds.length === filteredCustomers.length && filteredCustomers.length > 0 ? <CheckSquare size={18} /> : <Square size={18} />}
                                     </button>
                                 </th>
-                                <th style={thStyle}>姓名</th>
-                                <th style={thStyle}>聯絡電話</th>
-                                <th style={thStyle}>Email</th>
-                                <th style={thStyle}>通訊地址</th>
-                                <th style={thStyle}>累積點數</th>
-                                <th style={thStyle}>操作</th>
+                                <th style={thStyle}>{t('name')}</th>
+                                <th style={thStyle}>{t('phone')}</th>
+                                <th style={thStyle}>{t('email')}</th>
+                                <th style={thStyle}>{t('address')}</th>
+                                <th style={thStyle}>{t('points')}</th>
+                                <th style={thStyle}>{t('actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -182,28 +183,68 @@ const Customers = () => {
             {isModalOpen && (
                 <div style={modalOverlayStyle}>
                     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={modalContentStyle}>
-                        <h3 style={{ marginBottom: '1.5rem' }}>{editId ? '編輯客戶' : '新增客戶'}</h3>
+                        {/* 根據 editId 動態切換標題 */}
+                        <h3 style={{ marginBottom: '1.5rem' }}>
+                            {editId ? t('edit_customer') : t('add_customer')}
+                        </h3>
+
                         <form onSubmit={handleCreateOrUpdate} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
-                                <label htmlFor="cust-name">客戶姓名</label>
-                                <input id="cust-name" name="name" type="text" required value={newCustomer.name} onChange={e => setNewCustomer({ ...newCustomer, name: e.target.value })} placeholder="例如: 王小明" />
+                                <label htmlFor="cust-name">{t('name')}</label>
+                                <input
+                                    id="cust-name"
+                                    name="name"
+                                    type="text"
+                                    required
+                                    value={newCustomer.name}
+                                    onChange={e => setNewCustomer({ ...newCustomer, name: e.target.value })}
+                                    placeholder={t('placeholder_name_example')}
+                                />
                             </div>
                             <div className="input-group">
-                                <label htmlFor="cust-phone">聯絡電話</label>
-                                <input id="cust-phone" name="phone" type="text" value={newCustomer.phone} onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })} placeholder="0912345678" />
+                                <label htmlFor="cust-phone">{t('phone')}</label>
+                                <input
+                                    id="cust-phone"
+                                    name="phone"
+                                    type="text"
+                                    value={newCustomer.phone}
+                                    onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })}
+                                    placeholder={t('placeholder_phone')}
+                                />
                             </div>
                             <div className="input-group">
-                                <label htmlFor="cust-email">Email</label>
-                                <input id="cust-email" name="email" type="email" value={newCustomer.email} onChange={e => setNewCustomer({ ...newCustomer, email: e.target.value })} placeholder="example@mail.com" />
+                                <label htmlFor="cust-email">{t('email')}</label>
+                                <input
+                                    id="cust-email"
+                                    name="email"
+                                    type="email"
+                                    value={newCustomer.email}
+                                    onChange={e => setNewCustomer({ ...newCustomer, email: e.target.value })}
+                                    placeholder={t('placeholder_email')}
+                                />
                             </div>
                             <div className="input-group">
-                                <label htmlFor="cust-address">通訊地址</label>
-                                <input id="cust-address" name="address" type="text" value={newCustomer.address} onChange={e => setNewCustomer({ ...newCustomer, address: e.target.value })} placeholder="台北市..." />
+                                <label htmlFor="cust-address">{t('address')}</label>
+                                <input
+                                    id="cust-address"
+                                    name="address"
+                                    type="text"
+                                    value={newCustomer.address}
+                                    onChange={e => setNewCustomer({ ...newCustomer, address: e.target.value })}
+                                    placeholder={t('placeholder_address')}
+                                />
                             </div>
+
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-                                <button type="button" disabled={submitting} onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
+                                <button type="button" disabled={submitting} onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>
+                                    {t('cancel')}
+                                </button>
                                 <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                                    {submitting ? <Loader2 size={18} className="animate-spin" /> : (editId ? '確認更新' : '確認新增')}
+                                    {submitting ? (
+                                        <Loader2 size={18} className="animate-spin" />
+                                    ) : (
+                                        editId ? t('confirm_update') : t('confirm_add')
+                                    )}
                                 </button>
                             </div>
                         </form>

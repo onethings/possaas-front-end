@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "환영합니다",
+    "subtitle": "계속하려면 관리자 대시보드에 로그인하세요",
+    "email": "이메일 주소",
+    "password": "비밀번호",
+    "companyId": "회사 ID",
+    "submit": "시스템 로그인",
+    "errorDefault": "로그인 실패, 자격 증명을 확인하세요"
+  },
+  "customer_management": "고객 관리",
+  "add_customer": "고객 추가",
+  "search_placeholder_name_phone": "이름 또는 전화번호 검색...",
+  "delete_selected_confirm": "선택한 {{count}}명의 고객을 삭제하시겠습니까?",
+  "sales_trend": "판매 트렌드",
+  "status_paid": "결제 완료",
+  "status_pending": "대기 중",
+  "checkout_now": "지금 결제",
+  "reason_correction": "재고 수정",
+  "multi_variants": "다중 옵션"
+}

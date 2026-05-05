@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "Selamat datang kembali",
+    "subtitle": "Masuk ke dashboard admin Anda untuk melanjutkan",
+    "email": "Alamat Email",
+    "password": "Kata Sandi",
+    "companyId": "ID Perusahaan",
+    "submit": "Masuk Sistem",
+    "errorDefault": "Gagal masuk, silakan periksa kredensial Anda"
+  },
+  "customer_management": "Manajemen Pelanggan",
+  "add_customer": "Tambah Pelanggan",
+  "search_placeholder_name_phone": "Cari nama atau telepon...",
+  "delete_selected_confirm": "Konfirmasi hapus {{count}} pelanggan terpilih?",
+  "sales_trend": "Tren Penjualan",
+  "status_paid": "Dibayar",
+  "status_pending": "Tertunda",
+  "checkout_now": "Bayar Sekarang",
+  "reason_correction": "Koreksi Stok",
+  "multi_variants": "Multi Varian"
+}

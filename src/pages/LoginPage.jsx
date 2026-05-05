@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Lock, User, Building2, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';

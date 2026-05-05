@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "Chào mừng trở lại",
+    "subtitle": "Đăng nhập vào bảng điều khiển quản trị của bạn để tiếp tục",
+    "email": "Địa chỉ Email",
+    "password": "Mật khẩu",
+    "companyId": "Mã công ty",
+    "submit": "Đăng nhập hệ thống",
+    "errorDefault": "Đăng nhập thất bại, vui lòng kiểm tra lại thông tin"
+  },
+  "customer_management": "Quản lý khách hàng",
+  "add_customer": "Thêm khách hàng",
+  "search_placeholder_name_phone": "Tìm kiếm tên hoặc điện thoại...",
+  "delete_selected_confirm": "Xác nhận xóa {{count}} khách hàng đã chọn?",
+  "sales_trend": "Xu hướng bán hàng",
+  "status_paid": "Đã thanh toán",
+  "status_pending": "Đang chờ",
+  "checkout_now": "Thanh toán ngay",
+  "reason_correction": "Điều chỉnh kho",
+  "multi_variants": "Nhiều biến thể"
+}

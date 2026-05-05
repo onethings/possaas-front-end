@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Plus, Search, FileText, CheckCircle, Clock, XCircle, Loader2, ArrowRight } from 'lucide-react';
 import { getPurchaseOrders, createPurchaseOrder, receivePurchaseOrder } from '../api/purchaseOrders';
@@ -63,37 +64,37 @@ const PurchaseOrders = () => {
                 fetchInitialData();
             }
         } catch (error) {
-            alert('新增失敗');
+            alert(t('purchase_orders.add_failed')); //新增失敗
         } finally {
             setSubmitting(false);
         }
     };
 
     const handleReceive = async (id) => {
-        if (!window.confirm('確認收貨？這將會更新相關產品庫存。')) return;
+        if (!window.confirm(t('purchase_orders.confirm_receive'))) return; //確認收貨？這將會更新相關產品庫存。
         try {
             const result = await receivePurchaseOrder(id);
             if (result.success) fetchInitialData();
         } catch (error) {
-            alert('收貨失敗');
+            alert(t('purchase_orders.receive_failed'));//收貨失敗
         }
     };
 
     const getStatusStyle = (status) => {
         switch (status) {
-            case 'received': return { icon: <CheckCircle size={14} />, color: '#4ade80', label: '已收貨' };
-            case 'ordered': return { icon: <Clock size={14} />, color: '#fbbf24', label: '已下單' };
-            case 'cancelled': return { icon: <XCircle size={14} />, color: '#f87171', label: '已取消' };
-            default: return { icon: <FileText size={14} />, color: 'var(--text-muted)', label: '草稿' };
+            case 'received': return { icon: <CheckCircle size={14} />, color: '#4ade80', label: t('purchase_orders.status_received') };//已收貨
+            case 'ordered': return { icon: <Clock size={14} />, color: '#fbbf24', label: t('purchase_orders.status_ordered') };//已下單
+            case 'cancelled': return { icon: <XCircle size={14} />, color: '#f87171', label: t('purchase_orders.status_cancelled') };//已取消
+            default: return { icon: <FileText size={14} />, color: 'var(--text-muted)', label: t('purchase_orders.status_draft') };//草稿
         }
     };
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>採購訂單</h2>
+                <h2 style={{ fontSize: '1.5rem' }}>{t('purchase_orders.title')}</h2>
                 <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Plus size={18} /> 新增採購單
+                    <Plus size={18} /> {t('purchase_orders.add')}
                 </button>
             </div>
 
@@ -101,12 +102,12 @@ const PurchaseOrders = () => {
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                         <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
-                            <th style={thStyle}>訂單編號</th>
-                            <th style={thStyle}>供應商</th>
-                            <th style={thStyle}>金額</th>
-                            <th style={thStyle}>狀態</th>
-                            <th style={thStyle}>日期</th>
-                            <th style={thStyle}>操作</th>
+                            <th style={thStyle}>{t('purchase_orders.order_no')}</th>
+                            <th style={thStyle}>{t('purchase_orders.supplier')}</th>
+                            <th style={thStyle}>{t('purchase_orders.amount')}</th>
+                            <th style={thStyle}>{t('purchase_orders.status')}</th>
+                            <th style={thStyle}>{t('purchase_orders.date')}</th>
+                            <th style={thStyle}>{t('purchase_orders.actions')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,7 +116,7 @@ const PurchaseOrders = () => {
                             return (
                                 <tr key={po._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                                     <td style={tdStyle}><code>{po.orderNo}</code></td>
-                                    <td style={tdStyle}>{po.supplierId?.name || '未知'}</td>
+                                    <td style={tdStyle}>{po.supplierId?.name || t('common.unknown')}</td>
                                     <td style={tdStyle}>{tenantConfig.currency}{po.totalAmount.toLocaleString()}</td>
                                     <td style={tdStyle}>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: status.color, fontSize: '0.85rem' }}>
@@ -126,7 +127,7 @@ const PurchaseOrders = () => {
                                     <td style={tdStyle}>
                                         {po.status === 'draft' && (
                                             <button onClick={() => handleReceive(po._id)} className="btn-secondary" style={{ padding: '4px 12px', fontSize: '0.8rem', borderColor: '#4ade80', color: '#4ade80' }}>
-                                                收貨進庫
+                                                {t('purchase_orders.receive')}
                                             </button>
                                         )}
                                     </td>
@@ -140,18 +141,18 @@ const PurchaseOrders = () => {
             {isModalOpen && (
                 <div style={modalOverlayStyle}>
                     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '600px', padding: '2rem' }}>
-                        <h3>新增採購單</h3>
+                        <h3>{t('purchase_orders.add')}</h3>
                         <form onSubmit={handleCreate} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
-                                <label htmlFor="po-supplier">供應商</label>
+                                <label htmlFor="po-supplier">{t('purchase_orders.supplier')}</label>
                                 <select id="po-supplier" name="supplierId" required style={selectStyle} value={newPO.supplierId} onChange={e => setNewPO({ ...newPO, supplierId: e.target.value })}>
-                                    <option value="">請選擇供應商</option>
+                                    <option value="">{t('purchase_orders.select_supplier')}</option>
                                     {suppliers.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
                                 </select>
                             </div>
 
                             <div>
-                                <label style={{ fontSize: '0.9rem', marginBottom: '0.5rem', display: 'block' }}>產品明細</label>
+                                <label style={{ fontSize: '0.9rem', marginBottom: '0.5rem', display: 'block' }}>{t('purchase_orders.items')}</label>
                                 {newPO.items.map((item, idx) => (
                                     <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 40px', gap: '0.5rem', marginBottom: '0.5rem' }}>
                                         <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -166,13 +167,13 @@ const PurchaseOrders = () => {
                                                     setNewPO({ ...newPO, items });
                                                 }}
                                             >
-                                                <option value="">選擇產品</option>
+                                                <option value="">{t('purchase_orders.select_product')}</option>
                                                 {products.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
                                             </select>
                                             <button
                                                 type="button"
                                                 onClick={() => window.open('/products', '_blank')}
-                                                title="新增產品 (另開視窗)"
+                                                title={t('purchase_orders.add_product')}
                                                 style={{ background: 'var(--primary)', border: 'none', borderRadius: '4px', width: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'white' }}
                                             >
                                                 <Plus size={16} />
@@ -182,7 +183,7 @@ const PurchaseOrders = () => {
                                              id={`po-qty-${idx}`}
                                              name={`qty-${idx}`}
                                              type="number" 
-                                             placeholder="數量" 
+                                             placeholder={t('purchase_orders.quantity')} 
                                              value={item.qty} 
                                              onChange={e => {
                                                  const items = [...newPO.items];
@@ -195,7 +196,7 @@ const PurchaseOrders = () => {
                                              id={`po-cost-${idx}`}
                                              name={`costPrice-${idx}`}
                                              type="number" 
-                                             placeholder="進價" 
+                                             placeholder={t('purchase_orders.cost_price')} 
                                              value={item.costPrice} 
                                              onChange={e => {
                                                  const items = [...newPO.items];
@@ -207,12 +208,12 @@ const PurchaseOrders = () => {
                                         <button type="button" onClick={() => setNewPO({ ...newPO, items: newPO.items.filter((_, i) => i !== idx) })} style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer' }}><XCircle size={18} /></button>
                                     </div>
                                 ))}
-                                <button type="button" onClick={() => setNewPO({ ...newPO, items: [...newPO.items, { productId: '', qty: 1, costPrice: 0 }] })} className="btn-secondary" style={{ padding: '4px 12px', fontSize: '0.8rem' }}>+ 新增品項</button>
+                                <button type="button" onClick={() => setNewPO({ ...newPO, items: [...newPO.items, { productId: '', qty: 1, costPrice: 0 }] })} className="btn-secondary" style={{ padding: '4px 12px', fontSize: '0.8rem' }}>+ {t('purchase_orders.add_item')}</button>
                             </div>
 
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                                <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
-                                <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1 }}>{submitting ? <Loader2 size={18} className="animate-spin" /> : '建立草稿'}</button>
+                                <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>{t('common.cancel')}</button>
+                                <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1 }}>{submitting ? <Loader2 size={18} className="animate-spin" /> : t('purchase_orders.create_draft')}</button>
                             </div>
                         </form>
                     </motion.div>

@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "Tekrar hoş geldiniz",
+    "subtitle": "Devam etmek için yönetici panelinize giriş yapın",
+    "email": "E-posta Adresi",
+    "password": "Şifre",
+    "companyId": "Şirket ID",
+    "submit": "Sisteme Giriş",
+    "errorDefault": "Giriş başarısız, lütfen bilgilerinizi kontrol edin"
+  },
+  "customer_management": "Müşteri Yönetimi",
+  "add_customer": "Müşteri Ekle",
+  "search_placeholder_name_phone": "İsim veya telefon ara...",
+  "delete_selected_confirm": "Seçilen {{count}} müşteriyi silmek istediğinize emin misiniz?",
+  "sales_trend": "Satış Trendi",
+  "status_paid": "Ödendi",
+  "status_pending": "Beklemede",
+  "checkout_now": "Şimdi Öde",
+  "reason_correction": "Stok Düzeltme",
+  "multi_variants": "Çoklu Varyant"
+}

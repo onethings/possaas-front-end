@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import {
     TrendingUp,
@@ -42,6 +43,7 @@ const Dashboard = () => {
     const [summary, setSummary] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetchSummary();
@@ -54,10 +56,10 @@ const Dashboard = () => {
             if (result.success) {
                 setSummary(result.data);
             } else {
-                setError('無法讀取數據摘要');
+                setError(t('common.error_load_data'));
             }
         } catch (err) {
-            setError('伺服器連線失敗');
+            setError(t('common.error_load_data'));
             console.error(err);
         } finally {
             setLoading(false);
@@ -67,7 +69,7 @@ const Dashboard = () => {
     if (loading) {
         return (
             <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
-                <Loader2 className="animate-spin" size={32} /> 數據讀取中...
+                <Loader2 className="animate-spin" size={32} /> {t('common.loading')}
             </div>
         );
     }
@@ -75,8 +77,8 @@ const Dashboard = () => {
     if (error || !summary) {
         return (
             <div style={{ height: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#f87171', gap: '1rem' }}>
-                <p>{error || '無法讀取數據'}</p>
-                <button className="btn-secondary" onClick={fetchSummary}>重試</button>
+                <p>{error || t('common.error_load_data')}</p>
+                <button className="btn-secondary" onClick={fetchSummary}>{t('common.retry')}</button>
             </div>
         );
     }
@@ -86,12 +88,12 @@ const Dashboard = () => {
     const businessData = summary.businessSummary || {}; // 確保後端返回的結構一致
 
     const chartData = {
-        labels: businessData.salesTrend?.map(d => d.date.split('-').slice(1).join('/')) || ['週一', '週二', '週三', '週四', '週五', '週六', '週日'],
+        labels: businessData.salesTrend?.map(d => d.date) || [],
         datasets: [
             {
                 fill: true,
-                label: '銷售額 ($)',
-                data: businessData.salesTrend?.map(d => d.totalRevenue) || [0, 0, 0, 0, 0, 0, 0],
+                label: t('dashboard.sales_trend'),
+                data: businessData.salesTrend?.map(d => d.totalRevenue) || [],
                 borderColor: 'hsl(230, 80%, 60%)',
                 backgroundColor: 'rgba(99, 102, 241, 0.1)',
                 tension: 0.4,
@@ -105,7 +107,7 @@ const Dashboard = () => {
             legend: { display: false },
             tooltip: {
                 callbacks: {
-                    label: (context) => `銷售額: ${tenantConfig.currency}${context.parsed.y.toLocaleString()}`
+                    label: (context) => `${t('dashboard.sales_trend')}: ${tenantConfig.currency}${context.parsed.y.toLocaleString()}`
                 }
             }
         },
@@ -129,9 +131,9 @@ const Dashboard = () => {
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>{summary.personal?.tenantId || user?.tenantId} 營運概覽</h2>
+                <h2 style={{ fontSize: '1.5rem' }}>{summary.personal?.tenantId || user?.tenantId} {t('dashboard.title')}</h2>
                 <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                    最後更新：{businessData.lastUpdate ? businessData.lastUpdate : '今日暫無數據'}
+                    {t('common.last_update')}：{businessData.lastUpdate ? businessData.lastUpdate : t('common.no_data_today')}
                 </span>
             </div>
 
@@ -139,24 +141,24 @@ const Dashboard = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
                 {user?.role <= 2 ? (
                     <>
-                        <StatCard icon={Users} label="總租戶數" value={systemStats.totalTenants || 0} change="系統級別" positive />
-                        <StatCard icon={Users} label="活躍租戶" value={systemStats.activeTenants || 0} change="Live" positive />
-                        <StatCard icon={ShoppingBag} label="全系統產品" value={systemStats.totalProducts || 0} change="Total" positive />
-                        <StatCard icon={TrendingUp} label="存檔進度" value={`${systemStats.archivedProgress || 0}`} change="Stable" positive />
+                        <StatCard icon={Users} label={t('dashboard.total_tenants')} value={systemStats.totalTenants || 0} change="System" positive />
+                        <StatCard icon={Users} label={t('dashboard.active_tenants')} value={systemStats.activeTenants || 0} change="Live" positive />
+                        <StatCard icon={ShoppingBag} label={t('dashboard.total_products')} value={systemStats.totalProducts || 0} change="Total" positive />
+                        <StatCard icon={TrendingUp} label={t('dashboard.archive_progress')} value={`${systemStats.archivedProgress || 0}`} change="Stable" positive />
                     </>
                 ) : user?.role === 3 ? (
                     <>
-                        <StatCard icon={Users} label="管理的租戶" value={agentStats.subTenantCount || 0} change="+0" positive />
-                        <StatCard icon={Users} label="管理的帳號" value={agentStats.totalUsersManaged || 0} change="+0" positive />
-                        <StatCard icon={DollarSign} label="預估庫存價值" value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Live" positive />
-                        <StatCard icon={ShoppingBag} label="管理產品數" value={businessData.inventory?.totalItems || 0} change="Items" positive />
+                        <StatCard icon={Users} label={t('dashboard.managed_tenants')} value={agentStats.subTenantCount || 0} change="+0" positive />
+                        <StatCard icon={Users} label={t('dashboard.managed_accounts')} value={agentStats.totalUsersManaged || 0} change="+0" positive />
+                        <StatCard icon={DollarSign} label={t('dashboard.est_inventory_value')} value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Live" positive />
+                        <StatCard icon={ShoppingBag} label={t('dashboard.managed_product_count')} value={businessData.inventory?.totalItems || 0} change="Items" positive />
                     </>
                 ) : (
                     <>
-                        <StatCard icon={DollarSign} label="本日銷售" value={`${tenantConfig.currency}${businessData.latestSales?.toLocaleString() || 0}`} change="Live" positive />
-                        <StatCard icon={TrendingUp} label="庫存總價值" value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Stock" positive />
-                        <StatCard icon={ShoppingBag} label="在庫件數" value={businessData.inventory?.totalItems || 0} change="Units" positive={businessData.inventory?.totalItems > 0} />
-                        <StatCard icon={Users} label="目前用戶" value={summary.personal?.username || 'Admin'} change="Online" positive />
+                        <StatCard icon={DollarSign} label={t('dashboard.today_sales')} value={`${tenantConfig.currency}${businessData.latestSales?.toLocaleString() || 0}`} change="Live" positive />
+                        <StatCard icon={TrendingUp} label={t('dashboard.inventory_total_value')} value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Stock" positive />
+                        <StatCard icon={ShoppingBag} label={t('dashboard.stock_count')} value={businessData.inventory?.totalItems || 0} change="Units" positive={businessData.inventory?.totalItems > 0} />
+                        <StatCard icon={Users} label={t('dashboard.current_user')} value={summary.personal?.username || 'Admin'} change="Online" positive />
                     </>
                 )}
             </div>
@@ -166,26 +168,27 @@ const Dashboard = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
                 <div className="glass-panel" style={{ padding: '1.5rem' }}>
                     <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        銷售趨勢 <ArrowUpRight size={18} color="var(--primary)" />
+                        {t('dashboard.sales_trend')} <ArrowUpRight size={18} color="var(--primary)" />
                     </h3>
                     <Line data={chartData} options={chartOptions} height={100} />
                 </div>
 
                 <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                    <h3 style={{ marginBottom: '1.5rem' }}>熱門產品</h3>
+                    <h3 style={{ marginBottom: '1.5rem' }}>{t('dashboard.popular_products')}</h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         {businessData.topProducts?.length > 0 ? (
                             businessData.topProducts.map((p, idx) => (
                                 <ProductItem
                                     key={p.productId?._id || idx}
-                                    name={p.productId?.name || '未知產品'}
+                                    name={p.productId?.name || 'Unknown'}
                                     sales={p.qty}
                                     price={`${tenantConfig.currency}${p.revenue?.toLocaleString()}`}
+                                    t={t}
                                 />
                             ))
                         ) : (
                             <div style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '2rem' }}>
-                                暫無熱門產品數據
+                                {t('dashboard.no_popular_products')}
                             </div>
                         )}
                     </div>
@@ -210,11 +213,11 @@ const StatCard = ({ icon: Icon, label, value, change, positive }) => (
     </div>
 );
 
-const ProductItem = ({ name, sales, price }) => (
+const ProductItem = ({ name, sales, price, t }) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.8rem', borderRadius: 'var(--radius-md)', background: 'rgba(255,255,255,0.03)' }}>
         <div>
             <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>{name}</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>已售 {sales}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{t('dashboard.sold')} {sales}</div>
         </div>
         <div style={{ fontWeight: 700, color: 'var(--primary-light)' }}>{price}</div>
     </div>

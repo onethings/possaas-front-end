@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "欢迎回来",
+    "subtitle": "登录您的管理后台以继续",
+    "email": "Email 地址",
+    "password": "密码",
+    "companyId": "公司编号",
+    "submit": "登入系统",
+    "errorDefault": "登录失败，请检查您的账号、密码或公司编号"
+  },
+  "customer_management": "客户资料管理",
+  "add_customer": "新增客户",
+  "search_placeholder_name_phone": "搜索客户姓名或电话...",
+  "delete_selected_confirm": "确定删除选中的 {{count}} 位客户？",
+  "sales_trend": "销售趋势",
+  "status_paid": "已支付",
+  "status_pending": "待处理",
+  "checkout_now": "立即结帐",
+  "reason_correction": "盘点更正",
+  "multi_variants": "多规格"
+}

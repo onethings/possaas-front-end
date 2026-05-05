@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Calendar,
@@ -53,6 +54,7 @@ ChartJS.register(
 const RevenueReport = () => {
     const { user } = useAuth();
     const { tenantConfig } = useTenant();
+    const { t } = useTranslation();
     
     // Date State
     const getToday = () => new Date().toISOString().split('T')[0];
@@ -149,7 +151,15 @@ const RevenueReport = () => {
     const exportOverviewCSV = () => {
         if (!data?.details?.reports) return;
         const reports = data.details.reports;
-        const headers = ['日期', '銷售額', '銷售成本', '毛利潤', '折扣', '支出'];
+        //const headers = ['日期', '銷售額', '銷售成本', '毛利潤', '折扣', '支出'];
+        const headers = [
+            t('reports.table.date'), 
+            t('reports.table.net_sales'), 
+            t('reports.table.cost'), 
+            t('reports.table.profit'), 
+            t('reports.table.discounts'), 
+            t('reports.table.expenses')
+        ];
         const rows = reports.map(r => [r.date, r.totalRevenue, r.totalCost, r.totalRevenue - r.totalCost, r.totalDiscount, r.totalExpenses]);
         const sumRev = reports.reduce((s, r) => s + (r.totalRevenue || 0), 0);
         const sumCost = reports.reduce((s, r) => s + (r.totalCost || 0), 0);
@@ -279,10 +289,10 @@ const RevenueReport = () => {
 
             {/* Metrics Dashboard */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.2rem' }}>
-                <MetricCard icon={DollarSign} label="銷售總額" value={summary?.salesIncome} color="#60a5fa" currency={tenantConfig.currency} trend={2.5} />
-                <MetricCard icon={TrendingUp} label="毛利潤" value={summary?.estimatedProfit} color="#4ade80" currency={tenantConfig.currency} trend={5.4} />
-                <MetricCard icon={Tag} label="給予折扣" value={summary?.totalDiscount} color="#fbbf24" currency={tenantConfig.currency} trend={-1.2} />
-                <MetricCard icon={Store} label="店面支出" value={summary?.storeExpenditure} color="#f87171" currency={tenantConfig.currency} trend={0.8} />
+                <MetricCard icon={DollarSign} label={t('reports.metrics.total_revenue')} value={summary?.salesIncome} color="#60a5fa" currency={tenantConfig.currency} trend={2.5} />
+                <MetricCard icon={TrendingUp} label={t('reports.metrics.gross_profit')} value={summary?.estimatedProfit} color="#4ade80" currency={tenantConfig.currency} trend={5.4} />
+                <MetricCard icon={Tag} label={t('reports.metrics.discounts')} value={summary?.totalDiscount} color="#fbbf24" currency={tenantConfig.currency} trend={-1.2} />
+                <MetricCard icon={Store} label={t('reports.metrics.expenditure')} value={summary?.storeExpenditure} color="#f87171" currency={tenantConfig.currency} trend={0.8} />
             </div>
 
             {/* Main Visual Content */}
@@ -290,7 +300,7 @@ const RevenueReport = () => {
                 {/* Trend Chart */}
                 <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                        <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}><Activity size={20} color="var(--primary)" /> 銷售預測與趨勢</h3>
+                        <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}><Activity size={20} color="var(--primary)" /> {t('reports.charts.trend_title')}</h3>
                         <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{dateRange.start} ~ {dateRange.end}</div>
                     </div>
                     <div style={{ flex: 1, minHeight: '300px' }}>
@@ -300,7 +310,7 @@ const RevenueReport = () => {
 
                 {/* Category Pie */}
                 <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
-                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem' }}><PieChartIcon size={20} color="var(--secondary)" /> 類別銷售佔比</h3>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem' }}><PieChartIcon size={20} color="var(--secondary)" /> {t('reports.charts.category_pie')}</h3>
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {pieChartData && <div style={{ width: '80%', position: 'relative' }}>
                             <Pie data={pieChartData} options={pieOptions} />
@@ -322,16 +332,19 @@ const RevenueReport = () => {
             <div className="glass-panel" style={{ padding: '0' }}>
                 <div style={{ padding: '1.2rem 1.5rem', borderBottom: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem' }}>
                     <div style={{ display: 'flex', gap: '2rem' }}>
-                        <TabButton active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} label="每日收支明細" />
-                        <TabButton active={activeTab === 'products'} onClick={() => setActiveTab('products')} label="熱銷商品排行" />
-                        <TabButton active={activeTab === 'categories'} onClick={() => setActiveTab('categories')} label="類別數據分析" />
+                        <TabButton active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} label={t('reports.tabs.daily_detail')} />
+                        <TabButton active={activeTab === 'products'} onClick={() => setActiveTab('products')} label={t('reports.tabs.hot_products')} />
+                        <TabButton active={activeTab === 'categories'} onClick={() => setActiveTab('categories')} label={t('reports.tabs.category_analysis')} />
                     </div>
                     <button
                         className="btn-primary"
                         onClick={activeTab === 'products' ? exportProductsCSV : activeTab === 'categories' ? exportCategoriesCSV : exportOverviewCSV}
                         style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.5rem 1rem', fontSize: '0.85rem' }}
                     >
-                        <Download size={16} /> 匹出{activeTab === 'products' ? '商品' : activeTab === 'categories' ? '類別' : '明細'}報表
+                        <Download size={16} /> 
+                        {t('reports.export.button', { 
+                            type: t(`reports.export.type_${activeTab === 'products' ? 'product' : activeTab === 'categories' ? 'category' : 'detail'}`) 
+                        })}
                     </button>
                 </div>
                 
@@ -340,28 +353,28 @@ const RevenueReport = () => {
                         <thead>
                             {activeTab === 'overview' ? (
                                 <tr>
-                                    <th>日期</th>
-                                    <th className="text-right">銷售淨額</th>
-                                    <th className="text-right">銷售成本</th>
-                                    <th className="text-right">毛利潤</th>
-                                    <th className="text-right">支出</th>
-                                    <th className="text-center">利潤率</th>
+                                    <th>{t('reports.table.date')}</th>
+                                    <th className="text-right">{t('reports.table.net_sales')}</th>
+                                    <th className="text-right">{t('reports.table.cost')}</th>
+                                    <th className="text-right">{t('reports.table.profit')}</th>
+                                    <th className="text-right">{t('reports.table.expenses')}</th>
+                                    <th className="text-center">{t('reports.table.margin')}</th>
                                 </tr>
                             ) : activeTab === 'products' ? (
                                 <tr>
-                                    <th>商品名稱</th>
-                                    <th className="text-center">售出數量</th>
-                                    <th className="text-right">銷售總額</th>
-                                    <th className="text-right">商品利潤</th>
-                                    <th className="text-center">表現</th>
+                                    <th>{t('reports.table.product_name')}</th>
+                                    <th className="text-center">{t('reports.table.quantity')}</th>
+                                    <th className="text-right">{t('reports.table.total_sales')}</th>
+                                    <th className="text-right">{t('reports.table.product_profit')}</th>
+                                    <th className="text-center">{t('reports.table.performance')}</th>
                                 </tr>
                             ) : (
                                 <tr>
-                                    <th>類別名稱</th>
-                                    <th className="text-center">商品總數</th>
-                                    <th className="text-right">銷售總額</th>
-                                    <th className="text-right">類別利潤</th>
-                                    <th className="text-center">佔比</th>
+                                    <th>{t('reports.table.category_name')}</th>
+                                    <th className="text-center">{t('reports.table.product_count')}</th>
+                                    <th className="text-right">{t('reports.table.total_sales')}</th>
+                                    <th className="text-right">{t('reports.table.category_profit')}</th>
+                                    <th className="text-center">{t('reports.table.percentage')}</th>
                                 </tr>
                             )}
                         </thead>
@@ -391,7 +404,7 @@ const RevenueReport = () => {
                                 const sumMargin = sumRev > 0 ? (sumProfit / sumRev) * 100 : 0;
                                 return (
                                     <tr style={{ background: 'rgba(96, 165, 250, 0.06)' }}>
-                                        <td style={{ fontWeight: 800 }}>合計</td>
+                                        <td style={{ fontWeight: 800 }}>{t('reports.table.total')}</td>
                                         <td className="text-right" style={{ fontWeight: 800 }}>{tenantConfig.currency}{sumRev.toLocaleString()}</td>
                                         <td className="text-right" style={{ fontWeight: 800 }}>{tenantConfig.currency}{sumCost.toLocaleString()}</td>
                                         <td className="text-right" style={{ fontWeight: 800, color: '#4ade80' }}>{tenantConfig.currency}{sumProfit.toLocaleString()}</td>
@@ -402,8 +415,8 @@ const RevenueReport = () => {
                             })()}
                             {activeTab === 'products' && data.analysis.topProducts.map((p, i) => (
                                 <tr key={i}>
-                                    <td style={{ fontWeight: 500 }}>{p.name || '未知產品'}</td>
-                                    <td className="text-center">{p.qty} 件</td>
+                                    <td style={{ fontWeight: 500 }}>{p.name || t('reports.table.unknown_product')}</td>
+                                    <td className="text-center">{p.qty} {t('reports.table.unit')}</td>
                                     <td className="text-right">{tenantConfig.currency}{p.revenue.toLocaleString()}</td>
                                     <td className="text-right" style={{ color: '#4ade80' }}>{tenantConfig.currency}{(p.revenue - (p.cost || 0)).toLocaleString()}</td>
                                     <td className="text-center">
@@ -420,7 +433,7 @@ const RevenueReport = () => {
                                 const sumCost = prods.reduce((s, p) => s + (p.cost || 0), 0);
                                 return (
                                     <tr style={{ background: 'rgba(96, 165, 250, 0.06)' }}>
-                                        <td style={{ fontWeight: 800 }}>合計</td>
+                                        <td style={{ fontWeight: 800 }}>{t('reports.table.total')}</td>
                                         <td className="text-center" style={{ fontWeight: 800 }}>{sumQty} 件</td>
                                         <td className="text-right" style={{ fontWeight: 800 }}>{tenantConfig.currency}{sumRev.toLocaleString()}</td>
                                         <td className="text-right" style={{ fontWeight: 800, color: '#4ade80' }}>{tenantConfig.currency}{(sumRev - sumCost).toLocaleString()}</td>
@@ -444,7 +457,7 @@ const RevenueReport = () => {
                                 const sumCost = cats.reduce((s, c) => s + (c.cost || 0), 0);
                                 return (
                                     <tr style={{ background: 'rgba(96, 165, 250, 0.06)' }}>
-                                        <td style={{ fontWeight: 800 }}>合計</td>
+                                        <td style={{ fontWeight: 800 }}>{t('reports.table.total')}</td>
                                         <td className="text-center" style={{ fontWeight: 800 }}>{sumQty} 件</td>
                                         <td className="text-right" style={{ fontWeight: 800 }}>{tenantConfig.currency}{sumRev.toLocaleString()}</td>
                                         <td className="text-right" style={{ fontWeight: 800, color: '#60a5fa' }}>{tenantConfig.currency}{(sumRev - sumCost).toLocaleString()}</td>
@@ -514,10 +527,8 @@ const TabButton = ({ active, onClick, label }) => (
 );
 
 // Helpers
-const getPresetLabel = (p) => {
-    const labels = { today: '今天', yesterday: '昨天', thisWeek: '本週', thisMonth: '本月', last7: '7天', last30: '30天' };
-    return labels[p] || p;
-};
+
+const getPresetLabel = (p) => t(`reports.presets.${p}`);
 
 const marginBadgeStyle = (m) => ({
     padding: '3px 8px',

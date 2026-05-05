@@ -19,27 +19,51 @@ import {
     Tags,
     BarChart,
     Timer,
-    Code
+    Code,
+    Globe
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
+
+const languages = [
+    { code: 'en-US', name: 'English' },
+    { code: 'zh-TW', name: '繁體中文' },
+    { code: 'zh-CN', name: '简体中文' },
+    { code: 'de-DE', name: 'Deutsch' },
+    { code: 'ar-SA', name: 'العربية' },
+    { code: 'es-ES', name: 'Español' },
+    { code: 'fr-FR', name: 'Français' },
+    { code: 'hi-IN', name: 'हिन्दी' },
+    { code: 'id-ID', name: 'Bahasa Indonesia' },
+    { code: 'it-IT', name: 'Italiano' },
+    { code: 'ja-JP', name: '日本語' },
+    { code: 'ko-KR', name: '한국어' },
+    { code: 'my-MM', name: 'မြန်မာ' },
+    { code: 'nl-NL', name: 'Nederlands' },
+    { code: 'pt-PT', name: 'Português' },
+    { code: 'ru-RU', name: 'Русский' },
+    { code: 'th-TH', name: 'ไทย' },
+    { code: 'tr-TR', name: 'Türkçe' },
+    { code: 'vi-VN', name: 'Tiếng Việt' }
+];
 
 const navItems = [
-    { icon: LayoutDashboard, label: '概覽', path: '/dashboard' },
-    { icon: Ticket, label: '收銀終端 (POS)', path: '/pos' },
-    { icon: Package, label: '產品管理', path: '/products' },
-    { icon: ClipboardList, label: '庫存盤點', path: '/inventory/counts' },
-    { icon: FileText, label: '採購進貨', path: '/inventory/purchase-orders' },
-    { icon: Truck, label: '供應商', path: '/inventory/suppliers' },
-    { icon: Tags, label: '折扣管理', path: '/discounts' },
-    { icon: ShoppingCart, label: '訂單管理', path: '/orders' },
-    { icon: BarChart, label: '營收報表', path: '/revenue-report' },
-    { icon: Users, label: '客戶資料', path: '/customers' },
-    { icon: UserCheck, label: '員工管理', path: '/staff' },
-    { icon: Timer, label: '出勤打卡', path: '/staff/timecards' },
-    { icon: BarChart, label: '員工績效', path: '/staff/reports' },
-    { icon: Settings, label: '系統設置', path: '/settings' },
-    { icon: Code, label: 'API 與整合', path: '/developer' },
+    { icon: LayoutDashboard, label: 'nav.overview', path: '/dashboard' },
+    { icon: Ticket, label: 'nav.pos', path: '/pos' },
+    { icon: Package, label: 'nav.product_mgmt', path: '/products' },
+    { icon: ClipboardList, label: 'nav.inventory_count', path: '/inventory/counts' },
+    { icon: FileText, label: 'nav.purchase_order', path: '/inventory/purchase-orders' },
+    { icon: Truck, label: 'nav.suppliers', path: '/inventory/suppliers' },
+    { icon: Tags, label: 'nav.discount_mgmt', path: '/discounts' },
+    { icon: ShoppingCart, label: 'nav.order_mgmt', path: '/orders' },
+    { icon: BarChart, label: 'nav.revenue_report', path: '/revenue-report' },
+    { icon: Users, label: 'nav.customer_data', path: '/customers' },
+    { icon: UserCheck, label: 'nav.staff_mgmt', path: '/staff' },
+    { icon: Timer, label: 'nav.attendance', path: '/staff/timecards' },
+    { icon: BarChart, label: 'nav.staff_performance', path: '/staff/reports' },
+    { icon: Settings, label: 'nav.system_settings', path: '/settings' },
+    { icon: Code, label: 'nav.api_integration', path: '/developer' },
 ];
 
 
@@ -49,6 +73,11 @@ const DashboardLayout = ({ children }) => {
     const { user, logout } = useAuth();
     const [isSidebarOpen, setSidebarOpen] = useState(true);
     const location = useLocation();
+    const { t, i18n } = useTranslation();
+
+    const changeLanguage = (e) => {
+        i18n.changeLanguage(e.target.value);
+    };
 
     return (
         <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg-dark)' }}>
@@ -95,7 +124,7 @@ const DashboardLayout = ({ children }) => {
                                 }}
                             >
                                 <item.icon size={20} />
-                                {isSidebarOpen && <span>{item.label}</span>}
+                                {isSidebarOpen && <span>{t(item.label)}</span>}
                             </Link>
                         );
                     })}
@@ -117,7 +146,7 @@ const DashboardLayout = ({ children }) => {
                             gap: '1rem'
                         }}>
                         <LogOut size={20} />
-                        {isSidebarOpen && <span>登出系統</span>}
+                        {isSidebarOpen && <span>{t('logout', '登出系統')}</span>}
                     </button>
                 </div>
             </motion.aside>
@@ -132,12 +161,35 @@ const DashboardLayout = ({ children }) => {
                             id="global-search"
                             name="global-search"
                             type="text"
-                            placeholder="搜尋訂單、產品..."
+                            placeholder={t('search_placeholder', '搜尋訂單、產品...')}
                             style={{ padding: '0.6rem 1rem 0.6rem 40px', background: 'rgba(0,0,0,0.2)', border: 'none', borderRadius: 'var(--radius-md)', color: 'white', width: '100%' }}
                         />
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                        {/* Language Switcher */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.4rem 0.8rem', borderRadius: 'var(--radius-md)' }}>
+                            <Globe size={18} color="var(--text-muted)" />
+                            <select 
+                                value={i18n.language} 
+                                onChange={changeLanguage}
+                                style={{ 
+                                    background: 'transparent', 
+                                    border: 'none', 
+                                    color: 'var(--text-muted)', 
+                                    fontSize: '0.85rem',
+                                    outline: 'none',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                {languages.map(lang => (
+                                    <option key={lang.code} value={lang.code} style={{ background: '#1a1a1a', color: 'white' }}>
+                                        {lang.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
                         <div style={{ position: 'relative', cursor: 'pointer' }}>
                             <Bell size={20} color="var(--text-muted)" />
                             <div style={{ position: 'absolute', top: -2, right: -2, width: 8, height: 8, background: 'var(--primary)', borderRadius: '50%' }}></div>

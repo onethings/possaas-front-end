@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Lock, Mail, Building2, User, ArrowRight, Loader2, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -22,7 +23,7 @@ const RegisterPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (formData.adminPassword !== formData.confirmPassword) {
-            setError('密碼不一致');
+            setError(t('register.error_password_mismatch')); // 密碼不一致
             return;
         }
 
@@ -43,7 +44,7 @@ const RegisterPage = () => {
                 }, 3000);
             }
         } catch (err) {
-            setError(err.response?.data?.message || '註冊失敗，請重試');
+            setError(err.response?.data?.message || t('register.error_default')); // 註冊失敗
         } finally {
             setLoading(false);
         }
@@ -60,16 +61,18 @@ const RegisterPage = () => {
                 <div style={{ marginBottom: '1.5rem', color: '#4ade80' }}>
                     <CheckCircle2 size={64} style={{ margin: '0 auto' }} />
                 </div>
-                <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>註冊成功！</h1>
+                <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>
+                    {t('register.success_title')}
+                </h1>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
-                    您的公司帳號已成功建立。正在為您跳轉至登入頁面...
+                    {t('register.success_msg')}
                 </p>
                 <button
                     onClick={() => navigate('/login')}
                     className="btn-primary"
                     style={{ width: '100%' }}
                 >
-                    立即登入
+                    {t('register.goto_login')}
                 </button>
             </motion.div>
         );
@@ -85,21 +88,24 @@ const RegisterPage = () => {
         >
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <h1 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>
-                    開始您的 <span className="gradient-text">POS SaaS</span> 旅程
+                    {/* 處理漸層文字：開始您的 POS SaaS 旅程 */}
+                    {t('register.title_prefix', '開始您的 ')}
+                    <span className="gradient-text">POS SaaS</span>
+                    {t('register.title_suffix', ' 旅程')}
                 </h1>
-                <p style={{ color: 'var(--text-muted)' }}>註冊您的公司帳號以開始使用</p>
+                <p style={{ color: 'var(--text-muted)' }}>{t('register.subtitle')}</p>
             </div>
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {/* 公司名稱 */}
                 <div className="input-group">
-                    <label htmlFor="reg-name" style={labelStyle}>公司名稱</label>
+                    <label htmlFor="reg-name" style={labelStyle}>{t('register.company_name')}</label>
                     <div style={{ position: 'relative' }}>
                         <Building2 size={18} style={iconStyle} />
                         <input
                             id="reg-name"
-                            name="companyName"
                             type="text"
-                            placeholder="例如: 超級零售集團"
+                            placeholder={t('register.company_name_placeholder')}
                             style={inputStyle}
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -108,15 +114,15 @@ const RegisterPage = () => {
                     </div>
                 </div>
 
+                {/* 公司編號 */}
                 <div className="input-group">
-                    <label htmlFor="reg-tenantId" style={labelStyle}>公司編號 (Tenant ID)</label>
+                    <label htmlFor="reg-tenantId" style={labelStyle}>{t('register.tenant_id')}</label>
                     <div style={{ position: 'relative' }}>
                         <User size={18} style={iconStyle} />
                         <input
                             id="reg-tenantId"
-                            name="tenantId"
                             type="text"
-                            placeholder="例如: superstore-01 (唯一識別碼)"
+                            placeholder={t('register.tenant_id_placeholder')}
                             style={inputStyle}
                             value={formData.tenantId}
                             onChange={(e) => setFormData({ ...formData, tenantId: e.target.value })}
@@ -125,15 +131,15 @@ const RegisterPage = () => {
                     </div>
                 </div>
 
+                {/* 管理員 Email */}
                 <div className="input-group">
-                    <label htmlFor="reg-adminEmail" style={labelStyle}>管理員 Email</label>
+                    <label htmlFor="reg-adminEmail" style={labelStyle}>{t('register.admin_email')}</label>
                     <div style={{ position: 'relative' }}>
                         <Mail size={18} style={iconStyle} />
                         <input
                             id="reg-adminEmail"
-                            name="adminEmail"
                             type="email"
-                            placeholder="admin@example.com"
+                            placeholder={t('register.admin_email_placeholder')}
                             style={inputStyle}
                             value={formData.adminEmail}
                             onChange={(e) => setFormData({ ...formData, adminEmail: e.target.value })}
@@ -142,15 +148,15 @@ const RegisterPage = () => {
                     </div>
                 </div>
 
+                {/* 密碼 */}
                 <div className="input-group">
-                    <label htmlFor="reg-adminPassword" style={labelStyle}>設置密碼</label>
+                    <label htmlFor="reg-adminPassword" style={labelStyle}>{t('register.password')}</label>
                     <div style={{ position: 'relative' }}>
                         <Lock size={18} style={iconStyle} />
                         <input
                             id="reg-adminPassword"
-                            name="adminPassword"
                             type={showPassword ? "text" : "password"}
-                            placeholder="••••••••"
+                            placeholder={t('register.password_placeholder')}
                             style={inputStyle}
                             value={formData.adminPassword}
                             onChange={(e) => setFormData({ ...formData, adminPassword: e.target.value })}
@@ -165,15 +171,15 @@ const RegisterPage = () => {
                     </div>
                 </div>
 
+                {/* 確認密碼 */}
                 <div className="input-group">
-                    <label htmlFor="reg-confirmPassword" style={labelStyle}>確認密碼</label>
+                    <label htmlFor="reg-confirmPassword" style={labelStyle}>{t('register.confirm_password')}</label>
                     <div style={{ position: 'relative' }}>
                         <Lock size={18} style={iconStyle} />
                         <input
                             id="reg-confirmPassword"
-                            name="confirmPassword"
                             type={showConfirmPassword ? "text" : "password"}
-                            placeholder="••••••••"
+                            placeholder={t('register.password_placeholder')}
                             style={inputStyle}
                             value={formData.confirmPassword}
                             onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
@@ -200,44 +206,45 @@ const RegisterPage = () => {
                     disabled={loading}
                     style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: loading ? 0.7 : 1 }}
                 >
-                    {loading ? <Loader2 className="animate-spin" size={18} /> : '立即註冊'}
+                    {loading ? <Loader2 className="animate-spin" size={18} /> : t('register.submit')}
                     {!loading && <ArrowRight size={18} />}
                 </button>
 
                 <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem' }}>
-                    <span style={{ color: 'var(--text-muted)' }}>已有帳號？ </span>
-                    <Link to="/login" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>直接登入</Link>
+                    <span style={{ color: 'var(--text-muted)' }}>{t('register.has_account')} </span>
+                    <Link to="/login" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>
+                        {t('register.login_now')}
+                    </Link>
                 </div>
             </form>
         </motion.div>
     );
 };
+    const labelStyle = {
+        display: 'block',
+        marginBottom: '0.5rem',
+        fontSize: '0.85rem',
+        color: 'var(--text-muted)'
+    };
 
-const labelStyle = {
-    display: 'block',
-    marginBottom: '0.5rem',
-    fontSize: '0.85rem',
-    color: 'var(--text-muted)'
-};
+    const iconStyle = {
+        position: 'absolute',
+        left: '12px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        color: 'var(--primary)'
+    };
 
-const iconStyle = {
-    position: 'absolute',
-    left: '12px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: 'var(--primary)'
-};
+    const inputStyle = {
+        width: '100%',
+        padding: '0.75rem 1rem 0.75rem 40px',
+        background: 'rgba(255, 255, 255, 0.05)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        borderRadius: 'var(--radius-md)',
+        color: 'white',
+        outline: 'none',
+        transition: 'all 0.3s ease',
+        fontSize: '1rem'
+    };
 
-const inputStyle = {
-    width: '100%',
-    padding: '0.75rem 1rem 0.75rem 40px',
-    background: 'rgba(255, 255, 255, 0.05)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    borderRadius: 'var(--radius-md)',
-    color: 'white',
-    outline: 'none',
-    transition: 'all 0.3s ease',
-    fontSize: '1rem'
-};
-
-export default RegisterPage;
+    export default RegisterPage;

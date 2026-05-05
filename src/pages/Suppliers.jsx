@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Plus, Search, Truck, Phone, Mail, MapPin, Loader2, Edit2, Trash2 } from 'lucide-react';
 import { getSuppliers, createSupplier, updateSupplier, deleteSupplier } from '../api/suppliers';
 
 const Suppliers = () => {
+    const { t } = useTranslation(); 
     const [suppliers, setSuppliers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -45,20 +47,20 @@ const Suppliers = () => {
             }
         } catch (error) {
             console.error('Create/Update Supplier Error:', error);
-            const msg = error.response?.data?.message || error.message || '操作失敗';
-            alert(`操作失敗: ${msg}`);
+            const msg = error.response?.data?.message || error.message || t('common.error');
+            alert(t('suppliers.alerts.action_fail', { msg }));
         } finally {
             setSubmitting(false);
         }
     };
 
     const handleDelete = async (id) => {
-        if (!confirm('確定刪除此供應商？')) return;
+        if (!confirm(t('suppliers.alerts.delete_confirm'))) return;
         try {
             const result = await deleteSupplier(id);
             if (result.success) fetchSuppliers();
         } catch (error) {
-            alert('刪除失敗');
+            alert(t('suppliers.alerts.delete_fail'));
         }
     };
 
@@ -72,9 +74,9 @@ const Suppliers = () => {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>供應商管理</h2>
+                <h2 style={{ fontSize: '1.5rem' }}>{t('suppliers.title')}</h2>
                 <button onClick={() => { setNewSupplier({ name: '', contactPerson: '', email: '', phone: '', address: '' }); setModalOpen(true); }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Plus size={18} /> 新增供應商
+                    <Plus size={18} /> {t('suppliers.add_btn')}
                 </button>
             </div>
 
@@ -85,7 +87,7 @@ const Suppliers = () => {
                         id="supplier-search"
                         name="supplier-search"
                         type="text"
-                        placeholder="搜尋供應商名稱..."
+                        placeholder={t('suppliers.search_placeholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         style={searchStyle}
@@ -120,31 +122,31 @@ const Suppliers = () => {
             {isModalOpen && (
                 <div style={modalOverlayStyle}>
                     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '400px', padding: '2rem' }}>
-                        <h3>{newSupplier._id ? '編輯供應商' : '新增供應商'}</h3>
+                        <h3>{newSupplier._id ? t('suppliers.modal.title_edit') : t('suppliers.modal.title_add')}</h3>
                         <form onSubmit={handleCreate} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
-                                <label htmlFor="sup-name">名稱</label>
+                                <label htmlFor="sup-name">{t('suppliers.modal.label_name')}</label>
                                 <input id="sup-name" name="name" required value={newSupplier.name} onChange={e => setNewSupplier({ ...newSupplier, name: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label htmlFor="sup-contact">聯絡人</label>
+                                <label htmlFor="sup-contact">{t('suppliers.modal.label_contact')}</label>
                                 <input id="sup-contact" name="contactPerson" value={newSupplier.contactPerson} onChange={e => setNewSupplier({ ...newSupplier, contactPerson: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label htmlFor="sup-phone">電話</label>
+                                <label htmlFor="sup-phone">{t('suppliers.modal.label_phone')}</label>
                                 <input id="sup-phone" name="phone" value={newSupplier.phone} onChange={e => setNewSupplier({ ...newSupplier, phone: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label htmlFor="sup-email">Email</label>
+                                <label htmlFor="sup-email">{t('suppliers.modal.label_email')}</label>
                                 <input id="sup-email" name="email" type="email" value={newSupplier.email} onChange={e => setNewSupplier({ ...newSupplier, email: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label htmlFor="sup-address">地址</label>
+                                <label htmlFor="sup-address">{t('suppliers.modal.label_address')}</label>
                                 <input id="sup-address" name="address" value={newSupplier.address} onChange={e => setNewSupplier({ ...newSupplier, address: e.target.value })} />
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                                <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>取消</button>
-                                <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1 }}>{submitting ? <Loader2 size={18} className="animate-spin" /> : (newSupplier._id ? '更新' : '確認')}</button>
+                                <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary" style={{ flex: 1 }}>{t('common.cancel')}</button>
+                                <button type="submit" disabled={submitting} className="btn-primary" style={{ flex: 1 }}>{submitting ? <Loader2 size={18} className="animate-spin" /> : (newSupplier._id ? t('common.update') : t('common.confirm'))}</button>
                             </div>
                         </form>
                     </motion.div>

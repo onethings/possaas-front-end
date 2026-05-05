@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "ยินดีต้อนรับกลับมา",
+    "subtitle": "เข้าสู่ระบบแผงควบคุมผู้ดูแลระบบของคุณเพื่อดำเนินการต่อ",
+    "email": "ที่อยู่อีเมล",
+    "password": "รหัสผ่าน",
+    "companyId": "รหัสบริษัท",
+    "submit": "เข้าสู่ระบบ",
+    "errorDefault": "การเข้าสู่ระบบล้มเหลว โปรดตรวจสอบข้อมูลประจำตัวของคุณ"
+  },
+  "customer_management": "การจัดการลูกค้า",
+  "add_customer": "เพิ่มลูกค้า",
+  "search_placeholder_name_phone": "ค้นหาชื่อหรือโทรศัพท์...",
+  "delete_selected_confirm": "ยืนยันการลบลูกค้า {{count}} รายที่เลือก?",
+  "sales_trend": "แนวโน้มยอดขาย",
+  "status_paid": "จ่ายแล้ว",
+  "status_pending": "รอดำเนินการ",
+  "checkout_now": "ชำระเงินทันที",
+  "reason_correction": "การแก้ไขสต็อก",
+  "multi_variants": "หลายรูปแบบ"
+}

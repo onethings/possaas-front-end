@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "Bentornato",
+    "subtitle": "Accedi alla tua dashboard amministratore per continuare",
+    "email": "Indirizzo Email",
+    "password": "Password",
+    "companyId": "ID Azienda",
+    "submit": "Accedi al Sistema",
+    "errorDefault": "Accesso fallito, verifica le tue credenziali"
+  },
+  "customer_management": "Gestione Clienti",
+  "add_customer": "Aggiungi Cliente",
+  "search_placeholder_name_phone": "Cerca nome o telefono...",
+  "delete_selected_confirm": "Confermi l'eliminazione di {{count}} clienti selezionati?",
+  "sales_trend": "Andamento Vendite",
+  "status_paid": "Pagato",
+  "status_pending": "In attesa",
+  "checkout_now": "Paga Ora",
+  "reason_correction": "Rettifica Scorte",
+  "multi_variants": "Multi Varianti"
+}

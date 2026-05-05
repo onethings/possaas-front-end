@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "おかえりなさい",
+    "subtitle": "管理ダッシュボードにログインして続行してください",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "companyId": "会社ID",
+    "submit": "システムにログイン",
+    "errorDefault": "ログインに失敗しました。認証情報を確認してください"
+  },
+  "customer_management": "顧客管理",
+  "add_customer": "顧客を追加",
+  "search_placeholder_name_phone": "名前または電話番号で検索...",
+  "delete_selected_confirm": "選択した {{count}} 人の顧客を削除しますか？",
+  "sales_trend": "売上推移",
+  "status_paid": "支払い済み",
+  "status_pending": "保留中",
+  "checkout_now": "今すぐチェックアウト",
+  "reason_correction": "在庫修正",
+  "multi_variants": "複数バリエーション"
+}

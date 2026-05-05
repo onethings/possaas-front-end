@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "Willkommen zurück",
+    "subtitle": "Melden Sie sich bei Ihrem Admin-Dashboard an",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "companyId": "Firmen-ID",
+    "submit": "Systemanmeldung",
+    "errorDefault": "Login fehlgeschlagen, bitte Anmeldedaten prüfen"
+  },
+  "customer_management": "Kundenverwaltung",
+  "add_customer": "Kunde hinzufügen",
+  "search_placeholder_name_phone": "Suche Name oder Telefon...",
+  "delete_selected_confirm": "Möchten Sie {{count}} ausgewählte Kunden löschen?",
+  "sales_trend": "Verkaufstrend",
+  "status_paid": "Bezahlt",
+  "status_pending": "Ausstehend",
+  "checkout_now": "Jetzt auschecken",
+  "reason_correction": "Bestandskorrektur",
+  "multi_variants": "Mehrere Varianten"
+}

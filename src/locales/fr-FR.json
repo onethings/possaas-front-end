@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "Bienvenue",
+    "subtitle": "Connectez-vous à votre tableau de bord administrateur",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "companyId": "ID de l'entreprise",
+    "submit": "Connexion",
+    "errorDefault": "Échec de la connexion, veuillez vérifier vos identifiants"
+  },
+  "customer_management": "Gestion des clients",
+  "add_customer": "Ajouter un client",
+  "search_placeholder_name_phone": "Rechercher nom ou téléphone...",
+  "delete_selected_confirm": "Confirmer la suppression de {{count}} clients sélectionnés ?",
+  "sales_trend": "Tendance des ventes",
+  "status_paid": "Payé",
+  "status_pending": "En attente",
+  "checkout_now": "Payer maintenant",
+  "reason_correction": "Correction de stock",
+  "multi_variants": "Multi-variantes"
+}

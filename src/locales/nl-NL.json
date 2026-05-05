@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "Welkom terug",
+    "subtitle": "Log in op uw beheerdersdashboard om door te gaan",
+    "email": "E-mailadres",
+    "password": "Wachtwoord",
+    "companyId": "Bedrijfs-ID",
+    "submit": "Systeem Inloggen",
+    "errorDefault": "Inloggen mislukt, controleer uw inloggegevens"
+  },
+  "customer_management": "Klantenbeheer",
+  "add_customer": "Klant toevoegen",
+  "search_placeholder_name_phone": "Zoek naam of telefoon...",
+  "delete_selected_confirm": "Bevestig verwijderen van {{count}} geselecteerde klanten?",
+  "sales_trend": "Verkoop趋势",
+  "status_paid": "Betaald",
+  "status_pending": "In afwachting",
+  "checkout_now": "Nu afrekenen",
+  "reason_correction": "Voorraadcorrectie",
+  "multi_variants": "Meerdere varianten"
+}

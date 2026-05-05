@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "Bem-vindo de volta",
+    "subtitle": "Faça login no seu painel de administração para continuar",
+    "email": "Endereço de E-mail",
+    "password": "Senha",
+    "companyId": "ID da Empresa",
+    "submit": "Entrar no Sistema",
+    "errorDefault": "Falha ao entrar, verifique suas credenciais"
+  },
+  "customer_management": "Gestão de Clientes",
+  "add_customer": "Adicionar Cliente",
+  "search_placeholder_name_phone": "Pesquisar nome ou telefone...",
+  "delete_selected_confirm": "Confirmar a exclusão de {{count}} clientes selecionados?",
+  "sales_trend": "Tendência de Vendas",
+  "status_paid": "Pago",
+  "status_pending": "Pendente",
+  "checkout_now": "Finalizar Agora",
+  "reason_correction": "Correção de Stock",
+  "multi_variants": "Múltiplas Variantes"
+}

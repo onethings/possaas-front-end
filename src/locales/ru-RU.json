@@ -1,0 +1,21 @@
+{
+  "login": {
+    "welcome": "С возвращением",
+    "subtitle": "Войдите в панель управления администратора",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "companyId": "ID компании",
+    "submit": "Войти в систему",
+    "errorDefault": "Ошибка входа, проверьте свои учетные данные"
+  },
+  "customer_management": "Управление клиентами",
+  "add_customer": "Добавить клиента",
+  "search_placeholder_name_phone": "Поиск по имени или телефону...",
+  "delete_selected_confirm": "Удалить {{count}} выбранных клиентов?",
+  "sales_trend": "Тенденции продаж",
+  "status_paid": "Оплачено",
+  "status_pending": "В ожидании",
+  "checkout_now": "Оформить сейчас",
+  "reason_correction": "Корректировка запасов",
+  "multi_variants": "Множество вариантов"
+}
