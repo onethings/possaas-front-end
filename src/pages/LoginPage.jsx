@@ -201,4 +201,15 @@ const inputStyle = {
     fontSize: '1rem'
 };
 
+const selectStyle = {
+    background: 'rgba(255, 255, 255, 0.1)',
+    color: 'white',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    borderRadius: '4px',
+    padding: '4px 8px',
+    fontSize: '0.8rem',
+    outline: 'none',
+    cursor: 'pointer'
+};
+
 export default LoginPage;
