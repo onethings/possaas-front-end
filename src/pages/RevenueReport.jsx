@@ -74,6 +74,26 @@ const RevenueReport = () => {
         localStorage.setItem('rev_end', dateRange.end);
     }, [dateRange]);
 
+    useEffect(() => {
+    const styleTag = document.createElement('style');
+    styleTag.id = 'revenue-report-styles';
+    styleTag.innerHTML = `
+        table tr th { padding: 12px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        table tr td { padding: 16px 12px; background: rgba(255,255,255,0.02); }
+        table tr td:first-child { border-radius: 12px 0 0 12px; }
+        table tr td:last-child { border-radius: 0 12px 12px 0; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+    `;
+    document.head.appendChild(styleTag);
+
+    // 當組件卸載時，移除這個樣式，保持網頁乾淨
+    return () => {
+        const tag = document.getElementById('revenue-report-styles');
+        if (tag) tag.remove();
+    };
+}, []);
+
     const fetchData = async () => {
         setLoading(true);
         try {
@@ -284,8 +304,7 @@ const RevenueReport = () => {
                         </button>
                     ))}
                 </div>
-
-                    
+            </div> {/* Added missing closing div for Control Bar */}
 
             {/* Metrics Dashboard */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.2rem' }}>
@@ -584,16 +603,16 @@ const modernTableStyle = {
     fontSize: '0.95rem'
 };
 
-// Global styles addition for table
-const styleTag = document.createElement('style');
-styleTag.innerHTML = `
-    table.modern-table tr th { padding: 12px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    table tr td { padding: 16px 12px; background: rgba(255,255,255,0.02); }
-    table tr td:first-child { border-radius: 12px 0 0 12px; }
-    table tr td:last-child { border-radius: 0 12px 12px 0; }
-    .text-right { text-align: right; }
-    .text-center { text-align: center; }
-`;
-document.head.appendChild(styleTag);
+// Global styles addition for table //加第二個 useEffect(() => { 所以刪這個！
+// const styleTag = document.createElement('style');
+// styleTag.innerHTML = `
+//     table.modern-table tr th { padding: 12px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+//     table tr td { padding: 16px 12px; background: rgba(255,255,255,0.02); }
+//     table tr td:first-child { border-radius: 12px 0 0 12px; }
+//     table tr td:last-child { border-radius: 0 12px 12px 0; }
+//     .text-right { text-align: right; }
+//     .text-center { text-align: center; }
+// `;
+// document.head.appendChild(styleTag);
 
 export default RevenueReport;
