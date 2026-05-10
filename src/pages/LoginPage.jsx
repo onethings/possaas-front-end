@@ -8,6 +8,28 @@ import { login } from '../api/auth';
 
 const LoginPage = () => {
     const { t, i18n } = useTranslation();
+    const languageNames = {
+        'en-US': 'English',
+        'zh-TW': '繁體中文',
+        'zh-CN': '简体中文',
+        'de-DE': 'Deutsch',
+        'ar-SA': 'العربية',
+        'es-ES': 'Español',
+        'fr-FR': 'Français',
+        'hi-IN': 'हिन्दी',
+        'id-ID': 'Bahasa Indonesia',
+        'it-IT': 'Italiano',
+        'ja-JP': '日本語',
+        'ko-KR': '한국어',
+        'my-MM': 'မြန်မာဘာသာ',
+        'nl-NL': 'Nederlands',
+        'pt-PT': 'Português',
+        'ru-RU': 'Русский',
+        'th-TH': 'ไทย',
+        'tr-TR': 'Türkçe',
+        'vi-VN': 'Tiếng Việt'
+    };
+    const supportedLanguages = Object.keys(i18n.options.resources || {});
     const navigate = useNavigate();
     const { loginUser } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
@@ -31,7 +53,7 @@ const LoginPage = () => {
             console.log("Submitting login for:", formData.username, "tenant:", formData.tenantId);
             const result = await login(formData.username, formData.password, formData.tenantId || null);
             console.log("Login result:", result);
-            
+
             if (result && result.success) {
                 loginUser(result.user, result.token);
                 navigate('/dashboard');
@@ -59,24 +81,37 @@ const LoginPage = () => {
 
     return (
         <motion.div
+            // --- 加入下面這一行 ---
+            dir={i18n.language === 'ar-SA' ? 'rtl' : 'ltr'}
+            // --------------------
             className="glass-panel animate-fade-in"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            style={{ padding: '3rem 2.5rem', width: '100%' }}
+            style={{
+                padding: '3rem 2.5rem',
+                width: '100%',
+                // 如果你有設定內容對齊，也可以根據 dir 調整
+                textAlign: i18n.language === 'ar-SA' ? 'right' : 'left'
+            }}
         >
             {/* 語言切換器選單 */}
-            <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
-                <select 
-                    onChange={(e) => changeLanguage(e.target.value)} 
+            <div style={{
+                position: 'absolute',
+                top: '1rem',
+                // 注意：RTL 下 right: 1rem 會變成在左邊，通常這是正確的
+                right: '1rem'
+            }}>
+                <select
+                    onChange={(e) => changeLanguage(e.target.value)}
                     value={i18n.language}
                     style={selectStyle}
                 >
-                    <option value="en-US">English</option>
-                    <option value="zh-TW">繁體中文</option>
-                    <option value="zh-CN">简体中文</option>
-                    <option value="ja-JP">日本語</option>
-                    {/* 依照你在 i18n.js 定義的 resources 加入更多選項 */}
+                    {supportedLanguages.map((lng) => (
+                        <option key={lng} value={lng}>
+                            {languageNames[lng] || lng}
+                        </option>
+                    ))}
                 </select>
             </div>
             <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
@@ -177,7 +212,10 @@ const LoginPage = () => {
                     disabled={loading}
                     style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: loading ? 0.7 : 1 }}
                 >
-                    {loading ? t('login.loading') : t('login.signIn')} <ArrowRight size={18} />
+                    {loading ? t('login.loading') : t('login.signIn')} <ArrowRight
+                        size={18}
+                        style={{ transform: i18n.language === 'ar-SA' ? 'rotate(180deg)' : 'none' }}
+                    />
                 </button>
 
                 <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between' }}>
