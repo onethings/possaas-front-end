@@ -487,20 +487,22 @@
     "sold": "Verkocht"
   },
   "nav": {
-    "overview": "Overzicht",
-    "pos": "Kassa (POS)",
+    "overview": "Dashboard",
+    "pos": "Kassasysteem (POS)",
     "product_mgmt": "Productbeheer",
-    "inventory_count": "Voorraadaudit",
-    "purchase_order": "Inkoop & Voorraad",
-    "suppliers": "Leveranciers",
+    "inventory_count": "Voorraadmeting",
+    "purchase_order": "Inkooporders",
+    "suppliers": "Leveranciersbeheer",
     "discount_mgmt": "Kortingsbeheer",
-    "order_mgmt": "Bestellingsbeheer",
-    "revenue_report": "Rapportage",
+    "order_mgmt": "Bestellingen zoeken",
+    "revenue_report": "Omzetrapportage",
     "customer_data": "Klantgegevens",
     "staff_mgmt": "Personeelsbeheer",
-    "attendance": "Registratie",
-    "staff_performance": "Prestaties",
+    "attendance": "Aanwezigheidsregistratie",
+    "staff_performance": "Prestatierapport",
     "system_settings": "Systeeminstellingen",
-    "api_integration": "API & Integratie"
-  }
+    "api_integration": "API-koppeling"
+  },
+  "search_placeholder": "Zoek bestellingen, producten...",
+  "logout": "Uitloggen"
 }

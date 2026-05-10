@@ -487,20 +487,22 @@
     "sold": "販売済み"
   },
   "nav": {
-    "overview": "概要",
-    "pos": "レジ端末 (POS)",
-    "product_mgmt": "製品管理",
-    "inventory_count": "在庫監査",
-    "purchase_order": "発注と在庫",
-    "suppliers": "仕入先",
+    "overview": "ダッシュボード",
+    "pos": "レジシステム (POS)",
+    "product_mgmt": "商品管理",
+    "inventory_count": "在庫棚卸",
+    "purchase_order": "発注管理",
+    "suppliers": "仕入先管理",
     "discount_mgmt": "割引管理",
-    "order_mgmt": "注文管理",
-    "revenue_report": "運営レポート",
+    "order_mgmt": "注文照会",
+    "revenue_report": "売上レポート",
     "customer_data": "顧客データ",
     "staff_mgmt": "スタッフ管理",
-    "attendance": "勤怠記録",
-    "staff_performance": "パフォーマンス",
+    "attendance": "勤怠管理",
+    "staff_performance": "実績報告",
     "system_settings": "システム設定",
-    "api_integration": "APIと連携"
-  }
+    "api_integration": "API 連携"
+  },
+  "search_placeholder": "注文、商品を検索...",
+  "logout": "ログアウト"
 }

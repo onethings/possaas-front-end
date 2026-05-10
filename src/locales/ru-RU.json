@@ -487,20 +487,22 @@
     "sold": "Продано"
   },
   "nav": {
-    "overview": "Обзор",
-    "pos": "Терминал",
-    "product_mgmt": "Товары",
+    "overview": "Панель управления",
+    "pos": "Кассовый терминал (POS)",
+    "product_mgmt": "Управление товарами",
     "inventory_count": "Инвентаризация",
-    "purchase_order": "Закупки",
-    "suppliers": "Поставщики",
-    "discount_mgmt": "Скидки",
-    "order_mgmt": "Заказы",
-    "revenue_report": "Отчеты",
-    "customer_data": "Клиенты",
-    "staff_mgmt": "Персонал",
-    "attendance": "Посещаемость",
-    "staff_performance": "KPI",
-    "system_settings": "Настройки",
-    "api_integration": "Интеграции"
-  }
+    "purchase_order": "Заказы на закупку",
+    "suppliers": "Управление поставщиками",
+    "discount_mgmt": "Управление скидками",
+    "order_mgmt": "Поиск заказов",
+    "revenue_report": "Отчет о выручке",
+    "customer_data": "Данные клиентов",
+    "staff_mgmt": "Управление персоналом",
+    "attendance": "Учет посещаемости",
+    "staff_performance": "Отчет об эффективности",
+    "system_settings": "Настройки системы",
+    "api_integration": "Интеграция API"
+  },
+  "search_placeholder": "Поиск заказов, товаров...",
+  "logout": "Выйти из системы"
 }

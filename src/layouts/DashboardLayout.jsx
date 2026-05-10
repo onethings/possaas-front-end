@@ -76,7 +76,10 @@ const DashboardLayout = ({ children }) => {
     const { t, i18n } = useTranslation();
 
     const changeLanguage = (e) => {
-        i18n.changeLanguage(e.target.value);
+        const newLang = e.target.value;
+        i18n.changeLanguage(newLang);
+        // 可選：切換 RTL (如阿拉伯語)
+        document.dir = newLang === 'ar-SA' ? 'rtl' : 'ltr';
     };
 
     return (
@@ -103,7 +106,15 @@ const DashboardLayout = ({ children }) => {
                     </button>
                 </div>
 
-                <nav style={{ flex: 1, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <nav style={{
+                    flex: 1,
+                    padding: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.5rem',
+                    overflowY: 'auto', // 允許滾動
+                    scrollbarWidth: 'none' // 隱藏標準捲軸 (Firefox)
+                }}>
                     {navItems.map((item) => {
                         const isActive = location.pathname === item.path;
                         return (
@@ -120,11 +131,26 @@ const DashboardLayout = ({ children }) => {
                                     color: isActive ? 'var(--primary-light)' : 'var(--text-muted)',
                                     gap: '1rem',
                                     transition: 'background 0.3s ease',
-                                    background: isActive ? 'rgba(255, 255, 255, 0.05)' : 'transparent'
+                                    background: isActive ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+                                    whiteSpace: 'nowrap' // 建議加上這個，防止文字在動畫時換行
                                 }}
                             >
-                                <item.icon size={20} />
-                                {isSidebarOpen && <span>{t(item.label)}</span>}
+                                <item.icon size={20} style={{ minWidth: '20px' }} />
+
+                                {/* 放在這裡：取代原本的 {isSidebarOpen && <span>...</span>} */}
+                                <AnimatePresence mode="wait">
+                                    {isSidebarOpen && (
+                                        <motion.span
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -10 }}
+                                            transition={{ duration: 0.2 }}
+                                            style={{ overflow: 'hidden' }}
+                                        >
+                                            {t(item.label)}
+                                        </motion.span>
+                                    )}
+                                </AnimatePresence>
                             </Link>
                         );
                     })}
@@ -170,13 +196,13 @@ const DashboardLayout = ({ children }) => {
                         {/* Language Switcher */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.4rem 0.8rem', borderRadius: 'var(--radius-md)' }}>
                             <Globe size={18} color="var(--text-muted)" />
-                            <select 
-                                value={i18n.language} 
+                            <select
+                                value={i18n.language}
                                 onChange={changeLanguage}
-                                style={{ 
-                                    background: 'transparent', 
-                                    border: 'none', 
-                                    color: 'var(--text-muted)', 
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    color: 'var(--text-muted)',
                                     fontSize: '0.85rem',
                                     outline: 'none',
                                     cursor: 'pointer'

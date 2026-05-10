@@ -487,20 +487,22 @@
     "sold": "已售"
   },
   "nav": {
-    "overview": "概覽",
-    "pos": "收銀終端 (POS)",
+    "overview": "控制面板",
+    "pos": "收銀系統 (POS)",
     "product_mgmt": "產品管理",
     "inventory_count": "庫存盤點",
-    "purchase_order": "採購進貨",
-    "suppliers": "供應商",
+    "purchase_order": "採購訂單",
+    "suppliers": "供應商管理",
     "discount_mgmt": "折扣管理",
-    "order_mgmt": "訂單管理",
-    "revenue_report": "營運報表",
+    "order_mgmt": "訂單查詢",
+    "revenue_report": "營收報表",
     "customer_data": "客戶資料",
     "staff_mgmt": "員工管理",
-    "attendance": "出勤打卡",
-    "staff_performance": "員工績效",
-    "system_settings": "系統設置",
-    "api_integration": "API 與整合"
-  }
+    "attendance": "出勤記錄",
+    "staff_performance": "績效報告",
+    "system_settings": "系統設定",
+    "api_integration": "API 串接"
+  },
+  "search_placeholder": "搜尋訂單、產品...",
+  "logout": "登出系統"
 }

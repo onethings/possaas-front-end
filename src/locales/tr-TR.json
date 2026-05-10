@@ -487,20 +487,22 @@
     "sold": "Satıldı"
   },
   "nav": {
-    "overview": "Genel Bakış",
+    "overview": "Kontrol Paneli",
     "pos": "Satış Noktası (POS)",
     "product_mgmt": "Ürün Yönetimi",
-    "inventory_count": "Stok Denetimi",
-    "purchase_order": "Satın Alma ve Stok",
-    "suppliers": "Tedarikçiler",
+    "inventory_count": "Stok Sayımı",
+    "purchase_order": "Satın Alma Siparişi",
+    "suppliers": "Tedarikçi Yönetimi",
     "discount_mgmt": "İndirim Yönetimi",
-    "order_mgmt": "Sipariş Yönetimi",
-    "revenue_report": "Operasyonel Raporlar",
-    "customer_data": "Müşteri Verileri",
+    "order_mgmt": "Sipariş Sorgulama",
+    "revenue_report": "Gelir Raporu",
+    "customer_data": "Müşteri Bilgileri",
     "staff_mgmt": "Personel Yönetimi",
-    "attendance": "Zaman Takibi",
-    "staff_performance": "Performans Yönetimi",
+    "attendance": "Devam Kontrolü",
+    "staff_performance": "Performans Raporu",
     "system_settings": "Sistem Ayarları",
-    "api_integration": "API ve Entegrasyon"
-  }
+    "api_integration": "API Entegrasyonu"
+  },
+  "search_placeholder": "Sipariş, ürün ara...",
+  "logout": "Oturumu Kapat"
 }

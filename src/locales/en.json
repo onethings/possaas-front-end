@@ -487,20 +487,22 @@
     "sold": "Sold"
   },
   "nav": {
-    "overview": "Overview",
-    "pos": "POS Terminal",
-    "product_mgmt": "Products",
-    "inventory_count": "Inventory Audit",
+    "overview": "Dashboard",
+    "pos": "Point of Sale (POS)",
+    "product_mgmt": "Product Management",
+    "inventory_count": "Inventory Count",
     "purchase_order": "Purchase Orders",
-    "suppliers": "Suppliers",
-    "discount_mgmt": "Discounts",
-    "order_mgmt": "Orders",
-    "revenue_report": "Operational Reports",
-    "customer_data": "Customers",
-    "staff_mgmt": "Staff",
-    "attendance": "Attendance",
-    "staff_performance": "Performance",
-    "system_settings": "Settings",
-    "api_integration": "API & Integrations"
-  }
+    "suppliers": "Supplier Management",
+    "discount_mgmt": "Discount Management",
+    "order_mgmt": "Order Inquiry",
+    "revenue_report": "Revenue Report",
+    "customer_data": "Customer Data",
+    "staff_mgmt": "Staff Management",
+    "attendance": "Attendance Records",
+    "staff_performance": "Performance Report",
+    "system_settings": "System Settings",
+    "api_integration": "API Integration"
+  },
+  "search_placeholder": "Search orders, products...",
+  "logout": "Logout"
 }

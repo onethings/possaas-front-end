@@ -487,20 +487,22 @@
     "sold": "已售"
   },
   "nav": {
-    "overview": "概览",
+    "overview": "控制面板",
     "pos": "收银系统 (POS)",
-    "product_mgmt": "商品管理",
-    "inventory_count": "库存审核",
-    "purchase_order": "采购与库存",
-    "suppliers": "供应商",
+    "product_mgmt": "产品管理",
+    "inventory_count": "库存盘点",
+    "purchase_order": "采购订单",
+    "suppliers": "供应商管理",
     "discount_mgmt": "折扣管理",
-    "order_mgmt": "订单管理",
-    "revenue_report": "运营报表",
-    "customer_data": "客户数据",
+    "order_mgmt": "订单查询",
+    "revenue_report": "营收报表",
+    "customer_data": "客户资料",
     "staff_mgmt": "员工管理",
-    "attendance": "考勤记录",
-    "staff_performance": "绩效管理",
+    "attendance": "出勤记录",
+    "staff_performance": "绩效报告",
     "system_settings": "系统设置",
-    "api_integration": "API 与集成"
-  }
+    "api_integration": "API 对接"
+  },
+  "search_placeholder": "搜索订单、产品...",
+  "logout": "退出登录"
 }

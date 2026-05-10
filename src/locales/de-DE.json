@@ -488,19 +488,21 @@
   },
   "nav": {
     "overview": "Übersicht",
-    "pos": "Kasse (POS)",
-    "product_mgmt": "Produkte",
+    "pos": "Kassensystem (POS)",
+    "product_mgmt": "Produktverwaltung",
     "inventory_count": "Inventur",
     "purchase_order": "Bestellwesen",
-    "suppliers": "Lieferanten",
-    "discount_mgmt": "Rabatte",
-    "order_mgmt": "Bestellungen",
-    "revenue_report": "Berichte",
-    "customer_data": "Kunden",
-    "staff_mgmt": "Personal",
-    "attendance": "Zeiterfassung",
-    "staff_performance": "Leistung",
-    "system_settings": "Einstellungen",
-    "api_integration": "API & Integrationen"
-  }
+    "suppliers": "Lieferantenmanagement",
+    "discount_mgmt": "Rabattverwaltung",
+    "order_mgmt": "Auftragsabfrage",
+    "revenue_report": "Umsatzbericht",
+    "customer_data": "Kundendaten",
+    "staff_mgmt": "Personalverwaltung",
+    "attendance": "Anwesenheitsliste",
+    "staff_performance": "Leistungsbericht",
+    "system_settings": "Systemeinstellungen",
+    "api_integration": "API-Anbindung"
+  },
+  "search_placeholder": "Bestellungen, Produkte suchen...",
+  "logout": "Abmelden"
 }

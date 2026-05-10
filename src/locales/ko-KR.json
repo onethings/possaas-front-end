@@ -487,20 +487,22 @@
     "sold": "판매됨"
   },
   "nav": {
-    "overview": "개요",
-    "pos": "판매 시점 관리 (POS)",
+    "overview": "대시보드",
+    "pos": "판매 관리 (POS)",
     "product_mgmt": "상품 관리",
     "inventory_count": "재고 실사",
-    "purchase_order": "발주 및 재고",
-    "suppliers": "공급처",
+    "purchase_order": "구매 주문",
+    "suppliers": "공급처 관리",
     "discount_mgmt": "할인 관리",
-    "order_mgmt": "주문 관리",
-    "revenue_report": "운영 보고서",
+    "order_mgmt": "주문 조회",
+    "revenue_report": "매출 보고서",
     "customer_data": "고객 데이터",
     "staff_mgmt": "직원 관리",
     "attendance": "근태 기록",
-    "staff_performance": "실적 관리",
+    "staff_performance": "성과 보고서",
     "system_settings": "시스템 설정",
-    "api_integration": "API 및 통합"
-  }
+    "api_integration": "API 연동"
+  },
+  "search_placeholder": "주문, 상품 검색...",
+  "logout": "로그아웃"
 }

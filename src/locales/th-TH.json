@@ -487,20 +487,22 @@
     "sold": "ขายแล้ว"
   },
   "nav": {
-    "overview": "ภาพรวม",
-    "pos": "หน้าขาย (POS)",
+    "overview": "แผงควบคุม",
+    "pos": "ระบบขายหน้าร้าน (POS)",
     "product_mgmt": "จัดการสินค้า",
-    "inventory_count": "ตรวจสอบสต็อก",
-    "purchase_order": "การสั่งซื้อและคลังสินค้า",
-    "suppliers": "ซัพพลายเออร์",
+    "inventory_count": "ตรวจนับสต็อก",
+    "purchase_order": "ใบสั่งซื้อ",
+    "suppliers": "จัดการคู่ค้า/ซัพพลายเออร์",
     "discount_mgmt": "จัดการส่วนลด",
-    "order_mgmt": "จัดการคำสั่งซื้อ",
-    "revenue_report": "รายงานการดำเนินงาน",
+    "order_mgmt": "ตรวจสอบคำสั่งซื้อ",
+    "revenue_report": "รายงานรายได้",
     "customer_data": "ข้อมูลลูกค้า",
     "staff_mgmt": "จัดการพนักงาน",
     "attendance": "บันทึกเวลาเข้างาน",
-    "staff_performance": "การจัดการผลงาน",
+    "staff_performance": "รายงานผลการปฏิบัติงาน",
     "system_settings": "ตั้งค่าระบบ",
-    "api_integration": "API และการเชื่อมต่อ"
-  }
+    "api_integration": "การเชื่อมต่อ API"
+  },
+  "search_placeholder": "ค้นหาคำสั่งซื้อ, สินค้า...",
+  "logout": "ออกจากระบบ"
 }

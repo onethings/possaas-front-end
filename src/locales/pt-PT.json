@@ -487,20 +487,22 @@
     "sold": "Vendido"
   },
   "nav": {
-    "overview": "Resumo",
-    "pos": "POS",
-    "product_mgmt": "Produtos",
+    "overview": "Painel de Controlo",
+    "pos": "Ponto de Venda (POS)",
+    "product_mgmt": "Gestão de Produtos",
     "inventory_count": "Inventário",
-    "purchase_order": "Compras",
-    "suppliers": "Fornecedores",
-    "discount_mgmt": "Descontos",
-    "order_mgmt": "Encomendas",
-    "revenue_report": "Relatórios",
-    "customer_data": "Clientes",
-    "staff_mgmt": "Equipa",
-    "attendance": "Presenças",
-    "staff_performance": "Desempenho",
-    "system_settings": "Definições",
-    "api_integration": "Integrações"
-  }
+    "purchase_order": "Ordens de Compra",
+    "suppliers": "Gestão de Fornecedores",
+    "discount_mgmt": "Gestão de Descontos",
+    "order_mgmt": "Consulta de Encomendas",
+    "revenue_report": "Relatório de Faturação",
+    "customer_data": "Dados de Clientes",
+    "staff_mgmt": "Gestão de Funcionários",
+    "attendance": "Registo de Assiduidade",
+    "staff_performance": "Relatório de Desempenho",
+    "system_settings": "Definições do Sistema",
+    "api_integration": "Integração de API"
+  },
+  "search_placeholder": "Pesquisar encomendas, produtos...",
+  "logout": "Sair do Sistema"
 }

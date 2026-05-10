@@ -487,20 +487,22 @@
     "sold": "बेचा गया"
   },
   "nav": {
-    "overview": "अवलोकन",
-    "pos": "कैशियर टर्मिनल (POS)",
+    "overview": "डैशबोर्ड",
+    "pos": "बिक्री प्रणाली (POS)",
     "product_mgmt": "उत्पाद प्रबंधन",
-    "inventory_count": "इन्वेंट्री ऑडिट",
-    "purchase_order": "खरीद और स्टॉक",
-    "suppliers": "आपूर्तिकर्ता",
+    "inventory_count": "स्टॉक गणना",
+    "purchase_order": "खरीद आदेश",
+    "suppliers": "आपूर्तिकर्ता प्रबंधन",
     "discount_mgmt": "छूट प्रबंधन",
-    "order_mgmt": "ऑर्डर प्रबंधन",
-    "revenue_report": "संचालन रिपोर्ट",
+    "order_mgmt": "ऑर्डर पूछताछ",
+    "revenue_report": "राजस्व रिपोर्ट",
     "customer_data": "ग्राहक डेटा",
     "staff_mgmt": "कर्मचारी प्रबंधन",
-    "attendance": "उपस्थिति दर्ज करें",
-    "staff_performance": "कर्मचारी प्रदर्शन",
+    "attendance": "उपस्थिति रिकॉर्ड",
+    "staff_performance": "प्रदर्शन रिपोर्ट",
     "system_settings": "सिस्टम सेटिंग्स",
-    "api_integration": "API और एकीकरण"
-  }
+    "api_integration": "API एकीकरण"
+  },
+  "search_placeholder": "ऑर्डर, उत्पाद खोजें...",
+  "logout": "लॉग आउट"
 }

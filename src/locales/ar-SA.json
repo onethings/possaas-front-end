@@ -487,20 +487,22 @@
     "sold": "تم بيع"
   },
   "nav": {
-    "overview": "نظرة عامة",
-    "pos": "نقطة البيع (POS)",
+    "overview": "لوحة القيادة",
+    "pos": "نظام البيع (POS)",
     "product_mgmt": "إدارة المنتجات",
     "inventory_count": "جرد المخزون",
     "purchase_order": "أوامر الشراء",
-    "suppliers": "الموردين",
+    "suppliers": "إدارة الموردين",
     "discount_mgmt": "إدارة الخصومات",
-    "order_mgmt": "إدارة الطلبات",
-    "revenue_report": "تقارير العمليات",
+    "order_mgmt": "الاستعلام عن الطلبات",
+    "revenue_report": "تقرير الإيرادات",
     "customer_data": "بيانات العملاء",
     "staff_mgmt": "إدارة الموظفين",
-    "attendance": "الحضور والانصراف",
-    "staff_performance": "أداء الموظفين",
+    "attendance": "سجل الحضور",
+    "staff_performance": "تقرير الأداء",
     "system_settings": "إعدادات النظام",
-    "api_integration": "الربط البرمجي (API)"
-  }
+    "api_integration": "ربط API"
+  },
+  "search_placeholder": "البحث عن الطلبات، المنتجات...",
+  "logout": "تسجيل الخروج"
 }

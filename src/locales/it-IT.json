@@ -488,19 +488,21 @@
   },
   "nav": {
     "overview": "Panoramica",
-    "pos": "Cassa",
+    "pos": "Punto Vendita (POS)",
     "product_mgmt": "Gestione Prodotti",
-    "inventory_count": "Audit Inventario",
-    "purchase_order": "Acquisti e Stock",
-    "suppliers": "Fornitori",
+    "inventory_count": "Inventario",
+    "purchase_order": "Ordini d'Acquisto",
+    "suppliers": "Gestione Fornitori",
     "discount_mgmt": "Gestione Sconti",
-    "order_mgmt": "Gestione Ordini",
-    "revenue_report": "Rapporti Operativi",
+    "order_mgmt": "Ricerca Ordini",
+    "revenue_report": "Rapporto Ricavi",
     "customer_data": "Dati Clienti",
     "staff_mgmt": "Gestione Personale",
-    "attendance": "Registra Presenze",
-    "staff_performance": "Prestazioni Personale",
-    "system_settings": "Impostazioni Sistema",
-    "api_integration": "API e Integrazioni"
-  }
+    "attendance": "Registro Presenze",
+    "staff_performance": "Rapporto Prestazioni",
+    "system_settings": "Impostazioni di Sistema",
+    "api_integration": "Integrazione API"
+  },
+  "search_placeholder": "Cerca ordini, prodotti...",
+  "logout": "Disconnetti"
 }

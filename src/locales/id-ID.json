@@ -487,20 +487,22 @@
     "sold": "Terjual"
   },
   "nav": {
-    "overview": "Ringkasan",
-    "pos": "Kasir (POS)",
+    "overview": "Ikhtisar",
+    "pos": "Sistem Kasir (POS)",
     "product_mgmt": "Manajemen Produk",
-    "inventory_count": "Audit Inventaris",
-    "purchase_order": "Pembelian & Stok",
-    "suppliers": "Pemasok",
+    "inventory_count": "Stok Opname",
+    "purchase_order": "Pesanan Pembelian",
+    "suppliers": "Manajemen Pemasok",
     "discount_mgmt": "Manajemen Diskon",
-    "order_mgmt": "Manajemen Pesanan",
-    "revenue_report": "Laporan Operasional",
+    "order_mgmt": "Riwayat Pesanan",
+    "revenue_report": "Laporan Pendapatan",
     "customer_data": "Data Pelanggan",
     "staff_mgmt": "Manajemen Karyawan",
-    "attendance": "Catat Absensi",
-    "staff_performance": "Performa Karyawan",
+    "attendance": "Absensi",
+    "staff_performance": "Laporan Kinerja",
     "system_settings": "Pengaturan Sistem",
-    "api_integration": "API & Integrasi"
-  }
+    "api_integration": "Integrasi API"
+  },
+  "search_placeholder": "Cari pesanan, produk...",
+  "logout": "Keluar"
 }

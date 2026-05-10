@@ -486,20 +486,22 @@
     "sold": "Đã bán"
   },
   "nav": {
-    "overview": "Tổng quan",
-    "pos": "Điểm bán hàng (POS)",
+    "overview": "Bảng điều khiển",
+    "pos": "Hệ thống bán hàng (POS)",
     "product_mgmt": "Quản lý sản phẩm",
     "inventory_count": "Kiểm kê kho",
-    "purchase_order": "Mua hàng & Nhập kho",
-    "suppliers": "Nhà cung cấp",
-    "discount_mgmt": "Quản lý giảm giá",
-    "order_mgmt": "Quản lý đơn hàng",
-    "revenue_report": "Báo cáo vận hành",
+    "purchase_order": "Đơn mua hàng",
+    "suppliers": "Quản lý nhà cung cấp",
+    "discount_mgmt": "Quản lý chiết khấu",
+    "order_mgmt": "Tra cứu đơn hàng",
+    "revenue_report": "Báo cáo doanh thu",
     "customer_data": "Dữ liệu khách hàng",
     "staff_mgmt": "Quản lý nhân viên",
     "attendance": "Chấm công",
-    "staff_performance": "Hiệu suất nhân viên",
-    "system_settings": "Thiết lập hệ thống",
-    "api_integration": "API & Tích hợp"
-  }
+    "staff_performance": "Báo cáo hiệu suất",
+    "system_settings": "Cài đặt hệ thống",
+    "api_integration": "Kết nối API"
+  },
+  "search_placeholder": "Tìm kiếm đơn hàng, sản phẩm...",
+  "logout": "Đăng xuất"
 }
