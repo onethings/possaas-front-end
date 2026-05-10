@@ -186,38 +186,39 @@
       "last30": "30 Hari Terakhir"
     },
     "metrics": {
-      "total_revenue": "Total Penjualan",
+      "total_revenue": "Total Pendapatan",
       "gross_profit": "Laba Kotor",
-      "discounts": "Diskon Diberikan",
+      "discounts": "Diskon yang Diberikan",
       "expenditure": "Pengeluaran Toko"
     },
     "charts": {
-      "trend_title": "Ramalan & Tren Penjualan",
-      "category_pie": "Proporsi Penjualan per Kategori",
+      "trend_title": "Prediksi dan Tren Penjualan",
+      "category_pie": "Persentase Penjualan per Kategori",
       "revenue": "Pendapatan",
-      "profit": "Laba"
+      "profit": "Keuntungan"
     },
     "tabs": {
-      "daily_detail": "Detail Pendapatan/Pengeluaran Harian",
+      "daily_detail": "Detail Pemasukan & Pengeluaran Harian",
       "hot_products": "Peringkat Produk Terlaris",
       "category_analysis": "Analisis Data Kategori"
     },
     "table": {
       "date": "Tanggal",
       "net_sales": "Penjualan Bersih",
-      "cost": "Beban Penjualan",
+      "cost": "Harga Pokok Penjualan",
       "profit": "Laba Kotor",
       "expenses": "Pengeluaran",
       "margin": "Margin Laba",
       "product_name": "Nama Produk",
-      "qty_sold": "Jml Terjual",
+      "qty_sold": "Jumlah Terjual",
       "total_sales": "Total Penjualan",
       "performance": "Performa",
       "category_name": "Nama Kategori",
-      "total_items": "Total Item",
+      "total_items": "Total Produk",
       "share": "Pangsa",
       "total": "Total",
-      "unknown_product": "Produk Tidak Dikenal",
+      "unit": "buah",
+      "unknown_product": "Produk Tidak Diketahui",
       "uncategorized": "Tanpa Kategori"
     },
     "export": {
@@ -228,7 +229,7 @@
     },
     "errors": {
       "load_fail": "Gagal memuat data laporan",
-      "connection_fail": "Kegagalan koneksi"
+      "connection_fail": "Koneksi gagal"
     }
   },
   "settings": {

@@ -173,7 +173,7 @@
     "error_default": "Registration failed, please try again"
   },
   "reports": {
-    "revenue_title": "Operational Reports",
+    "revenue_title": "Operational Report",
     "date_start": "Start Date",
     "date_end": "End Date",
     "presets": {
@@ -189,7 +189,7 @@
       "total_revenue": "Total Sales",
       "gross_profit": "Gross Profit",
       "discounts": "Discounts Given",
-      "expenditure": "Store Expenditure"
+      "expenditure": "Store Expenses"
     },
     "charts": {
       "trend_title": "Sales Forecast & Trends",
@@ -198,7 +198,7 @@
       "profit": "Profit"
     },
     "tabs": {
-      "daily_detail": "Daily Income/Expense Details",
+      "daily_detail": "Daily Income & Expense Details",
       "hot_products": "Top Selling Products",
       "category_analysis": "Category Data Analysis"
     },
@@ -210,25 +210,26 @@
       "expenses": "Expenses",
       "margin": "Profit Margin",
       "product_name": "Product Name",
-      "qty_sold": "Qty Sold",
+      "qty_sold": "Quantity Sold",
       "total_sales": "Total Sales",
       "performance": "Performance",
       "category_name": "Category Name",
       "total_items": "Total Items",
       "share": "Share",
       "total": "Total",
+      "unit": "pcs",
       "unknown_product": "Unknown Product",
       "uncategorized": "Uncategorized"
     },
     "export": {
       "button": "Export {{type}} Report",
-      "type_detail": "Detail",
+      "type_detail": "Details",
       "type_product": "Product",
       "type_category": "Category"
     },
     "errors": {
       "load_fail": "Failed to load report data",
-      "connection_fail": "Connection Failed"
+      "connection_fail": "Connection failed"
     }
   },
   "settings": {

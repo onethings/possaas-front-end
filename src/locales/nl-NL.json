@@ -173,7 +173,7 @@
     "error_default": "Registratie mislukt, probeer het opnieuw"
   },
   "reports": {
-    "revenue_title": "Operationele Rapporten",
+    "revenue_title": "Operationele Rapportage",
     "date_start": "Begindatum",
     "date_end": "Einddatum",
     "presets": {
@@ -182,52 +182,53 @@
       "thisWeek": "Deze week",
       "thisMonth": "Deze maand",
       "lastMonth": "Vorige maand",
-      "last7": "Laatste 7 dagen",
-      "last30": "Laatste 30 dagen"
+      "last7": "Afgelopen 7 dagen",
+      "last30": "Afgelopen 30 dagen"
     },
     "metrics": {
-      "total_revenue": "Totale Omzet",
+      "total_revenue": "Totale omzet",
       "gross_profit": "Brutowinst",
-      "discounts": "Verleende Kortingen",
+      "discounts": "Verleende kortingen",
       "expenditure": "Winkeluitgaven"
     },
     "charts": {
-      "trend_title": "Verkoopvoorspelling & Trends",
-      "category_pie": "Omzetaandeel per Categorie",
+      "trend_title": "Verkoopprognose en trends",
+      "category_pie": "Verkoop per categorie",
       "revenue": "Omzet",
       "profit": "Winst"
     },
     "tabs": {
-      "daily_detail": "Dagelijkse Inkomsten/Uitgaven Details",
-      "hot_products": "Bestverkochte Producten",
-      "category_analysis": "Categorie Data-analyse"
+      "daily_detail": "Dagelijkse inkomsten en uitgaven",
+      "hot_products": "Bestverkochte producten",
+      "category_analysis": "Categorie-analyse"
     },
     "table": {
       "date": "Datum",
-      "net_sales": "Netto Omzet",
-      "cost": "Inkoopwaarde (COGS)",
+      "net_sales": "Netto-omzet",
+      "cost": "Kostprijs verkopen",
       "profit": "Brutowinst",
       "expenses": "Uitgaven",
-      "margin": "Marge",
+      "margin": "Winstmarge",
       "product_name": "Productnaam",
-      "qty_sold": "Aantal Verkocht",
-      "total_sales": "Totale Verkoop",
+      "qty_sold": "Aantal verkocht",
+      "total_sales": "Totale verkoop",
       "performance": "Prestaties",
       "category_name": "Categorienaam",
-      "total_items": "Totaal Items",
+      "total_items": "Totaal aantal artikelen",
       "share": "Aandeel",
       "total": "Totaal",
-      "unknown_product": "Onbekend Product",
+      "unit": "stk",
+      "unknown_product": "Onbekend product",
       "uncategorized": "Niet gecategoriseerd"
     },
     "export": {
-      "button": "Exporteer {{type}} Rapport",
-      "type_detail": "Details",
-      "type_product": "Product",
-      "type_category": "Categorie"
+      "button": "Exporteer {{type}}rapport",
+      "type_detail": "details",
+      "type_product": "product",
+      "type_category": "categorie"
     },
     "errors": {
-      "load_fail": "Laden rapportgegevens mislukt",
+      "load_fail": "Laden van rapportgegevens mislukt",
       "connection_fail": "Verbindingsfout"
     }
   },

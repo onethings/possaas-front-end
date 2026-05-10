@@ -6,6 +6,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { registerTenant } from '../api/tenants';
 
 const RegisterPage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);

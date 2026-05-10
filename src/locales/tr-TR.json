@@ -173,7 +173,7 @@
     "error_default": "Kayıt başarısız, lütfen tekrar deneyin"
   },
   "reports": {
-    "revenue_title": "Operasyonel Raporlar",
+    "revenue_title": "İşletme Raporu",
     "date_start": "Başlangıç Tarihi",
     "date_end": "Bitiş Tarihi",
     "presets": {
@@ -186,39 +186,40 @@
       "last30": "Son 30 Gün"
     },
     "metrics": {
-      "total_revenue": "Toplam Gelir",
+      "total_revenue": "Toplam Satış",
       "gross_profit": "Brüt Kar",
       "discounts": "Uygulanan İndirimler",
       "expenditure": "Mağaza Giderleri"
     },
     "charts": {
-      "trend_title": "Satış Tahmini ve Trendler",
-      "category_pie": "Kategori Bazlı Gelir Payı",
+      "trend_title": "Satış Tahmini ve Eğilimleri",
+      "category_pie": "Kategori Satış Oranları",
       "revenue": "Gelir",
       "profit": "Kar"
     },
     "tabs": {
-      "daily_detail": "Günlük Gelir/Gider Detayları",
+      "daily_detail": "Günlük Gelir-Gider Detayı",
       "hot_products": "En Çok Satan Ürünler",
       "category_analysis": "Kategori Veri Analizi"
     },
     "table": {
       "date": "Tarih",
       "net_sales": "Net Satış",
-      "cost": "Satış Maliyeti (COGS)",
+      "cost": "Satış Maliyeti",
       "profit": "Brüt Kar",
       "expenses": "Giderler",
-      "margin": "Marj",
+      "margin": "Kar Marjı",
       "product_name": "Ürün Adı",
-      "qty_sold": "Satılan Mik.",
+      "qty_sold": "Satılan Adet",
       "total_sales": "Toplam Satış",
       "performance": "Performans",
       "category_name": "Kategori Adı",
-      "total_items": "Toplam Kalem",
+      "total_items": "Toplam Ürün",
       "share": "Pay",
       "total": "Toplam",
+      "unit": "Adet",
       "unknown_product": "Bilinmeyen Ürün",
-      "uncategorized": "Kategorisiz"
+      "uncategorized": "Kategorize Edilmemiş"
     },
     "export": {
       "button": "{{type}} Raporunu Dışa Aktar",

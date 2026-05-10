@@ -18,6 +18,7 @@ import {
 import { getApiKeys, createApiKey, deleteApiKey } from '../api/developer';
 
 const DeveloperSettings = () => {
+    const { t } = useTranslation();
     const [keys, setKeys] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);

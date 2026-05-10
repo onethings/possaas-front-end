@@ -173,9 +173,9 @@
     "error_default": "Error en el registro, intente de nuevo"
   },
   "reports": {
-    "revenue_title": "Informes de operación",
-    "date_start": "Fecha inicio",
-    "date_end": "Fecha fin",
+    "revenue_title": "Informe Operativo",
+    "date_start": "Fecha de inicio",
+    "date_end": "Fecha de fin",
     "presets": {
       "today": "Hoy",
       "yesterday": "Ayer",
@@ -187,44 +187,45 @@
     },
     "metrics": {
       "total_revenue": "Ventas totales",
-      "gross_profit": "Utilidad bruta",
+      "gross_profit": "Beneficio bruto",
       "discounts": "Descuentos aplicados",
-      "expenditure": "Gastos de tienda"
+      "expenditure": "Gastos del establecimiento"
     },
     "charts": {
-      "trend_title": "Pronóstico y tendencia de ventas",
-      "category_pie": "Ventas por categoría",
+      "trend_title": "Previsión y tendencias de ventas",
+      "category_pie": "Reparto de ventas por categoría",
       "revenue": "Ingresos",
       "profit": "Ganancia"
     },
     "tabs": {
-      "daily_detail": "Detalle diario de ingresos/gastos",
+      "daily_detail": "Detalle diario de ingresos y gastos",
       "hot_products": "Ranking de productos más vendidos",
       "category_analysis": "Análisis de datos por categoría"
     },
     "table": {
       "date": "Fecha",
       "net_sales": "Ventas netas",
-      "cost": "Costo de ventas",
-      "profit": "Utilidad bruta",
+      "cost": "Coste de ventas",
+      "profit": "Beneficio bruto",
       "expenses": "Gastos",
-      "margin": "Margen",
+      "margin": "Margen de beneficio",
       "product_name": "Nombre del producto",
       "qty_sold": "Cant. vendida",
       "total_sales": "Ventas totales",
       "performance": "Rendimiento",
-      "category_name": "Nombre de categoría",
-      "total_items": "Total artículos",
-      "share": "Participación",
+      "category_name": "Nombre de la categoría",
+      "total_items": "Total de artículos",
+      "share": "Cuota",
       "total": "Total",
+      "unit": "ud.",
       "unknown_product": "Producto desconocido",
-      "uncategorized": "Sin categoría"
+      "uncategorized": "Sin categorizar"
     },
     "export": {
       "button": "Exportar informe de {{type}}",
-      "type_detail": "Detalle",
-      "type_product": "Producto",
-      "type_category": "Categoría"
+      "type_detail": "detalles",
+      "type_product": "productos",
+      "type_category": "categorías"
     },
     "errors": {
       "load_fail": "Error al cargar los datos del informe",

@@ -177,58 +177,59 @@
     "date_start": "開始日",
     "date_end": "終了日",
     "presets": {
-      "today": "本日",
+      "today": "今日",
       "yesterday": "昨日",
       "thisWeek": "今週",
       "thisMonth": "今月",
       "lastMonth": "先月",
-      "last7": "過去7日間",
-      "last30": "過去30日間"
+      "last7": "直近 7 日間",
+      "last30": "直近 30 日間"
     },
     "metrics": {
       "total_revenue": "総売上",
       "gross_profit": "売上総利益",
-      "discounts": "適用された割引",
+      "discounts": "割引適用額",
       "expenditure": "店舗支出"
     },
     "charts": {
-      "trend_title": "売上予測とトレンド",
-      "category_pie": "カテゴリー別売上比率",
+      "trend_title": "販売予測とトレンド",
+      "category_pie": "カテゴリ別売上比率",
       "revenue": "収益",
       "profit": "利益"
     },
     "tabs": {
-      "daily_detail": "日別収支詳細",
-      "hot_products": "売れ筋ランキング",
-      "category_analysis": "カテゴリー別データ分析"
+      "daily_detail": "日別収支明細",
+      "hot_products": "売れ筋商品ランキング",
+      "category_analysis": "カテゴリデータ分析"
     },
     "table": {
       "date": "日付",
       "net_sales": "純売上",
       "cost": "売上原価",
-      "profit": "総利益",
+      "profit": "売上総利益",
       "expenses": "支出",
       "margin": "利益率",
-      "product_name": "製品名",
-      "qty_sold": "販売数",
-      "total_sales": "売上合計",
+      "product_name": "商品名",
+      "qty_sold": "販売数量",
+      "total_sales": "総売上額",
       "performance": "パフォーマンス",
-      "category_name": "カテゴリー名",
-      "total_items": "総アイテム数",
+      "category_name": "カテゴリ名",
+      "total_items": "商品総数",
       "share": "シェア",
       "total": "合計",
-      "unknown_product": "不明な製品",
+      "unit": "個",
+      "unknown_product": "不明な商品",
       "uncategorized": "未分類"
     },
     "export": {
-      "button": "{{type}} レポートをエクスポート",
-      "type_detail": "詳細",
-      "type_product": "製品",
-      "type_category": "カテゴリー"
+      "button": "{{type}}レポートを書き出し",
+      "type_detail": "明細",
+      "type_product": "商品別",
+      "type_category": "カテゴリ別"
     },
     "errors": {
       "load_fail": "レポートデータの読み込みに失敗しました",
-      "connection_fail": "接続エラー"
+      "connection_fail": "接続失敗"
     }
   },
   "settings": {

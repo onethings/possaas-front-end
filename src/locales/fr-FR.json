@@ -173,7 +173,7 @@
     "error_default": "Échec de l'inscription, veuillez réessayer"
   },
   "reports": {
-    "revenue_title": "Rapports d'activité",
+    "revenue_title": "Rapport Opérationnel",
     "date_start": "Date de début",
     "date_end": "Date de fin",
     "presets": {
@@ -181,24 +181,24 @@
       "yesterday": "Hier",
       "thisWeek": "Cette semaine",
       "thisMonth": "Ce mois-ci",
-      "lastMonth": "Le mois dernier",
-      "last7": "Les 7 derniers jours",
-      "last30": "Les 30 derniers jours"
+      "lastMonth": "Mois dernier",
+      "last7": "7 derniers jours",
+      "last30": "30 derniers jours"
     },
     "metrics": {
-      "total_revenue": "Chiffre d'affaires",
-      "gross_profit": "Bénéfice brut",
+      "total_revenue": "Chiffre d'affaires total",
+      "gross_profit": "Marge brute",
       "discounts": "Remises accordées",
-      "expenditure": "Dépenses magasin"
+      "expenditure": "Dépenses du magasin"
     },
     "charts": {
-      "trend_title": "Prévisions et tendances des ventes",
-      "category_pie": "Répartition des ventes par catégorie",
-      "revenue": "Revenus",
-      "profit": "Profit"
+      "trend_title": "Prévisions et tendances de ventes",
+      "category_pie": "Ventes par catégorie",
+      "revenue": "Revenu",
+      "profit": "Bénéfice"
     },
     "tabs": {
-      "daily_detail": "Détails journaliers revenus/dépenses",
+      "daily_detail": "Détails des recettes et dépenses quotidiennes",
       "hot_products": "Classement des meilleures ventes",
       "category_analysis": "Analyse des données par catégorie"
     },
@@ -209,25 +209,26 @@
       "profit": "Marge brute",
       "expenses": "Dépenses",
       "margin": "Taux de marge",
-      "product_name": "Nom de l'article",
+      "product_name": "Nom du produit",
       "qty_sold": "Qté vendue",
       "total_sales": "Ventes totales",
       "performance": "Performance",
-      "category_name": "Nom catégorie",
-      "total_items": "Total articles",
+      "category_name": "Nom de la catégorie",
+      "total_items": "Total des articles",
       "share": "Part",
       "total": "Total",
+      "unit": "unité",
       "unknown_product": "Produit inconnu",
-      "uncategorized": "Non catégorisé"
+      "uncategorized": "Non classé"
     },
     "export": {
       "button": "Exporter le rapport {{type}}",
-      "type_detail": "Détaillé",
-      "type_product": "Produits",
-      "type_category": "Catégories"
+      "type_detail": "détaillé",
+      "type_product": "par produit",
+      "type_category": "par catégorie"
     },
     "errors": {
-      "load_fail": "Impossible de charger les données du rapport",
+      "load_fail": "Échec du chargement des données du rapport",
       "connection_fail": "Échec de la connexion"
     }
   },

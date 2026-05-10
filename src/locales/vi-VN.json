@@ -188,12 +188,12 @@
     "metrics": {
       "total_revenue": "Tổng doanh thu",
       "gross_profit": "Lợi nhuận gộp",
-      "discounts": "Chiết khấu đã tặng",
+      "discounts": "Chiết khấu",
       "expenditure": "Chi phí cửa hàng"
     },
     "charts": {
       "trend_title": "Dự báo và xu hướng doanh số",
-      "category_pie": "Tỷ trọng doanh thu theo danh mục",
+      "category_pie": "Tỷ trọng doanh số theo danh mục",
       "revenue": "Doanh thu",
       "profit": "Lợi nhuận"
     },
@@ -204,11 +204,11 @@
     },
     "table": {
       "date": "Ngày",
-      "net_sales": "Doanh thu thuần",
+      "net_sales": "Doanh số thuần",
       "cost": "Giá vốn hàng bán",
       "profit": "Lợi nhuận gộp",
       "expenses": "Chi phí",
-      "margin": "Tỷ suất lợi nhuận",
+      "margin": "Biên lợi nhuận",
       "product_name": "Tên sản phẩm",
       "qty_sold": "Số lượng bán",
       "total_sales": "Tổng doanh số",
@@ -217,18 +217,19 @@
       "total_items": "Tổng số mặt hàng",
       "share": "Tỷ trọng",
       "total": "Tổng cộng",
+      "unit": "Cái",
       "unknown_product": "Sản phẩm không xác định",
       "uncategorized": "Chưa phân loại"
     },
     "export": {
       "button": "Xuất báo cáo {{type}}",
-      "type_detail": "Chi tiết",
-      "type_product": "Sản phẩm",
-      "type_category": "Danh mục"
+      "type_detail": "chi tiết",
+      "type_product": "sản phẩm",
+      "type_category": "danh mục"
     },
     "errors": {
       "load_fail": "Không thể tải dữ liệu báo cáo",
-      "connection_fail": "Lỗi kết nối"
+      "connection_fail": "Kết nối thất bại"
     }
   },
   "settings": {

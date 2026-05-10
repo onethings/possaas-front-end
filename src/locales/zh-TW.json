@@ -172,6 +172,7 @@
     "error_password_mismatch": "密碼不一致",
     "error_default": "註冊失敗，請重試"
   },
+  
   "reports": {
     "revenue_title": "營運報表",
     "date_start": "開始日期",
@@ -217,6 +218,7 @@
       "total_items": "商品總數",
       "share": "佔比",
       "total": "合計",
+      "unit": "件",
       "unknown_product": "未知產品",
       "uncategorized": "未分類"
     },
@@ -231,6 +233,7 @@
       "connection_fail": "連線失敗"
     }
   },
+
   "settings": {
     "title": "系統設置",
     "subtitle": "管理您的商店規則與忠誠度計畫",
@@ -467,6 +470,7 @@
       "status": "狀態"
     }
   },
+  
   "dashboard": {
     "title": "營運概覽",
     "total_tenants": "總租戶數",

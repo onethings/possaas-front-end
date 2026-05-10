@@ -25,6 +25,7 @@ import { getModifiers, createModifier } from '../api/modifiers';
 import { useTenant } from '../contexts/TenantContext';
 
 const Products = () => {
+    const { t } = useTranslation();
     const { tenantConfig } = useTenant();
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);

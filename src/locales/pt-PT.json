@@ -173,52 +173,53 @@
     "error_default": "Falha no registo, por favor tente novamente"
   },
   "reports": {
-    "revenue_title": "Relatórios Operacionais",
+    "revenue_title": "Relatório Operacional",
     "date_start": "Data de Início",
     "date_end": "Data de Fim",
     "presets": {
       "today": "Hoje",
       "yesterday": "Ontem",
-      "thisWeek": "Esta semana",
-      "thisMonth": "Este mês",
-      "lastMonth": "Mês passado",
+      "thisWeek": "Esta Semana",
+      "thisMonth": "Este Mês",
+      "lastMonth": "Mês Passado",
       "last7": "Últimos 7 dias",
       "last30": "Últimos 30 dias"
     },
     "metrics": {
-      "total_revenue": "Receita Total",
+      "total_revenue": "Vendas Totais",
       "gross_profit": "Lucro Bruto",
       "discounts": "Descontos Aplicados",
       "expenditure": "Despesas da Loja"
     },
     "charts": {
       "trend_title": "Previsão e Tendências de Vendas",
-      "category_pie": "Quota de Receita por Categoria",
+      "category_pie": "Vendas por Categoria",
       "revenue": "Receita",
       "profit": "Lucro"
     },
     "tabs": {
-      "daily_detail": "Detalhes Diários de Receitas/Despesas",
-      "hot_products": "Produtos Mais Vendidos",
+      "daily_detail": "Detalhe Diário de Fluxo de Caixa",
+      "hot_products": "Ranking de Produtos Populares",
       "category_analysis": "Análise de Dados por Categoria"
     },
     "table": {
       "date": "Data",
       "net_sales": "Vendas Líquidas",
-      "cost": "Custo das Vendas (COGS)",
+      "cost": "Custo das Vendas",
       "profit": "Lucro Bruto",
       "expenses": "Despesas",
-      "margin": "Margem",
+      "margin": "Margem de Lucro",
       "product_name": "Nome do Produto",
-      "qty_sold": "Qtd Vendida",
-      "total_sales": "Total de Vendas",
+      "qty_sold": "Qtd. Vendida",
+      "total_sales": "Vendas Totais",
       "performance": "Desempenho",
       "category_name": "Nome da Categoria",
       "total_items": "Total de Itens",
       "share": "Quota",
       "total": "Total",
+      "unit": "un.",
       "unknown_product": "Produto Desconhecido",
-      "uncategorized": "Sem categoria"
+      "uncategorized": "Sem Categoria"
     },
     "export": {
       "button": "Exportar Relatório de {{type}}",
@@ -227,8 +228,8 @@
       "type_category": "Categoria"
     },
     "errors": {
-      "load_fail": "Falha ao carregar dados do relatório",
-      "connection_fail": "Erro de ligação"
+      "load_fail": "Não foi possível carregar os dados do relatório",
+      "connection_fail": "Falha na ligação"
     }
   },
   "settings": {

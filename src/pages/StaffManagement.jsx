@@ -6,6 +6,7 @@ import { getStaff, registerStaff, updateStaff, updateStaffStatus, resetStaffPass
 import { useAuth } from '../contexts/AuthContext';
 
 const StaffManagement = () => {
+    const { t } = useTranslation();
     const { user: currentUser } = useAuth();
     const [staff, setStaff] = useState([]);
     const [loading, setLoading] = useState(true);

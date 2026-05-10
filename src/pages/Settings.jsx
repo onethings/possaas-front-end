@@ -5,6 +5,7 @@ import { Settings as SettingsIcon, Globe, Bell, Shield, CreditCard, Save, Loader
 import { getMyTenant, updateTenantConfig } from '../api/tenants';
 
 const Settings = () => {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [config, setConfig] = useState({

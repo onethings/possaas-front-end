@@ -173,7 +173,7 @@
     "error_default": "Registrierung fehlgeschlagen, bitte erneut versuchen"
   },
   "reports": {
-    "revenue_title": "Betriebsberichte",
+    "revenue_title": "Betriebsbericht",
     "date_start": "Startdatum",
     "date_end": "Enddatum",
     "presets": {
@@ -189,7 +189,7 @@
       "total_revenue": "Gesamtumsatz",
       "gross_profit": "Bruttogewinn",
       "discounts": "Gewährte Rabatte",
-      "expenditure": "Ladenausgaben"
+      "expenditure": "Filialausgaben"
     },
     "charts": {
       "trend_title": "Umsatzprognose & Trends",
@@ -198,25 +198,26 @@
       "profit": "Gewinn"
     },
     "tabs": {
-      "daily_detail": "Tägliche Details",
+      "daily_detail": "Tägliche Einnahmen-Überschuss-Rechnung",
       "hot_products": "Bestseller-Ranking",
-      "category_analysis": "Kategorie-Analyse"
+      "category_analysis": "Kategoriedaten-Analyse"
     },
     "table": {
       "date": "Datum",
       "net_sales": "Nettoumsatz",
-      "cost": "Selbstkosten (COGS)",
+      "cost": "Wareneinsatz",
       "profit": "Bruttogewinn",
       "expenses": "Ausgaben",
-      "margin": "Marge",
+      "margin": "Gewinnspanne",
       "product_name": "Produktname",
-      "qty_sold": "Verkaufte Menge",
+      "qty_sold": "Verkaufsmenge",
       "total_sales": "Gesamtumsatz",
       "performance": "Leistung",
       "category_name": "Kategoriename",
-      "total_items": "Gesamtartikel",
+      "total_items": "Gesamtanzahl Artikel",
       "share": "Anteil",
-      "total": "Summe",
+      "total": "Gesamt",
+      "unit": "Stk.",
       "unknown_product": "Unbekanntes Produkt",
       "uncategorized": "Nicht kategorisiert"
     },

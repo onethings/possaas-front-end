@@ -38,6 +38,7 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+    const { t } = useTranslation();
     const { user } = useAuth();
     const { tenantConfig } = useTenant();
     const [summary, setSummary] = useState(null);

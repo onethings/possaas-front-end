@@ -173,9 +173,9 @@
     "error_default": "Registrazione fallita, riprova"
   },
   "reports": {
-    "revenue_title": "Rapporti Operativi",
-    "date_start": "Data Inizio",
-    "date_end": "Data Fine",
+    "revenue_title": "Rapporto Operativo",
+    "date_start": "Data di Inizio",
+    "date_end": "Data di Fine",
     "presets": {
       "today": "Oggi",
       "yesterday": "Ieri",
@@ -186,20 +186,20 @@
       "last30": "Ultimi 30 giorni"
     },
     "metrics": {
-      "total_revenue": "Vendite Totali",
+      "total_revenue": "Fatturato Totale",
       "gross_profit": "Utile Lordo",
       "discounts": "Sconti Applicati",
-      "expenditure": "Spese Negozio"
+      "expenditure": "Spese del Negozio"
     },
     "charts": {
-      "trend_title": "Previsioni e Andamento Vendite",
-      "category_pie": "Vendite per Categoria",
+      "trend_title": "Previsioni e Tendenze di Vendita",
+      "category_pie": "Quota Vendite per Categoria",
       "revenue": "Entrate",
       "profit": "Profitto"
     },
     "tabs": {
-      "daily_detail": "Dettaglio Giornaliero Entrate/Uscite",
-      "hot_products": "Classifica Prodotti più Venduti",
+      "daily_detail": "Dettaglio Entrate/Uscite Giornaliere",
+      "hot_products": "Classifica Prodotti Più Venduti",
       "category_analysis": "Analisi Dati per Categoria"
     },
     "table": {
@@ -210,15 +210,16 @@
       "expenses": "Spese",
       "margin": "Margine",
       "product_name": "Nome Prodotto",
-      "qty_sold": "Q.tà Venduta",
+      "qty_sold": "Quantità Venduta",
       "total_sales": "Vendite Totali",
       "performance": "Rendimento",
       "category_name": "Nome Categoria",
-      "total_items": "Totale Articoli",
+      "total_items": "Articoli Totali",
       "share": "Quota",
       "total": "Totale",
+      "unit": "pz",
       "unknown_product": "Prodotto Sconosciuto",
-      "uncategorized": "Senza Categoria"
+      "uncategorized": "Non Categorizzato"
     },
     "export": {
       "button": "Esporta Rapporto {{type}}",
@@ -227,8 +228,8 @@
       "type_category": "Categoria"
     },
     "errors": {
-      "load_fail": "Caricamento dati rapporto fallito",
-      "connection_fail": "Errore di connessione"
+      "load_fail": "Impossibile caricare i dati del rapporto",
+      "connection_fail": "Connessione fallita"
     }
   },
   "settings": {

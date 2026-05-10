@@ -173,7 +173,7 @@
     "error_default": "فشل التسجيل، يرجى المحاولة مرة أخرى"
   },
   "reports": {
-    "revenue_title": "تقارير العمليات",
+    "revenue_title": "تقرير العمليات",
     "date_start": "تاريخ البدء",
     "date_end": "تاريخ الانتهاء",
     "presets": {
@@ -183,7 +183,7 @@
       "thisMonth": "هذا الشهر",
       "lastMonth": "الشهر الماضي",
       "last7": "آخر 7 أيام",
-      "last30": "آخر 30 يوماً"
+      "last30": "آخر 30 يومًا"
     },
     "metrics": {
       "total_revenue": "إجمالي المبيعات",
@@ -193,19 +193,19 @@
     },
     "charts": {
       "trend_title": "توقعات واتجاهات المبيعات",
-      "category_pie": "نسبة المبيعات حسب الفئة",
+      "category_pie": "حصة المبيعات حسب الفئة",
       "revenue": "الإيرادات",
       "profit": "الربح"
     },
     "tabs": {
-      "daily_detail": "تفاصيل الدخل والنفقات اليومية",
-      "hot_products": "ترتيب المنتجات الأكثر مبيعاً",
+      "daily_detail": "تفاصيل الدخل والمصروفات اليومية",
+      "hot_products": "تصنيف المنتجات الأكثر مبيعاً",
       "category_analysis": "تحليل بيانات الفئات"
     },
     "table": {
       "date": "التاريخ",
       "net_sales": "صافي المبيعات",
-      "cost": "تكلفة المبيعات",
+      "cost": "تكلفة البضاعة المباعة",
       "profit": "إجمالي الربح",
       "expenses": "المصروفات",
       "margin": "هامش الربح",
@@ -214,20 +214,21 @@
       "total_sales": "إجمالي المبيعات",
       "performance": "الأداء",
       "category_name": "اسم الفئة",
-      "total_items": "إجمالي المنتجات",
+      "total_items": "إجمالي الأصناف",
       "share": "الحصة",
-      "total": "المجموع",
+      "total": "الإجمالي",
+      "unit": "قطعة",
       "unknown_product": "منتج غير معروف",
       "uncategorized": "غير مصنف"
     },
     "export": {
       "button": "تصدير تقرير {{type}}",
-      "type_detail": "التفصيلي",
+      "type_detail": "التفاصيل",
       "type_product": "المنتجات",
       "type_category": "الفئات"
     },
     "errors": {
-      "load_fail": "تعذر تحميل بيانات التقرير",
+      "load_fail": "فشل تحميل بيانات التقرير",
       "connection_fail": "فشل الاتصال"
     }
   },

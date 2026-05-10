@@ -173,7 +173,7 @@
     "error_default": "Ошибка регистрации, попробуйте снова"
   },
   "reports": {
-    "revenue_title": "Операционные отчеты",
+    "revenue_title": "Операционный отчет",
     "date_start": "Дата начала",
     "date_end": "Дата окончания",
     "presets": {
@@ -192,39 +192,40 @@
       "expenditure": "Расходы магазина"
     },
     "charts": {
-      "trend_title": "Прогноз продаж и тренды",
-      "category_pie": "Доля выручки по категориям",
+      "trend_title": "Прогноз и тренды продаж",
+      "category_pie": "Доля продаж по категориям",
       "revenue": "Выручка",
       "profit": "Прибыль"
     },
     "tabs": {
-      "daily_detail": "Детализация доходов/расходов по дням",
-      "hot_products": "Топ продаваемых товаров",
+      "daily_detail": "Ежедневная детализация доходов и расходов",
+      "hot_products": "Рейтинг популярных товаров",
       "category_analysis": "Анализ данных по категориям"
     },
     "table": {
       "date": "Дата",
       "net_sales": "Чистые продажи",
-      "cost": "Себестоимость (COGS)",
+      "cost": "Себестоимость",
       "profit": "Валовая прибыль",
       "expenses": "Расходы",
       "margin": "Маржа",
       "product_name": "Название товара",
       "qty_sold": "Продано шт.",
-      "total_sales": "Всего продаж",
+      "total_sales": "Общий объем продаж",
       "performance": "Эффективность",
       "category_name": "Название категории",
-      "total_items": "Всего позиций",
+      "total_items": "Всего товаров",
       "share": "Доля",
       "total": "Итого",
+      "unit": "шт.",
       "unknown_product": "Неизвестный товар",
       "uncategorized": "Без категории"
     },
     "export": {
       "button": "Экспорт отчета ({{type}})",
-      "type_detail": "Детальный",
-      "type_product": "Товарный",
-      "type_category": "Категорийный"
+      "type_detail": "детализация",
+      "type_product": "по товарам",
+      "type_category": "по категориям"
     },
     "errors": {
       "load_fail": "Ошибка загрузки данных отчета",

@@ -186,49 +186,50 @@
       "last30": "最近 30 天"
     },
     "metrics": {
-      "total_revenue": "总收入",
+      "total_revenue": "销售总额",
       "gross_profit": "毛利润",
-      "discounts": "已应用折扣",
-      "expenditure": "门店支出"
+      "discounts": "给予折扣",
+      "expenditure": "店面支出"
     },
     "charts": {
       "trend_title": "销售预测与趋势",
-      "category_pie": "各类别收入占比",
-      "revenue": "收入",
+      "category_pie": "类别销售占比",
+      "revenue": "营收",
       "profit": "利润"
     },
     "tabs": {
-      "daily_detail": "每日收支详情",
+      "daily_detail": "每日收支明细",
       "hot_products": "热销商品排行",
       "category_analysis": "类别数据分析"
     },
     "table": {
       "date": "日期",
-      "net_sales": "净销售额",
-      "cost": "销售成本 (COGS)",
+      "net_sales": "销售净额",
+      "cost": "销售成本",
       "profit": "毛利润",
-      "expenses": "费用",
-      "margin": "毛利率",
+      "expenses": "支出",
+      "margin": "利润率",
       "product_name": "商品名称",
-      "qty_sold": "销量",
-      "total_sales": "总销售额",
-      "performance": "绩效",
+      "qty_sold": "售出数量",
+      "total_sales": "销售总额",
+      "performance": "表现",
       "category_name": "类别名称",
-      "total_items": "总项数",
+      "total_items": "商品总数",
       "share": "占比",
       "total": "合计",
-      "unknown_product": "未知商品",
+      "unit": "件",
+      "unknown_product": "未知产品",
       "uncategorized": "未分类"
     },
     "export": {
-      "button": "导出 {{type}} 报表",
-      "type_detail": "详情",
+      "button": "导出{{type}}报表",
+      "type_detail": "明细",
       "type_product": "商品",
       "type_category": "类别"
     },
     "errors": {
-      "load_fail": "加载报表数据失败",
-      "connection_fail": "连接错误"
+      "load_fail": "无法读取报表数据",
+      "connection_fail": "连接失败"
     }
   },
   "settings": {

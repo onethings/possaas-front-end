@@ -182,30 +182,30 @@
       "thisWeek": "สัปดาห์นี้",
       "thisMonth": "เดือนนี้",
       "lastMonth": "เดือนที่แล้ว",
-      "last7": "7 วันล่าสุด",
-      "last30": "30 วันล่าสุด"
+      "last7": "7 วันที่ผ่านมา",
+      "last30": "30 วันที่ผ่านมา"
     },
     "metrics": {
-      "total_revenue": "รายได้รวม",
+      "total_revenue": "ยอดขายรวม",
       "gross_profit": "กำไรขั้นต้น",
       "discounts": "ส่วนลดที่ให้",
       "expenditure": "ค่าใช้จ่ายร้านค้า"
     },
     "charts": {
       "trend_title": "การพยากรณ์และแนวโน้มยอดขาย",
-      "category_pie": "สัดส่วนรายได้ตามหมวดหมู่",
+      "category_pie": "สัดส่วนยอดขายตามหมวดหมู่",
       "revenue": "รายได้",
       "profit": "กำไร"
     },
     "tabs": {
-      "daily_detail": "รายละเอียดรายรับ/รายจ่ายรายวัน",
-      "hot_products": "สินค้าขายดี",
+      "daily_detail": "รายละเอียดรายรับ-รายจ่ายรายวัน",
+      "hot_products": "อันดับสินค้าขายดี",
       "category_analysis": "การวิเคราะห์ข้อมูลหมวดหมู่"
     },
     "table": {
       "date": "วันที่",
       "net_sales": "ยอดขายสุทธิ",
-      "cost": "ต้นทุนขาย (COGS)",
+      "cost": "ต้นทุนขาย",
       "profit": "กำไรขั้นต้น",
       "expenses": "ค่าใช้จ่าย",
       "margin": "อัตรากำไร",
@@ -214,14 +214,15 @@
       "total_sales": "ยอดขายรวม",
       "performance": "ผลการดำเนินงาน",
       "category_name": "ชื่อหมวดหมู่",
-      "total_items": "รายการทั้งหมด",
-      "share": "ส่วนแบ่ง",
+      "total_items": "จำนวนสินค้าทั้งหมด",
+      "share": "สัดส่วน",
       "total": "รวม",
-      "unknown_product": "ไม่พบสินค้า",
-      "uncategorized": "ไม่มีหมวดหมู่"
+      "unit": "ชิ้น",
+      "unknown_product": "ไม่ทราบชื่อสินค้า",
+      "uncategorized": "ไม่ได้จัดหมวดหมู่"
     },
     "export": {
-      "button": "ส่งออกรายงาน {{type}}",
+      "button": "ส่งออกรายงาน{{type}}",
       "type_detail": "รายละเอียด",
       "type_product": "สินค้า",
       "type_category": "หมวดหมู่"

@@ -5,6 +5,7 @@ import { Search, Filter, Plus, Mail, Phone, Edit2, Trash2, Loader2, Square, Chec
 import { getCustomers, createCustomer, updateCustomer, deleteCustomer } from '../api/customers';
 
 const Customers = () => {
+    const { t } = useTranslation();
     const [searchTerm, setSearchTerm] = useState('');
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);

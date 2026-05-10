@@ -30,6 +30,7 @@ import { getCategories } from '../api/categories';
 import { useTenant } from '../contexts/TenantContext';
 
 const POS = () => {
+    const { t } = useTranslation();
     const { tenantConfig } = useTenant();
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);

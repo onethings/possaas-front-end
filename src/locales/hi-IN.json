@@ -189,7 +189,7 @@
       "total_revenue": "कुल बिक्री",
       "gross_profit": "सकल लाभ",
       "discounts": "दी गई छूट",
-      "expenditure": "स्टोर खर्च"
+      "expenditure": "स्टोर के खर्च"
     },
     "charts": {
       "trend_title": "बिक्री पूर्वानुमान और रुझान",
@@ -205,7 +205,7 @@
     "table": {
       "date": "तिथि",
       "net_sales": "शुद्ध बिक्री",
-      "cost": "बिक्री लागत",
+      "cost": "बिक्री की लागत",
       "profit": "सकल लाभ",
       "expenses": "खर्च",
       "margin": "लाभ मार्जिन",
@@ -215,14 +215,15 @@
       "performance": "प्रदर्शन",
       "category_name": "श्रेणी का नाम",
       "total_items": "कुल आइटम",
-      "share": "हिस्सा",
-      "total": "कुल योग",
+      "share": "हिस्सेदारी",
+      "total": "कुल",
+      "unit": "इकाई",
       "unknown_product": "अज्ञात उत्पाद",
       "uncategorized": "अवर्गीकृत"
     },
     "export": {
-      "button": "{{type}} रिपोर्ट एक्सपोर्ट करें",
-      "type_detail": "विस्तृत",
+      "button": "{{type}} रिपोर्ट निर्यात करें",
+      "type_detail": "विवरण",
       "type_product": "उत्पाद",
       "type_category": "श्रेणी"
     },

@@ -101,10 +101,10 @@ const RevenueReport = () => {
             if (res.success) {
                 setData(res.data);
             } else {
-                setError('無法讀取報表數據');
+                setError(t('reports.errors.load_fail'));
             }
         } catch (err) {
-            setError('連線失敗');
+            setError(t('reports.errors.connection_fail'));
             console.error(err);
         } finally {
             setLoading(false);
@@ -177,7 +177,7 @@ const RevenueReport = () => {
             t('reports.table.net_sales'), 
             t('reports.table.cost'), 
             t('reports.table.profit'), 
-            t('reports.table.discounts'), 
+            t('reports.metrics.discounts'), 
             t('reports.table.expenses')
         ];
         const rows = reports.map(r => [r.date, r.totalRevenue, r.totalCost, r.totalRevenue - r.totalCost, r.totalDiscount, r.totalExpenses]);
@@ -218,7 +218,7 @@ const RevenueReport = () => {
             labels: reports.map(r => r.date.split('-').slice(1).join('/')),
             datasets: [
                 {
-                    label: '營收',
+                    label: t('reports.charts.revenue'),
                     data: reports.map(r => r.totalRevenue),
                     borderColor: 'hsl(230, 80%, 60%)',
                     backgroundColor: 'rgba(96, 165, 250, 0.1)',
@@ -226,7 +226,7 @@ const RevenueReport = () => {
                     tension: 0.4,
                 },
                 {
-                    label: '利潤',
+                    label: t('reports.charts.profit'),
                     data: reports.map(r => r.totalRevenue - r.totalCost),
                     borderColor: '#4ade80',
                     backgroundColor: 'transparent',
@@ -382,18 +382,18 @@ const RevenueReport = () => {
                             ) : activeTab === 'products' ? (
                                 <tr>
                                     <th>{t('reports.table.product_name')}</th>
-                                    <th className="text-center">{t('reports.table.quantity')}</th>
+                                    <th className="text-center">{t('reports.table.qty_sold')}</th>
                                     <th className="text-right">{t('reports.table.total_sales')}</th>
-                                    <th className="text-right">{t('reports.table.product_profit')}</th>
+                                    <th className="text-right">{t('reports.table.profit')}</th>
                                     <th className="text-center">{t('reports.table.performance')}</th>
                                 </tr>
                             ) : (
                                 <tr>
                                     <th>{t('reports.table.category_name')}</th>
-                                    <th className="text-center">{t('reports.table.product_count')}</th>
+                                    <th className="text-center">{t('reports.table.total_items')}</th>
                                     <th className="text-right">{t('reports.table.total_sales')}</th>
-                                    <th className="text-right">{t('reports.table.category_profit')}</th>
-                                    <th className="text-center">{t('reports.table.percentage')}</th>
+                                    <th className="text-right">{t('reports.table.profit')}</th>
+                                    <th className="text-center">{t('reports.table.share')}</th>
                                 </tr>
                             )}
                         </thead>

@@ -8,6 +8,7 @@ import { getProducts } from '../api/products';
 import { useTenant } from '../contexts/TenantContext';
 
 const PurchaseOrders = () => {
+    const { t } = useTranslation();
     const { tenantConfig } = useTenant();
     const [pos, setPos] = useState([]);
     const [loading, setLoading] = useState(true);
