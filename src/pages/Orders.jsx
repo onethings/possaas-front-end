@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'; // 確保啟用
 import { motion } from 'framer-motion';
 import {
-    Search,
-    Calendar,
-    Download,
-    Eye,
-    CheckCircle,
-    Clock,
-    XCircle,
-    Loader2
+    Search, Calendar, Download, Eye, CheckCircle, Clock, XCircle, Loader2
 } from 'lucide-react';
 import { getOrders, exportOrdersCSV } from '../api/orders';
-
 import { useTenant } from '../contexts/TenantContext';
 
 const Orders = () => {
+    const { t } = useTranslation(); // 初始化 t 函數
     const { tenantConfig } = useTenant();
     const [activeTab, setActiveTab] = useState('all');
     const [orders, setOrders] = useState([]);
@@ -38,12 +31,58 @@ const Orders = () => {
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
         } catch (error) {
-            alert('匯出失敗');
+            alert(t('orders.error_export'));
         } finally {
             setLoading(false);
         }
     };
 
+    const handleExportDetails = async () => {
+        setLoading(true);
+        try {
+            const filteredOrders = orders.filter(filterDate);
+            // CSV 表頭也支持多語言
+            const headers = [
+                t('orders.csv_headers.id'),
+                t('orders.csv_headers.no'),
+                t('orders.csv_headers.time'),
+                t('orders.product_name'),
+                t('orders.csv_headers.cost'),
+                t('orders.unit_price'),
+                t('orders.quantity'),
+                t('orders.subtotal'),
+                t('orders.csv_headers.status')
+            ];
+            
+            const rows = filteredOrders.flatMap(order =>
+                order.items.map(item => [
+                    order._id,
+                    order.orderNo,
+                    new Date(order.createdAt).toLocaleString(),
+                    item.nameSnapshot,
+                    item.costSnapshot || 0,
+                    item.priceSnapshot || 0,
+                    item.qty,
+                    item.subtotal,
+                    t(`orders.status_${order.status}`) // 狀態也要多語言
+                ])
+            );
+
+            const csvContent = "\uFEFF" + [headers, ...rows].map(e => e.join(",")).join("\n");
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `order_details_${startDate || 'all'}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        } catch (error) {
+            alert(t('orders.error_export'));
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const filterDate = (order) => {
         if (!startDate && !endDate) return true;
@@ -65,16 +104,14 @@ const Orders = () => {
             if (result.success) {
                 setOrders(result.data);
             } else {
-                setError('無法讀取訂單列表');
+                setError(t('orders.error_fetch'));
             }
         } catch (err) {
-            setError('伺服器連線失敗');
-            console.error(err);
+            setError(t('orders.error_server'));
         } finally {
             setLoading(false);
         }
     };
-
 
     return (
         <motion.div
@@ -84,28 +121,27 @@ const Orders = () => {
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>訂單管理</h2>
+                <h2 style={{ fontSize: '1.5rem' }}>{t('orders.title')}</h2>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '0.2rem 0.5rem' }}>
                         <Calendar size={16} style={{ margin: '0 0.5rem', color: 'var(--text-muted)' }} />
                         <input
-                            id="order-start-date"
-                            name="startDate"
                             type="date"
                             style={{ background: 'transparent', border: 'none', color: 'white', outline: 'none', fontSize: '0.9rem' }}
                             onChange={(e) => setStartDate(e.target.value)}
                         />
                         <span style={{ margin: '0 0.5rem', color: 'var(--text-muted)' }}>-</span>
                         <input
-                            id="order-end-date"
-                            name="endDate"
                             type="date"
                             style={{ background: 'transparent', border: 'none', color: 'white', outline: 'none', fontSize: '0.9rem' }}
                             onChange={(e) => setEndDate(e.target.value)}
                         />
                     </div>
-                    <button onClick={handleExport} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Download size={18} /> 匯出報表
+                    <button onClick={handleExport} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Download size={18} /> {t('orders.export_summary')}
+                    </button>
+                    <button onClick={handleExportDetails} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Download size={18} /> {t('orders.export_details')}
                     </button>
                 </div>
             </div>
@@ -123,11 +159,10 @@ const Orders = () => {
                             padding: '0.5rem 1rem',
                             cursor: 'pointer',
                             position: 'relative',
-                            textTransform: 'capitalize',
                             fontWeight: activeTab === tab ? 600 : 400
                         }}
                     >
-                        {tab === 'all' ? '全部訂單' : tab === 'paid' ? '已支付' : tab === 'pending' ? '待處理' : '已取消'}
+                        {t(`orders.status_${tab}`)}
                         {activeTab === tab && (
                             <motion.div layoutId="tab-underline" style={{ position: 'absolute', bottom: -1, left: 0, right: 0, height: 2, background: 'var(--primary)' }} />
                         )}
@@ -139,7 +174,7 @@ const Orders = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: '300px' }}>
                 {loading ? (
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
-                        <Loader2 className="animate-spin" size={24} /> 讀取中...
+                        <Loader2 className="animate-spin" size={24} /> {t('orders.loading')}
                     </div>
                 ) : error ? (
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171' }}>
@@ -147,7 +182,7 @@ const Orders = () => {
                     </div>
                 ) : orders.filter(o => (activeTab === 'all' || o.status === activeTab) && filterDate(o)).length === 0 ? (
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', padding: '3rem' }}>
-                        目前無資料
+                        {t('orders.no_data')}
                     </div>
                 ) : (
                     orders.filter(o => (activeTab === 'all' || o.status === activeTab) && filterDate(o)).map(order => (
@@ -156,7 +191,7 @@ const Orders = () => {
                                 <div style={{ fontWeight: 600, color: 'var(--primary-light)' }}>#{order.orderNo}</div>
                                 {order.isBackdated && (
                                     <span style={{ fontSize: '0.65rem', background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
-                                        補單
+                                        {t('orders.backdate_label')}
                                     </span>
                                 )}
                             </div>
@@ -164,19 +199,17 @@ const Orders = () => {
                                 <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>
                                     {(order.customerNameSnapshot || 'N')[0]}
                                 </div>
-                                {order.customerNameSnapshot || '匿名客戶'}
+                                {order.customerNameSnapshot || t('orders.anonymous_customer')}
                             </div>
                             <div style={{ fontWeight: 700 }}>{tenantConfig.currency}{order.finalAmount?.toLocaleString()}</div>
                             <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(order.createdAt).toLocaleString()}</div>
                             <div>
-                                <StatusBadge status={order.status} />
+                                <StatusBadge status={order.status} t={t} />
                             </div>
                             <div style={{ textAlign: 'right' }}>
-                                <button 
+                                <button
                                     onClick={() => setSelectedOrder(order)}
-                                    style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', transition: 'color 0.2s' }}
-                                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary-light)'}
-                                    onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                                    style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
                                 >
                                     <Eye size={18} />
                                 </button>
@@ -188,88 +221,76 @@ const Orders = () => {
 
             {/* Order Detail Modal */}
             {selectedOrder && (
-                <div 
-                    style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', backdropFilter: 'blur(4px)' }} 
+                <div
+                    style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', backdropFilter: 'blur(4px)' }}
                     onClick={() => setSelectedOrder(null)}
                 >
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        className="glass-panel" 
-                        style={{ width: '100%', maxWidth: '600px', maxHeight: '85vh', overflow: 'hidden', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}
+                        className="glass-panel"
+                        style={{ width: '100%', maxWidth: '600px', maxHeight: '85vh', overflow: 'hidden', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
                         onClick={e => e.stopPropagation()}
                     >
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>
                             <div>
-                                <h3 style={{ fontSize: '1.2rem', marginBottom: '0.2rem' }}>訂單詳情 #{selectedOrder.orderNo}</h3>
+                                <h3 style={{ fontSize: '1.2rem', marginBottom: '0.2rem' }}>{t('orders.details_title')} #{selectedOrder.orderNo}</h3>
                                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{new Date(selectedOrder.createdAt).toLocaleString()}</p>
                             </div>
-                            <button 
-                                onClick={() => setSelectedOrder(null)}
-                                style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'white', cursor: 'pointer', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                            >
+                            <button onClick={() => setSelectedOrder(null)} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer' }}>
                                 <XCircle size={20} />
                             </button>
                         </div>
 
                         <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 1fr', gap: '1rem', color: 'var(--text-muted)', fontSize: '0.85rem', paddingBottom: '0.5rem' }}>
-                                <div>產品名稱</div>
-                                <div style={{ textAlign: 'center' }}>單價</div>
-                                <div style={{ textAlign: 'center' }}>數量</div>
-                                <div style={{ textAlign: 'right' }}>小計</div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 1fr', gap: '1rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                                <div>{t('orders.product_name')}</div>
+                                <div style={{ textAlign: 'center' }}>{t('orders.unit_price')}</div>
+                                <div style={{ textAlign: 'center' }}>{t('orders.quantity')}</div>
+                                <div style={{ textAlign: 'right' }}>{t('orders.subtotal')}</div>
                             </div>
-                                {selectedOrder.items?.map((item, idx) => {
-                                    const unitPrice = item.price ?? item.priceSnapshot ?? item.unitPrice ?? 0;
-                                    const subtotal = item.subtotal ?? (unitPrice * (item.qty || 0));
-                                    
-                                    return (
-                                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 1fr', gap: '1rem', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.8rem' }}>
-                                            <div style={{ fontSize: '0.95rem' }}>
-                                                {item.nameSnapshot}
-                                                {item.variantNameSnapshot && <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{item.variantNameSnapshot}</span>}
-                                            </div>
-                                            <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>{tenantConfig.currency}{unitPrice.toLocaleString()}</div>
-                                            <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>{item.qty}</div>
-                                            <div style={{ textAlign: 'right', fontWeight: 600 }}>{tenantConfig.currency}{subtotal.toLocaleString()}</div>
-                                        </div>
-                                    );
-                                })}
+                            {selectedOrder.items?.map((item, idx) => (
+                                <div key={idx} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 1fr', gap: '1rem', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.8rem' }}>
+                                    <div style={{ fontSize: '0.95rem' }}>{item.nameSnapshot}</div>
+                                    <div style={{ textAlign: 'center' }}>{tenantConfig.currency}{(item.priceSnapshot || 0).toLocaleString()}</div>
+                                    <div style={{ textAlign: 'center' }}>{item.qty}</div>
+                                    <div style={{ textAlign: 'right' }}>{tenantConfig.currency}{(item.subtotal || 0).toLocaleString()}</div>
+                                </div>
+                            ))}
                         </div>
 
-                        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-                                <span>小計</span>
+                                <span>{t('orders.subtotal')}</span>
                                 <span>{tenantConfig.currency}{(selectedOrder.totalAmount || 0).toLocaleString()}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f87171' }}>
-                                <span>折扣</span>
+                                <span>{t('orders.discount')}</span>
                                 <span>-{tenantConfig.currency}{(selectedOrder.discountAmount || 0).toLocaleString()}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 700, marginTop: '0.5rem', color: 'white' }}>
-                                <span>實收金額</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 700, marginTop: '0.5rem' }}>
+                                <span>{t('orders.final_amount')}</span>
                                 <span style={{ color: 'var(--primary-light)' }}>{tenantConfig.currency}{(selectedOrder.finalAmount || 0).toLocaleString()}</span>
                             </div>
                         </div>
-                        
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
-                            <button onClick={() => setSelectedOrder(null)} className="btn-secondary" style={{ padding: '0.6rem 2rem' }}>關閉</button>
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <button onClick={() => setSelectedOrder(null)} className="btn-secondary">{t('orders.close')}</button>
                         </div>
                     </motion.div>
                 </div>
             )}
-
         </motion.div>
     );
 };
 
-const StatusBadge = ({ status }) => {
+const StatusBadge = ({ status, t }) => {
     const configs = {
-        paid: { color: '#4ade80', icon: CheckCircle, text: '已支付' },
-        pending: { color: '#fbbf24', icon: Clock, text: '待處理' },
-        cancelled: { color: '#f87171', icon: XCircle, text: '已取消' }
+        paid: { color: '#4ade80', icon: CheckCircle, text: t('orders.status_paid') },
+        pending: { color: '#fbbf24', icon: Clock, text: t('orders.status_pending') },
+        cancelled: { color: '#f87171', icon: XCircle, text: t('orders.status_cancelled') }
     };
-    const config = configs[status];
+    const config = configs[status] || configs.pending;
     const Icon = config.icon;
 
     return (

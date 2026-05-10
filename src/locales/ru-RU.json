@@ -436,6 +436,37 @@
       "adjust_fail": "Ошибка корректировки"
     }
   },
+  "orders": {
+    "title": "Управление заказами",
+    "export_summary": "Экспорт сводки",
+    "export_details": "Экспорт деталей",
+    "status_all": "Все заказы",
+    "status_paid": "Оплачено",
+    "status_pending": "В ожидании",
+    "status_cancelled": "Отменено",
+    "no_data": "Нет данных",
+    "loading": "Загрузка...",
+    "error_fetch": "Ошибка при загрузке списка заказов",
+    "error_server": "Ошибка соединения с сервером",
+    "error_export": "Ошибка экспорта",
+    "backdate_label": "Оформить задним числом",
+    "anonymous_customer": "Анонимный клиент",
+    "details_title": "Детали заказа",
+    "product_name": "Название товара",
+    "unit_price": "Цена за единицу",
+    "quantity": "Количество",
+    "subtotal": "Подытог",
+    "discount": "Скидка",
+    "final_amount": "Итоговая сумма",
+    "close": "Закрыть",
+    "csv_headers": {
+      "id": "ID заказа",
+      "no": "Номер заказа",
+      "time": "Время создания",
+      "cost": "Себестоимость",
+      "status": "Статус"
+    }
+  },
   "dashboard": {
     "title": "Операционный обзор",
     "total_tenants": "Всего арендаторов",

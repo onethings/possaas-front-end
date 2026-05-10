@@ -436,6 +436,37 @@
       "adjust_fail": "Rettifica fallita"
     }
   },
+  "orders": {
+    "title": "Gestione Ordini",
+    "export_summary": "Esporta Riepilogo",
+    "export_details": "Esporta Dettagli",
+    "status_all": "Tutti gli ordini",
+    "status_paid": "Pagato",
+    "status_pending": "In attesa",
+    "status_cancelled": "Annullato",
+    "no_data": "Nessun dato disponibile",
+    "loading": "Caricamento...",
+    "error_fetch": "Impossibile caricare l'elenco degli ordini",
+    "error_server": "Connessione al server fallita",
+    "error_export": "Esportazione fallita",
+    "backdate_label": "Ordine retroattivo",
+    "anonymous_customer": "Cliente anonimo",
+    "details_title": "Dettagli Ordine",
+    "product_name": "Nome prodotto",
+    "unit_price": "Prezzo unitario",
+    "quantity": "Quantità",
+    "subtotal": "Subtotale",
+    "discount": "Sconto",
+    "final_amount": "Importo finale",
+    "close": "Chiudi",
+    "csv_headers": {
+      "id": "ID Ordine",
+      "no": "N. Ordine",
+      "time": "Data creazione",
+      "cost": "Costo",
+      "status": "Stato"
+    }
+  },
   "dashboard": {
     "title": "Panoramica Operazioni",
     "total_tenants": "Totale Tenant",

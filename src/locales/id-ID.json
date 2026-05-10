@@ -436,6 +436,37 @@
       "adjust_fail": "Gagal menyesuaikan"
     }
   },
+  "orders": {
+    "title": "Manajemen Pesanan",
+    "export_summary": "Ekspor Ringkasan",
+    "export_details": "Ekspor Rincian",
+    "status_all": "Semua Pesanan",
+    "status_paid": "Dibayar",
+    "status_pending": "Menunggu",
+    "status_cancelled": "Dibatalkan",
+    "no_data": "Tidak ada data",
+    "loading": "Memuat...",
+    "error_fetch": "Gagal mengambil daftar pesanan",
+    "error_server": "Koneksi server gagal",
+    "error_export": "Ekspor gagal",
+    "backdate_label": "Pesanan Susulan",
+    "anonymous_customer": "Pelanggan Anonim",
+    "details_title": "Rincian Pesanan",
+    "product_name": "Nama Produk",
+    "unit_price": "Harga Satuan",
+    "quantity": "Jumlah",
+    "subtotal": "Subtotal",
+    "discount": "Diskon",
+    "final_amount": "Total Pembayaran",
+    "close": "Tutup",
+    "csv_headers": {
+      "id": "ID Pesanan",
+      "no": "Nomor Pesanan",
+      "time": "Waktu Dibuat",
+      "cost": "Modal",
+      "status": "Status"
+    }
+  },
   "dashboard": {
     "title": "Ringkasan Operasional",
     "total_tenants": "Total Tenant",

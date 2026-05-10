@@ -435,6 +435,36 @@
     "alerts": {
       "adjust_fail": "Điều chỉnh thất bại"
     }
+  },"orders": {
+    "title": "Quản lý đơn hàng",
+    "export_summary": "Xuất bảng tổng hợp",
+    "export_details": "Xuất chi tiết",
+    "status_all": "Tất cả đơn hàng",
+    "status_paid": "Đã thanh toán",
+    "status_pending": "Đang xử lý",
+    "status_cancelled": "Đã hủy",
+    "no_data": "Hiện không có dữ liệu",
+    "loading": "Đang tải...",
+    "error_fetch": "Không thể tải danh sách đơn hàng",
+    "error_server": "Kết nối máy chủ thất bại",
+    "error_export": "Xuất tệp thất bại",
+    "backdate_label": "Bổ sung đơn hàng",
+    "anonymous_customer": "Khách hàng ẩn danh",
+    "details_title": "Chi tiết đơn hàng",
+    "product_name": "Tên sản phẩm",
+    "unit_price": "Đơn giá",
+    "quantity": "Số lượng",
+    "subtotal": "Tạm tính",
+    "discount": "Chiết khấu",
+    "final_amount": "Số tiền thực nhận",
+    "close": "Đóng",
+    "csv_headers": {
+      "id": "ID đơn hàng",
+      "no": "Mã đơn hàng",
+      "time": "Thời gian tạo",
+      "cost": "Giá vốn",
+      "status": "Trạng thái"
+    }
   },
   "dashboard": {
     "title": "Tổng quan vận hành",

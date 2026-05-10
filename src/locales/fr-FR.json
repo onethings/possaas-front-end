@@ -436,6 +436,37 @@
       "adjust_fail": "Échec de l'ajustement"
     }
   },
+  "orders": {
+    "title": "Gestion des Commandes",
+    "export_summary": "Exporter le résumé",
+    "export_details": "Exporter les détails",
+    "status_all": "Toutes les commandes",
+    "status_paid": "Payée",
+    "status_pending": "En attente",
+    "status_cancelled": "Annulée",
+    "no_data": "Aucune donnée disponible",
+    "loading": "Chargement...",
+    "error_fetch": "Impossible de charger la liste des commandes",
+    "error_server": "Échec de la connexion au serveur",
+    "error_export": "Échec de l'exportation",
+    "backdate_label": "Commande rétroactive",
+    "anonymous_customer": "Client anonyme",
+    "details_title": "Détails de la commande",
+    "product_name": "Nom du produit",
+    "unit_price": "Prix unitaire",
+    "quantity": "Quantité",
+    "subtotal": "Sous-total",
+    "discount": "Remise",
+    "final_amount": "Montant net",
+    "close": "Fermer",
+    "csv_headers": {
+      "id": "ID Commande",
+      "no": "N° de commande",
+      "time": "Date de création",
+      "cost": "Coût",
+      "status": "Statut"
+    }
+  },
   "dashboard": {
     "title": "Aperçu de l'activité",
     "total_tenants": "Total locataires",

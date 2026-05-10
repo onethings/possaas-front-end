@@ -436,6 +436,37 @@
       "adjust_fail": "조정 실패"
     }
   },
+  "orders": {
+    "title": "주문 관리",
+    "export_summary": "요약 내보내기",
+    "export_details": "상세 내보내기",
+    "status_all": "전체 주문",
+    "status_paid": "결제 완료",
+    "status_pending": "처리 대기",
+    "status_cancelled": "주문 취소",
+    "no_data": "데이터가 없습니다",
+    "loading": "로딩 중...",
+    "error_fetch": "주문 목록을 불러올 수 없습니다",
+    "error_server": "서버 연결 실패",
+    "error_export": "내보내기 실패",
+    "backdate_label": "임의 주문 생성",
+    "anonymous_customer": "익명 고객",
+    "details_title": "주문 상세 정보",
+    "product_name": "상품명",
+    "unit_price": "단가",
+    "quantity": "수량",
+    "subtotal": "소계",
+    "discount": "할인",
+    "final_amount": "실결제 금액",
+    "close": "닫기",
+    "csv_headers": {
+      "id": "주문 ID",
+      "no": "주문 번호",
+      "time": "생성 일시",
+      "cost": "원가",
+      "status": "상태"
+    }
+  },
   "dashboard": {
     "title": "운영 요약",
     "total_tenants": "총 테넌트",

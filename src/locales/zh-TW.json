@@ -436,6 +436,37 @@
       "adjust_fail": "調整失敗"
     }
   },
+  "orders": {
+    "title": "訂單管理",
+    "export_summary": "匯出總表",
+    "export_details": "匯出明細",
+    "status_all": "全部訂單",
+    "status_paid": "已支付",
+    "status_pending": "待處理",
+    "status_cancelled": "已取消",
+    "no_data": "目前無資料",
+    "loading": "讀取中...",
+    "error_fetch": "無法讀取訂單列表",
+    "error_server": "伺服器連線失敗",
+    "error_export": "匯出失敗",
+    "backdate_label": "補單",
+    "anonymous_customer": "匿名客戶",
+    "details_title": "訂單詳情",
+    "product_name": "產品名稱",
+    "unit_price": "單價",
+    "quantity": "數量",
+    "subtotal": "小計",
+    "discount": "折扣",
+    "final_amount": "實收金額",
+    "close": "關閉",
+    "csv_headers": {
+      "id": "訂單ID",
+      "no": "訂單編號",
+      "time": "建立時間",
+      "cost": "成本",
+      "status": "狀態"
+    }
+  },
   "dashboard": {
     "title": "營運概覽",
     "total_tenants": "總租戶數",

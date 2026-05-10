@@ -436,6 +436,37 @@
       "adjust_fail": "Adjustment Failed"
     }
   },
+  "orders": {
+    "title": "Order Management",
+    "export_summary": "Export Summary",
+    "export_details": "Export Details",
+    "status_all": "All Orders",
+    "status_paid": "Paid",
+    "status_pending": "Pending",
+    "status_cancelled": "Cancelled",
+    "no_data": "No data available",
+    "loading": "Loading...",
+    "error_fetch": "Failed to load order list",
+    "error_server": "Server connection failed",
+    "error_export": "Export failed",
+    "backdate_label": "Backdate Order",
+    "anonymous_customer": "Anonymous Customer",
+    "details_title": "Order Details",
+    "product_name": "Product Name",
+    "unit_price": "Unit Price",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "final_amount": "Final Amount",
+    "close": "Close",
+    "csv_headers": {
+      "id": "Order ID",
+      "no": "Order No.",
+      "time": "Creation Time",
+      "cost": "Cost",
+      "status": "Status"
+    }
+  },
   "dashboard": {
     "title": "Operational Overview",
     "total_tenants": "Total Tenants",

@@ -436,6 +436,37 @@
       "adjust_fail": "Anpassung fehlgeschlagen"
     }
   },
+  "orders": {
+    "title": "Bestellungsverwaltung",
+    "export_summary": "Zusammenfassung exportieren",
+    "export_details": "Details exportieren",
+    "status_all": "Alle Bestellungen",
+    "status_paid": "Bezahlt",
+    "status_pending": "Ausstehend",
+    "status_cancelled": "Storniert",
+    "no_data": "Keine Daten verfügbar",
+    "loading": "Laden...",
+    "error_fetch": "Bestellliste konnte nicht geladen werden",
+    "error_server": "Serververbindung fehlgeschlagen",
+    "error_export": "Export fehlgeschlagen",
+    "backdate_label": "Nachdatieren",
+    "anonymous_customer": "Anonymer Kunde",
+    "details_title": "Bestelldetails",
+    "product_name": "Produktname",
+    "unit_price": "Einzelpreis",
+    "quantity": "Anzahl",
+    "subtotal": "Zwischensumme",
+    "discount": "Rabatt",
+    "final_amount": "Endbetrag",
+    "close": "Schließen",
+    "csv_headers": {
+      "id": "Bestell-ID",
+      "no": "Bestellnummer",
+      "time": "Erstellungszeitpunkt",
+      "cost": "Kosten",
+      "status": "Status"
+    }
+  },
   "dashboard": {
     "title": "Betriebsübersicht",
     "total_tenants": "Gesamt Mandanten",

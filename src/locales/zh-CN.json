@@ -436,6 +436,37 @@
       "adjust_fail": "调整失败"
     }
   },
+  "orders": {
+    "title": "订单管理",
+    "export_summary": "导出总表",
+    "export_details": "导出明细",
+    "status_all": "全部订单",
+    "status_paid": "已支付",
+    "status_pending": "待处理",
+    "status_cancelled": "已取消",
+    "no_data": "暂无数据",
+    "loading": "加载中...",
+    "error_fetch": "无法获取订单列表",
+    "error_server": "服务器连接失败",
+    "error_export": "导出失败",
+    "backdate_label": "补单",
+    "anonymous_customer": "匿名客户",
+    "details_title": "订单详情",
+    "product_name": "产品名称",
+    "unit_price": "单价",
+    "quantity": "数量",
+    "subtotal": "小计",
+    "discount": "折扣",
+    "final_amount": "实收金额",
+    "close": "关闭",
+    "csv_headers": {
+      "id": "订单ID",
+      "no": "订单编号",
+      "time": "创建时间",
+      "cost": "成本",
+      "status": "状态"
+    }
+  },
   "dashboard": {
     "title": "运营概览",
     "total_tenants": "总租户数",

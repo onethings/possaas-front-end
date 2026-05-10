@@ -436,6 +436,37 @@
       "adjust_fail": "समायोजन विफल रहा"
     }
   },
+  "orders": {
+    "title": "ऑर्डर प्रबंधन",
+    "export_summary": "सारांश निर्यात करें",
+    "export_details": "विवरण निर्यात करें",
+    "status_all": "सभी ऑर्डर",
+    "status_paid": "भुगतान किया गया",
+    "status_pending": "लंबित",
+    "status_cancelled": "रद्द",
+    "no_data": "कोई डेटा उपलब्ध नहीं है",
+    "loading": "लोड हो रहा है...",
+    "error_fetch": "ऑर्डर सूची प्राप्त करने में विफल",
+    "error_server": "सर्वर कनेक्शन विफल",
+    "error_export": "निर्यात विफल रहा",
+    "backdate_label": "पिछली तारीख का ऑर्डर",
+    "anonymous_customer": "अनाम ग्राहक",
+    "details_title": "ऑर्डर विवरण",
+    "product_name": "उत्पाद का नाम",
+    "unit_price": "इकाई मूल्य",
+    "quantity": "मात्रा",
+    "subtotal": "उप-योग",
+    "discount": "छूट",
+    "final_amount": "अंतिम राशि",
+    "close": "बंद करें",
+    "csv_headers": {
+      "id": "ऑर्डर आईडी",
+      "no": "ऑर्डर संख्या",
+      "time": "बनने का समय",
+      "cost": "लागत",
+      "status": "स्थिति"
+    }
+  },
   "dashboard": {
     "title": "संचालन अवलोकन",
     "total_tenants": "कुल किरायदार (Tenants)",

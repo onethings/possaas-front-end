@@ -436,6 +436,37 @@
       "adjust_fail": "Falha no ajuste"
     }
   },
+  "orders": {
+    "title": "Gestão de Encomendas",
+    "export_summary": "Exportar Resumo",
+    "export_details": "Exportar Detalhes",
+    "status_all": "Todas as Encomendas",
+    "status_paid": "Pago",
+    "status_pending": "Pendente",
+    "status_cancelled": "Cancelado",
+    "no_data": "Sem dados disponíveis",
+    "loading": "A carregar...",
+    "error_fetch": "Não foi possível carregar a lista de encomendas",
+    "error_server": "Falha na ligação ao servidor",
+    "error_export": "Falha na exportação",
+    "backdate_label": "Retroativo",
+    "anonymous_customer": "Cliente Anónimo",
+    "details_title": "Detalhes da Encomenda",
+    "product_name": "Nome do Produto",
+    "unit_price": "Preço Unitário",
+    "quantity": "Quantidade",
+    "subtotal": "Subtotal",
+    "discount": "Desconto",
+    "final_amount": "Valor Final",
+    "close": "Fechar",
+    "csv_headers": {
+      "id": "ID da Encomenda",
+      "no": "Nº da Encomenda",
+      "time": "Data de Criação",
+      "cost": "Custo",
+      "status": "Estado"
+    }
+  },
   "dashboard": {
     "title": "Resumo Operacional",
     "total_tenants": "Total de Tenants",

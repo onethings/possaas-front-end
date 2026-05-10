@@ -436,6 +436,37 @@
       "adjust_fail": "Error al ajustar"
     }
   },
+  "orders": {
+    "title": "Gestión de Pedidos",
+    "export_summary": "Exportar resumen",
+    "export_details": "Exportar detalles",
+    "status_all": "Todos los pedidos",
+    "status_paid": "Pagado",
+    "status_pending": "Pendiente",
+    "status_cancelled": "Cancelado",
+    "no_data": "No hay datos disponibles",
+    "loading": "Cargando...",
+    "error_fetch": "Error al obtener la lista de pedidos",
+    "error_server": "Error de conexión con el servidor",
+    "error_export": "Error al exportar",
+    "backdate_label": "Pedido retroactivo",
+    "anonymous_customer": "Cliente anónimo",
+    "details_title": "Detalles del pedido",
+    "product_name": "Nombre del producto",
+    "unit_price": "Precio unitario",
+    "quantity": "Cantidad",
+    "subtotal": "Subtotal",
+    "discount": "Descuento",
+    "final_amount": "Importe final",
+    "close": "Cerrar",
+    "csv_headers": {
+      "id": "ID de pedido",
+      "no": "N.º de pedido",
+      "time": "Fecha de creación",
+      "cost": "Coste",
+      "status": "Estado"
+    }
+  },
   "dashboard": {
     "title": "Resumen de operaciones",
     "total_tenants": "Total de inquilinos",

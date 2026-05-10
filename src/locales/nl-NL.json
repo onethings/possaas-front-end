@@ -436,6 +436,37 @@
       "adjust_fail": "Correctie mislukt"
     }
   },
+  "orders": {
+    "title": "Orderbeheer",
+    "export_summary": "Overzicht exporteren",
+    "export_details": "Details exporteren",
+    "status_all": "Alle bestellingen",
+    "status_paid": "Betaald",
+    "status_pending": "In afwachting",
+    "status_cancelled": "Geannuleerd",
+    "no_data": "Geen gegevens beschikbaar",
+    "loading": "Laden...",
+    "error_fetch": "Fout bij het ophalen van de orderlijst",
+    "error_server": "Serververbinding mislukt",
+    "error_export": "Exporteren mislukt",
+    "backdate_label": "Met terugwerkende kracht",
+    "anonymous_customer": "Anonieme klant",
+    "details_title": "Orderdetails",
+    "product_name": "Productnaam",
+    "unit_price": "Eenheidsprijs",
+    "quantity": "Aantal",
+    "subtotal": "Subtotaal",
+    "discount": "Korting",
+    "final_amount": "Eindbedrag",
+    "close": "Sluiten",
+    "csv_headers": {
+      "id": "Order-ID",
+      "no": "Ordernummer",
+      "time": "Aanmaaktijd",
+      "cost": "Kosten",
+      "status": "Status"
+    }
+  },
   "dashboard": {
     "title": "Operationeel Overzicht",
     "total_tenants": "Totaal Tenants",

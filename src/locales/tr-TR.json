@@ -436,6 +436,37 @@
       "adjust_fail": "Düzenleme başarısız"
     }
   },
+  "orders": {
+    "title": "Sipariş Yönetimi",
+    "export_summary": "Özeti Dışa Aktar",
+    "export_details": "Detayları Dışa Aktar",
+    "status_all": "Tüm Siparişler",
+    "status_paid": "Ödendi",
+    "status_pending": "Beklemede",
+    "status_cancelled": "İptal Edildi",
+    "no_data": "Veri bulunmuyor",
+    "loading": "Yükleniyor...",
+    "error_fetch": "Sipariş listesi alınamadı",
+    "error_server": "Sunucu bağlantısı hatası",
+    "error_export": "Dışa aktarma başarısız",
+    "backdate_label": "Geriye Dönük Sipariş",
+    "anonymous_customer": "Anonim Müşteri",
+    "details_title": "Sipariş Detayları",
+    "product_name": "Ürün Adı",
+    "unit_price": "Birim Fiyat",
+    "quantity": "Adet",
+    "subtotal": "Ara Toplam",
+    "discount": "İndirim",
+    "final_amount": "Net Tutar",
+    "close": "Kapat",
+    "csv_headers": {
+      "id": "Sipariş ID",
+      "no": "Sipariş No",
+      "time": "Oluşturma Zamanı",
+      "cost": "Maliyet",
+      "status": "Durum"
+    }
+  },
   "dashboard": {
     "title": "Operasyonel Özet",
     "total_tenants": "Toplam Tenant",

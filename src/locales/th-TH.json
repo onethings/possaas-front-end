@@ -436,6 +436,37 @@
       "adjust_fail": "การปรับปรุงล้มเหลว"
     }
   },
+  "orders": {
+    "title": "จัดการคำสั่งซื้อ",
+    "export_summary": "ส่งออกตารางสรุป",
+    "export_details": "ส่งออกรายละเอียด",
+    "status_all": "คำสั่งซื้อทั้งหมด",
+    "status_paid": "ชำระเงินแล้ว",
+    "status_pending": "รอดำเนินการ",
+    "status_cancelled": "ยกเลิกแล้ว",
+    "no_data": "ไม่มีข้อมูลในขณะนี้",
+    "loading": "กำลังโหลด...",
+    "error_fetch": "ไม่สามารถโหลดรายการคำสั่งซื้อได้",
+    "error_server": "การเชื่อมต่อเซิร์ฟเวอร์ล้มเหลว",
+    "error_export": "ส่งออกข้อมูลล้มเหลว",
+    "backdate_label": "บันทึกย้อนหลัง",
+    "anonymous_customer": "ลูกค้าทั่วไป",
+    "details_title": "รายละเอียดคำสั่งซื้อ",
+    "product_name": "ชื่อสินค้า",
+    "unit_price": "ราคาต่อหน่วย",
+    "quantity": "จำนวน",
+    "subtotal": "ยอดรวมย่อย",
+    "discount": "ส่วนลด",
+    "final_amount": "ยอดชำระจริง",
+    "close": "ปิด",
+    "csv_headers": {
+      "id": "ไอดีคำสั่งซื้อ",
+      "no": "เลขที่คำสั่งซื้อ",
+      "time": "เวลาที่สร้าง",
+      "cost": "ต้นทุน",
+      "status": "สถานะ"
+    }
+  },
   "dashboard": {
     "title": "สรุปการดำเนินงาน",
     "total_tenants": "จำนวนผู้ใช้งานทั้งหมด",

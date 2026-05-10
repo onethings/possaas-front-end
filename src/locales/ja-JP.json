@@ -436,6 +436,37 @@
       "adjust_fail": "調整に失敗しました"
     }
   },
+  "orders": {
+    "title": "注文管理",
+    "export_summary": "集計エクスポート",
+    "export_details": "明細エクスポート",
+    "status_all": "すべての注文",
+    "status_paid": "支払い済み",
+    "status_pending": "保留中",
+    "status_cancelled": "キャンセル済み",
+    "no_data": "データがありません",
+    "loading": "読み込み中...",
+    "error_fetch": "注文リストを取得できません",
+    "error_server": "サーバー接続エラー",
+    "error_export": "エクスポートに失敗しました",
+    "backdate_label": "過去日付注文",
+    "anonymous_customer": "匿名顧客",
+    "details_title": "注文詳細",
+    "product_name": "商品名",
+    "unit_price": "単価",
+    "quantity": "数量",
+    "subtotal": "小計",
+    "discount": "割引",
+    "final_amount": "実質請求額",
+    "close": "閉じる",
+    "csv_headers": {
+      "id": "注文ID",
+      "no": "注文番号",
+      "time": "作成日時",
+      "cost": "原価",
+      "status": "ステータス"
+    }
+  },
   "dashboard": {
     "title": "運営概要",
     "total_tenants": "総テナント数",
