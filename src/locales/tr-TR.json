@@ -460,6 +460,8 @@
     "discount": "İndirim",
     "final_amount": "Net Tutar",
     "close": "Kapat",
+    "return_btn": "İade Et",
+    "confirm_return_msg": "Bu ürünü iade etmek istediğinizden emin misiniz?",
     "csv_headers": {
       "id": "Sipariş ID",
       "no": "Sipariş No",

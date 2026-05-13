@@ -462,6 +462,8 @@
     "discount": "折扣",
     "final_amount": "實收金額",
     "close": "關閉",
+    "return_btn": "退貨",
+    "confirm_return_msg": "您確定要退回此商品嗎？",
     "csv_headers": {
       "id": "訂單ID",
       "no": "訂單編號",

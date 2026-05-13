@@ -460,6 +460,8 @@
     "discount": "Korting",
     "final_amount": "Eindbedrag",
     "close": "Sluiten",
+    "return_btn": "Retourneren",
+    "confirm_return_msg": "Weet je zeker dat je dit artikel wilt retourneren?",
     "csv_headers": {
       "id": "Order-ID",
       "no": "Ordernummer",

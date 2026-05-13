@@ -460,6 +460,8 @@
     "discount": "Sconto",
     "final_amount": "Importo finale",
     "close": "Chiudi",
+    "return_btn": "Restituisci",
+    "confirm_return_msg": "Sei sicuro di voler restituire questo articolo?",
     "csv_headers": {
       "id": "ID Ordine",
       "no": "N. Ordine",

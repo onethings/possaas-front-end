@@ -460,6 +460,8 @@
     "discount": "折扣",
     "final_amount": "实收金额",
     "close": "关闭",
+    "return_btn": "退货",
+    "confirm_return_msg": "您确定要退回此商品吗？",
     "csv_headers": {
       "id": "订单ID",
       "no": "订单编号",

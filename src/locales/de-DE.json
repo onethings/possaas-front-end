@@ -460,6 +460,8 @@
     "discount": "Rabatt",
     "final_amount": "Endbetrag",
     "close": "Schließen",
+    "return_btn": "Rückgabe",
+    "confirm_return_msg": "Sind Sie sicher, dass Sie diesen Artikel zurückgeben möchten?",
     "csv_headers": {
       "id": "Bestell-ID",
       "no": "Bestellnummer",

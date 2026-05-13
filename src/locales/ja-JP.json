@@ -460,6 +460,8 @@
     "discount": "割引",
     "final_amount": "実質請求額",
     "close": "閉じる",
+    "return_btn": "返品する",
+    "confirm_return_msg": "この商品を返品してもよろしいですか？",
     "csv_headers": {
       "id": "注文ID",
       "no": "注文番号",

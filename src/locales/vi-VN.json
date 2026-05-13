@@ -459,6 +459,8 @@
     "discount": "Chiết khấu",
     "final_amount": "Số tiền thực nhận",
     "close": "Đóng",
+    "return_btn": "Trả hàng",
+    "confirm_return_msg": "Bạn có chắc chắn muốn trả lại mặt hàng này không?",
     "csv_headers": {
       "id": "ID đơn hàng",
       "no": "Mã đơn hàng",

@@ -460,6 +460,8 @@
     "discount": "Discount",
     "final_amount": "Final Amount",
     "close": "Close",
+    "return_btn": "Return",
+    "confirm_return_msg": "Are you sure you want to return this item?",
     "csv_headers": {
       "id": "Order ID",
       "no": "Order No.",

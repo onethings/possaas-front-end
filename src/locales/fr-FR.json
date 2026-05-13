@@ -460,6 +460,8 @@
     "discount": "Remise",
     "final_amount": "Montant net",
     "close": "Fermer",
+    "return_btn": "Retourner",
+    "confirm_return_msg": "Êtes-vous sûr de vouloir retourner cet article ?",
     "csv_headers": {
       "id": "ID Commande",
       "no": "N° de commande",
