@@ -462,6 +462,7 @@
     "close": "Tutup",
     "return_btn": "Kembalikan",
     "confirm_return_msg": "Apakah Anda yakin ingin mengembalikan item ini?",
+    "return_success": "Produk berhasil dikembalikan",
     "csv_headers": {
       "id": "ID Pesanan",
       "no": "Nomor Pesanan",

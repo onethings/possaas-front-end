@@ -462,6 +462,7 @@
     "close": "Cerrar",
     "return_btn": "Devolver",
     "confirm_return_msg": "¿Estás seguro de que quieres devolver este artículo?",
+    "return_success": "Producto devuelto con éxito",
     "csv_headers": {
       "id": "ID de pedido",
       "no": "N.º de pedido",

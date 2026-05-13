@@ -462,6 +462,7 @@
     "close": "Schließen",
     "return_btn": "Rückgabe",
     "confirm_return_msg": "Sind Sie sicher, dass Sie diesen Artikel zurückgeben möchten?",
+    "return_success": "Artikel erfolgreich zurückgegeben",
     "csv_headers": {
       "id": "Bestell-ID",
       "no": "Bestellnummer",

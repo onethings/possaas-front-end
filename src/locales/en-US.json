@@ -462,6 +462,7 @@
     "close": "Close",
     "return_btn": "Return",
     "confirm_return_msg": "Are you sure you want to return this item?",
+    "return_success": "Item returned successfully",
     "csv_headers": {
       "id": "Order ID",
       "no": "Order No.",

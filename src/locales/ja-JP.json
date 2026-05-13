@@ -462,6 +462,7 @@
     "close": "閉じる",
     "return_btn": "返品する",
     "confirm_return_msg": "この商品を返品してもよろしいですか？",
+    "return_success": "商品の返品が完了しました",
     "csv_headers": {
       "id": "注文ID",
       "no": "注文番号",

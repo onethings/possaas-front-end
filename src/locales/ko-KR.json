@@ -462,6 +462,7 @@
     "close": "닫기",
     "return_btn": "반품하기",
     "confirm_return_msg": "이 상품을 정말 반품하시겠습니까?",
+    "return_success": "상품 반품이 완료되었습니다",
     "csv_headers": {
       "id": "주문 ID",
       "no": "주문 번호",

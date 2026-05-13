@@ -462,6 +462,7 @@
     "close": "Sluiten",
     "return_btn": "Retourneren",
     "confirm_return_msg": "Weet je zeker dat je dit artikel wilt retourneren?",
+    "return_success": "Product succesvol geretourneerd",
     "csv_headers": {
       "id": "Order-ID",
       "no": "Ordernummer",
