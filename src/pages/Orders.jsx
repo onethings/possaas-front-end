@@ -121,6 +121,14 @@ const Orders = () => {
         return orderDate >= start && orderDate <= end;
     };
 
+    // 判斷是否在 7 天退貨期限內
+    const isWithinReturnPeriod = (orderDateStr) => {
+        const orderDate = new Date(orderDateStr);
+        const now = new Date();
+        const diffDays = Math.floor((now - orderDate) / (1000 * 60 * 60 * 24));
+        return diffDays >= 0 && diffDays <= 7;
+    };
+
     useEffect(() => {
         fetchOrders();
     }, []);
@@ -295,7 +303,7 @@ const Orders = () => {
                                         <span>{tenantConfig.currency}{(item.subtotal || 0).toLocaleString()}</span>
 
                                         {/* 在金額後面加入退貨按鈕 */}
-                                        {selectedOrder.status === 'paid' && (
+                                        {selectedOrder.status === 'paid' && isWithinReturnPeriod(selectedOrder.createdAt) && (
                                             <button
                                                 onClick={() => handleReturn(selectedOrder.orderNo, item)}
                                                 style={{
@@ -346,11 +354,9 @@ const StatusBadge = ({ status, t }) => {
     const configs = {
         paid: { color: '#4ade80', icon: CheckCircle, text: t('orders.status_paid') },
         pending: { color: '#fbbf24', icon: Clock, text: t('orders.status_pending') },
-        cancelled: {
-            color: '#f87171', icon: XCircle, text: t('orders.status_cancelled'),
-            returned: { color: '#ef4444', icon: XCircle, text: t('orders.status_returned') },
-            partially_returned: { color: '#f97316', icon: Clock, text: t('orders.status_partially_returned') },
-        }
+        cancelled: { color: '#f87171', icon: XCircle, text: t('orders.status_cancelled') },
+        returned: { color: '#ef4444', icon: XCircle, text: t('orders.status_returned') },
+        partially_returned: { color: '#f97316', icon: Clock, text: t('orders.status_partially_returned') },
     };
     const config = configs[status] || configs.pending;
     const Icon = config.icon;
