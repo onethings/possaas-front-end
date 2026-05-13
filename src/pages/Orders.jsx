@@ -18,6 +18,34 @@ const Orders = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
+    const handleReturn = async (orderNo, item) => {
+        if (!window.confirm(t('orders.confirm_return_msg'))) return;
+
+        try {
+            setLoading(true);
+            // 注意：請確保你的 ../api/orders.js 有導出 processOrderReturn
+            const result = await processOrderReturn({
+                orderNo: orderNo,
+                itemsToReturn: [{
+                    productId: item.productId,
+                    qty: item.qty,
+                    nameSnapshot: item.nameSnapshot
+                }],
+                reason: "Web Dashboard Return"
+            });
+
+            if (result.success) {
+                alert(t('orders.return_success'));
+                fetchOrders(); // 重新整理列表
+                setSelectedOrder(null); // 關閉 Modal
+            }
+        } catch (err) {
+            alert(err.message || "Return failed");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleExport = async () => {
         setLoading(true);
         try {
@@ -53,7 +81,7 @@ const Orders = () => {
                 t('orders.subtotal'),
                 t('orders.csv_headers.status')
             ];
-            
+
             const rows = filteredOrders.flatMap(order =>
                 order.items.map(item => [
                     order._id,
@@ -96,6 +124,8 @@ const Orders = () => {
     useEffect(() => {
         fetchOrders();
     }, []);
+
+
 
     const fetchOrders = async () => {
         setLoading(true);
@@ -254,7 +284,35 @@ const Orders = () => {
                                     <div style={{ fontSize: '0.95rem' }}>{item.nameSnapshot}</div>
                                     <div style={{ textAlign: 'center' }}>{tenantConfig.currency}{(item.priceSnapshot || 0).toLocaleString()}</div>
                                     <div style={{ textAlign: 'center' }}>{item.qty}</div>
-                                    <div style={{ textAlign: 'right' }}>{tenantConfig.currency}{(item.subtotal || 0).toLocaleString()}</div>
+                                    <div style={{
+                                        textAlign: 'right',
+                                        display: 'flex',           // 使用 flex 讓金額和按鈕水平排列
+                                        alignItems: 'center',      // 垂直居中對齊
+                                        justifyContent: 'flex-end',// 靠右對齊
+                                        gap: '12px'                // 金額與按鈕之間的間距
+                                    }}>
+                                        {/* 顯示小計金額 */}
+                                        <span>{tenantConfig.currency}{(item.subtotal || 0).toLocaleString()}</span>
+
+                                        {/* 在金額後面加入退貨按鈕 */}
+                                        {selectedOrder.status === 'paid' && (
+                                            <button
+                                                onClick={() => handleReturn(selectedOrder.orderNo, item)}
+                                                style={{
+                                                    background: '#ef444420',
+                                                    color: '#ef4444',
+                                                    border: 'none',
+                                                    padding: '4px 8px',
+                                                    borderRadius: '4px',
+                                                    cursor: 'pointer',
+                                                    fontSize: '0.75rem',
+                                                    whiteSpace: 'nowrap'
+                                                }}
+                                            >
+                                                {t('orders.return_btn')}
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -288,7 +346,11 @@ const StatusBadge = ({ status, t }) => {
     const configs = {
         paid: { color: '#4ade80', icon: CheckCircle, text: t('orders.status_paid') },
         pending: { color: '#fbbf24', icon: Clock, text: t('orders.status_pending') },
-        cancelled: { color: '#f87171', icon: XCircle, text: t('orders.status_cancelled') }
+        cancelled: {
+            color: '#f87171', icon: XCircle, text: t('orders.status_cancelled'),
+            returned: { color: '#ef4444', icon: XCircle, text: t('orders.status_returned') },
+            partially_returned: { color: '#f97316', icon: Clock, text: t('orders.status_partially_returned') },
+        }
     };
     const config = configs[status] || configs.pending;
     const Icon = config.icon;
