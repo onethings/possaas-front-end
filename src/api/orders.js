@@ -14,6 +14,13 @@ export const trackOrder = async (orderNo) => {
     const response = await api.get(`/api/orders/track/${orderNo}`);
     return response.data;
 };
+
+// --- 新增退貨 API 函式 ---
+export const processOrderReturn = async (returnData) => {
+    const response = await api.post('/api/orders/return', returnData);
+    return response.data;
+};
+
 export const exportOrdersCSV = async (start, end) => {
     const response = await api.get('/api/csv/export/orders', { 
         params: { start, end },
