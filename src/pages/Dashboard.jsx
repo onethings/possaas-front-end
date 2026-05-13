@@ -44,7 +44,7 @@ const Dashboard = () => {
     const [summary, setSummary] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const { t } = useTranslation();
+
 
     useEffect(() => {
         fetchSummary();
