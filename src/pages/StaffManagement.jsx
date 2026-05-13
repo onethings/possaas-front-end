@@ -15,7 +15,7 @@ const StaffManagement = () => {
     const [submitting, setSubmitting] = useState(false);
     const [newStaff, setNewStaff] = useState({ username: '', name: '', password: '', level: 5 });
     const [editingId, setEditingId] = useState(null);
-    const { t } = useTranslation();
+   
 
     const roles = [
         { level: 1, name: t('staff.roles.level_1') },

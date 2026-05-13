@@ -41,7 +41,7 @@ const Products = () => {
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [isImportModalOpen, setImportModalOpen] = useState(false);
     const [csvFile, setCsvFile] = useState(null);
-    const { t } = useTranslation();
+
 
     const [newProduct, setNewProduct] = useState({
         name: '',

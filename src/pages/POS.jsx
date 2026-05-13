@@ -47,7 +47,6 @@ const POS = () => {
     const [showSuccess, setShowSuccess] = useState(false);
     const [viewMode, setViewMode] = useState(() => localStorage.getItem('posViewMode') || 'grid');
     const [orderDate, setOrderDate] = useState(new Date().toISOString().split('T')[0]);
-    const { t } = useTranslation();
     const CACHE_KEY_PRODUCTS = 'pos_cache_products';
     const CACHE_KEY_CATEGORIES = 'pos_cache_categories';
     const CACHE_TIME = 24 * 60 * 60 * 1000; // 24小時（毫秒）
