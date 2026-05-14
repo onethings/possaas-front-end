@@ -463,6 +463,8 @@
     "return_btn": "Retourner",
     "confirm_return_msg": "Êtes-vous sûr de vouloir retourner cet article ?",
     "return_success": "Produit retourné avec succès",
+    "status_returned": "Retourné",
+    "status_partially_returned": "Partiellement retourné",
     "csv_headers": {
       "id": "ID Commande",
       "no": "N° de commande",

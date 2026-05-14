@@ -463,6 +463,8 @@
     "return_btn": "Retourneren",
     "confirm_return_msg": "Weet je zeker dat je dit artikel wilt retourneren?",
     "return_success": "Product succesvol geretourneerd",
+    "status_returned": "Geretourneerd",
+    "status_partially_returned": "Gedeeltelijk geretourneerd",
     "csv_headers": {
       "id": "Order-ID",
       "no": "Ordernummer",

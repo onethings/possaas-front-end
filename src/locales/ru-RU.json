@@ -463,6 +463,8 @@
     "return_btn": "Вернуть товар",
     "confirm_return_msg": "Вы уверены, что хотите вернуть этот товар?",
     "return_success": "Товар успешно возвращен",
+    "status_returned": "Возвращено",
+    "status_partially_returned": "Частично возвращено",
     "csv_headers": {
       "id": "ID заказа",
       "no": "Номер заказа",

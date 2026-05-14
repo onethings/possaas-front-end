@@ -465,6 +465,8 @@
     "return_btn": "退貨",
     "confirm_return_msg": "您確定要退回此商品嗎？",
     "return_success":"商品退貨成功",
+    "status_returned": "已退貨",
+    "status_partially_returned": "部分退貨",
     "csv_headers": {
       "id": "訂單ID",
       "no": "訂單編號",

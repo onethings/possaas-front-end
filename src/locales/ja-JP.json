@@ -463,6 +463,8 @@
     "return_btn": "返品する",
     "confirm_return_msg": "この商品を返品してもよろしいですか？",
     "return_success": "商品の返品が完了しました",
+    "status_returned": "返品済み",
+    "status_partially_returned": "一部返品済み",
     "csv_headers": {
       "id": "注文ID",
       "no": "注文番号",

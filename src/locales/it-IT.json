@@ -463,6 +463,8 @@
     "return_btn": "Restituisci",
     "confirm_return_msg": "Sei sicuro di voler restituire questo articolo?",
     "return_success": "Prodotto restituito con successo",
+    "status_returned": "Restituito",
+    "status_partially_returned": "Parzialmente restituito",
     "csv_headers": {
       "id": "ID Ordine",
       "no": "N. Ordine",

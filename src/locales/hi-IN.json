@@ -463,6 +463,8 @@
     "return_btn": "वापस करें",
     "confirm_return_msg": "क्या आप वाकई इस आइटम को वापस करना चाहते हैं?",
     "return_success": "आइटम सफलतापूर्वक वापस कर दिया गया",
+    "status_returned": "लौटाया गया",
+    "status_partially_returned": "आंशिक रूप से लौटाया गया",
     "csv_headers": {
       "id": "ऑर्डर आईडी",
       "no": "ऑर्डर संख्या",

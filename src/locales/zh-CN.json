@@ -463,6 +463,8 @@
     "return_btn": "退货",
     "confirm_return_msg": "您确定要退回此商品吗？",
     "return_success": "商品退货成功",
+    "status_returned": "已退货",
+    "status_partially_returned": "部分退货",
     "csv_headers": {
       "id": "订单ID",
       "no": "订单编号",

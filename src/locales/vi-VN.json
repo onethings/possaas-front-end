@@ -462,6 +462,8 @@
     "return_btn": "Trả hàng",
     "confirm_return_msg": "Bạn có chắc chắn muốn trả lại mặt hàng này không?",
     "return_success": "Trả hàng thành công",
+    "status_returned": "Đã trả hàng",
+    "status_partially_returned": "Đã trả hàng một phần",
     "csv_headers": {
       "id": "ID đơn hàng",
       "no": "Mã đơn hàng",

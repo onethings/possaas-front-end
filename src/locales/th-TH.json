@@ -463,6 +463,8 @@
     "return_btn": "คืนสินค้า",
     "confirm_return_msg": "คุณแน่ใจหรือไม่ว่าต้องการคืนสินค้าชิ้นนี้?",
     "return_success": "คืนสินค้าสำเร็จแล้ว",
+    "status_returned": "คืนสินค้าแล้ว",
+    "status_partially_returned": "คืนสินค้าบางส่วน",
     "csv_headers": {
       "id": "ไอดีคำสั่งซื้อ",
       "no": "เลขที่คำสั่งซื้อ",

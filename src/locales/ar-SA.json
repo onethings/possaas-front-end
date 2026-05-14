@@ -463,6 +463,8 @@
     "return_btn": "إرجاع",
     "confirm_return_msg": "هل أنت متأكد من أنك تريد إرجاع هذا العنصر؟",
     "return_success": "تم إرجاع المنتج بنجاح",
+    "status_returned": "تم الإرجاع",
+    "status_partially_returned": "تم الإرجاع جزئياً",
     "csv_headers": {
       "id": "معرف الطلب",
       "no": "رقم الطلب",

@@ -463,6 +463,8 @@
     "return_btn": "Devolver",
     "confirm_return_msg": "¿Estás seguro de que quieres devolver este artículo?",
     "return_success": "Producto devuelto con éxito",
+    "status_returned": "Devuelto",
+    "status_partially_returned": "Parcialmente devuelto",
     "csv_headers": {
       "id": "ID de pedido",
       "no": "N.º de pedido",

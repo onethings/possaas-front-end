@@ -463,6 +463,8 @@
     "return_btn": "Rückgabe",
     "confirm_return_msg": "Sind Sie sicher, dass Sie diesen Artikel zurückgeben möchten?",
     "return_success": "Artikel erfolgreich zurückgegeben",
+    "status_returned": "Retouniert",
+    "status_partially_returned": "Teilweise retouniert",
     "csv_headers": {
       "id": "Bestell-ID",
       "no": "Bestellnummer",
