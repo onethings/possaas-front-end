@@ -125,7 +125,11 @@ const Orders = () => {
     const isWithinReturnPeriod = (orderDateStr) => {
         const orderDate = new Date(orderDateStr);
         const now = new Date();
-        const diffDays = Math.floor((now - orderDate) / (1000 * 60 * 60 * 24));
+        // 移除時間部分只比較日期，或使用毫秒轉換
+        const diffTime = now - orderDate;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+        // 確保訂單不是未來的時間，且在 7 天內
         return diffDays >= 0 && diffDays <= 7;
     };
 
@@ -218,42 +222,52 @@ const Orders = () => {
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171' }}>
                         {error}
                     </div>
-                ) : orders.filter(o => (activeTab === 'all' || o.status === activeTab) && filterDate(o)).length === 0 ? (
+                ) : orders.filter(o => {
+                    if (activeTab === 'all') return true;
+                    if (activeTab === 'paid') return ['paid', 'partially_returned', 'returned'].includes(o.status);
+                    return o.status === activeTab;
+                }).filter(filterDate).length === 0 ? (
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', padding: '3rem' }}>
                         {t('orders.no_data')}
                     </div>
                 ) : (
-                    orders.filter(o => (activeTab === 'all' || o.status === activeTab) && filterDate(o)).map(order => (
-                        <div key={order._id} className="glass-panel" style={{ padding: '1.2rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr 1fr 1fr 0.5fr', alignItems: 'center' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                                <div style={{ fontWeight: 600, color: 'var(--primary-light)' }}>#{order.orderNo}</div>
-                                {order.isBackdated && (
-                                    <span style={{ fontSize: '0.65rem', background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
-                                        {t('orders.backdate_label')}
-                                    </span>
-                                )}
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                                <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>
-                                    {(order.customerNameSnapshot || 'N')[0]}
+                    orders.filter(o => {
+                        if (activeTab === 'all') return true;
+                        if (activeTab === 'paid') return ['paid', 'partially_returned', 'returned'].includes(o.status);
+                        return o.status === activeTab;
+                    })
+                        .filter(filterDate)
+                        .map(order => (
+                            <div key={order._id} className="glass-panel" style={{ padding: '1.2rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr 1fr 1fr 0.5fr', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                    <div style={{ fontWeight: 600, color: 'var(--primary-light)' }}>#{order.orderNo}</div>
+                                    {order.isBackdated && (
+                                        <span style={{ fontSize: '0.65rem', background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
+                                            {t('orders.backdate_label')}
+                                        </span>
+                                    )}
                                 </div>
-                                {order.customerNameSnapshot || t('orders.anonymous_customer')}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>
+                                        {(order.customerNameSnapshot || 'N')[0]}
+                                    </div>
+                                    {order.customerNameSnapshot || t('orders.anonymous_customer')}
+                                </div>
+                                <div style={{ fontWeight: 700 }}>{tenantConfig.currency}{order.finalAmount?.toLocaleString()}</div>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(order.createdAt).toLocaleString()}</div>
+                                <div>
+                                    <StatusBadge status={order.status} t={t} />
+                                </div>
+                                <div style={{ textAlign: 'right' }}>
+                                    <button
+                                        onClick={() => setSelectedOrder(order)}
+                                        style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                                    >
+                                        <Eye size={18} />
+                                    </button>
+                                </div>
                             </div>
-                            <div style={{ fontWeight: 700 }}>{tenantConfig.currency}{order.finalAmount?.toLocaleString()}</div>
-                            <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(order.createdAt).toLocaleString()}</div>
-                            <div>
-                                <StatusBadge status={order.status} t={t} />
-                            </div>
-                            <div style={{ textAlign: 'right' }}>
-                                <button
-                                    onClick={() => setSelectedOrder(order)}
-                                    style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-                                >
-                                    <Eye size={18} />
-                                </button>
-                            </div>
-                        </div>
-                    ))
+                        ))
                 )}
             </div>
 
@@ -303,22 +317,30 @@ const Orders = () => {
                                         <span>{tenantConfig.currency}{(item.subtotal || 0).toLocaleString()}</span>
 
                                         {/* 在金額後面加入退貨按鈕 */}
-                                        {selectedOrder.status === 'paid' && isWithinReturnPeriod(selectedOrder.createdAt) && (
-                                            <button
-                                                onClick={() => handleReturn(selectedOrder.orderNo, item)}
-                                                style={{
-                                                    background: '#ef444420',
-                                                    color: '#ef4444',
-                                                    border: 'none',
-                                                    padding: '4px 8px',
-                                                    borderRadius: '4px',
-                                                    cursor: 'pointer',
-                                                    fontSize: '0.75rem',
-                                                    whiteSpace: 'nowrap'
-                                                }}
-                                            >
-                                                {t('orders.return_btn')}
-                                            </button>
+                                        {(selectedOrder.status === 'paid' || selectedOrder.status === 'partially_returned') &&
+                                            item.qty > 0 && // 只有當前項目數量 > 0 才顯示
+                                            isWithinReturnPeriod(selectedOrder.createdAt) && (
+                                                <button
+                                                    onClick={() => handleReturn(selectedOrder.orderNo, item)}
+                                                    style={{
+                                                        background: '#ef444420',
+                                                        color: '#ef4444',
+                                                        border: 'none',
+                                                        padding: '4px 8px',
+                                                        borderRadius: '4px',
+                                                        cursor: 'pointer',
+                                                        fontSize: '0.75rem',
+                                                        whiteSpace: 'nowrap'
+                                                    }}
+                                                >
+                                                    {t('orders.return_btn')}
+                                                </button>
+                                            )}
+                                        {/* 如果項目數量已經為 0，顯示已退回標籤 */}
+                                        {item.qty === 0 && (
+                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                                                ({t('orders.fully_returned')})
+                                            </span>
                                         )}
                                     </div>
                                 </div>
@@ -355,8 +377,8 @@ const StatusBadge = ({ status, t }) => {
         paid: { color: '#4ade80', icon: CheckCircle, text: t('orders.status_paid') },
         pending: { color: '#fbbf24', icon: Clock, text: t('orders.status_pending') },
         cancelled: { color: '#f87171', icon: XCircle, text: t('orders.status_cancelled') },
-        returned: { color: '#ef4444', icon: XCircle, text: t('orders.status_returned') },
-        partially_returned: { color: '#f97316', icon: Clock, text: t('orders.status_partially_returned') },
+        returned: { color: '#ef4444', icon: CheckCircle, text: t('orders.status_returned') },
+        partially_returned: { color: '#f97316', icon: CheckCircle, text: t('orders.status_partially_returned') },
     };
     const config = configs[status] || configs.pending;
     const Icon = config.icon;
