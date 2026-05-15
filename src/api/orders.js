@@ -21,6 +21,11 @@ export const processOrderReturn = async (returnData) => {
     return response.data;
 };
 
+export const getOrderReturns = async (orderNo) => {
+    const response = await api.get(`/api/orders/${orderNo}/returns`);
+    return response.data;
+};
+
 export const exportOrdersCSV = async (start, end) => {
     const response = await api.get('/api/csv/export/orders', { 
         params: { start, end },

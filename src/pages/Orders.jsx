@@ -55,6 +55,7 @@ const Orders = () => {
             return;
         }
 
+        const reason = window.prompt(t('orders.return_reason_prompt') || '請輸入退貨原因', t('orders.return_reason_default') || 'Customer return') || '';
         if (!window.confirm(t('orders.confirm_return_msg'))) return;
 
         try {
@@ -66,13 +67,17 @@ const Orders = () => {
                     qty: returnQty,
                     nameSnapshot: item.nameSnapshot
                 }],
-                reason: "Web Console Partial Return"
+                reason: reason || "Web Console Return"
             });
 
             if (result.success) {
-                alert(t('orders.return_success'));
-                fetchOrders(); // 刷新列表
-                setSelectedOrder(null); // 關閉詳情
+                alert(`${t('orders.return_success')} (${t('orders.refund_amount') || '退款'}: $${result.data?.refundAmount ?? 0})`);
+                const refreshed = await getOrders();
+                if (refreshed.success) {
+                    setOrders(refreshed.data);
+                    const updatedSelected = refreshed.data.find(order => order.orderNo === orderNo);
+                    setSelectedOrder(updatedSelected || null);
+                }
             }
         } catch (err) {
             alert(err.message);
@@ -247,7 +252,33 @@ const Orders = () => {
                                 <span>{t('orders.final_amount')}</span>
                                 <span>${selectedOrder.finalAmount}</span>
                             </div>
+                            {(selectedOrder.refundAmount || 0) > 0 && (
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', color: '#ef4444' }}>
+                                    <span>{t('orders.refunded_amount') || '已退款'}</span>
+                                    <span>-${selectedOrder.refundAmount}</span>
+                                </div>
+                            )}
                         </div>
+
+                        {(selectedOrder.returnRecords || []).length > 0 && (
+                            <div style={{ borderTop: '1px solid #eee', paddingTop: '20px', marginBottom: '20px' }}>
+                                <h4 style={{ marginBottom: '12px' }}>{t('orders.return_records') || '退貨紀錄'}</h4>
+                                {selectedOrder.returnRecords.map((record) => (
+                                    <div key={record._id} style={{ padding: '12px 0', borderBottom: '1px solid #f1f1f1' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
+                                            <strong>{record.returnNo}</strong>
+                                            <span style={{ color: '#ef4444', fontWeight: 700 }}>-${record.refundAmount}</span>
+                                        </div>
+                                        <div style={{ fontSize: '0.85rem', color: '#666', marginTop: '4px' }}>
+                                            {new Date(record.createdAt).toLocaleString()} · {record.reason || '-'}
+                                        </div>
+                                        <div style={{ fontSize: '0.85rem', color: '#444', marginTop: '6px' }}>
+                                            {(record.items || []).map(returnItem => `${returnItem.nameSnapshot} x${returnItem.qty}`).join(', ')}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
 
                         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <button onClick={() => setSelectedOrder(null)} className="btn-secondary">{t('orders.close')}</button>
