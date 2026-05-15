@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next'; // 確保啟用
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import {
     Search, Calendar, Download, Eye, CheckCircle, Clock, XCircle, Loader2
@@ -8,7 +8,7 @@ import { getOrders, exportOrdersCSV, processOrderReturn } from '../api/orders';
 import { useTenant } from '../contexts/TenantContext';
 
 const Orders = () => {
-    const { t } = useTranslation(); // 初始化 t 函數
+    const { t } = useTranslation();
     const { tenantConfig } = useTenant();
     const [activeTab, setActiveTab] = useState('all');
     const [orders, setOrders] = useState([]);
@@ -18,347 +18,234 @@ const Orders = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
+    useEffect(() => {
+        fetchOrders();
+    }, []);
+
+    const fetchOrders = async () => {
+        try {
+            setLoading(true);
+            const result = await getOrders();
+            if (result.success) {
+                setOrders(result.data);
+            }
+        } catch (err) {
+            setError('Failed to fetch orders');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // --- ✨ 核心修改：處理部分退貨邏輯 ✨ ---
     const handleReturn = async (orderNo, item) => {
+        // 1. 計算剩餘可退數量
+        const maxAvailable = item.qty - (item.returnQty || 0);
+        
+        if (maxAvailable <= 0) {
+            alert(t('orders.all_returned_msg') || "此商品已全部退貨");
+            return;
+        }
+
+        // 2. 詢問退貨數量
+        const returnQtyStr = window.prompt(`${t('orders.enter_return_qty') || '請輸入退貨數量'} (Max: ${maxAvailable})`, maxAvailable);
+        const returnQty = parseInt(returnQtyStr);
+
+        if (isNaN(returnQty) || returnQty <= 0 || returnQty > maxAvailable) {
+            alert(t('orders.invalid_qty_msg') || "無效的退貨數量");
+            return;
+        }
+
         if (!window.confirm(t('orders.confirm_return_msg'))) return;
 
         try {
             setLoading(true);
-            // 注意：請確保你的 ../api/orders.js 有導出 processOrderReturn
             const result = await processOrderReturn({
                 orderNo: orderNo,
                 itemsToReturn: [{
                     productId: item.productId,
-                    qty: item.qty,
+                    qty: returnQty,
                     nameSnapshot: item.nameSnapshot
                 }],
-                reason: "Web Dashboard Return"
+                reason: "Web Console Partial Return"
             });
 
             if (result.success) {
                 alert(t('orders.return_success'));
-                fetchOrders(); // 重新整理列表
-                setSelectedOrder(null); // 關閉 Modal
+                fetchOrders(); // 刷新列表
+                setSelectedOrder(null); // 關閉詳情
             }
         } catch (err) {
-            alert(err.message || "Return failed");
+            alert(err.message);
         } finally {
             setLoading(false);
         }
     };
 
     const handleExport = async () => {
-        setLoading(true);
         try {
-            const blob = await exportOrdersCSV(startDate, endDate);
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `orders_${startDate || 'all'}_${endDate || ''}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        } catch (error) {
-            alert(t('orders.error_export'));
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleExportDetails = async () => {
-        setLoading(true);
-        try {
-            const filteredOrders = orders.filter(filterDate);
-            // CSV 表頭也支持多語言
-            const headers = [
-                t('orders.csv_headers.id'),
-                t('orders.csv_headers.no'),
-                t('orders.csv_headers.time'),
-                t('orders.product_name'),
-                t('orders.csv_headers.cost'),
-                t('orders.unit_price'),
-                t('orders.quantity'),
-                t('orders.subtotal'),
-                t('orders.csv_headers.status')
-            ];
-
-            const rows = filteredOrders.flatMap(order =>
-                order.items.map(item => [
-                    order._id,
-                    order.orderNo,
-                    new Date(order.createdAt).toLocaleString(),
-                    item.nameSnapshot,
-                    item.costSnapshot || 0,
-                    item.priceSnapshot || 0,
-                    item.qty,
-                    item.subtotal,
-                    t(`orders.status_${order.status}`) // 狀態也要多語言
-                ])
-            );
-
-            const csvContent = "\uFEFF" + [headers, ...rows].map(e => e.join(",")).join("\n");
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `order_details_${startDate || 'all'}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        } catch (error) {
-            alert(t('orders.error_export'));
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const filterDate = (order) => {
-        if (!startDate && !endDate) return true;
-        const orderDate = new Date(order.createdAt);
-        const start = startDate ? new Date(startDate) : new Date('2000-01-01');
-        const end = endDate ? new Date(endDate) : new Date();
-        end.setHours(23, 59, 59);
-        return orderDate >= start && orderDate <= end;
-    };
-
-    // 判斷是否在 7 天退貨期限內
-    const isWithinReturnPeriod = (orderDateStr) => {
-        const orderDate = new Date(orderDateStr);
-        const now = new Date();
-        // 移除時間部分只比較日期，或使用毫秒轉換
-        const diffTime = now - orderDate;
-        const diffDays = diffTime / (1000 * 60 * 60 * 24);
-
-        // 確保訂單不是未來的時間，且在 7 天內
-        return diffDays >= 0 && diffDays <= 7;
-    };
-
-    useEffect(() => {
-        fetchOrders();
-    }, []);
-
-
-
-    const fetchOrders = async () => {
-        setLoading(true);
-        try {
-            const result = await getOrders();
-            if (result.success) {
-                setOrders(result.data);
-            } else {
-                setError(t('orders.error_fetch'));
-            }
+            const data = await exportOrdersCSV(startDate, endDate);
+            const url = window.URL.createObjectURL(new Blob([data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `orders_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
         } catch (err) {
-            setError(t('orders.error_server'));
-        } finally {
-            setLoading(false);
+            alert('Export failed');
         }
     };
+
+    const filteredOrders = orders.filter(order => {
+        if (activeTab === 'all') return true;
+        return order.status === activeTab;
+    });
 
     return (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="animate-fade-in"
-            style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+        <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            className="p-6"
         >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>{t('orders.title')}</h2>
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '0.2rem 0.5rem' }}>
-                        <Calendar size={16} style={{ margin: '0 0.5rem', color: 'var(--text-muted)' }} />
-                        <input
-                            type="date"
-                            style={{ background: 'transparent', border: 'none', color: 'white', outline: 'none', fontSize: '0.9rem' }}
-                            onChange={(e) => setStartDate(e.target.value)}
-                        />
-                        <span style={{ margin: '0 0.5rem', color: 'var(--text-muted)' }}>-</span>
-                        <input
-                            type="date"
-                            style={{ background: 'transparent', border: 'none', color: 'white', outline: 'none', fontSize: '0.9rem' }}
-                            onChange={(e) => setEndDate(e.target.value)}
-                        />
-                    </div>
-                    <button onClick={handleExport} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Download size={18} /> {t('orders.export_summary')}
-                    </button>
-                    <button onClick={handleExportDetails} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Download size={18} /> {t('orders.export_details')}
-                    </button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <div>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{t('orders.title')}</h2>
+                    <p style={{ color: '#666' }}>{t('orders.subtitle')}</p>
                 </div>
+                <button onClick={handleExport} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Download size={18} /> {t('orders.export')}
+                </button>
             </div>
 
-            {/* Tabs */}
-            <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>
-                {['all', 'paid', 'pending', 'cancelled'].map(tab => (
-                    <button
+            {/* 篩選欄 */}
+            <div style={{ background: 'white', padding: '16px', borderRadius: '12px', marginBottom: '24px', display: 'flex', gap: '16px', alignItems: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                <div style={{ flex: 1, position: 'relative' }}>
+                    <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#999' }} size={18} />
+                    <input type="text" placeholder={t('orders.search_placeholder')} style={{ width: '100%', padding: '10px 10px 10px 40px', borderRadius: '8px', border: '1px solid #ddd' }} />
+                </div>
+                <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }} />
+                <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }} />
+            </div>
+
+            {/* Tab 切換 */}
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+                {['all', 'paid', 'partially_returned', 'returned', 'cancelled'].map(tab => (
+                    <button 
                         key={tab}
                         onClick={() => setActiveTab(tab)}
                         style={{
-                            background: 'transparent',
-                            border: 'none',
-                            color: activeTab === tab ? 'var(--primary-light)' : 'var(--text-muted)',
-                            padding: '0.5rem 1rem',
-                            cursor: 'pointer',
-                            position: 'relative',
-                            fontWeight: activeTab === tab ? 600 : 400
+                            padding: '8px 16px', borderRadius: '20px', border: 'none',
+                            background: activeTab === tab ? tenantConfig.primaryColor || '#007AFF' : '#eee',
+                            color: activeTab === tab ? 'white' : '#666',
+                            cursor: 'pointer', fontWeight: 500
                         }}
                     >
-                        {t(`orders.status_${tab}`)}
-                        {activeTab === tab && (
-                            <motion.div layoutId="tab-underline" style={{ position: 'absolute', bottom: -1, left: 0, right: 0, height: 2, background: 'var(--primary)' }} />
-                        )}
+                        {t(`orders.tab_${tab}`)}
                     </button>
                 ))}
             </div>
 
-            {/* Orders List */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: '300px' }}>
-                {loading ? (
-                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
-                        <Loader2 className="animate-spin" size={24} /> {t('orders.loading')}
-                    </div>
-                ) : error ? (
-                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171' }}>
-                        {error}
-                    </div>
-                ) : orders.filter(o => {
-                    if (activeTab === 'all') return true;
-                    if (activeTab === 'paid') return ['paid', 'partially_returned', 'returned'].includes(o.status);
-                    return o.status === activeTab;
-                }).filter(filterDate).length === 0 ? (
-                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', padding: '3rem' }}>
-                        {t('orders.no_data')}
-                    </div>
-                ) : (
-                    orders.filter(o => {
-                        if (activeTab === 'all') return true;
-                        if (activeTab === 'paid') return ['paid', 'partially_returned', 'returned'].includes(o.status);
-                        return o.status === activeTab;
-                    })
-                        .filter(filterDate)
-                        .map(order => (
-                            <div key={order._id} className="glass-panel" style={{ padding: '1.2rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr 1fr 1fr 0.5fr', alignItems: 'center' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                                    <div style={{ fontWeight: 600, color: 'var(--primary-light)' }}>#{order.orderNo}</div>
-                                    {order.isBackdated && (
-                                        <span style={{ fontSize: '0.65rem', background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
-                                            {t('orders.backdate_label')}
-                                        </span>
-                                    )}
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>
-                                        {(order.customerNameSnapshot || 'N')[0]}
-                                    </div>
-                                    {order.customerNameSnapshot || t('orders.anonymous_customer')}
-                                </div>
-                                <div style={{ fontWeight: 700 }}>{tenantConfig.currency}{order.finalAmount?.toLocaleString()}</div>
-                                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(order.createdAt).toLocaleString()}</div>
-                                <div>
-                                    <StatusBadge status={order.status} t={t} />
-                                </div>
-                                <div style={{ textAlign: 'right' }}>
-                                    <button
-                                        onClick={() => setSelectedOrder(order)}
-                                        style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-                                    >
-                                        <Eye size={18} />
-                                    </button>
-                                </div>
-                            </div>
-                        ))
-                )}
+            {/* 訂單列表 */}
+            <div style={{ background: 'white', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead>
+                        <tr style={{ background: '#f9f9f9', textAlign: 'left', borderBottom: '1px solid #eee' }}>
+                            <th style={{ padding: '16px' }}>{t('orders.order_no')}</th>
+                            <th style={{ padding: '16px' }}>{t('orders.customer')}</th>
+                            <th style={{ padding: '16px' }}>{t('orders.amount')}</th>
+                            <th style={{ padding: '16px' }}>{t('orders.status')}</th>
+                            <th style={{ padding: '16px' }}>{t('orders.date')}</th>
+                            <th style={{ padding: '16px' }}>{t('orders.action')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {loading ? (
+                            <tr><td colSpan="6" style={{ padding: '40px', textAlign: 'center' }}><Loader2 className="animate-spin" /></td></tr>
+                        ) : filteredOrders.map(order => (
+                            <tr key={order._id} style={{ borderBottom: '1px solid #eee' }}>
+                                <td style={{ padding: '16px', fontWeight: 500 }}>{order.orderNo}</td>
+                                <td style={{ padding: '16px' }}>{order.customerNameSnapshot || t('orders.guest')}</td>
+                                <td style={{ padding: '16px' }}>${order.finalAmount}</td>
+                                <td style={{ padding: '16px' }}><StatusBadge status={order.status} t={t} /></td>
+                                <td style={{ padding: '16px', color: '#666' }}>{new Date(order.paidAt).toLocaleString()}</td>
+                                <td style={{ padding: '16px' }}>
+                                    <button onClick={() => setSelectedOrder(order)} className="btn-icon"><Eye size={18} /></button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
 
-            {/* Order Detail Modal */}
+            {/* 訂單詳情彈窗 */}
             {selectedOrder && (
-                <div
-                    style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', backdropFilter: 'blur(4px)' }}
-                    onClick={() => setSelectedOrder(null)}
-                >
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        className="glass-panel"
-                        style={{ width: '100%', maxWidth: '600px', maxHeight: '85vh', overflow: 'hidden', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
-                        onClick={e => e.stopPropagation()}
+                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
+                    <motion.div 
+                        initial={{ scale: 0.9, opacity: 0 }} 
+                        animate={{ scale: 1, opacity: 1 }}
+                        style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '600px', padding: '24px', maxHeight: '90vh', overflowY: 'auto' }}
                     >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>
-                            <div>
-                                <h3 style={{ fontSize: '1.2rem', marginBottom: '0.2rem' }}>{t('orders.details_title')} #{selectedOrder.orderNo}</h3>
-                                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{new Date(selectedOrder.createdAt).toLocaleString()}</p>
-                            </div>
-                            <button onClick={() => setSelectedOrder(null)} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer' }}>
-                                <XCircle size={20} />
-                            </button>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                            <h3>{t('orders.detail_title')} - {selectedOrder.orderNo}</h3>
+                            <StatusBadge status={selectedOrder.status} t={t} />
                         </div>
 
-                        <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 1fr', gap: '1rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                                <div>{t('orders.product_name')}</div>
-                                <div style={{ textAlign: 'center' }}>{t('orders.unit_price')}</div>
-                                <div style={{ textAlign: 'center' }}>{t('orders.quantity')}</div>
-                                <div style={{ textAlign: 'right' }}>{t('orders.subtotal')}</div>
-                            </div>
-                            {selectedOrder.items?.map((item, idx) => (
-                                <div key={idx} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1fr 1fr', gap: '1rem', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.8rem' }}>
-                                    <div style={{ fontSize: '0.95rem' }}>{item.nameSnapshot}</div>
-                                    <div style={{ textAlign: 'center' }}>{tenantConfig.currency}{(item.priceSnapshot || 0).toLocaleString()}</div>
-                                    <div style={{ textAlign: 'center' }}>{item.qty}</div>
-                                    <div style={{
-                                        textAlign: 'right',
-                                        display: 'flex',           // 使用 flex 讓金額和按鈕水平排列
-                                        alignItems: 'center',      // 垂直居中對齊
-                                        justifyContent: 'flex-end',// 靠右對齊
-                                        gap: '12px'                // 金額與按鈕之間的間距
-                                    }}>
-                                        {/* 顯示小計金額 */}
-                                        <span>{tenantConfig.currency}{(item.subtotal || 0).toLocaleString()}</span>
-
-                                        {/* 在金額後面加入退貨按鈕 */}
-                                        {(selectedOrder.status === 'paid' || selectedOrder.status === 'partially_returned') &&
-                                            item.qty > 0 && // 只有當前項目數量 > 0 才顯示
-                                            isWithinReturnPeriod(selectedOrder.createdAt) && (
-                                                <button
-                                                    onClick={() => handleReturn(selectedOrder.orderNo, item)}
-                                                    style={{
-                                                        background: '#ef444420',
-                                                        color: '#ef4444',
-                                                        border: 'none',
-                                                        padding: '4px 8px',
-                                                        borderRadius: '4px',
-                                                        cursor: 'pointer',
-                                                        fontSize: '0.75rem',
-                                                        whiteSpace: 'nowrap'
-                                                    }}
-                                                >
-                                                    {t('orders.return_btn')}
-                                                </button>
-                                            )}
-                                        {/* 如果項目數量已經為 0，顯示已退回標籤 */}
-                                        {item.qty === 0 && (
-                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                                                ({t('orders.fully_returned')})
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
+                        {/* ✨ 關鍵修改：訂單項目表格 ✨ */}
+                        <div style={{ marginBottom: '24px' }}>
+                            <h4 style={{ marginBottom: '12px' }}>{t('orders.items')}</h4>
+                            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                <thead>
+                                    <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left', fontSize: '0.9rem', color: '#666' }}>
+                                        <th style={{ padding: '10px 0' }}>{t('orders.item')}</th>
+                                        <th style={{ padding: '10px 0', textAlign: 'right' }}>{t('orders.subtotal')}</th>
+                                        <th style={{ padding: '10px 0', textAlign: 'right' }}>{t('orders.action')}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {selectedOrder.items.map((item, index) => {
+                                        const remainingQty = item.qty - (item.returnQty || 0);
+                                        return (
+                                            <tr key={index} style={{ borderBottom: '1px solid #eee' }}>
+                                                <td style={{ padding: '12px 0' }}>
+                                                    <div style={{ fontWeight: 500 }}>{item.nameSnapshot}</div>
+                                                    <div style={{ fontSize: '0.8rem', color: '#888' }}>
+                                                        {item.qty} {t('units.pcs')}
+                                                        {item.returnQty > 0 && (
+                                                            <span style={{ color: '#ef4444', marginLeft: '8px', fontWeight: 'bold' }}>
+                                                                ({t('orders.returned') || '已退'} {item.returnQty})
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td style={{ padding: '12px 0', textAlign: 'right' }}>
+                                                    ${item.priceSnapshot * remainingQty}
+                                                </td>
+                                                <td style={{ padding: '12px 0', textAlign: 'right' }}>
+                                                    {remainingQty > 0 ? (
+                                                        <button 
+                                                            onClick={() => handleReturn(selectedOrder.orderNo, item)}
+                                                            style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '0.8rem', textDecoration: 'underline' }}
+                                                        >
+                                                            {t('orders.return_item') || '退貨'}
+                                                        </button>
+                                                    ) : (
+                                                        <span style={{ fontSize: '0.8rem', color: '#999' }}>{t('orders.fully_returned') || '已全退'}</span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
                         </div>
 
-                        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-                                <span>{t('orders.subtotal')}</span>
-                                <span>{tenantConfig.currency}{(selectedOrder.totalAmount || 0).toLocaleString()}</span>
+                        <div style={{ borderTop: '1px solid #eee', paddingTop: '20px', marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                <span>{t('orders.total_amount')}</span>
+                                <span>${selectedOrder.totalAmount}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f87171' }}>
-                                <span>{t('orders.discount')}</span>
-                                <span>-{tenantConfig.currency}{(selectedOrder.discountAmount || 0).toLocaleString()}</span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 700, marginTop: '0.5rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: '1.1rem', color: tenantConfig.primaryColor }}>
                                 <span>{t('orders.final_amount')}</span>
-                                <span style={{ color: 'var(--primary-light)' }}>{tenantConfig.currency}{(selectedOrder.finalAmount || 0).toLocaleString()}</span>
+                                <span>${selectedOrder.finalAmount}</span>
                             </div>
                         </div>
 
@@ -385,15 +272,9 @@ const StatusBadge = ({ status, t }) => {
 
     return (
         <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '4px 10px',
-            borderRadius: '20px',
-            background: `${config.color}15`,
-            color: config.color,
-            fontSize: '0.8rem',
-            fontWeight: 500
+            display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 10px',
+            borderRadius: '20px', background: `${config.color}15`, color: config.color,
+            fontSize: '0.8rem', fontWeight: 500
         }}>
             <Icon size={14} /> {config.text}
         </div>
