@@ -8,6 +8,8 @@ import { login } from '../api/auth';
 
 const LoginPage = () => {
     const { t, i18n } = useTranslation();
+    const isRtl = i18n.language === 'ar-SA';
+
     const languageNames = {
         'en-US': 'English',
         'zh-TW': '繁體中文',
@@ -36,9 +38,11 @@ const LoginPage = () => {
     const [showTenant, setShowTenant] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng);
     };
+    
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -78,165 +82,228 @@ const LoginPage = () => {
         }
     };
 
+    // 動態輸入框樣式：完美支援 LTR 與 RTL
+    const dynamicInputStyle = {
+        ...inputStyle,
+        padding: isRtl ? '0.75rem 40px 0.75rem 1rem' : '0.75rem 1rem 0.75rem 40px',
+        textAlign: isRtl ? 'right' : 'left'
+    };
 
     return (
-        <motion.div
-            // --- 加入下面這一行 ---
-            dir={i18n.language === 'ar-SA' ? 'rtl' : 'ltr'}
-            // --------------------
-            className="glass-panel animate-fade-in"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            style={{
-                padding: '3rem 2.5rem',
-                width: '100%',
-                // 如果你有設定內容對齊，也可以根據 dir 調整
-                textAlign: i18n.language === 'ar-SA' ? 'right' : 'left'
-            }}
-        >
-            {/* 語言切換器選單 */}
-            <div style={{
-                position: 'absolute',
-                top: '1rem',
-                // 注意：RTL 下 right: 1rem 會變成在左邊，通常這是正確的
-                right: '1rem'
-            }}>
-                <select
-                    onChange={(e) => changeLanguage(e.target.value)}
-                    value={i18n.language}
-                    style={selectStyle}
-                >
-                    {supportedLanguages.map((lng) => (
-                        <option key={lng} value={lng}>
-                            {languageNames[lng] || lng}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-                    {t('login.welcome')} <span className="gradient-text">POS SaaS</span>
-                </h1>
-                <p style={{ color: 'var(--text-muted)' }}>{t('login.subtitle')}</p>
-            </div>
-
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-                <div className="input-group">
-                    <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('login.email')}</label>
-                    <div style={{ position: 'relative' }}>
-                        <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
-                        <input
-                            id="username"
-                            name="username"
-                            type="text"
-                            placeholder="admin@example.com"
-                            style={inputStyle}
-                            value={formData.username}
-                            onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                            autoComplete="username"
-                            required
-                        />
-                    </div>
-                </div>
-
-                <div className="input-group">
-                    <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('login.password')}</label>
-                    <div style={{ position: 'relative' }}>
-                        <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
-                        <input
-                            id="password"
-                            name="password"
-                            type={showPassword ? "text" : "password"}
-                            placeholder="••••••••"
-                            style={inputStyle}
-                            value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            autoComplete="current-password"
-                            required
-                        />
-                        <div
-                            onClick={() => setShowPassword(!showPassword)}
-                            style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', color: 'var(--text-muted)' }}
-                        >
-                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                        </div>
-                    </div>
-                </div>
-
-                {showTenant && (
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        className="input-group"
+        <div style={{ width: '100%', padding: '0 1rem', boxSizing: 'border-box' }}>
+            <motion.div
+                dir={isRtl ? 'rtl' : 'ltr'}
+                className="glass-panel animate-fade-in"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                style={{
+                    padding: '2.5rem 1.75rem', // 縮減內襯，對手機更友善
+                    width: '100%',
+                    maxWidth: '440px',          // 限制最大寬度，大螢幕不變形
+                    margin: '0 auto',          // 居中
+                    boxSizing: 'border-box',
+                    position: 'relative',
+                    textAlign: isRtl ? 'right' : 'left'
+                }}
+            >
+                {/* 語言切換器選單 */}
+                <div style={{
+                    position: 'absolute',
+                    top: '1rem',
+                    // 根據 RTL 動態調換左右邊定位
+                    [isRtl ? 'left' : 'right']: '1rem'
+                }}>
+                    <select
+                        onChange={(e) => changeLanguage(e.target.value)}
+                        value={i18n.language}
+                        style={selectStyle}
                     >
-                        <label htmlFor="tenantId" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>公司編號 (Company ID)</label>
+                        {supportedLanguages.map((lng) => (
+                            <option key={lng} value={lng}>
+                                {languageNames[lng] || lng}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div style={{ textAlign: 'center', marginBottom: '2.5rem', marginTop: '1rem' }}>
+                    <h1 style={{ fontSize: '1.75rem', marginBottom: '0.5rem', fontWeight: 700, letterSpacing: '-0.025em' }}>
+                        {t('login.welcome')} <span className="gradient-text">POS SaaS</span>
+                    </h1>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{t('login.subtitle')}</p>
+                </div>
+
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                    {/* 帳號欄位 */}
+                    <div className="input-group">
+                        <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('login.email')}</label>
                         <div style={{ position: 'relative' }}>
-                            <Building2 size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
+                            <User size={18} style={{ 
+                                position: 'absolute', 
+                                [isRtl ? 'right' : 'left']: '12px', 
+                                top: '50%', 
+                                transform: 'translateY(-50%)', 
+                                color: 'var(--primary)' 
+                            }} />
                             <input
-                                id="tenantId"
-                                name="tenantId"
+                                id="username"
+                                name="username"
                                 type="text"
-                                placeholder="例如: superstore-01"
-                                style={inputStyle}
-                                value={formData.tenantId}
-                                onChange={(e) => setFormData({ ...formData, tenantId: e.target.value })}
-                                autoComplete="off"
+                                placeholder="admin@example.com"
+                                style={dynamicInputStyle}
+                                value={formData.username}
+                                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                                autoComplete="username"
                                 required
                             />
                         </div>
-                    </motion.div>
-                )}
+                    </div>
 
-                {!showTenant && (
-                    <div style={{ textAlign: 'right' }}>
-                        <button
-                            type="button"
-                            onClick={() => setShowTenant(true)}
-                            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '0.85rem', cursor: 'pointer', padding: 0 }}
+                    {/* 密碼欄位 */}
+                    <div className="input-group">
+                        <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('login.password')}</label>
+                        <div style={{ position: 'relative' }}>
+                            <Lock size={18} style={{ 
+                                position: 'absolute', 
+                                [isRtl ? 'right' : 'left']: '12px', 
+                                top: '50%', 
+                                transform: 'translateY(-50%)', 
+                                color: 'var(--primary)' 
+                            }} />
+                            <input
+                                id="password"
+                                name="password"
+                                type={showPassword ? "text" : "password"}
+                                placeholder="••••••••"
+                                style={{
+                                    ...dynamicInputStyle,
+                                    padding: isRtl ? '0.75rem 40px 0.75rem 40px' : '0.75rem 40px 0.75rem 40px' // 兩邊都留空給眼睛和鎖頭圖標
+                                }}
+                                value={formData.password}
+                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                autoComplete="current-password"
+                                required
+                            />
+                            <div
+                                onClick={() => setShowPassword(!showPassword)}
+                                style={{ 
+                                    position: 'absolute', 
+                                    [isRtl ? 'left' : 'right']: '12px', 
+                                    top: '50%', 
+                                    transform: 'translateY(-50%)', 
+                                    cursor: 'pointer', 
+                                    color: 'var(--text-muted)',
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 公司編號欄位 */}
+                    {showTenant && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            className="input-group"
                         >
-                            {t('login.loginWithCompanyId')}
-                        </button>
+                            <label htmlFor="tenantId" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>公司編號 (Company ID)</label>
+                            <div style={{ position: 'relative' }}>
+                                <Building2 size={18} style={{ 
+                                    position: 'absolute', 
+                                    [isRtl ? 'right' : 'left']: '12px', 
+                                    top: '50%', 
+                                    transform: 'translateY(-50%)', 
+                                    color: 'var(--primary)' 
+                                }} />
+                                <input
+                                    id="tenantId"
+                                    name="tenantId"
+                                    type="text"
+                                    placeholder="例如: superstore-01"
+                                    style={dynamicInputStyle}
+                                    value={formData.tenantId}
+                                    onChange={(e) => setFormData({ ...formData, tenantId: e.target.value })}
+                                    autoComplete="off"
+                                    required
+                                />
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {!showTenant && (
+                        <div style={{ textAlign: isRtl ? 'left' : 'right' }}>
+                            <button
+                                type="button"
+                                onClick={() => setShowTenant(true)}
+                                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '0.85rem', cursor: 'pointer', padding: 0 }}
+                            >
+                                {t('login.loginWithCompanyId')}
+                            </button>
+                        </div>
+                    )}
+
+                    {error && (
+                        <div style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(248, 113, 113, 0.1)', color: '#f87171', fontSize: '0.9rem', textAlign: 'center' }}>
+                            {error}
+                        </div>
+                    )}
+
+                    {/* 登入按鈕 */}
+                    <button
+                        type="submit"
+                        className="btn-primary"
+                        disabled={loading}
+                        style={{ 
+                            marginTop: '0.5rem', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            gap: '0.5rem', 
+                            opacity: loading ? 0.7 : 1,
+                            width: '100%',
+                            padding: '0.75rem'
+                        }}
+                    >
+                        {loading ? t('login.loading') : t('login.signIn')} 
+                        <ArrowRight
+                            size={18}
+                            style={{ transform: isRtl ? 'rotate(180deg)' : 'none' }}
+                        />
+                    </button>
+
+                    {/* 頁尾連結：RWD 彈性排版 */}
+                    <div style={{ 
+                        textAlign: 'center', 
+                        marginTop: '1rem', 
+                        fontSize: '0.85rem', 
+                        display: 'flex', 
+                        justifyContent: 'space-between',
+                        gap: '1rem',
+                        flexWrap: 'wrap' // 當手機寬度不夠時自動換行
+                    }}>
+                        <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>{t('login.forgotPassword')}</a>
+                        <Link to="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>{t('login.applyTrial')}</Link>
                     </div>
-                )}
-
-                {error && (
-                    <div style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(248, 113, 113, 0.1)', color: '#f87171', fontSize: '0.9rem', textAlign: 'center' }}>
-                        {error}
-                    </div>
-                )}
-
-                <button
-                    type="submit"
-                    className="btn-primary"
-                    disabled={loading}
-                    style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: loading ? 0.7 : 1 }}
-                >
-                    {loading ? t('login.loading') : t('login.signIn')} <ArrowRight
-                        size={18}
-                        style={{ transform: i18n.language === 'ar-SA' ? 'rotate(180deg)' : 'none' }}
-                    />
-                </button>
-
-                <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between' }}>
-                    <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>{t('login.forgotPassword')}</a>
-                    <Link to="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>{t('login.applyTrial')}</Link>
-                </div>
-            </form>
-        </motion.div>
+                </form>
+            </motion.div>
+        </div>
     );
 };
 
 const inputStyle = {
     width: '100%',
-    padding: '0.75rem 1rem 0.75rem 40px',
     background: 'rgba(255, 255, 255, 0.05)',
     border: '1px solid rgba(255, 255, 255, 0.1)',
     borderRadius: 'var(--radius-md)',
     color: 'white',
     outline: 'none',
     transition: 'all 0.3s ease',
-    fontSize: '1rem'
+    fontSize: '1rem',
+    boxSizing: 'border-box' // 確保 padding 不會撐開總寬度
 };
 
 const selectStyle = {
