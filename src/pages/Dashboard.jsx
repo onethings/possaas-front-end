@@ -48,6 +48,15 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchSummary();
+
+        // 每 60 秒自動從後端拉取最新銷售摘要，確保手機端做部分退貨後，Web 端也能同步跳動
+        const intervalId = setInterval(() => {
+            // 傳入一個 silent 標記或直接調用，避免每次輪詢都讓網頁跳出全螢幕 Loader 影響操作
+            fetchSummary();
+        }, 60000);
+
+        // 元件卸載（Unmount）時清除定時器，防止記憶體洩漏
+        return () => clearInterval(intervalId);
     }, []);
 
     const fetchSummary = async () => {
@@ -87,6 +96,19 @@ const Dashboard = () => {
     const systemStats = summary.systemStats || {};
     const agentStats = summary.agentStats || {};
     const businessData = summary.businessSummary || {}; // 確保後端返回的結構一致
+    const salesTrend = summary?.salesTrend || [];
+
+    // 預設採用後端給的最新銷售額
+    let todaySales = businessData.latestSales || 0;
+
+    // 同步 App 端邏輯：如果趨勢圖有資料，且最後一筆代表今天，優先以趨勢圖的 totalRevenue 為準
+    if (salesTrend.length > 0) {
+        const lastDayData = salesTrend[salesTrend.length - 1];
+        // 確保取到數值，若有 totalRevenue 則覆蓋
+        if (lastDayData && typeof lastDayData.totalRevenue !== 'undefined') {
+            todaySales = lastDayData.totalRevenue;
+        }
+    }
 
     const chartData = {
         labels: businessData.salesTrend?.map(d => d.date) || [],
@@ -156,7 +178,14 @@ const Dashboard = () => {
                     </>
                 ) : (
                     <>
-                        <StatCard icon={DollarSign} label={t('dashboard.today_sales')} value={`${tenantConfig.currency}${businessData.latestSales?.toLocaleString() || 0}`} change="Live" positive />
+                        <StatCard
+                            icon={DollarSign}
+                            label={t('dashboard.today_sales')}
+                            // 這裡改用上面防禦計算後的 todaySales
+                            value={`${tenantConfig.currency}${todaySales.toLocaleString()}`}
+                            change="Live"
+                            positive
+                        />
                         <StatCard icon={TrendingUp} label={t('dashboard.inventory_total_value')} value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Stock" positive />
                         <StatCard icon={ShoppingBag} label={t('dashboard.stock_count')} value={businessData.inventory?.totalItems || 0} change="Units" positive={businessData.inventory?.totalItems > 0} />
                         <StatCard icon={Users} label={t('dashboard.current_user')} value={summary.personal?.username || 'Admin'} change="Online" positive />
