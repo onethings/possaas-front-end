@@ -44,19 +44,25 @@ const Dashboard = () => {
     const [summary, setSummary] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
+    
+    // 監聽螢幕寬度，用來處理圖表 RWD 與特定內聯樣式
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        handleResize(); // 初始執行一次
+        window.addEventListener('resize', handleResize);
+        
         fetchSummary();
 
-        // 每 60 秒自動從後端拉取最新銷售摘要，確保手機端做部分退貨後，Web 端也能同步跳動
         const intervalId = setInterval(() => {
-            // 傳入一個 silent 標記或直接調用，避免每次輪詢都讓網頁跳出全螢幕 Loader 影響操作
             fetchSummary();
         }, 60000);
 
-        // 元件卸載（Unmount）時清除定時器，防止記憶體洩漏
-        return () => clearInterval(intervalId);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            clearInterval(intervalId);
+        };
     }, []);
 
     const fetchSummary = async () => {
@@ -95,16 +101,13 @@ const Dashboard = () => {
 
     const systemStats = summary.systemStats || {};
     const agentStats = summary.agentStats || {};
-    const businessData = summary.businessSummary || {}; // 確保後端返回的結構一致
+    const businessData = summary.businessSummary || {};
     const salesTrend = summary?.salesTrend || [];
 
-    // 預設採用後端給的最新銷售額
     let todaySales = businessData.latestSales || 0;
 
-    // 同步 App 端邏輯：如果趨勢圖有資料，且最後一筆代表今天，優先以趨勢圖的 totalRevenue 為準
     if (salesTrend.length > 0) {
         const lastDayData = salesTrend[salesTrend.length - 1];
-        // 確保取到數值，若有 totalRevenue 則覆蓋
         if (lastDayData && typeof lastDayData.totalRevenue !== 'undefined') {
             todaySales = lastDayData.totalRevenue;
         }
@@ -126,6 +129,7 @@ const Dashboard = () => {
 
     const chartOptions = {
         responsive: true,
+        maintainAspectRatio: false, // 允許圖表根據容器自適應高度
         plugins: {
             legend: { display: false },
             tooltip: {
@@ -151,61 +155,67 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="animate-fade-in"
-            style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: isMobile ? '0.5rem' : '0' }}
         >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>{summary.personal?.tenantId || user?.tenantId} {t('dashboard.title')}</h2>
-                <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+            {/* Header 區塊在手機端改為上下排列 */}
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+                <h2 style={{ fontSize: isMobile ? '1.25rem' : '1.5rem' }}>{summary.personal?.tenantId || user?.tenantId} {t('dashboard.title')}</h2>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                     {t('common.last_update')}：{businessData.lastUpdate ? businessData.lastUpdate : t('common.no_data_today')}
                 </span>
             </div>
 
-            {/* Stats Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
+            {/* Stats Grid: 手機端降為 1 或 2 欄，避免寬度卡死 */}
+            <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: isMobile ? 'repeat(auto-fit, minmax(140px, 1fr))' : 'repeat(auto-fit, minmax(240px, 1fr))', 
+                gap: isMobile ? '0.75rem' : '1.5rem' 
+            }}>
                 {user?.role <= 2 ? (
                     <>
-                        <StatCard icon={Users} label={t('dashboard.total_tenants')} value={systemStats.totalTenants || 0} change="System" positive />
-                        <StatCard icon={Users} label={t('dashboard.active_tenants')} value={systemStats.activeTenants || 0} change="Live" positive />
-                        <StatCard icon={ShoppingBag} label={t('dashboard.total_products')} value={systemStats.totalProducts || 0} change="Total" positive />
-                        <StatCard icon={TrendingUp} label={t('dashboard.archive_progress')} value={`${systemStats.archivedProgress || 0}`} change="Stable" positive />
+                        <StatCard icon={Users} label={t('dashboard.total_tenants')} value={systemStats.totalTenants || 0} change="System" positive isMobile={isMobile} />
+                        <StatCard icon={Users} label={t('dashboard.active_tenants')} value={systemStats.activeTenants || 0} change="Live" positive isMobile={isMobile} />
+                        <StatCard icon={ShoppingBag} label={t('dashboard.total_products')} value={systemStats.totalProducts || 0} change="Total" positive isMobile={isMobile} />
+                        <StatCard icon={TrendingUp} label={t('dashboard.archive_progress')} value={`${systemStats.archivedProgress || 0}`} change="Stable" positive isMobile={isMobile} />
                     </>
                 ) : user?.role === 3 ? (
                     <>
-                        <StatCard icon={Users} label={t('dashboard.managed_tenants')} value={agentStats.subTenantCount || 0} change="+0" positive />
-                        <StatCard icon={Users} label={t('dashboard.managed_accounts')} value={agentStats.totalUsersManaged || 0} change="+0" positive />
-                        <StatCard icon={DollarSign} label={t('dashboard.est_inventory_value')} value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Live" positive />
-                        <StatCard icon={ShoppingBag} label={t('dashboard.managed_product_count')} value={businessData.inventory?.totalItems || 0} change="Items" positive />
+                        <StatCard icon={Users} label={t('dashboard.managed_tenants')} value={agentStats.subTenantCount || 0} change="+0" positive isMobile={isMobile} />
+                        <StatCard icon={Users} label={t('dashboard.managed_accounts')} value={agentStats.totalUsersManaged || 0} change="+0" positive isMobile={isMobile} />
+                        <StatCard icon={DollarSign} label={t('dashboard.est_inventory_value')} value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Live" positive isMobile={isMobile} />
+                        <StatCard icon={ShoppingBag} label={t('dashboard.managed_product_count')} value={businessData.inventory?.totalItems || 0} change="Items" positive isMobile={isMobile} />
                     </>
                 ) : (
                     <>
-                        <StatCard
-                            icon={DollarSign}
-                            label={t('dashboard.today_sales')}
-                            // 這裡改用上面防禦計算後的 todaySales
-                            value={`${tenantConfig.currency}${todaySales.toLocaleString()}`}
-                            change="Live"
-                            positive
-                        />
-                        <StatCard icon={TrendingUp} label={t('dashboard.inventory_total_value')} value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Stock" positive />
-                        <StatCard icon={ShoppingBag} label={t('dashboard.stock_count')} value={businessData.inventory?.totalItems || 0} change="Units" positive={businessData.inventory?.totalItems > 0} />
-                        <StatCard icon={Users} label={t('dashboard.current_user')} value={summary.personal?.username || 'Admin'} change="Online" positive />
+                        <StatCard icon={DollarSign} label={t('dashboard.today_sales')} value={`${tenantConfig.currency}${todaySales.toLocaleString()}`} change="Live" positive isMobile={isMobile} />
+                        <StatCard icon={TrendingUp} label={t('dashboard.inventory_total_value')} value={`${tenantConfig.currency}${businessData.inventory?.totalValue?.toLocaleString() || 0}`} change="Stock" positive isMobile={isMobile} />
+                        <StatCard icon={ShoppingBag} label={t('dashboard.stock_count')} value={businessData.inventory?.totalItems || 0} change="Units" positive={businessData.inventory?.totalItems > 0} isMobile={isMobile} />
+                        <StatCard icon={Users} label={t('dashboard.current_user')} value={summary.personal?.username || 'Admin'} change="Online" positive isMobile={isMobile} />
                     </>
                 )}
             </div>
 
-
-            {/* Main Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
-                <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                    <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {/* Main Row: 手機端寬度不足時自動切換為一整行（1fr） */}
+            <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr', 
+                gap: isMobile ? '1rem' : '1.5rem' 
+            }}>
+                {/* 趨勢圖 */}
+                <div className="glass-panel" style={{ padding: isMobile ? '1rem' : '1.5rem' }}>
+                    <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: isMobile ? '1.1rem' : '1.25rem' }}>
                         {t('dashboard.sales_trend')} <ArrowUpRight size={18} color="var(--primary)" />
                     </h3>
-                    <Line data={chartData} options={chartOptions} height={100} />
+                    {/* 給予圖表固定或百分比高度，搭配 maintainAspectRatio: false 避免手機端壓扁 */}
+                    <div style={{ height: isMobile ? '200px' : '300px', width: '100%' }}>
+                        <Line data={chartData} options={chartOptions} />
+                    </div>
                 </div>
 
-                <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                    <h3 style={{ marginBottom: '1.5rem' }}>{t('dashboard.popular_products')}</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {/* 熱門商品 */}
+                <div className="glass-panel" style={{ padding: isMobile ? '1rem' : '1.5rem' }}>
+                    <h3 style={{ marginBottom: '1rem', fontSize: isMobile ? '1.1rem' : '1.25rem' }}>{t('dashboard.popular_products')}</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                         {businessData.topProducts?.length > 0 ? (
                             businessData.topProducts.map((p, idx) => (
                                 <ProductItem
@@ -228,28 +238,29 @@ const Dashboard = () => {
     );
 };
 
-const StatCard = ({ icon: Icon, label, value, change, positive }) => (
-    <div className="glass-panel" style={{ padding: '1.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <div style={{ padding: '0.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-md)' }}>
-                <Icon size={20} color="var(--primary)" />
+// 數據卡片子元件優化 RWD 內距與字型大小
+const StatCard = ({ icon: Icon, label, value, change, positive, isMobile }) => (
+    <div className="glass-panel" style={{ padding: isMobile ? '1rem' : '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+            <div style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-md)' }}>
+                <Icon size={isMobile ? 18 : 20} color="var(--primary)" />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: positive ? '#4ade80' : '#f87171', fontSize: '0.85rem', fontWeight: 600 }}>
-                {change} {positive ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '2px', color: positive ? '#4ade80' : '#f87171', fontSize: '0.75rem', fontWeight: 600 }}>
+                {change} {positive ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
             </div>
         </div>
-        <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '4px' }}>{label}</div>
-        <div style={{ fontSize: '1.8rem', fontWeight: 700 }}>{value}</div>
+        <div style={{ color: 'var(--text-muted)', fontSize: isMobile ? '0.8rem' : '0.9rem', marginBottom: '2px' }}>{label}</div>
+        <div style={{ fontSize: isMobile ? '1.4rem' : '1.8rem', fontWeight: 700, wordBreak: 'break-all' }}>{value}</div>
     </div>
 );
 
 const ProductItem = ({ name, sales, price, t }) => (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.8rem', borderRadius: 'var(--radius-md)', background: 'rgba(255,255,255,0.03)' }}>
-        <div>
-            <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>{name}</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{t('dashboard.sold')} {sales}</div>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.7rem', borderRadius: 'var(--radius-md)', background: 'rgba(255,255,255,0.03)' }}>
+        <div style={{ minWidth: 0, flex: 1, marginRight: '0.5rem' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{t('dashboard.sold')} {sales}</div>
         </div>
-        <div style={{ fontWeight: 700, color: 'var(--primary-light)' }}>{price}</div>
+        <div style={{ fontWeight: 700, color: 'var(--primary-light)', fontSize: '0.9rem', flexShrink: 0 }}>{price}</div>
     </div>
 );
 
