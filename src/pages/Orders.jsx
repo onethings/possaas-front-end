@@ -30,7 +30,7 @@ const Orders = () => {
                 setOrders(result.data);
             }
         } catch (err) {
-            setError('Failed to fetch orders');
+            setError(t('orders.error_fetch', '無法獲取訂單列表'));
         } finally {
             setLoading(false);
         }
@@ -41,12 +41,16 @@ const Orders = () => {
         const maxAvailable = item.qty - (item.returnQty || 0);
         if (maxAvailable <= 0) return;
 
-        const returnCount = prompt(`${t('orders.return_qty_prompt', '請輸入退貨數量')} (Max: ${maxAvailable}):`, '1');
+        // 彈出確認訊息
+        const confirmReturn = window.confirm(t('orders.confirm_return_msg', '您確定要退回此商品嗎？'));
+        if (!confirmReturn) return;
+
+        const returnCount = prompt(`請輸入退貨數量 (Max: ${maxAvailable}):`, '1');
         if (!returnCount) return;
 
         const qtyToReturn = parseInt(returnCount, 10);
         if (isNaN(qtyToReturn) || qtyToReturn <= 0 || qtyToReturn > maxAvailable) {
-            alert(t('orders.invalid_qty', '無效的數量'));
+            alert('無效的數量');
             return;
         }
 
@@ -60,7 +64,7 @@ const Orders = () => {
             };
             const result = await processOrderReturn(orderNo, returnData);
             if (result.success) {
-                alert(t('orders.return_success', '退貨成功'));
+                alert(t('orders.return_success', '商品退貨成功'));
                 fetchOrders();
                 setSelectedOrder(null);
             } else {
@@ -75,7 +79,7 @@ const Orders = () => {
         try {
             await exportOrdersCSV({ startDate, endDate, status: activeTab });
         } catch (err) {
-            alert('Export failed');
+            alert(t('orders.error_export', '導出失敗'));
         }
     };
 
@@ -85,18 +89,20 @@ const Orders = () => {
         return order.status === activeTab;
     });
 
+    // 這裡的 id 對應後端 status，label 對應你 JSON 裡面的 status_ 欄位
     const tabs = [
-        { id: 'all', label: t('orders.tab_all') },
-        { id: 'paid', label: t('orders.tab_paid') },
-        { id: 'partially_returned', label: t('orders.tab_partially_returned') },
-        { id: 'returned', label: t('orders.tab_returned') },
-        { id: 'cancelled', label: t('orders.tab_cancelled') }
+        { id: 'all', label: t('orders.status_all', '全部訂單') },
+        { id: 'paid', label: t('orders.status_paid', '已支付') },
+        { id: 'partially_returned', label: t('orders.status_partially_returned', '部分退貨') },
+        { id: 'returned', label: t('orders.status_returned', '已退貨') },
+        { id: 'cancelled', label: t('orders.status_cancelled', '已取消') }
     ];
 
     if (loading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: '#6366f1' }}>
                 <Loader2 className="animate-spin" size={40} />
+                <span style={{ marginLeft: '8px' }}>{t('orders.loading', '加載中...')}</span>
             </div>
         );
     }
@@ -112,15 +118,14 @@ const Orders = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
                     <h1 style={{ fontSize: '1.8rem', fontWeight: 700, margin: 0, color: '#ffffff' }}>{t('orders.title')}</h1>
-                    <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginTop: '4px' }}>{t('orders.subtitle')}</p>
                 </div>
                 <button onClick={handleExport} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.6rem 1.2rem', background: '#4f46e5', border: 'none', borderRadius: '8px', color: '#fff', cursor: 'pointer' }}>
                     <Download size={16} />
-                    {t('orders.export')}
+                    {t('orders.export_summary', '導出總表')}
                 </button>
             </div>
 
-            {/* 自訂深色面板容器 (替代找不到的 glass-panel) */}
+            {/* 自訂深色面板容器 */}
             <div style={{ 
                 background: 'rgba(30, 41, 59, 0.7)', 
                 backdropFilter: 'blur(12px)', 
@@ -163,24 +168,24 @@ const Orders = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', color: '#94a3b8', fontSize: '0.85rem' }}>
-                                <th style={{ padding: '12px' }}>{t('orders.order_no')}</th>
-                                <th style={{ padding: '12px' }}>{t('orders.customer')}</th>
-                                <th style={{ padding: '12px' }}>{t('orders.amount')}</th>
-                                <th style={{ padding: '12px' }}>{t('orders.status')}</th>
-                                <th style={{ padding: '12px' }}>{t('orders.date')}</th>
-                                <th style={{ padding: '12px', textAlign: 'right' }}>{t('orders.action')}</th>
+                                <th style={{ padding: '12px' }}>{t('orders.csv_headers.no', '訂單編號')}</th>
+                                <th style={{ padding: '12px' }}>{t('orders.anonymous_customer', '客戶')}</th>
+                                <th style={{ padding: '12px' }}>{t('orders.final_amount', '實收金額')}</th>
+                                <th style={{ padding: '12px' }}>{t('orders.csv_headers.status', '狀態')}</th>
+                                <th style={{ padding: '12px' }}>{t('orders.csv_headers.time', '創建時間')}</th>
+                                <th style={{ padding: '12px', textAlign: 'right' }}>{t('orders.csv_headers.id', '操作')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredOrders.length === 0 ? (
                                 <tr>
-                                    <td colSpan="6" style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>No orders found</td>
+                                    <td colSpan="6" style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('orders.no_data', '暫無數據')}</td>
                                 </tr>
                             ) : (
                                 filteredOrders.map((order) => (
-                                    <tr key={order._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.9rem', hover: { background: 'rgba(255,255,255,0.02)' } }}>
+                                    <tr key={order._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.9rem' }}>
                                         <td style={{ padding: '14px 12px', fontWeight: 600, color: '#38bdf8' }}>{order.orderNo}</td>
-                                        <td style={{ padding: '14px 12px', color: '#e2e8f0' }}>{order.customerName || t('orders.guest')}</td>
+                                        <td style={{ padding: '14px 12px', color: '#e2e8f0' }}>{order.customerName || t('orders.anonymous_customer', '匿名客戶')}</td>
                                         <td style={{ padding: '14px 12px', fontWeight: 700, color: '#f8fafc' }}>
                                             {tenantConfig.currency}{(order.finalAmount || 0).toLocaleString()}
                                         </td>
@@ -196,7 +201,7 @@ const Orders = () => {
                                                 style={{ background: 'rgba(255,255,255,0.05)', border: 'none', padding: '6px 10px', borderRadius: '6px', color: '#cbd5e1', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                                             >
                                                 <Eye size={14} />
-                                                {t('orders.view', '詳情')}
+                                                <span>{t('orders.details_title', '詳情')}</span>
                                             </button>
                                         </td>
                                     </tr>
@@ -207,16 +212,16 @@ const Orders = () => {
                 </div>
             </div>
 
-            {/* 詳情彈窗彈出層 */}
+            {/* 詳情彈窗 */}
             {selectedOrder && (
                 <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 50, padding: '1rem' }}>
                     <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', width: '100%', maxWidth: '600px', maxHeight: '85vh', overflowY: 'auto', color: '#f8fafc' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.8rem' }}>
-                            <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('orders.order_no')}: {selectedOrder.orderNo}</h3>
+                            <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('orders.csv_headers.no')}: {selectedOrder.orderNo}</h3>
                             <StatusBadge status={selectedOrder.status} t={t} />
                         </div>
 
-                        {/* 商品明細項目清單 */}
+                        {/* 商品明細 */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '1.5rem' }}>
                             {selectedOrder.items?.map((item, index) => {
                                 const maxAvailable = item.qty - (item.returnQty || 0);
@@ -225,18 +230,18 @@ const Orders = () => {
                                         <div>
                                             <div style={{ fontWeight: 600 }}>{item.nameSnapshot || item.productId}</div>
                                             <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '2px' }}>
-                                                {tenantConfig.currency}{item.priceSnapshot} × {item.qty} 
-                                                {item.returnQty > 0 && <span style={{ color: '#f97316', marginLeft: '8px' }}>({t('orders.returned_count', '已退')} {item.returnQty})</span>}
+                                                {t('orders.unit_price')}: {tenantConfig.currency}{item.priceSnapshot} | {t('orders.quantity')}: {item.qty} 
+                                                {item.returnQty > 0 && <span style={{ color: '#f97316', marginLeft: '8px' }}>({t('orders.status_returned')} {item.returnQty})</span>}
                                             </div>
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                            <span style={{ fontWeight: 600 }}>{tenantConfig.currency}{((item.qty - (item.returnQty || 0)) * item.priceSnapshot).toLocaleString()}</span>
+                                            <span style={{ fontWeight: 600 }}>{t('orders.subtotal')}: {tenantConfig.currency}{((item.qty - (item.returnQty || 0)) * item.priceSnapshot).toLocaleString()}</span>
                                             {selectedOrder.status !== 'cancelled' && maxAvailable > 0 && (
                                                 <button 
                                                     onClick={() => handleReturn(selectedOrder.orderNo, item)}
                                                     style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#f97316', border: '1px solid rgba(249, 115, 22, 0.3)', padding: '4px 8px', borderRadius: '6px', fontSize: '0.8rem', cursor: 'pointer' }}
                                                 >
-                                                    {t('orders.action_return', '退貨')}
+                                                    {t('orders.return_btn', '退貨')}
                                                 </button>
                                             )}
                                         </div>
@@ -260,7 +265,7 @@ const Orders = () => {
 const StatusBadge = ({ status, t }) => {
     const configs = {
         paid: { color: '#4ade80', icon: CheckCircle, text: t('orders.status_paid', '已支付') },
-        pending: { color: '#fbbf24', icon: Clock, text: t('orders.status_pending', '待付款') },
+        pending: { color: '#fbbf24', icon: Clock, text: t('orders.status_pending', '待處理') },
         cancelled: { color: '#f87171', icon: XCircle, text: t('orders.status_cancelled', '已取消') },
         returned: { color: '#ef4444', icon: CheckCircle, text: t('orders.status_returned', '已退貨') },
         partially_returned: { color: '#f97316', icon: CheckCircle, text: t('orders.status_partially_returned', '部分退貨') },
