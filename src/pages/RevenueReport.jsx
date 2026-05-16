@@ -52,11 +52,15 @@ ChartJS.register(
 );
 
 const RevenueReport = () => {
+    // 1. Hooks 宣告
     const { user } = useAuth();
     const { tenantConfig } = useTenant();
     const { t } = useTranslation();
-    
-    // Date State
+
+    // 2. 需要用到 t 的輔助函式
+    const getPresetLabel = (p) => t(`reports.presets.${p}`);
+
+    // 3. 狀態宣告
     const getToday = () => new Date().toISOString().split('T')[0];
     const [dateRange, setDateRange] = useState({
         start: localStorage.getItem('rev_start') || getToday(),
@@ -66,8 +70,9 @@ const RevenueReport = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [activeTab, setActiveTab] = useState('overview'); // overview, products, categories
+    const [activeTab, setActiveTab] = useState('overview');
 
+    // 4. 副作用處理 (Effects) & RWD 樣式注入
     useEffect(() => {
         fetchData();
         localStorage.setItem('rev_start', dateRange.start);
@@ -75,25 +80,71 @@ const RevenueReport = () => {
     }, [dateRange]);
 
     useEffect(() => {
-    const styleTag = document.createElement('style');
-    styleTag.id = 'revenue-report-styles';
-    styleTag.innerHTML = `
-        table tr th { padding: 12px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        table tr td { padding: 16px 12px; background: rgba(255,255,255,0.02); }
-        table tr td:first-child { border-radius: 12px 0 0 12px; }
-        table tr td:last-child { border-radius: 0 12px 12px 0; }
-        .text-right { text-align: right; }
-        .text-center { text-align: center; }
-    `;
-    document.head.appendChild(styleTag);
+        const styleTag = document.createElement('style');
+        styleTag.id = 'revenue-report-styles';
+        styleTag.innerHTML = `
+            table tr th { padding: 12px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+            table tr td { padding: 16px 12px; background: rgba(255,255,255,0.02); }
+            table tr td:first-child { border-radius: 12px 0 0 12px; }
+            table tr td:last-child { border-radius: 0 12px 12px 0; }
+            .text-right { text-align: right; }
+            .text-center { text-align: center; }
+            
+            /* ===== RWD 手機端響應式優化 ===== */
+            @media (max-width: 1024px) {
+                .responsive-grid-visual {
+                    grid-template-columns: 1fr !important; /* 圖表改為上下單欄排列 */
+                }
+            }
+            
+            @media (max-width: 768px) {
+                .responsive-ctrl-bar {
+                    flex-direction: column !important;
+                    align-items: stretch !important;
+                }
+                .responsive-date-picker {
+                    width: 100% !important;
+                    justify-content: space-between !important;
+                }
+                .responsive-date-container {
+                    flex: 1 !important;
+                }
+                .responsive-date-input {
+                    width: 100% !important;
+                }
+                .responsive-presets {
+                    justify-content: flex-start !important;
+                    overflow-x: auto !important; /* 讓快捷按鈕在手機端可以橫向滑動，不擠壓變形 */
+                    white-space: nowrap !important;
+                    padding-bottom: 4px;
+                    -webkit-overflow-scrolling: touch;
+                }
+                .responsive-presets::-webkit-scrollbar {
+                    display: none; /* 隱藏滾動條保持美觀 */
+                }
+                .responsive-table-header {
+                    flex-direction: column !important;
+                    align-items: stretch !important;
+                    gap: 1rem !important;
+                }
+                .responsive-table-header > div {
+                    justify-content: space-between !important;
+                }
+                .responsive-table-header button {
+                    width: 100% !important;
+                    justify-content: center !important;
+                }
+            }
+        `;
+        document.head.appendChild(styleTag);
 
-    // 當組件卸載時，移除這個樣式，保持網頁乾淨
-    return () => {
-        const tag = document.getElementById('revenue-report-styles');
-        if (tag) tag.remove();
-    };
-}, []);
+        return () => {
+            const tag = document.getElementById('revenue-report-styles');
+            if (tag) tag.remove();
+        };
+    }, []);
 
+    // 5. 資料請求與事件處理
     const fetchData = async () => {
         setLoading(true);
         try {
@@ -117,9 +168,7 @@ const RevenueReport = () => {
         let end = new Date();
 
         switch (type) {
-            case 'today':
-                start = today;
-                break;
+            case 'today': start = today; break;
             case 'yesterday':
                 start.setDate(today.getDate() - 1);
                 end.setDate(today.getDate() - 1);
@@ -128,21 +177,14 @@ const RevenueReport = () => {
                 const day = today.getDay();
                 start.setDate(today.getDate() - day + (day === 0 ? -6 : 1));
                 break;
-            case 'thisMonth':
-                start = new Date(today.getFullYear(), today.getMonth(), 1);
-                break;
+            case 'thisMonth': start = new Date(today.getFullYear(), today.getMonth(), 1); break;
             case 'lastMonth':
                 start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
                 end = new Date(today.getFullYear(), today.getMonth(), 0);
                 break;
-            case 'last7':
-                start.setDate(today.getDate() - 6);
-                break;
-            case 'last30':
-                start.setDate(today.getDate() - 29);
-                break;
-            default:
-                break;
+            case 'last7': start.setDate(today.getDate() - 6); break;
+            case 'last30': start.setDate(today.getDate() - 29); break;
+            default: break;
         }
 
         setDateRange({
@@ -171,7 +213,6 @@ const RevenueReport = () => {
     const exportOverviewCSV = () => {
         if (!data?.details?.reports) return;
         const reports = data.details.reports;
-        //const headers = ['日期', '銷售額', '銷售成本', '毛利潤', '折扣', '支出'];
         const headers = [
             t('reports.table.date'), 
             t('reports.table.net_sales'), 
@@ -210,7 +251,7 @@ const RevenueReport = () => {
         _downloadCSV(headers, rows, ['合計', sumQty, sumRev, Math.round(sumRev - sumCost)], `category_report_${dateRange.start}_${dateRange.end}.csv`);
     };
 
-    // Chart Data Preparation
+    // 6. 圖表資料準備
     const trendChartData = useMemo(() => {
         if (!data?.details?.reports) return null;
         const reports = data.details.reports;
@@ -267,80 +308,84 @@ const RevenueReport = () => {
 
     const { summary } = data || {};
 
+    // 8. 渲染 JSX
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingBottom: '2rem' }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingBottom: '2rem', width: '100%' }}
         >
-            {/* Control Bar */}
-            <div className="glass-panel" style={{ padding: '1.2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.2rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <div style={dateInputContainer}>
+            {/* Control Bar (加上了 responsive class 處理手機端換行) */}
+            <div className="glass-panel responsive-ctrl-bar" style={{ padding: '1.2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.2rem' }}>
+                <div className="responsive-date-picker" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', width: 'auto' }}>
+                    <div className="responsive-date-container" style={dateInputContainer}>
                         <Calendar size={16} color="var(--text-muted)" />
                         <input
                             type="date"
                             value={dateRange.start}
                             onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
+                            className="responsive-date-input"
                             style={dateInputStyle}
                         />
                     </div>
                     <span style={{ color: 'var(--text-muted)', fontWeight: 500 }}>→</span>
-                    <div style={dateInputContainer}>
+                    <div className="responsive-date-container" style={dateInputContainer}>
                         <Calendar size={16} color="var(--text-muted)" />
                         <input
                             type="date"
                             value={dateRange.end}
                             onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
+                            className="responsive-date-input"
                             style={dateInputStyle}
                         />
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                    {['today', 'yesterday', 'thisWeek', 'thisMonth', 'last7', 'last30'].map(p => (
+                {/* 快捷預設按鈕區：手機端支援橫向滑動 */}
+                <div className="responsive-presets" style={{ display: 'flex', gap: '0.4rem', flexWrap: 'nowrap', width: '100%', justifyContent: 'flex-end' }}>
+                    {['today', 'yesterday', 'thisWeek', 'thisMonth', 'lastMonth', 'last7', 'last30'].map(p => (
                         <button key={p} className="btn-secondary" onClick={() => handlePreset(p)} style={presetBtnStyle}>
                             {getPresetLabel(p)}
                         </button>
                     ))}
                 </div>
-            </div> {/* Added missing closing div for Control Bar */}
+            </div>
 
-            {/* Metrics Dashboard */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.2rem' }}>
+            {/* Metrics Dashboard (優化最小寬度為 140px，讓手機端能完美呈現 2x2 網格) */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
                 <MetricCard icon={DollarSign} label={t('reports.metrics.total_revenue')} value={summary?.salesIncome} color="#60a5fa" currency={tenantConfig.currency} trend={2.5} />
                 <MetricCard icon={TrendingUp} label={t('reports.metrics.gross_profit')} value={summary?.estimatedProfit} color="#4ade80" currency={tenantConfig.currency} trend={5.4} />
                 <MetricCard icon={Tag} label={t('reports.metrics.discounts')} value={summary?.totalDiscount} color="#fbbf24" currency={tenantConfig.currency} trend={-1.2} />
                 <MetricCard icon={Store} label={t('reports.metrics.expenditure')} value={summary?.storeExpenditure} color="#f87171" currency={tenantConfig.currency} trend={0.8} />
             </div>
 
-            {/* Main Visual Content */}
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', minHeight: '400px' }}>
+            {/* Main Visual Content (加上面平板/手機自動切換單欄 class) */}
+            <div className="responsive-grid-visual" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
                 {/* Trend Chart */}
-                <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                        <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}><Activity size={20} color="var(--primary)" /> {t('reports.charts.trend_title')}</h3>
-                        <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{dateRange.start} ~ {dateRange.end}</div>
+                <div className="glass-panel" style={{ padding: '1.2rem', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1.1rem' }}><Activity size={20} color="var(--primary)" /> {t('reports.charts.trend_title')}</h3>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{dateRange.start} ~ {dateRange.end}</div>
                     </div>
-                    <div style={{ flex: 1, minHeight: '300px' }}>
+                    <div style={{ flex: 1, minHeight: '260px', height: '100%' }}>
                         {trendChartData && <Line data={trendChartData} options={lineOptions} />}
                     </div>
                 </div>
 
                 {/* Category Pie */}
-                <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
-                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem' }}><PieChartIcon size={20} color="var(--secondary)" /> {t('reports.charts.category_pie')}</h3>
-                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        {pieChartData && <div style={{ width: '80%', position: 'relative' }}>
+                <div className="glass-panel" style={{ padding: '1.2rem', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem', fontSize: '1.1rem' }}><PieChartIcon size={20} color="var(--secondary)" /> {t('reports.charts.category_pie')}</h3>
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '200px' }}>
+                        {pieChartData && <div style={{ width: '70%', maxWidth: '220px', position: 'relative' }}>
                             <Pie data={pieChartData} options={pieOptions} />
                         </div>}
                     </div>
                     {data?.analysis?.categorySummary && (
                         <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             {data.analysis.categorySummary.slice(0, 4).map((c, i) => (
-                                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
-                                    <span style={{ color: 'var(--text-muted)' }}>{c.name || '未分類'}</span>
-                                    <span style={{ fontWeight: 600 }}>{tenantConfig.currency}{c.revenue?.toLocaleString()}</span>
+                                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                                    <span style={{ color: 'var(--text-muted)', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', marginRight: '8px' }}>{c.name || '未分類'}</span>
+                                    <span style={{ fontWeight: 600, flexShrink: 0 }}>{tenantConfig.currency}{c.revenue?.toLocaleString()}</span>
                                 </div>
                             ))}
                         </div>
@@ -348,9 +393,10 @@ const RevenueReport = () => {
                 </div>
             </div>
 
-            <div className="glass-panel" style={{ padding: '0' }}>
-                <div style={{ padding: '1.2rem 1.5rem', borderBottom: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem' }}>
-                    <div style={{ display: 'flex', gap: '2rem' }}>
+            {/* Data Table Section */}
+            <div className="glass-panel" style={{ padding: '0', minWidth: 0 }}>
+                <div className="responsive-table-header" style={{ padding: '1.2rem 1.5rem', borderBottom: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem' }}>
+                    <div style={{ display: 'flex', gap: '1.5rem' }}>
                         <TabButton active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} label={t('reports.tabs.daily_detail')} />
                         <TabButton active={activeTab === 'products'} onClick={() => setActiveTab('products')} label={t('reports.tabs.hot_products')} />
                         <TabButton active={activeTab === 'categories'} onClick={() => setActiveTab('categories')} label={t('reports.tabs.category_analysis')} />
@@ -367,7 +413,8 @@ const RevenueReport = () => {
                     </button>
                 </div>
                 
-                <div style={{ padding: '1rem', overflowX: 'auto' }}>
+                {/* 滾動條容器，在小螢幕自動啟用橫向手勢滑動表格 */}
+                <div style={{ padding: '0.5rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
                     <table style={modernTableStyle}>
                         <thead>
                             {activeTab === 'overview' ? (
@@ -398,12 +445,12 @@ const RevenueReport = () => {
                             )}
                         </thead>
                         <tbody>
-                            {activeTab === 'overview' && data.details.reports.map((r, i) => {
+                            {activeTab === 'overview' && data?.details?.reports?.map((r, i) => {
                                 const profit = r.totalRevenue - r.totalCost;
                                 const margin = r.totalRevenue > 0 ? (profit / r.totalRevenue) * 100 : 0;
                                 return (
                                     <tr key={i}>
-                                        <td style={{ fontWeight: 500 }}>{r.date}</td>
+                                        <td style={{ fontWeight: 500, whiteSpace: 'nowrap' }}>{r.date}</td>
                                         <td className="text-right">{tenantConfig.currency}{r.totalRevenue.toLocaleString()}</td>
                                         <td className="text-right" style={{ color: 'var(--text-muted)' }}>{tenantConfig.currency}{r.totalCost.toLocaleString()}</td>
                                         <td className="text-right" style={{ color: '#4ade80', fontWeight: 600 }}>{tenantConfig.currency}{profit.toLocaleString()}</td>
@@ -414,7 +461,7 @@ const RevenueReport = () => {
                                     </tr>
                                 );
                             })}
-                            {activeTab === 'overview' && data.details.reports.length > 0 && (() => {
+                            {activeTab === 'overview' && data?.details?.reports?.length > 0 && (() => {
                                 const reps = data.details.reports;
                                 const sumRev = reps.reduce((s, r) => s + (r.totalRevenue || 0), 0);
                                 const sumCost = reps.reduce((s, r) => s + (r.totalCost || 0), 0);
@@ -432,20 +479,20 @@ const RevenueReport = () => {
                                     </tr>
                                 );
                             })()}
-                            {activeTab === 'products' && data.analysis.topProducts.map((p, i) => (
+                            {activeTab === 'products' && data?.analysis?.topProducts?.map((p, i) => (
                                 <tr key={i}>
-                                    <td style={{ fontWeight: 500 }}>{p.name || t('reports.table.unknown_product')}</td>
-                                    <td className="text-center">{p.qty} {t('reports.table.unit')}</td>
+                                    <td style={{ fontWeight: 500, minWidth: '120px' }}>{p.name || t('reports.table.unknown_product')}</td>
+                                    <td className="text-center" style={{ whiteSpace: 'nowrap' }}>{p.qty} {t('reports.table.unit')}</td>
                                     <td className="text-right">{tenantConfig.currency}{p.revenue.toLocaleString()}</td>
                                     <td className="text-right" style={{ color: '#4ade80' }}>{tenantConfig.currency}{(p.revenue - (p.cost || 0)).toLocaleString()}</td>
                                     <td className="text-center">
-                                        <div style={{ height: '4px', width: '60px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', margin: '0 auto' }}>
+                                        <div style={{ height: '4px', width: '50px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', margin: '0 auto' }}>
                                             <div style={{ height: '100%', width: `${Math.min(100, (p.revenue / (summary?.salesIncome || 1)) * 500)}%`, background: 'var(--primary)', borderRadius: '2px' }} />
                                         </div>
                                     </td>
                                 </tr>
                             ))}
-                            {activeTab === 'products' && data.analysis.topProducts.length > 0 && (() => {
+                            {activeTab === 'products' && data?.analysis?.topProducts?.length > 0 && (() => {
                                 const prods = data.analysis.topProducts;
                                 const sumQty = prods.reduce((s, p) => s + (p.qty || 0), 0);
                                 const sumRev = prods.reduce((s, p) => s + (p.revenue || 0), 0);
@@ -460,16 +507,16 @@ const RevenueReport = () => {
                                     </tr>
                                 );
                             })()}
-                            {activeTab === 'categories' && data.analysis.categorySummary.map((c, i) => (
+                            {activeTab === 'categories' && data?.analysis?.categorySummary?.map((c, i) => (
                                 <tr key={i}>
-                                    <td style={{ fontWeight: 500 }}>{c.name || '未分類'}</td>
-                                    <td className="text-center">{c.qty} 件</td>
+                                    <td style={{ fontWeight: 500, whiteSpace: 'nowrap' }}>{c.name || '未分類'}</td>
+                                    <td className="text-center" style={{ whiteSpace: 'nowrap' }}>{c.qty} 件</td>
                                     <td className="text-right">{tenantConfig.currency}{c.revenue.toLocaleString()}</td>
                                     <td className="text-right" style={{ color: '#60a5fa' }}>{tenantConfig.currency}{(c.revenue - (c.cost || 0)).toLocaleString()}</td>
                                     <td className="text-center">{((c.revenue / (summary?.salesIncome || 1)) * 100).toFixed(1)}%</td>
                                 </tr>
                             ))}
-                            {activeTab === 'categories' && data.analysis.categorySummary.length > 0 && (() => {
+                            {activeTab === 'categories' && data?.analysis?.categorySummary?.length > 0 && (() => {
                                 const cats = data.analysis.categorySummary;
                                 const sumQty = cats.reduce((s, c) => s + (c.qty || 0), 0);
                                 const sumRev = cats.reduce((s, c) => s + (c.revenue || 0), 0);
@@ -497,24 +544,24 @@ const MetricCard = ({ icon: Icon, label, value, color, currency, trend }) => (
     <motion.div
         whileHover={{ scale: 1.02 }}
         className="glass-panel animate-fade-in"
-        style={{ padding: '1.5rem', position: 'relative', overflow: 'hidden' }}
+        style={{ padding: '1rem', position: 'relative', overflow: 'hidden' }}
     >
-        <div style={{ position: 'absolute', top: '-10%', right: '-5%', opacity: 0.05 }}>
-            <Icon size={100} color={color} />
+        <div style={{ position: 'absolute', top: '-10%', right: '-5%', opacity: 0.03 }}>
+            <Icon size={80} color={color} />
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-            <div style={{ padding: '0.6rem', background: `${color}15`, borderRadius: '12px' }}>
-                <Icon size={22} color={color} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.6rem' }}>
+            <div style={{ padding: '0.5rem', background: `${color}15`, borderRadius: '10px' }}>
+                <Icon size={18} color={color} />
             </div>
             {trend && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', fontWeight: 600, color: trend > 0 ? '#4ade80' : '#f87171' }}>
-                    {trend > 0 ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '2px', fontSize: '0.75rem', fontWeight: 600, color: trend > 0 ? '#4ade80' : '#f87171' }}>
+                    {trend > 0 ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
                     {Math.abs(trend)}%
                 </div>
             )}
         </div>
-        <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.4rem', fontWeight: 500 }}>{label}</div>
-        <div style={{ fontSize: '1.8rem', fontWeight: 800, letterSpacing: '-0.5px' }}>
+        <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginBottom: '0.2rem', fontWeight: 500, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{label}</div>
+        <div style={{ fontSize: '1.4rem', fontWeight: 800, letterSpacing: '-0.5px', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
             {currency}{value?.toLocaleString() || 0}
         </div>
     </motion.div>
@@ -529,10 +576,11 @@ const TabButton = ({ active, onClick, label }) => (
             padding: '0.5rem 0',
             color: active ? 'var(--primary)' : 'var(--text-muted)',
             fontWeight: 600,
-            fontSize: '0.95rem',
+            fontSize: '0.9rem',
             cursor: 'pointer',
             position: 'relative',
-            transition: 'color 0.3s ease'
+            transition: 'color 0.3s ease',
+            whiteSpace: 'nowrap'
         }}
     >
         {label}
@@ -546,16 +594,14 @@ const TabButton = ({ active, onClick, label }) => (
 );
 
 // Helpers
-
-const getPresetLabel = (p) => t(`reports.presets.${p}`);
-
 const marginBadgeStyle = (m) => ({
-    padding: '3px 8px',
+    padding: '3px 6px',
     borderRadius: '6px',
-    fontSize: '0.8rem',
+    fontSize: '0.75rem',
     fontWeight: 700,
     background: m > 30 ? 'rgba(74, 222, 128, 0.15)' : 'rgba(251, 191, 36, 0.15)',
-    color: m > 30 ? '#4ade80' : '#fbbf24'
+    color: m > 30 ? '#4ade80' : '#fbbf24',
+    whiteSpace: 'nowrap'
 });
 
 // Chart Options
@@ -575,11 +621,11 @@ const lineOptions = {
     scales: {
         y: {
             grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
-            ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 11 } }
+            ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 10 } }
         },
         x: {
             grid: { display: false },
-            ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 11 } }
+            ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 10 } }
         }
     }
 };
@@ -593,26 +639,14 @@ const pieOptions = {
 
 // Inline Styles
 const fullCenterStyle = { height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' };
-const dateInputContainer = { display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'rgba(255,255,255,0.05)', padding: '0.6rem 1rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' };
-const dateInputStyle = { background: 'transparent', border: 'none', color: 'white', outline: 'none', fontSize: '0.95rem', width: '110px' };
-const presetBtnStyle = { padding: '0.5rem 1rem', fontSize: '0.85rem', borderRadius: '10px' };
+const dateInputContainer = { display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 0.8rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' };
+const dateInputStyle = { background: 'transparent', border: 'none', color: 'white', outline: 'none', fontSize: '0.9rem', width: '105px' };
+const presetBtnStyle = { padding: '0.4rem 0.8rem', fontSize: '0.8rem', borderRadius: '10px', flexShrink: 0 };
 const modernTableStyle = {
     width: '100%',
     borderCollapse: 'separate',
     borderSpacing: '0 8px',
-    fontSize: '0.95rem'
+    fontSize: '0.9rem'
 };
-
-// Global styles addition for table //加第二個 useEffect(() => { 所以刪這個！
-// const styleTag = document.createElement('style');
-// styleTag.innerHTML = `
-//     table.modern-table tr th { padding: 12px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
-//     table tr td { padding: 16px 12px; background: rgba(255,255,255,0.02); }
-//     table tr td:first-child { border-radius: 12px 0 0 12px; }
-//     table tr td:last-child { border-radius: 0 12px 12px 0; }
-//     .text-right { text-align: right; }
-//     .text-center { text-align: center; }
-// `;
-// document.head.appendChild(styleTag);
 
 export default RevenueReport;
