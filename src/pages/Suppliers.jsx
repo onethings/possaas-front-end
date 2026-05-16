@@ -72,10 +72,15 @@ const Suppliers = () => {
     const filtered = suppliers.filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>{t('suppliers.title')}</h2>
-                <button onClick={() => { setNewSupplier({ name: '', contactPerson: '', email: '', phone: '', address: '' }); setModalOpen(true); }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="animate-fade-in" style={containerStyle}>
+            {/* 頂部標題列：手機端改為上下排列或自動換行 */}
+            <div style={headerStyle}>
+                <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{t('suppliers.title')}</h2>
+                <button 
+                    onClick={() => { setNewSupplier({ name: '', contactPerson: '', email: '', phone: '', address: '' }); setModalOpen(true); }} 
+                    className="btn-primary" 
+                    style={addBtnStyle}
+                >
                     <Plus size={18} /> {t('suppliers.add_btn')}
                 </button>
             </div>
@@ -95,34 +100,41 @@ const Suppliers = () => {
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+            {/* 卡片網格佈局：利用 minmax 自動適應寬度，手機端會自動單列顯示 */}
+            <div style={gridStyle}>
                 {loading ? (
                     <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '3rem' }}><Loader2 className="animate-spin" /></div>
                 ) : filtered.map(s => (
-                    <div key={s._id} className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                <div style={{ background: 'var(--primary-light)', padding: '0.5rem', borderRadius: '8px', color: 'var(--primary)' }}><Truck size={20} /></div>
-                                <h3 style={{ fontSize: '1.1rem' }}>{s.name}</h3>
+                    <div key={s._id} className="glass-panel" style={cardStyle}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
+                                <div style={{ background: 'var(--primary-light)', padding: '0.5rem', borderRadius: '8px', color: 'var(--primary)', flexShrink: 0 }}><Truck size={20} /></div>
+                                <h3 style={{ fontSize: '1.1rem', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.name}</h3>
                             </div>
-                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
                                 <button onClick={() => handleEdit(s)} style={actionBtnStyle}><Edit2 size={16} /></button>
                                 <button onClick={() => handleDelete(s._id)} style={actionBtnStyle}><Trash2 size={16} color="#f87171" /></button>
                             </div>
                         </div>
-                        <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Phone size={14} /> {s.phone || 'N/A'}</div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Mail size={14} /> {s.email || 'N/A'}</div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><MapPin size={14} /> {s.address || 'N/A'}</div>
+                        <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '0.5rem', wordBreak: 'break-word' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Phone size={14} style={{ flexShrink: 0 }} /> {s.phone || 'N/A'}</div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Mail size={14} style={{ flexShrink: 0 }} /> {s.email || 'N/A'}</div>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}><MapPin size={14} style={{ flexShrink: 0, marginTop: '2px' }} /> {s.address || 'N/A'}</div>
                         </div>
                     </div>
                 ))}
             </div>
 
+            {/* 彈窗：優化了手機端寬度和內邊距 */}
             {isModalOpen && (
                 <div style={modalOverlayStyle}>
-                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '400px', padding: '2rem' }}>
-                        <h3>{newSupplier._id ? t('suppliers.modal.title_edit') : t('suppliers.modal.title_add')}</h3>
+                    <motion.div 
+                        initial={{ scale: 0.9, opacity: 0 }} 
+                        animate={{ scale: 1, opacity: 1 }} 
+                        className="glass-panel" 
+                        style={modalContentStyle}
+                    >
+                        <h3 style={{ margin: 0 }}>{newSupplier._id ? t('suppliers.modal.title_edit') : t('suppliers.modal.title_add')}</h3>
                         <form onSubmit={handleCreate} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
                                 <label htmlFor="sup-name">{t('suppliers.modal.label_name')}</label>
@@ -156,8 +168,18 @@ const Suppliers = () => {
     );
 };
 
-const searchStyle = { padding: '0.8rem 1rem 0.8rem 40px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', width: '100%', outline: 'none' };
-const actionBtnStyle = { background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '4px', padding: '6px', cursor: 'pointer', color: 'var(--text-muted)' };
-const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 };
+// 響應式與優化後的樣式對象
+const containerStyle = { display: 'flex', flexDirection: 'column', gap: '1rem', padding: '0.5rem' };
+const headerStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' };
+const addBtnStyle = { display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' };
+
+const searchStyle = { padding: '0.8rem 1rem 0.8rem 40px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', width: '100%', outline: 'none', boxSizing: 'border-box' };
+const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' };
+const cardStyle = { padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: 0 };
+const actionBtnStyle = { background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '4px', padding: '6px', cursor: 'pointer', color: 'var(--text-muted)', flexShrink: 0 };
+
+// 彈窗自適應核心：用 width: '90%' 配合 maxWidth，確保大螢幕不放大、小螢幕不破版
+const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' };
+const modalContentStyle = { width: '90%', maxWidth: '420px', padding: '1.5rem', boxSizing: 'border-box', maxHeight: '90vh', overflowY: 'auto' };
 
 export default Suppliers;

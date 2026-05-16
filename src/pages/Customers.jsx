@@ -102,15 +102,16 @@ const Customers = () => {
             className="animate-fade-in"
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
         >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>{t('customer_management')}</h2>
-                <div style={{ display: 'flex', gap: '1rem' }}>
+            {/* 頂部動作欄：在手機端改為垂直排列 */}
+            <div className="header-action-container">
+                <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{t('customer_management')}</h2>
+                <div style={{ display: 'flex', gap: '0.75rem', width: '100%', justifyContent: 'flex-end' }} className="mobile-buttons">
                     {selectedIds.length > 0 && (
-                        <button onClick={handleBatchDelete} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f87171', borderColor: '#f87171' }}>
-                            <Trash2 size={18} /> {t('delete')} ({selectedIds.length})
+                        <button onClick={handleBatchDelete} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#f87171', borderColor: '#f87171', flex: '1' }}>
+                            <Trash2 size={18} /> <span className="hide-on-mobile">{t('delete')}</span> ({selectedIds.length})
                         </button>
                     )}
-                    <button onClick={() => { setEditId(null); setNewCustomer({ name: '', phone: '', email: '', address: '' }); setModalOpen(true); }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <button onClick={() => { setEditId(null); setNewCustomer({ name: '', phone: '', email: '', address: '' }); setModalOpen(true); }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flex: '1' }}>
                         <Plus size={18} /> {t('add_customer')}
                     </button>
                 </div>
@@ -131,45 +132,52 @@ const Customers = () => {
                 </div>
             </div>
 
-            <div className="glass-panel" style={{ overflow: 'hidden', minHeight: '300px', display: 'flex', flexDirection: 'column' }}>
+            {/* 表格容器：大螢幕正常表格，小螢幕隱藏非核心欄位，並允許橫向微滾動防止破版 */}
+            <div className="glass-panel" style={{ overflowX: 'auto', minHeight: '300px', display: 'flex', flexDirection: 'column' }}>
                 {loading ? (
                     <div style={centerStyle}><Loader2 className="animate-spin" /> {t('loading')}</div>
                 ) : customers.length === 0 ? (
                     <div style={centerStyle}>{t('no_data')}</div>
                 ) : (
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '320px' }}>
                         <thead>
                             <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
-                                <th style={{ padding: '1.2rem', width: '40px' }}>
-                                    <button onClick={() => setSelectedIds(selectedIds.length === filteredCustomers.length ? [] : filteredCustomers.map(c => c._id))} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
+                                <th style={{ padding: '1rem 0.5rem', width: '40px', textAlign: 'center' }}>
+                                    <button onClick={() => setSelectedIds(selectedIds.length === filteredCustomers.length ? [] : filteredCustomers.map(c => c._id))} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}>
                                         {selectedIds.length === filteredCustomers.length && filteredCustomers.length > 0 ? <CheckSquare size={18} /> : <Square size={18} />}
                                     </button>
                                 </th>
                                 <th style={thStyle}>{t('name')}</th>
                                 <th style={thStyle}>{t('phone')}</th>
-                                <th style={thStyle}>{t('email')}</th>
-                                <th style={thStyle}>{t('address')}</th>
-                                <th style={thStyle}>{t('points')}</th>
-                                <th style={thStyle}>{t('actions')}</th>
+                                <th style={thStyle} className="hide-on-mobile">{t('email')}</th>
+                                <th style={thStyle} className="hide-on-mobile">{t('address')}</th>
+                                <th style={thStyle} className="hide-on-tablet">{t('points')}</th>
+                                <th style={{ ...thStyle, textAlign: 'right', paddingRight: '1rem' }}>{t('actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredCustomers.map((c) => (
                                 <tr key={c._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: selectedIds.includes(c._id) ? 'rgba(255,255,255,0.05)' : 'transparent' }}>
-                                    <td style={{ padding: '1.2rem' }}>
-                                        <button onClick={() => toggleSelect(c._id)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
+                                    <td style={{ padding: '1rem 0.5rem', textAlign: 'center' }}>
+                                        <button onClick={() => toggleSelect(c._id)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}>
                                             {selectedIds.includes(c._id) ? <CheckSquare size={18} color="var(--primary)" /> : <Square size={18} color="var(--text-muted)" />}
                                         </button>
                                     </td>
-                                    <td style={tdStyle}>{c.name}</td>
-                                    <td style={tdStyle}>{c.phone || 'N/A'}</td>
-                                    <td style={tdStyle}>{c.email || 'N/A'}</td>
-                                    <td style={tdStyle}>{c.address || 'N/A'}</td>
                                     <td style={tdStyle}>
+                                        <div style={{ fontWeight: 500 }}>{c.name}</div>
+                                        {/* 手機端把積分直接掛在名字下面展示，省去一欄 */}
+                                        <div className="show-on-tablet" style={{ fontSize: '0.8rem', color: 'var(--primary-light)', marginTop: '2px' }}>
+                                            {c.points || 0} pt
+                                        </div>
+                                    </td>
+                                    <td style={tdStyle}>{c.phone || 'N/A'}</td>
+                                    <td style={tdStyle} className="hide-on-mobile">{c.email || 'N/A'}</td>
+                                    <td style={tdStyle} className="hide-on-mobile">{c.address || 'N/A'}</td>
+                                    <td style={tdStyle} className="hide-on-tablet">
                                         <span style={{ fontWeight: 700, color: 'var(--primary-light)' }}>{c.points || 0} pt</span>
                                     </td>
-                                    <td style={tdStyle}>
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <td style={{ ...tdStyle, textAlign: 'right', paddingRight: '1rem' }}>
+                                        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                                             <button onClick={() => handleEdit(c)} style={actionBtnStyle}><Edit2 size={16} /></button>
                                         </div>
                                     </td>
@@ -180,11 +188,15 @@ const Customers = () => {
                 )}
             </div>
 
-            {/* Modal */}
+            {/* Modal - 寬度自適應 */}
             {isModalOpen && (
                 <div style={modalOverlayStyle}>
-                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={modalContentStyle}>
-                        {/* 根據 editId 動態切換標題 */}
+                    <motion.div 
+                        initial={{ scale: 0.9, opacity: 0 }} 
+                        animate={{ scale: 1, opacity: 1 }} 
+                        className="glass-panel responsive-modal" 
+                        style={modalContentStyle}
+                    >
                         <h3 style={{ marginBottom: '1.5rem' }}>
                             {editId ? t('edit_customer') : t('add_customer')}
                         </h3>
@@ -256,12 +268,13 @@ const Customers = () => {
     );
 };
 
-const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 };
-const modalContentStyle = { width: '450px', padding: '2rem' };
-const thStyle = { padding: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, textAlign: 'left' };
-const tdStyle = { padding: '1.2rem', fontSize: '0.95rem' };
+// 樣式調整
+const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' };
+const modalContentStyle = { width: '100%', maxWidth: '450px', padding: '1.5rem' };
+const thStyle = { padding: '1rem 0.75rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, textAlign: 'left' };
+const tdStyle = { padding: '1rem 0.75rem', fontSize: '0.9rem' };
 const searchStyle = { padding: '0.8rem 1rem 0.8rem 40px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', width: '100%', outline: 'none' };
 const centerStyle = { height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', gap: '0.5rem' };
-const actionBtnStyle = { background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '4px', padding: '6px', cursor: 'pointer', color: 'var(--text-muted)' };
+const actionBtnStyle = { background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '4px', padding: '8px', cursor: 'pointer', color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center' };
 
 export default Customers;

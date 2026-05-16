@@ -13,6 +13,9 @@ const InventoryCounts = () => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [submitting, setSubmitting] = useState(false);
 
+    // 監聽是否為手機螢幕的狀態 (小於 768px)
+    const [isMobile, setIsMobile] = useState(false);
+
     const [adjustment, setAdjustment] = useState({
         productId: '',
         variantId: '',
@@ -23,6 +26,15 @@ const InventoryCounts = () => {
 
     useEffect(() => {
         fetchProducts();
+
+        // 監聽螢幕寬度變化
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        
+        handleResize(); // 初始化檢查
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const fetchProducts = async () => {
@@ -41,7 +53,6 @@ const InventoryCounts = () => {
         e.preventDefault();
         setSubmitting(true);
         try {
-            // 清理變數：如果 variantId 是空字串，則不傳送，避免後端 ObjectId 轉換失敗
             const payload = { ...adjustment };
             if (!payload.variantId) delete payload.variantId;
 
@@ -61,11 +72,34 @@ const InventoryCounts = () => {
     const selectedProduct = products.find(p => p._id === adjustment.productId);
     const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
+    // 動態響應式樣式
+    const headerStyle = {
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        justifyContent: 'space-between',
+        alignItems: isMobile ? 'stretch' : 'center',
+        gap: isMobile ? '1rem' : '0.5rem',
+        marginBottom: '1.5rem'
+    };
+
+    const modalStyle = {
+        width: '90%',
+        maxWidth: '450px',
+        maxHeight: '90vh',
+        overflowY: 'auto',
+        padding: isMobile ? '1.5rem' : '2rem'
+    };
+
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>{t('inventory.title')}</h2>
-                <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ padding: isMobile ? '0.5rem' : '0' }}>
+            {/* 頂部標題與按鈕自適應 */}
+            <div style={headerStyle}>
+                <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{t('inventory.title')}</h2>
+                <button 
+                    onClick={() => setModalOpen(true)} 
+                    className="btn-primary" 
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.75rem 1rem' }}
+                >
                     <Plus size={18} /> {t('inventory.add_adjustment')}
                 </button>
             </div>
@@ -85,33 +119,61 @@ const InventoryCounts = () => {
                 </div>
             </div>
 
-            <div className="glass-panel" style={{ overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                        <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
-                            <th style={thStyle}>{t('inventory.table.product_name')}</th>
-                            <th style={thStyle}>{t('inventory.table.sku')}</th>
-                            <th style={thStyle}>{t('inventory.table.current_stock')}</th>
-                            <th style={thStyle}>{t('inventory.table.unit')}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            {/* 表格自適應優化 */}
+            <div className="glass-panel" style={{ overflowX: 'auto', border: isMobile ? 'none' : '1px solid rgba(255,255,255,0.05)', background: isMobile ? 'transparent' : '' }}>
+                {isMobile ? (
+                    // 手機端：卡片式佈局 (Card Layout)
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         {filteredProducts.map(p => (
-                            <tr key={p._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                <td style={tdStyle}>{p.name}</td>
-                                <td style={tdStyle}><code>{p.sku}</code></td>
-                                <td style={tdStyle}>{p.stock}</td>
-                                <td style={tdStyle}>{p.soldBy === 'weight' ? 'kg' : 'pcs'}</td>
-                            </tr>
+                            <div key={p._id} className="glass-panel" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                    <span style={{ fontWeight: '600', fontSize: '1rem', color: '#fff' }}>{p.name}</span>
+                                    <code>{p.sku}</code>
+                                </div>
+                                <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.05)', margin: '0.5rem 0' }} />
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+                                    <span style={{ color: 'var(--text-muted)' }}>{t('inventory.table.current_stock')}:</span>
+                                    <span style={{ fontWeight: '600' }}>{p.stock} {p.soldBy === 'weight' ? 'kg' : 'pcs'}</span>
+                                </div>
+                            </div>
                         ))}
-                    </tbody>
-                </table>
+                    </div>
+                ) : (
+                    // 電腦端：傳統表格
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+                                <th style={thStyle}>{t('inventory.table.product_name')}</th>
+                                <th style={thStyle}>{t('inventory.table.sku')}</th>
+                                <th style={thStyle}>{t('inventory.table.current_stock')}</th>
+                                <th style={thStyle}>{t('inventory.table.unit')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredProducts.map(p => (
+                                <tr key={p._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <td style={tdStyle}>{p.name}</td>
+                                    <td style={tdStyle}><code>{p.sku}</code></td>
+                                    <td style={tdStyle}>{p.stock}</td>
+                                    <td style={tdStyle}>{p.soldBy === 'weight' ? 'kg' : 'pcs'}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
 
+            {/* 彈窗自適應優化 */}
             {isModalOpen && (
                 <div style={modalOverlayStyle}>
-                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '450px', padding: '2rem' }}>
+                    <motion.div 
+                        initial={{ scale: 0.9, opacity: 0 }} 
+                        animate={{ scale: 1, opacity: 1 }} 
+                        className="glass-panel" 
+                        style={modalStyle}
+                    >
                         <h3>{t('inventory.modal.title')}</h3>
+                        {/* 這裡已修正大括號缺失問題 */}
                         <form onSubmit={handleAdjust} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
                                 <label htmlFor="adj-product">{t('inventory.modal.product')}</label>
@@ -206,7 +268,7 @@ const InventoryCounts = () => {
 const thStyle = { padding: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.1)' };
 const tdStyle = { padding: '1.2rem', fontSize: '0.95rem' };
 const selectStyle = { padding: '0.75rem 1rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', outline: 'none', width: '100%' };
-const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 };
+const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' };
 const searchStyle = { padding: '0.8rem 1rem 0.8rem 40px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', width: '100%', outline: 'none' };
 
 export default InventoryCounts;

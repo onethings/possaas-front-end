@@ -65,42 +65,104 @@ const PurchaseOrders = () => {
                 fetchInitialData();
             }
         } catch (error) {
-            alert(t('purchase_orders.add_failed')); //新增失敗
+            alert(t('purchase_orders.add_failed'));
         } finally {
             setSubmitting(false);
         }
     };
 
     const handleReceive = async (id) => {
-        if (!window.confirm(t('purchase_orders.confirm_receive'))) return; //確認收貨？這將會更新相關產品庫存。
+        if (!window.confirm(t('purchase_orders.confirm_receive'))) return;
         try {
             const result = await receivePurchaseOrder(id);
             if (result.success) fetchInitialData();
         } catch (error) {
-            alert(t('purchase_orders.receive_failed'));//收貨失敗
+            alert(t('purchase_orders.receive_failed'));
         }
     };
 
     const getStatusStyle = (status) => {
         switch (status) {
-            case 'received': return { icon: <CheckCircle size={14} />, color: '#4ade80', label: t('purchase_orders.status_received') };//已收貨
-            case 'ordered': return { icon: <Clock size={14} />, color: '#fbbf24', label: t('purchase_orders.status_ordered') };//已下單
-            case 'cancelled': return { icon: <XCircle size={14} />, color: '#f87171', label: t('purchase_orders.status_cancelled') };//已取消
-            default: return { icon: <FileText size={14} />, color: 'var(--text-muted)', label: t('purchase_orders.status_draft') };//草稿
+            case 'received': return { icon: <CheckCircle size={14} />, color: '#4ade80', label: t('purchase_orders.status_received') };
+            case 'ordered': return { icon: <Clock size={14} />, color: '#fbbf24', label: t('purchase_orders.status_ordered') };
+            case 'cancelled': return { icon: <XCircle size={14} />, color: '#f87171', label: t('purchase_orders.status_cancelled') };
+            default: return { icon: <FileText size={14} />, color: 'var(--text-muted)', label: t('purchase_orders.status_draft') };
         }
     };
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>{t('purchase_orders.title')}</h2>
+            {/* 樣式注入：處理 RWD 的 Table 滾動與響應式排版 */}
+            <style>{`
+                .po-header {
+                    display: flex; 
+                    justify-content: space-between; 
+                    align-items: center; 
+                    margin-bottom: 1.5rem;
+                    gap: 1rem;
+                }
+                .po-table-container {
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                }
+                .po-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    min-width: 650px; /* 確保在手機上不會被擠壓，而是提供橫向滾動 */
+                }
+                .po-modal {
+                    width: 100%;
+                    max-width: 600px;
+                    margin: 0 1rem;
+                    padding: 1.5rem;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                }
+                .po-item-row {
+                    display: grid;
+                    grid-template-columns: 2fr 1fr 1fr 40px;
+                    gap: 0.5rem;
+                    margin-bottom: 0.75rem;
+                    align-items: center;
+                }
+                @media (max-width: 576px) {
+                    .po-header {
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+                    .po-header button {
+                        width: 100%;
+                        justify-content: center;
+                    }
+                    .po-item-row {
+                        grid-template-columns: 1fr 1fr;
+                        background: rgba(255,255,255,0.02);
+                        padding: 0.75rem;
+                        border-radius: var(--radius-md);
+                        border: 1px solid rgba(255,255,255,0.05);
+                    }
+                    .po-item-product {
+                        grid-column: span 2;
+                    }
+                    .po-item-delete {
+                        grid-column: span 2;
+                        text-align: right;
+                        justify-self: end;
+                        padding-top: 0.25rem;
+                    }
+                }
+            `}</style>
+
+            <div className="po-header">
+                <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{t('purchase_orders.title')}</h2>
                 <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Plus size={18} /> {t('purchase_orders.add')}
                 </button>
             </div>
 
-            <div className="glass-panel" style={{ overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            {/* 外層包覆 RWD Container，防止手機端破版 */}
+            <div className="glass-panel po-table-container" style={{ overflow: 'hidden' }}>
+                <table className="po-table">
                     <thead>
                         <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
                             <th style={thStyle}>{t('purchase_orders.order_no')}</th>
@@ -141,8 +203,8 @@ const PurchaseOrders = () => {
 
             {isModalOpen && (
                 <div style={modalOverlayStyle}>
-                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel" style={{ width: '600px', padding: '2rem' }}>
-                        <h3>{t('purchase_orders.add')}</h3>
+                    <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="glass-panel po-modal">
+                        <h3 style={{ marginTop: 0 }}>{t('purchase_orders.add')}</h3>
                         <form onSubmit={handleCreate} style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
                                 <label htmlFor="po-supplier">{t('purchase_orders.supplier')}</label>
@@ -155,8 +217,8 @@ const PurchaseOrders = () => {
                             <div>
                                 <label style={{ fontSize: '0.9rem', marginBottom: '0.5rem', display: 'block' }}>{t('purchase_orders.items')}</label>
                                 {newPO.items.map((item, idx) => (
-                                    <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 40px', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <div key={idx} className="po-item-row">
+                                        <div className="po-item-product" style={{ display: 'flex', gap: '0.5rem' }}>
                                             <select 
                                                 id={`po-prod-${idx}`}
                                                 name="productId"
@@ -175,7 +237,7 @@ const PurchaseOrders = () => {
                                                 type="button"
                                                 onClick={() => window.open('/products', '_blank')}
                                                 title={t('purchase_orders.add_product')}
-                                                style={{ background: 'var(--primary)', border: 'none', borderRadius: '4px', width: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'white' }}
+                                                style={{ background: 'var(--primary)', border: 'none', borderRadius: '4px', width: '42px', height: '42px', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'white' }}
                                             >
                                                 <Plus size={16} />
                                             </button>
@@ -206,10 +268,12 @@ const PurchaseOrders = () => {
                                              }} 
                                              style={inputStyle} 
                                          />
-                                        <button type="button" onClick={() => setNewPO({ ...newPO, items: newPO.items.filter((_, i) => i !== idx) })} style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer' }}><XCircle size={18} /></button>
+                                        <div className="po-item-delete">
+                                            <button type="button" onClick={() => setNewPO({ ...newPO, items: newPO.items.filter((_, i) => i !== idx) })} style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><XCircle size={18} /></button>
+                                        </div>
                                     </div>
                                 ))}
-                                <button type="button" onClick={() => setNewPO({ ...newPO, items: [...newPO.items, { productId: '', qty: 1, costPrice: 0 }] })} className="btn-secondary" style={{ padding: '4px 12px', fontSize: '0.8rem' }}>+ {t('purchase_orders.add_item')}</button>
+                                <button type="button" onClick={() => setNewPO({ ...newPO, items: [...newPO.items, { productId: '', qty: 1, costPrice: 0 }] })} className="btn-secondary" style={{ padding: '6px 12px', fontSize: '0.8rem', marginTop: '0.25rem' }}>+ {t('purchase_orders.add_item')}</button>
                             </div>
 
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
@@ -226,8 +290,8 @@ const PurchaseOrders = () => {
 
 const thStyle = { padding: '1.2rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.1)' };
 const tdStyle = { padding: '1.2rem', fontSize: '0.95rem' };
-const inputStyle = { padding: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', outline: 'none', width: '100%' };
-const selectStyle = { padding: '0.75rem 1rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', outline: 'none', width: '100%' };
+const inputStyle = { padding: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', outline: 'none', width: '100%', boxSizing: 'border-box' };
+const selectStyle = { padding: '0.75rem 1rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', outline: 'none', width: '100%', boxSizing: 'border-box' };
 const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 };
 
 export default PurchaseOrders;

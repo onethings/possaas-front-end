@@ -16,8 +16,21 @@ const Settings = () => {
         taxRate: 5
     });
 
+    // 監聽是否為手機螢幕，用來動態調整一些內聯的 padding
+    const [isMobile, setIsMobile] = useState(false);
+
     useEffect(() => {
         fetchSettings();
+        
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        
+        // 初始化檢查
+        handleResize();
+        
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const fetchSettings = async () => {
@@ -65,22 +78,43 @@ const Settings = () => {
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{t('settings.subtitle')}</p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '2rem' }}>
-                <div className="glass-panel" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <button style={menuItemStyle(true)}><SettingsIcon size={18} /> {t('settings.tabs.general')}</button>
-                    <button style={menuItemStyle(false)}><Coins size={18} /> {t('settings.tabs.loyalty')}</button>
-                    <button style={menuItemStyle(false)}><Receipt size={18} /> {t('settings.tabs.tax')}</button>
-                    <button style={menuItemStyle(false)}><Shield size={18} /> {t('settings.tabs.security')}</button>
+            {/* 主佈局：使用 auto-fit。當寬度小於 768px 或空間不足時，自動切換為單欄上下排列 */}
+            <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))', 
+                gap: isMobile ? '1rem' : '2rem',
+                alignItems: 'start'
+            }}>
+                {/* 左側導覽列 - 手機端會自動變更排列方向（可選，目前維持垂直排列，亦可改為橫向滾動） */}
+                <div className="glass-panel" style={{ 
+                    padding: '1rem', 
+                    display: 'flex', 
+                    flexDirection: isMobile ? 'row' : 'column', 
+                    gap: '0.5rem',
+                    overflowX: isMobile ? 'auto' : 'visible',
+                    whiteSpace: isMobile ? 'nowrap' : 'normal',
+                    WebkitOverflowScrolling: 'touch'
+                }}>
+                    <button style={menuItemStyle(true, isMobile)}><SettingsIcon size={18} /> {t('settings.tabs.general')}</button>
+                    <button style={menuItemStyle(false, isMobile)}><Coins size={18} /> {t('settings.tabs.loyalty')}</button>
+                    <button style={menuItemStyle(false, isMobile)}><Receipt size={18} /> {t('settings.tabs.tax')}</button>
+                    <button style={menuItemStyle(false, isMobile)}><Shield size={18} /> {t('settings.tabs.security')}</button>
                 </div>
 
-                <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                {/* 右側內容區 */}
+                <div className="glass-panel" style={{ 
+                    padding: isMobile ? '1.25rem' : '2rem', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '2rem' 
+                }}>
                     <section>
                         <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <Coins size={18} color="var(--primary-light)" /> {t('settings.loyalty.title')}
                         </h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                             <div style={toggleRowStyle}>
-                                <div>
+                                <div style={{ paddingRight: '1rem' }}>
                                     <div style={{ fontWeight: 500 }}>{t('settings.loyalty.enable_points')}</div>
                                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('settings.loyalty.enable_desc')}</div>
                                 </div>
@@ -116,7 +150,12 @@ const Settings = () => {
 
                     <section style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '2rem' }}>
                         <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>{t('settings.regional.title')}</h3>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        {/* 幣別與時區群組：手機端自動切換為單欄 */}
+                        <div style={{ 
+                            display: 'grid', 
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', 
+                            gap: '1rem' 
+                        }}>
                             <div className="input-group">
                                 <label style={labelStyle}>{t('settings.regional.currency_label')}</label>
                                 <select 
@@ -151,12 +190,20 @@ const Settings = () => {
                         </div>
                     </section>
 
+                    {/* 按鈕改為手機端全寬，提升大拇指點擊體驗 */}
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
                         <button
                             onClick={handleSave}
                             disabled={submitting}
                             className="btn-primary"
-                            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 2rem' }}
+                            style={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                gap: '0.5rem', 
+                                padding: '0.8rem 2rem',
+                                width: isMobile ? '100%' : 'auto'
+                            }}
                         >
                             {submitting ? <Loader2 className="animate-spin" /> : <><Save size={18} /> {t('settings.save_btn')}</>}
                         </button>
@@ -167,11 +214,11 @@ const Settings = () => {
     );
 };
 
-const menuItemStyle = (active) => ({
+const menuItemStyle = (active, isMobile) => ({
     display: 'flex',
     alignItems: 'center',
     gap: '0.75rem',
-    padding: '0.75rem 1rem',
+    padding: isMobile ? '0.6rem 1rem' : '0.75rem 1rem',
     background: active ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent',
     border: 'none',
     color: active ? 'var(--primary)' : 'var(--text-muted)',
@@ -180,11 +227,12 @@ const menuItemStyle = (active) => ({
     textAlign: 'left',
     fontSize: '0.9rem',
     transition: 'all 0.2s ease',
-    fontWeight: active ? '600' : 'normal'
+    fontWeight: active ? '600' : 'normal',
+    flex: isMobile ? '0 0 auto' : 'initial' // 手機端橫向滾動時防止按鈕被壓縮
 });
 
 const labelStyle = { display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--text-muted)' };
-const inputStyle = { width: '100%', padding: '0.75rem 1rem', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: 'var(--radius-md)', color: 'white', outline: 'none', fontSize: '1rem' };
+const inputStyle = { width: '100%', padding: '0.75rem 1rem', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: 'var(--radius-md)', color: 'white', outline: 'none', fontSize: '1rem', boxSizing: 'border-box' };
 const toggleRowStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0' };
 
 export default Settings;

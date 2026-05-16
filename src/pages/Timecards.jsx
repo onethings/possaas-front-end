@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Clock, LogIn, LogOut, Loader2, Calendar, Timer } from 'lucide-react';
+import { Clock, LogIn, LogOut, Loader2, Calendar } from 'lucide-react';
 import { getMyTimecards, clockIn, clockOut } from '../api/timecards';
 
 const Timecards = () => {
-    const { t } = useTranslation(); // 引入翻譯 Hook
+    const { t } = useTranslation();
     const [timecards, setTimecards] = useState([]);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -46,29 +46,35 @@ const Timecards = () => {
     };
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.5rem' }}>{t('timecards.title')}</h2>
+        <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            className="animate-fade-in flex flex-col gap-4 md:gap-6 p-4 md:p-0"
+        >
+            <h2 className="text-xl md:text-2xl font-semibold">{t('timecards.title')}</h2>
 
-            <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', textAlign: 'center' }}>
+            {/* 打卡主控制面板 */}
+            <div className="glass-panel p-6 md:p-8 flex flex-col items-center gap-4 md:gap-6 text-center">
                 <div style={statusCircleStyle(activeCard)}>
                     <Clock size={40} />
                 </div>
                 <div>
-                    <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{activeCard ? t('timecards.status.working') : t('timecards.status.off_duty')}</h3>
+                    <h3 className="text-xl md:text-2xl font-medium mb-2">
+                        {activeCard ? t('timecards.status.working') : t('timecards.status.off_duty')}
+                    </h3>
                     {activeCard && (
-                        <p style={{ color: 'var(--text-muted)' }}>
+                        <p style={{ color: 'var(--text-muted)' }} className="text-sm md:text-base">
                             {t('timecards.status.clock_in_time', { time: new Date(activeCard.clockIn).toLocaleString() })}
                         </p>
                     )}
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div className="w-full flex justify-center px-4 md:px-0">
                     {!activeCard ? (
                         <button
                             onClick={() => handleClockAction('in')}
                             disabled={submitting}
-                            className="btn-primary"
-                            style={{ padding: '1rem 2.5rem', display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '1.1rem' }}
+                            className="btn-primary w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-3 text-base md:text-lg"
                         >
                             {submitting ? <Loader2 className="animate-spin" /> : <><LogIn size={20} /> {t('timecards.buttons.clock_in')}</>}
                         </button>
@@ -76,8 +82,8 @@ const Timecards = () => {
                         <button
                             onClick={() => handleClockAction('out')}
                             disabled={submitting}
-                            className="green-btn"
-                            style={{ padding: '1rem 2.5rem', display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '1.1rem', background: '#4ade80', color: 'black' }}
+                            className="green-btn w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-3 text-base md:text-lg rounded-md"
+                            style={{ background: '#4ade80', color: 'black' }}
                         >
                             {submitting ? <Loader2 className="animate-spin" /> : <><LogOut size={20} /> {t('timecards.buttons.clock_out')}</>}
                         </button>
@@ -85,33 +91,66 @@ const Timecards = () => {
                 </div>
             </div>
 
-            <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                <h4 style={{ marginBottom: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {/* 歷史記錄區塊 */}
+            <div className="glass-panel p-4 md:p-6">
+                <h4 className="text-base md:text-lg font-medium mb-4 flex items-center gap-2">
                     <Calendar size={18} /> {t('timecards.history.title')}
                 </h4>
+                
                 {loading ? (
-                    <div style={{ textAlign: 'center', padding: '2rem' }}><Loader2 className="animate-spin" /></div>
+                    <div className="flex justify-center p-8"><Loader2 className="animate-spin" /></div>
                 ) : (
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <thead>
-                            <tr style={{ textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                                <th style={{ padding: '1rem' }}>{t('timecards.history.table.date')}</th>
-                                <th style={{ padding: '1rem' }}>{t('timecards.history.table.clock_in')}</th>
-                                <th style={{ padding: '1rem' }}>{t('timecards.history.table.clock_out')}</th>
-                                <th style={{ padding: '1rem' }}>{t('timecards.history.table.total_hours')}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <>
+                        {/* 1. 桌面端顯示的表格 (md 以上顯示) */}
+                        <div className="hidden md:block overflow-x-auto">
+                            <table className="w-full border-collapse">
+                                <thead>
+                                    <tr className="text-left border-b border-white/10 text-xs font-semibold" style={{ color: 'var(--text-muted)' }}>
+                                        <th className="p-4">{t('timecards.history.table.date')}</th>
+                                        <th className="p-4">{t('timecards.history.table.clock_in')}</th>
+                                        <th className="p-4">{t('timecards.history.table.clock_out')}</th>
+                                        <th className="p-4">{t('timecards.history.table.total_hours')}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {timecards.map(tc => (
+                                        <tr key={tc._id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                            <td className="p-4">{new Date(tc.clockIn).toLocaleDateString()}</td>
+                                            <td className="p-4">{new Date(tc.clockIn).toLocaleTimeString()}</td>
+                                            <td className="p-4">
+                                                {tc.clockOut ? new Date(tc.clockOut).toLocaleTimeString() : <span style={{ color: 'var(--primary-light)' }}>{t('timecards.status.in_progress')}</span>}
+                                            </td>
+                                            <td className="p-4 font-bold">{tc.totalHours ? tc.totalHours.toFixed(2) : '--'}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* 2. 手機端顯示的卡片清單 (md 以下顯示) */}
+                        <div className="block md:hidden flex flex-col gap-3">
                             {timecards.map(tc => (
-                                <tr key={tc._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                    <td style={{ padding: '1rem' }}>{new Date(tc.clockIn).toLocaleDateString()}</td>
-                                    <td style={{ padding: '1rem' }}>{new Date(tc.clockIn).toLocaleTimeString()}</td>
-                                    <td style={{ padding: '1rem' }}>{tc.clockOut ? new Date(tc.clockOut).toLocaleTimeString() : <span style={{ color: 'var(--primary-light)' }}>{t('timecards.status.in_progress')}</span>}</td>
-                                    <td style={{ padding: '1rem', fontWeight: 700 }}>{tc.totalHours ? tc.totalHours.toFixed(2) : '--'}</td>
-                                </tr>
+                                <div key={tc._id} className="border border-white/10 rounded-lg p-4 bg-white/5 flex flex-col gap-2 text-sm">
+                                    <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-1">
+                                        <span className="font-medium text-white/90">{new Date(tc.clockIn).toLocaleDateString()}</span>
+                                        <span className="font-bold text-base text-emerald-400">
+                                            {tc.totalHours ? `${tc.totalHours.toFixed(2)} hrs` : '--'}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span style={{ color: 'var(--text-muted)' }}>{t('timecards.history.table.clock_in')}</span>
+                                        <span>{new Date(tc.clockIn).toLocaleTimeString()}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span style={{ color: 'var(--text-muted)' }}>{t('timecards.history.table.clock_out')}</span>
+                                        <span>
+                                            {tc.clockOut ? new Date(tc.clockOut).toLocaleTimeString() : <span style={{ color: 'var(--primary-light)' }}>{t('timecards.status.in_progress')}</span>}
+                                        </span>
+                                    </div>
+                                </div>
                             ))}
-                        </tbody>
-                    </table>
+                        </div>
+                    </>
                 )}
             </div>
         </motion.div>

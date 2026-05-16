@@ -5,7 +5,6 @@ import {
     Search, Calendar, Download, Eye, CheckCircle, Clock, XCircle, Loader2
 } from 'lucide-react';
 import { getOrders, exportOrdersCSV, processOrderReturn } from '../api/orders';
-// 註：有些地方命名為 order.js 或 orders.js，請確保路徑一致
 import { useTenant } from '../contexts/TenantContext';
 
 const Orders = () => {
@@ -18,8 +17,6 @@ const Orders = () => {
     const [error, setError] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [shifts, setShifts] = useState([]);
-    const [selectedShiftId, setSelectedShiftId] = useState('');
 
     useEffect(() => {
         fetchOrders();
@@ -39,22 +36,18 @@ const Orders = () => {
         }
     };
 
-    // 處理部分退貨邏輯
     const handleReturn = async (orderNo, item) => {
-        // 1. 找出這筆訂單的完整物件，等一下要拿它的 shiftId 當安全備援
         const currentOrder = orders.find(o => o.orderNo === orderNo);
         if (!currentOrder) return;
 
-        // 2. 防超額退貨校驗
         const maxAvailable = item.qty - (item.returnQty || 0);
         if (maxAvailable <= 0) {
             alert(t('orders.already_returned', '該商品已全額退貨'));
             return;
         }
 
-        // 3. 詢問退貨數量與原因
         const returnQtyStr = prompt(t('orders.enter_return_qty', `請輸入退貨數量 (最大 ${maxAvailable}):`), "1");
-        if (!returnQtyStr) return; // 取消操作
+        if (!returnQtyStr) return;
 
         const returnQty = parseInt(returnQtyStr, 10);
         if (isNaN(returnQty) || returnQty <= 0 || returnQty > maxAvailable) {
@@ -63,50 +56,49 @@ const Orders = () => {
         }
 
         const reason = prompt(t('orders.enter_return_reason', '請輸入退貨原因:'), "");
-        if (reason === null) return; // 取消操作
+        if (reason === null) return;
 
         try {
             setLoading(true);
-
-            // 4. 【安全防禦核心】取得當前開班的班次 ID
-            // 如果是實體/手機 POS 結帳通常存於 localStorage，若無則拿原訂單班次做安全備援
             const currentShiftId = localStorage.getItem('current_shift_id') || currentOrder.shiftId;
 
-            // 5. 封裝成後端收銀防禦需要的新 payload 結構
             const payload = {
                 orderNo: orderNo,
                 reason: reason || 'Web 後台操作退貨',
-                shiftId: currentShiftId,               // 👈 班次安全校驗
-                paymentMethod: 'cash',                 // 👈 預設退現金管道
+                shiftId: currentShiftId,
+                paymentMethod: 'cash',
                 itemsToReturn: [{
                     productId: item.productId,
-                    variantId: item.variantId || null, // 兼容無規格商品
+                    variantId: item.variantId || null,
                     qty: returnQty
                 }]
             };
 
-            // 6. 呼叫我們剛才在 orders.js 優化過的 API
             const result = await processOrderReturn(payload);
 
             if (result.success) {
-                // 7. 精確更新本地 orders state 的資料與狀態，讓 Web 畫面即時跳動
                 setOrders(prevOrders => prevOrders.map(o => {
                     if (o.orderNo === orderNo) {
-                        // 更新商品明細陣列裡的 returnQty 快照
                         const updatedItems = o.items.map(i => {
                             const isMatch = i.productId === item.productId &&
                                 (!item.variantId || i.variantId === item.variantId);
                             return isMatch ? { ...i, returnQty: (i.returnQty || 0) + returnQty } : i;
                         });
 
-                        // 拿後端回傳計算好的最新正確精確欄位閉環
-                        return {
+                        const updatedOrder = {
                             ...o,
                             items: updatedItems,
-                            status: result.data.status,                  // 更新狀態 (e.g. partially_returned)
-                            finalAmount: result.data.finalAmount,        // 更新實收金額
-                            refundAmount: result.data.totalRefundAmount  // 更新總退款累計金額
+                            status: result.data.status,
+                            finalAmount: result.data.finalAmount,
+                            refundAmount: result.data.totalRefundAmount
                         };
+                        
+                        // 同步更新彈窗裡的詳情狀態
+                        if (selectedOrder && selectedOrder.orderNo === orderNo) {
+                            setSelectedOrder(updatedOrder);
+                        }
+                        
+                        return updatedOrder;
                     }
                     return o;
                 }));
@@ -129,17 +121,15 @@ const Orders = () => {
         }
     };
 
-    // 過濾標籤頁訂單
     const filteredOrders = orders.filter(order => {
         if (activeTab === 'all') return true;
         return order.status === activeTab;
     });
 
-    // 這裡的 id 對應後端 status，label 對應你 JSON 裡面的 status_ 欄位
     const tabs = [
-        { id: 'all', label: t('orders.status_all', '全部訂單') },
+        { id: 'all', label: t('orders.status_all', '全部') }, // 手機端精簡字詞避免擠壓
         { id: 'paid', label: t('orders.status_paid', '已支付') },
-        { id: 'partially_returned', label: t('orders.status_partially_returned', '部分退貨') },
+        { id: 'partially_returned', label: t('orders.status_partially_returned', '部分退') },
         { id: 'returned', label: t('orders.status_returned', '已退貨') },
         { id: 'cancelled', label: t('orders.status_cancelled', '已取消') }
     ];
@@ -157,41 +147,155 @@ const Orders = () => {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="orders-container"
-            style={{ padding: '2rem', color: '#f8fafc' }}
+            className="orders-page-container"
         >
+            {/* 注入響應式自適應 CSS 補丁 */}
+            <style>{`
+                .orders-page-container {
+                    padding: 2rem;
+                    color: #f8fafc;
+                }
+                .orders-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 2rem;
+                    gap: 1rem;
+                }
+                .orders-header h1 {
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    margin: 0;
+                    color: #ffffff;
+                }
+                .filter-bar {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 1rem;
+                    margin-bottom: 1.5rem;
+                }
+                .tab-group {
+                    display: flex;
+                    gap: 4px;
+                    background: rgba(15, 23, 42, 0.4);
+                    padding: 4px;
+                    border-radius: 8px;
+                    overflow-x: auto;
+                    scrollbar-width: none; /* Firefox */
+                }
+                .tab-group::-webkit-scrollbar {
+                    display: none; /* Safari / Chrome */
+                }
+                .tab-btn {
+                    padding: 6px 12px;
+                    border-radius: 6px;
+                    border: none;
+                    font-size: 0.85rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    white-space: nowrap;
+                    transition: all 0.2s;
+                }
+                .date-picker-wrapper {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    background: rgba(15, 23, 42, 0.5);
+                    padding: 6px 12px;
+                    border-radius: 8px;
+                    border: 1px solid rgba(255,255,255,0.05);
+                }
+                .date-input {
+                    background: transparent;
+                    border: none;
+                    color: #fff;
+                    font-size: 0.85rem;
+                    outline: none;
+                    color-scheme: dark; /* 讓手機端原生日期彈窗變深色 */
+                }
+
+                /* 桌機端傳統表格佈局 */
+                .responsive-table-wrapper { display: block; overflow-x: auto; }
+                .responsive-table { width: 100%; border-collapse: collapse; text-align: left; }
+                .responsive-table th, .responsive-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+                .mobile-card-list { display: none; }
+
+                /* 行動端核心自適應斷點 */
+                @media (max-width: 768px) {
+                    .orders-page-container { padding: 1rem; }
+                    .orders-header { flex-direction: column; align-items: flex-start; }
+                    .orders-header button { width: 100%; justify-content: center; }
+                    .filter-bar { flex-direction: column; align-items: stretch; }
+                    .tab-group { width: 100%; }
+                    .date-picker-wrapper { width: 100%; justify-content: center; }
+                    .date-input { flex: 1; text-align: center; }
+                    
+                    /* 隱藏表格，開啟卡片流佈局 */
+                    .responsive-table-wrapper { display: none; }
+                    .mobile-card-list { display: flex; flex-direction: column; gap: 1rem; }
+                    .mobile-order-card {
+                        background: rgba(15, 23, 42, 0.3);
+                        border: 1px solid rgba(255,255,255,0.05);
+                        border-radius: 12px;
+                        padding: 1rem;
+                    }
+                    .card-row {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 0.5rem;
+                    }
+                    .card-row:last-child { margin-bottom: 0; margin-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.8rem; }
+                }
+                
+                /* 彈窗內容自適應細節 */
+                .modal-item-row {
+                    background: rgba(15, 23, 42, 0.3);
+                    padding: 12px;
+                    border-radius: 8px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 12px;
+                }
+                @media (max-width: 480px) {
+                    .modal-item-row { flex-direction: column; align-items: flex-start; }
+                    .modal-item-actions { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 4px;}
+                }
+            `}</style>
+
             {/* 頂部標題區 */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <div className="orders-header">
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', fontWeight: 700, margin: 0, color: '#ffffff' }}>{t('orders.title')}</h1>
+                    <h1>{t('orders.title')}</h1>
                 </div>
-                <button onClick={handleExport} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.6rem 1.2rem', background: '#4f46e5', border: 'none', borderRadius: '8px', color: '#fff', cursor: 'pointer' }}>
+                <button onClick={handleExport} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.6rem 1.2rem', background: '#4f46e5', border: 'none', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '0.9rem' }}>
                     <Download size={16} />
                     {t('orders.export_summary', '導出總表')}
                 </button>
             </div>
 
-            {/* 自訂深色面板容器 */}
+            {/* 深色主面板容器 */}
             <div style={{
                 background: 'rgba(30, 41, 59, 0.7)',
                 backdropFilter: 'blur(12px)',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
                 borderRadius: '16px',
-                padding: '1.5rem',
+                padding: '1.2rem',
                 boxShadow: '0 4px 30px rgba(0, 0, 0, 0.3)'
             }}>
                 {/* 篩選與工具列 */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
-                    <div style={{ display: 'flex', gap: '8px', background: 'rgba(15, 23, 42, 0.4)', padding: '4px', borderRadius: '8px' }}>
+                <div className="filter-bar">
+                    <div className="tab-group">
                         {tabs.map(tab => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
+                                className="tab-btn"
                                 style={{
-                                    padding: '6px 12px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 500, cursor: 'pointer',
                                     background: activeTab === tab.id ? '#4f46e5' : 'transparent',
                                     color: activeTab === tab.id ? '#ffffff' : '#94a3b8',
-                                    transition: 'all 0.2s'
                                 }}
                             >
                                 {tab.label}
@@ -199,27 +303,25 @@ const Orders = () => {
                         ))}
                     </div>
 
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(15, 23, 42, 0.5)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                            <Calendar size={16} color="#94a3b8" />
-                            <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '0.85rem', outline: 'none' }} />
-                            <span style={{ color: '#64748b' }}>-</span>
-                            <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '0.85rem', outline: 'none' }} />
-                        </div>
+                    <div className="date-picker-wrapper">
+                        <Calendar size={16} color="#94a3b8" />
+                        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="date-input" />
+                        <span style={{ color: '#64748b' }}>-</span>
+                        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="date-input" />
                     </div>
                 </div>
 
-                {/* 訂單表格區 */}
-                <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                {/* 1. 桌機平板端：顯示傳統表格 (在行動端會自動 hidden) */}
+                <div className="responsive-table-wrapper">
+                    <table className="responsive-table">
                         <thead>
-                            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', color: '#94a3b8', fontSize: '0.85rem' }}>
-                                <th style={{ padding: '12px' }}>{t('orders.csv_headers.no', '訂單編號')}</th>
-                                <th style={{ padding: '12px' }}>{t('orders.anonymous_customer', '客戶')}</th>
-                                <th style={{ padding: '12px' }}>{t('orders.final_amount', '實收金額')}</th>
-                                <th style={{ padding: '12px' }}>{t('orders.csv_headers.status', '狀態')}</th>
-                                <th style={{ padding: '12px' }}>{t('orders.csv_headers.time', '創建時間')}</th>
-                                <th style={{ padding: '12px', textAlign: 'right' }}>{t('orders.csv_headers.id', '操作')}</th>
+                            <tr style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
+                                <th>{t('orders.csv_headers.no', '訂單編號')}</th>
+                                <th>{t('orders.anonymous_customer', '客戶')}</th>
+                                <th>{t('orders.final_amount', '實收金額')}</th>
+                                <th>{t('orders.csv_headers.status', '狀態')}</th>
+                                <th>{t('orders.csv_headers.time', '創建時間')}</th>
+                                <th style={{ textAlign: 'right' }}>{t('orders.csv_headers.id', '操作')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -229,19 +331,19 @@ const Orders = () => {
                                 </tr>
                             ) : (
                                 filteredOrders.map((order) => (
-                                    <tr key={order._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.9rem' }}>
-                                        <td style={{ padding: '14px 12px', fontWeight: 600, color: '#38bdf8' }}>{order.orderNo}</td>
-                                        <td style={{ padding: '14px 12px', color: '#e2e8f0' }}>{order.customerName || t('orders.anonymous_customer', '匿名客戶')}</td>
-                                        <td style={{ padding: '14px 12px', fontWeight: 700, color: '#f8fafc' }}>
+                                    <tr key={order._id} style={{ fontSize: '0.9rem' }}>
+                                        <td style={{ fontWeight: 600, color: '#38bdf8' }}>{order.orderNo}</td>
+                                        <td style={{ color: '#e2e8f0' }}>{order.customerName || t('orders.anonymous_customer', '匿名客戶')}</td>
+                                        <td style={{ fontWeight: 700, color: '#f8fafc' }}>
                                             {tenantConfig.currency}{(order.finalAmount || 0).toLocaleString()}
                                         </td>
-                                        <td style={{ padding: '14px 12px' }}>
+                                        <td>
                                             <StatusBadge status={order.status} t={t} />
                                         </td>
-                                        <td style={{ padding: '14px 12px', color: '#94a3b8', fontSize: '0.85rem' }}>
+                                        <td style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
                                             {new Date(order.createdAt).toLocaleString()}
                                         </td>
-                                        <td style={{ padding: '14px 12px', textAlign: 'right' }}>
+                                        <td style={{ textAlign: 'right' }}>
                                             <button
                                                 onClick={() => setSelectedOrder(order)}
                                                 style={{ background: 'rgba(255,255,255,0.05)', border: 'none', padding: '6px 10px', borderRadius: '6px', color: '#cbd5e1', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
@@ -256,36 +358,74 @@ const Orders = () => {
                         </tbody>
                     </table>
                 </div>
+
+                {/* 2. 手機端：轉換為精緻卡片流 (在桌機平板端自動 hidden) */}
+                <div className="mobile-card-list">
+                    {filteredOrders.length === 0 ? (
+                        <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('orders.no_data', '暫無數據')}</div>
+                    ) : (
+                        filteredOrders.map((order) => (
+                            <div key={order._id} className="mobile-order-card">
+                                <div className="card-row">
+                                    <span style={{ fontWeight: 600, color: '#38bdf8', fontSize: '0.95rem' }}>{order.orderNo}</span>
+                                    <StatusBadge status={order.status} t={t} />
+                                </div>
+                                <div className="card-row" style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+                                    <span>{order.customerName || t('orders.anonymous_customer', '匿名客戶')}</span>
+                                    <span>{new Date(order.createdAt).toLocaleDateString()}</span>
+                                </div>
+                                <div className="card-row">
+                                    <span style={{ fontWeight: 700, color: '#f8fafc', fontSize: '1.1rem' }}>
+                                        {tenantConfig.currency}{(order.finalAmount || 0).toLocaleString()}
+                                    </span>
+                                    <button
+                                        onClick={() => setSelectedOrder(order)}
+                                        style={{ background: 'rgba(255,255,255,0.08)', border: 'none', padding: '6px 12px', borderRadius: '6px', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem' }}
+                                    >
+                                        <Eye size={12} />
+                                        <span>{t('orders.details_title', '詳情')}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
             </div>
 
-            {/* 詳情彈窗 */}
+            {/* 詳情彈窗自適應 */}
             {selectedOrder && (
-                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 50, padding: '1rem' }}>
-                    <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.5rem', width: '100%', maxWidth: '600px', maxHeight: '85vh', overflowY: 'auto', color: '#f8fafc' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.8rem' }}>
-                            <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('orders.csv_headers.no')}: {selectedOrder.orderNo}</h3>
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 50, padding: '0.75rem' }}>
+                    <motion.div 
+                        initial={{ scale: 0.95, opacity: 0 }} 
+                        animate={{ scale: 1, opacity: 1 }} 
+                        style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '1.2rem', width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto', color: '#f8fafc' }}
+                    >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.2rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.8rem' }}>
+                            <h3 style={{ margin: 0, fontSize: '1.1rem', wordBreak: 'break-all', paddingRight: '8px' }}>#{selectedOrder.orderNo}</h3>
                             <StatusBadge status={selectedOrder.status} t={t} />
                         </div>
 
                         {/* 商品明細 */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '1.5rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '1.5rem' }}>
                             {selectedOrder.items?.map((item, index) => {
                                 const maxAvailable = item.qty - (item.returnQty || 0);
                                 return (
-                                    <div key={index} style={{ background: 'rgba(15, 23, 42, 0.3)', padding: '12px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <div>
-                                            <div style={{ fontWeight: 600 }}>{item.nameSnapshot || item.productId}</div>
-                                            <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '2px' }}>
+                                    <div key={index} className="modal-item-row">
+                                        <div style={{ flex: 1 }}>
+                                            <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{item.nameSnapshot || item.productId}</div>
+                                            <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '2px' }}>
                                                 {t('orders.unit_price')}: {tenantConfig.currency}{item.priceSnapshot} | {t('orders.quantity')}: {item.qty}
-                                                {item.returnQty > 0 && <span style={{ color: '#f97316', marginLeft: '8px' }}>({t('orders.status_returned')} {item.returnQty})</span>}
+                                                {item.returnQty > 0 && <span style={{ color: '#f97316', marginLeft: '4px' }}>(-{item.returnQty})</span>}
                                             </div>
                                         </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                            <span style={{ fontWeight: 600 }}>{t('orders.subtotal')}: {tenantConfig.currency}{((item.qty - (item.returnQty || 0)) * item.priceSnapshot).toLocaleString()}</span>
+                                        <div className="modal-item-actions">
+                                            <span style={{ fontWeight: 600, fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
+                                                {t('orders.subtotal')}: {tenantConfig.currency}{((item.qty - (item.returnQty || 0)) * item.priceSnapshot).toLocaleString()}
+                                            </span>
                                             {selectedOrder.status !== 'cancelled' && maxAvailable > 0 && (
                                                 <button
                                                     onClick={() => handleReturn(selectedOrder.orderNo, item)}
-                                                    style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#f97316', border: '1px solid rgba(249, 115, 22, 0.3)', padding: '4px 8px', borderRadius: '6px', fontSize: '0.8rem', cursor: 'pointer' }}
+                                                    style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#f97316', border: '1px solid rgba(249, 115, 22, 0.3)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', cursor: 'pointer', marginLeft: '8px' }}
                                                 >
                                                     {t('orders.return_btn', '退貨')}
                                                 </button>
@@ -297,8 +437,8 @@ const Orders = () => {
                         </div>
 
                         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
-                            <button onClick={() => setSelectedOrder(null)} style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: '#fff', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer' }}>
-                                {t('orders.close')}
+                            <button onClick={() => setSelectedOrder(null)} style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: '#fff', padding: '8px 20px', borderRadius: '8px', cursor: 'pointer', width: '100%', maxWidth: '100px' }}>
+                                {t('orders.close', '關閉')}
                             </button>
                         </div>
                     </motion.div>
@@ -321,11 +461,11 @@ const StatusBadge = ({ status, t }) => {
 
     return (
         <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 10px',
+            display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 8px',
             borderRadius: '20px', background: `${config.color}15`, color: config.color,
-            fontSize: '0.8rem', fontWeight: 500
+            fontSize: '0.75rem', fontWeight: 500, whiteSpace: 'nowrap'
         }}>
-            <Icon size={14} />
+            <Icon size={12} />
             <span>{config.text}</span>
         </div>
     );
