@@ -166,7 +166,7 @@ const PurchaseOrders = () => {
                     <thead>
                         <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
                             <th style={thStyle}>{t('purchase_orders.order_no')}</th>
-                            <th style={thStyle}>{t('purchase_orders.supplier')}</th>
+                            <th style={thStyle}>{t('purchase_orders.suppliers')}</th>
                             <th style={thStyle}>{t('purchase_orders.amount')}</th>
                             <th style={thStyle}>{t('purchase_orders.status')}</th>
                             <th style={thStyle}>{t('purchase_orders.date')}</th>
