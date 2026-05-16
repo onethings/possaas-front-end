@@ -5,6 +5,7 @@ import {
     Search, Calendar, Download, Eye, CheckCircle, Clock, XCircle, Loader2
 } from 'lucide-react';
 import { getOrders, exportOrdersCSV, processOrderReturn } from '../api/orders';
+// 註：有些地方命名為 order.js 或 orders.js，請確保路徑一致
 import { useTenant } from '../contexts/TenantContext';
 
 const Orders = () => {
@@ -17,6 +18,8 @@ const Orders = () => {
     const [error, setError] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [shifts, setShifts] = useState([]);
+    const [selectedShiftId, setSelectedShiftId] = useState('');
 
     useEffect(() => {
         fetchOrders();
@@ -38,40 +41,83 @@ const Orders = () => {
 
     // 處理部分退貨邏輯
     const handleReturn = async (orderNo, item) => {
+        // 1. 找出這筆訂單的完整物件，等一下要拿它的 shiftId 當安全備援
+        const currentOrder = orders.find(o => o.orderNo === orderNo);
+        if (!currentOrder) return;
+
+        // 2. 防超額退貨校驗
         const maxAvailable = item.qty - (item.returnQty || 0);
-        if (maxAvailable <= 0) return;
-
-        // 彈出確認訊息
-        const confirmReturn = window.confirm(t('orders.confirm_return_msg', '您確定要退回此商品嗎？'));
-        if (!confirmReturn) return;
-
-        const returnCount = prompt(`請輸入退貨數量 (Max: ${maxAvailable}):`, '1');
-        if (!returnCount) return;
-
-        const qtyToReturn = parseInt(returnCount, 10);
-        if (isNaN(qtyToReturn) || qtyToReturn <= 0 || qtyToReturn > maxAvailable) {
-            alert('無效的數量');
+        if (maxAvailable <= 0) {
+            alert(t('orders.already_returned', '該商品已全額退貨'));
             return;
         }
 
+        // 3. 詢問退貨數量與原因
+        const returnQtyStr = prompt(t('orders.enter_return_qty', `請輸入退貨數量 (最大 ${maxAvailable}):`), "1");
+        if (!returnQtyStr) return; // 取消操作
+
+        const returnQty = parseInt(returnQtyStr, 10);
+        if (isNaN(returnQty) || returnQty <= 0 || returnQty > maxAvailable) {
+            alert(t('orders.invalid_qty', '無效的退貨數量'));
+            return;
+        }
+
+        const reason = prompt(t('orders.enter_return_reason', '請輸入退貨原因:'), "");
+        if (reason === null) return; // 取消操作
+
         try {
-            const returnData = {
-                items: [{
+            setLoading(true);
+
+            // 4. 【安全防禦核心】取得當前開班的班次 ID
+            // 如果是實體/手機 POS 結帳通常存於 localStorage，若無則拿原訂單班次做安全備援
+            const currentShiftId = localStorage.getItem('current_shift_id') || currentOrder.shiftId;
+
+            // 5. 封裝成後端收銀防禦需要的新 payload 結構
+            const payload = {
+                orderNo: orderNo,
+                reason: reason || 'Web 後台操作退貨',
+                shiftId: currentShiftId,               // 👈 班次安全校驗
+                paymentMethod: 'cash',                 // 👈 預設退現金管道
+                itemsToReturn: [{
                     productId: item.productId,
-                    sku: item.productId,
-                    qty: qtyToReturn
+                    variantId: item.variantId || null, // 兼容無規格商品
+                    qty: returnQty
                 }]
             };
-            const result = await processOrderReturn(orderNo, returnData);
+
+            // 6. 呼叫我們剛才在 orders.js 優化過的 API
+            const result = await processOrderReturn(payload);
+
             if (result.success) {
-                alert(t('orders.return_success', '商品退貨成功'));
-                fetchOrders();
-                setSelectedOrder(null);
-            } else {
-                alert(result.message || 'Return failed');
+                // 7. 精確更新本地 orders state 的資料與狀態，讓 Web 畫面即時跳動
+                setOrders(prevOrders => prevOrders.map(o => {
+                    if (o.orderNo === orderNo) {
+                        // 更新商品明細陣列裡的 returnQty 快照
+                        const updatedItems = o.items.map(i => {
+                            const isMatch = i.productId === item.productId &&
+                                (!item.variantId || i.variantId === item.variantId);
+                            return isMatch ? { ...i, returnQty: (i.returnQty || 0) + returnQty } : i;
+                        });
+
+                        // 拿後端回傳計算好的最新正確精確欄位閉環
+                        return {
+                            ...o,
+                            items: updatedItems,
+                            status: result.data.status,                  // 更新狀態 (e.g. partially_returned)
+                            finalAmount: result.data.finalAmount,        // 更新實收金額
+                            refundAmount: result.data.totalRefundAmount  // 更新總退款累計金額
+                        };
+                    }
+                    return o;
+                }));
+
+                alert(t('orders.return_success', '退貨處理成功，報表已即時重新彙總！'));
             }
         } catch (err) {
-            alert('Error processing return');
+            console.error('Return error:', err);
+            alert(err.message || t('orders.return_failed', '退貨處理失敗'));
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -108,7 +154,7 @@ const Orders = () => {
     }
 
     return (
-        <motion.div 
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="orders-container"
@@ -126,11 +172,11 @@ const Orders = () => {
             </div>
 
             {/* 自訂深色面板容器 */}
-            <div style={{ 
-                background: 'rgba(30, 41, 59, 0.7)', 
-                backdropFilter: 'blur(12px)', 
-                border: '1px solid rgba(255, 255, 255, 0.08)', 
-                borderRadius: '16px', 
+            <div style={{
+                background: 'rgba(30, 41, 59, 0.7)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '16px',
                 padding: '1.5rem',
                 boxShadow: '0 4px 30px rgba(0, 0, 0, 0.3)'
             }}>
@@ -196,7 +242,7 @@ const Orders = () => {
                                             {new Date(order.createdAt).toLocaleString()}
                                         </td>
                                         <td style={{ padding: '14px 12px', textAlign: 'right' }}>
-                                            <button 
+                                            <button
                                                 onClick={() => setSelectedOrder(order)}
                                                 style={{ background: 'rgba(255,255,255,0.05)', border: 'none', padding: '6px 10px', borderRadius: '6px', color: '#cbd5e1', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                                             >
@@ -230,14 +276,14 @@ const Orders = () => {
                                         <div>
                                             <div style={{ fontWeight: 600 }}>{item.nameSnapshot || item.productId}</div>
                                             <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '2px' }}>
-                                                {t('orders.unit_price')}: {tenantConfig.currency}{item.priceSnapshot} | {t('orders.quantity')}: {item.qty} 
+                                                {t('orders.unit_price')}: {tenantConfig.currency}{item.priceSnapshot} | {t('orders.quantity')}: {item.qty}
                                                 {item.returnQty > 0 && <span style={{ color: '#f97316', marginLeft: '8px' }}>({t('orders.status_returned')} {item.returnQty})</span>}
                                             </div>
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                             <span style={{ fontWeight: 600 }}>{t('orders.subtotal')}: {tenantConfig.currency}{((item.qty - (item.returnQty || 0)) * item.priceSnapshot).toLocaleString()}</span>
                                             {selectedOrder.status !== 'cancelled' && maxAvailable > 0 && (
-                                                <button 
+                                                <button
                                                     onClick={() => handleReturn(selectedOrder.orderNo, item)}
                                                     style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#f97316', border: '1px solid rgba(249, 115, 22, 0.3)', padding: '4px 8px', borderRadius: '6px', fontSize: '0.8rem', cursor: 'pointer' }}
                                                 >
