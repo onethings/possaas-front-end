@@ -100,7 +100,7 @@ const DashboardLayout = ({ children }) => {
                 }}
             >
                 <div style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: isSidebarOpen ? 'space-between' : 'center' }}>
-                    {isSidebarOpen && <span className="gradient-text" style={{ fontWeight: 800, fontSize: '1.2rem' }}>POS SAAS</span>}
+                    {isSidebarOpen && <span className="gradient-text" style={{ fontWeight: 800, fontSize: '1.2rem' }}>Kevin POS</span>}
                     <button onClick={() => setSidebarOpen(!isSidebarOpen)} style={iconBtnStyle}>
                         {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>

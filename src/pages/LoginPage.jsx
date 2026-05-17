@@ -129,7 +129,7 @@ const LoginPage = () => {
 
                 <div style={{ textAlign: 'center', marginBottom: '2.5rem', marginTop: '1rem' }}>
                     <h1 style={{ fontSize: '1.75rem', marginBottom: '0.5rem', fontWeight: 700, letterSpacing: '-0.025em' }}>
-                        {t('login.welcome')} <span className="gradient-text">POS SaaS</span>
+                        {t('login.welcome')} <span className="gradient-text">Kevin POS</span>
                     </h1>
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{t('login.subtitle')}</p>
                 </div>

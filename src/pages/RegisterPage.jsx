@@ -89,9 +89,9 @@ const RegisterPage = () => {
         >
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <h1 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>
-                    {/* 處理漸層文字：開始您的 POS SaaS 旅程 */}
+                    {/* 處理漸層文字：開始您的 Kevin POS 旅程 */}
                     {t('register.title_prefix', '開始您的 ')}
-                    <span className="gradient-text">POS SaaS</span>
+                    <span className="gradient-text">Kevin POS</span>
                     {t('register.title_suffix', ' 旅程')}
                 </h1>
                 <p style={{ color: 'var(--text-muted)' }}>{t('register.subtitle')}</p>
