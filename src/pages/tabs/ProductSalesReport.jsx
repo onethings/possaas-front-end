@@ -447,7 +447,7 @@ const ProductSalesReport = () => {
                                         <label key={c.key} style={{
                                             display: 'flex', alignItems: 'center', gap: '0.5rem',
                                             padding: '0.4rem 0.4rem', cursor: 'pointer', borderRadius: '4px',
-                                            fontSize: '0.8rem', color: 'var(--text-main)', whiteSpace: 'nowrap',
+                                            fontSize: '0.8rem', color: '#ffffff', whiteSpace: 'nowrap',
                                         }}
                                             onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
                                             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
@@ -467,11 +467,11 @@ const ProductSalesReport = () => {
                             </button>
                             {showExportMenu && (
                                 <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
-                                    <button onClick={() => { setShowExportMenu(false); handleExport('csv'); }} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                    <button onClick={() => { setShowExportMenu(false); handleExport('csv'); }} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#ffffff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
                                         onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
                                         <FileSpreadsheet size={16} color="#4ade80" /> CSV
                                     </button>
-                                    <button onClick={() => { setShowExportMenu(false); handleExport('pdf'); }} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                    <button onClick={() => { setShowExportMenu(false); handleExport('pdf'); }} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#ffffff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
                                         onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
                                         <FileText size={16} color="#f87171" /> PDF
                                     </button>
