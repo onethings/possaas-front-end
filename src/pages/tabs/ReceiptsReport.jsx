@@ -83,7 +83,7 @@ const ReceiptsReport = () => {
                                 <button onClick={() => { setShowExportMenu(false); exportCSV(
                                     [{label:t('report.receipt_no','收據號碼'),value:'no'},{label:t('report.date','日期'),value:'date'},{label:t('report.employee','員工'),value:'employee'},{label:t('report.customer','客戶'),value:'customer'},{label:t('report.type','種類'),value:'type'},{label:t('report.total','總計'),value:(r)=>r.total}],
                                     receipts, [], `receipts_${dateRange.start}_${dateRange.end}.csv`
-                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
                                     onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
                                     <FileSpreadsheet size={16} color="#4ade80" /> CSV
                                 </button>
@@ -91,7 +91,7 @@ const ReceiptsReport = () => {
                                     t('report.receipts_report','小票收據'),
                                     [{label:t('report.receipt_no','收據號碼'),value:'no'},{label:t('report.date','日期'),value:'date'},{label:t('report.employee','員工'),value:'employee'},{label:t('report.customer','客戶'),value:'customer'},{label:t('report.type','種類'),value:'type'},{label:t('report.total','總計'),value:(r)=>r.total}],
                                     receipts, tenantConfig.currency
-                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
                                     onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
                                     <FileText size={16} color="#f87171" /> PDF
                                 </button>

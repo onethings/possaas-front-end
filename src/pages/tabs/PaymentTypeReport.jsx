@@ -89,7 +89,7 @@ const PaymentTypeReport = () => {
                                 <button onClick={() => { setShowExportMenu(false); exportCSV(
                                     [{label:t('report.payment_method','付款方式'),value:'method'},{label:t('report.payment_transactions','付款交易'),value:'transactions'},{label:t('report.payment_amount','支付金額'),value:(r)=>r.amount},{label:t('report.refund_transactions','退款交易'),value:'refundTrans'},{label:t('report.refund_amount','退款金額'),value:(r)=>r.refundAmount},{label:t('report.net_amount','淨額'),value:(r)=>r.net}],
                                     payments, [], `payment_sales_${dateRange.start}_${dateRange.end}.csv`
-                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
                                     onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
                                     <FileSpreadsheet size={16} color="#4ade80" /> CSV
                                 </button>
@@ -97,7 +97,7 @@ const PaymentTypeReport = () => {
                                     t('report.payment_type','付款方式'),
                                     [{label:t('report.payment_method','付款方式'),value:'method'},{label:t('report.payment_transactions','付款交易'),value:'transactions'},{label:t('report.payment_amount','支付金額'),value:(r)=>r.amount},{label:t('report.refund_transactions','退款交易'),value:'refundTrans'},{label:t('report.refund_amount','退款金額'),value:(r)=>r.refundAmount},{label:t('report.net_amount','淨額'),value:(r)=>r.net}],
                                     payments, tenantConfig.currency
-                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
                                     onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
                                     <FileText size={16} color="#f87171" /> PDF
                                 </button>
