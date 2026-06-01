@@ -1,33 +1,33 @@
 {
   "login": {
     "welcome": "مرحباً بعودتك",
-    "subtitle": "قم بتسجيل الدخول إلى لوحة تحكم المسؤول للمتابعة",
+    "subtitle": "يرجى تسجيل الدخول إلى لوحة تحكم المسؤول للمتابعة",
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
-    "companyId": "رقم الشركة",
+    "companyId": "معرف الشركة",
     "signIn": "تسجيل الدخول",
-    "errorDefault": "فشل تسجيل الدخول، يرجى التحقق من الحساب أو كلمة المرور أو رقم الشركة",
+    "errorDefault": "فشل تسجيل الدخول. يرجى التحقق من الحساب أو كلمة المرور أو معرف الشركة.",
     "loading": "جاري تسجيل الدخول...",
     "loginWithCompanyId": "تسجيل الدخول باستخدام معرف الشركة؟",
-    "forgotPassword": "نسيت كلمة المرور؟",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
     "applyTrial": "طلب نسخة تجريبية"
   },
-  "customer_management": "إدارة بيانات العملاء",
+  "customer_management": "إدارة العملاء",
   "add_customer": "إضافة عميل",
   "search_placeholder_name_phone": "البحث باسم العميل أو رقم الهاتف...",
-  "delete_selected_confirm": "هل أنت متأكد من حذف {{count}} من العملاء المحددين؟",
+  "delete_selected_confirm": "هل أنت متأكد من حذف {{count}} عميل المحددين؟",
   "sales_trend": "اتجاه المبيعات",
-  "status_paid": "مدفوع",
-  "status_pending": "قيد الانتظار",
-  "checkout_now": "الدفع الآن",
+  "status_paid": "تم الدفع",
+  "status_pending": "معلق",
+  "checkout_now": "ادفع الآن",
   "reason_correction": "تصحيح المخزون",
-  "multi_variants": "متعدد المواصفات",
+  "multi_variants": "متعدد الخيارات",
   "common": {
     "loading": "جاري تحميل البيانات...",
     "retry": "إعادة المحاولة",
-    "error_load_data": "تعذر تحميل البيانات",
+    "error_load_data": "فشل تحميل البيانات",
     "last_update": "آخر تحديث",
-    "no_data_today": "لا توجد بيانات اليوم",
+    "no_data_today": "لا توجد بيانات لهذا اليوم",
     "logout": "تسجيل الخروج",
     "search_placeholder": "البحث عن طلبات، منتجات...",
     "sync_data": "مزامنة البيانات",
@@ -35,41 +35,48 @@
     "clear": "مسح",
     "delete": "حذف",
     "filter": "تصفية",
-    "actions": "إجراءات",
+    "actions": "الإجراءات",
     "reset": "إعادة تعيين",
     "preview": "معاينة",
     "cancel": "إلغاء",
+    "confirm": "تأكيد",
     "confirm_update": "تأكيد التحديث",
     "confirm_add": "تأكيد الإضافة",
-    "unknown": "غير معروف"
+    "error": "خطأ",
+    "update": "تحديث",
+    "unknown": "غير معروف",
+    "no_data": "لا توجد بيانات",
+    "export": "تصدير",
+    "page_info": "الصفحة {{current}} من {{total}}",
+    "rows": "صفوف"
   },
   "pos": {
     "search_placeholder": "ابحث عن منتج أو امسح الباركود...",
     "category_all": "الكل",
-    "multi_variants": "متعدد المواصفات",
+    "multi_variants": "متعدد الخيارات",
     "cart": "سلة التسوق",
-    "cart_empty": "لم يتم إضافة أي منتجات بعد",
-    "search_customer": "البحث باسم العميل...",
-    "select_customer": "اختيار عميل",
-    "select_discount": "اختيار خصم",
+    "cart_empty": "لم يتم إضافة أي منتجات",
+    "search_customer": "البحث عن اسم العميل...",
+    "select_customer": "اختر العميل",
+    "select_discount": "اختر الخصم",
     "checkout_date": "تاريخ الدفع",
     "subtotal": "المجموع الفرعي",
     "discount": "الخصم",
-    "tax_amount": "قيمة الضريبة",
+    "tax_amount": "مبلغ الضريبة",
     "total": "الإجمالي",
     "hold_order": "تعليق الطلب",
-    "checkout_now": "الدفع الآن",
+    "checkout_now": "ادفع الآن",
     "checkout_success": "تم الدفع بنجاح",
-    "order_created_msg": "تم إنشاء الطلب وتحديث المخزون",
-    "error_no_store_id": "تعذر الحصول على معرف المتجر، يرجى تحديث الصفحة والمحاولة مرة أخرى.",
-    "checkout_failed": "فشل عملية الدفع"
+    "order_created_msg": "تم إنشاء الطلب وتحديث المخزون.",
+    "error_no_store_id": "تعذر الحصول على معرف المتجر. يرجى تحديث الصفحة والمحاولة مرة أخرى.",
+    "checkout_failed": "فشل الدفع"
   },
   "products": {
     "title": "كتالوج المنتجات",
     "import_csv": "استيراد CSV",
     "export_csv": "تصدير CSV",
     "add_product": "إضافة منتج",
-    "edit_product": "تعديل المنتج",
+    "edit_product": "تعديل منتج",
     "search_placeholder": "البحث بالاسم أو SKU...",
     "no_products_msg": "يرجى إضافة منتجات أولاً",
     "add_now": "إضافة الآن",
@@ -78,30 +85,30 @@
     "price": "السعر",
     "stock": "المخزون",
     "category": "الفئة",
-    "no_match_msg": "لم يتم العثور على منتجات مطابقة",
-    "units": "قطعة",
-    "uncategorized": "غير مصنف",
-    "product_image": "صورة المنتج (للمعاينة في المطاعم)",
-    "select_category": "يرجى اختيار الفئة",
+    "no_match_msg": "لا توجد منتجات تطابق المعايير",
+    "units": "وحدات",
+    "uncategorized": "بدون فئة",
+    "product_image": "صورة المنتج (معاينة للأغذية والمشروبات)",
+    "select_category": "اختر الفئة",
     "add_category": "إضافة فئة",
     "category_name": "اسم الفئة",
-    "category_placeholder": "مثال: مشروبات، حلويات",
-    "color_tag": "علامة اللون",
+    "category_placeholder": "مثل: مشروبات، حلويات",
+    "color_tag": "وسم اللون",
     "sold_by": "وحدة البيع",
-    "sold_each": "بيع بالقطعة",
-    "sold_weight": "بيع بالوزن",
+    "sold_each": "يباع بالقطعة",
+    "sold_weight": "يباع بالوزن",
     "repair_price": "سعر الإصلاح (اختياري)",
-    "has_variants_msg": "هذا المنتج له مواصفات متعددة (مثل الحجم، اللون)",
-    "variants": "مواصفات المنتج (Variants)",
-    "add_variant": "إضافة مواصفة",
-    "variant_name": "اسم المواصفة",
-    "name_placeholder": "مثال: قهوة أمريكانو كلاسيك",
+    "has_variants_msg": "هذا المنتج لديه خيارات متعددة (مثل المقاس، اللون)",
+    "variants": "الخيارات",
+    "add_variant": "إضافة خيار",
+    "variant_name": "اسم الخيار",
+    "name_placeholder": "مثل: أمريكانو كلاسيك",
     "import": {
-      "title": "استيراد منتجات من CSV",
+      "title": "استيراد المنتجات عبر CSV",
       "select_file": "اختر ملف CSV",
       "file_name": "اسم الملف:",
       "file_size": "حجم الملف:",
-      "format_requirement": "متطلبات صيغة CSV:",
+      "format_requirement": "متطلبات تنسيق CSV:",
       "required_columns": [
         "SKU",
         "اسم المنتج",
@@ -111,69 +118,70 @@
         "الفئة",
         "الوصف",
         "الباركود",
-        "وحدة البيع"
+        "الوحدة"
       ],
       "signIn": "تأكيد الاستيراد"
     },
-    "update_failed": "فشل التحديث",
     "add_failed": "فشل الإضافة",
-    "image_upload_failed": "فشل رفع الصورة",
+    "image_upload_failed": "فشل تحميل الصورة",
     "add_category_failed": "فشل إضافة الفئة",
-    "delete_failed": "فشل الحذف",
     "export_failed": "فشل التصدير",
     "import_failed": "فشل الاستيراد",
     "select_csv_msg": "يرجى اختيار ملف CSV",
-    "delete_selected_confirm": "هل أنت متأكد من حذف {{count}} من المنتجات المختارة؟"
+    "delete_selected_confirm": "هل أنت متأكد من حذف {{count}} منتج المحددين؟"
   },
   "purchase_orders": {
     "add_failed": "فشل الإضافة",
-    "confirm_receive": "تأكيد استلام البضائع؟ سيؤدي ذلك إلى تحديث مخزون المنتجات ذات الصلة.",
+    "confirm_receive": "هل تريد تأكيد استلام البضائع؟ سيؤدي ذلك إلى تحديث مخزون المنتجات ذات الصلة.",
     "receive_failed": "فشل الاستلام",
     "status_received": "تم الاستلام",
     "status_ordered": "تم الطلب",
-    "status_cancelled": "ملغى",
+    "status_cancelled": "تم الإلغاء",
     "status_draft": "مسودة",
     "title": "أوامر الشراء",
-    "add": "إضافة أمر شراء",
+    "add": "أمر شراء جديد",
     "order_no": "رقم الطلب",
-    "suppliers": "الموردين",
+    "suppliers": "الموردون",
     "amount": "المبلغ",
     "status": "الحالة",
     "date": "التاريخ",
-    "actions": "إجراءات",
-    "receive": "استلام للمخزن",
-    "select_supplier": "يرجى اختيار المورد",
+    "actions": "الإجراءات",
+    "receive": "استلام البضائع",
+    "select_supplier": "اختر المورد",
     "items": "تفاصيل المنتجات",
     "select_product": "اختر المنتج",
     "add_product": "إضافة منتج (نافذة جديدة)",
     "quantity": "الكمية",
     "cost_price": "سعر التكلفة",
-    "add_item": "إضافة بند",
+    "add_item": "إضافة منتج",
     "create_draft": "إنشاء مسودة"
   },
   "register": {
     "title": "ابدأ رحلتك مع <1>Kevin POS</1>",
+    "title_prefix": "ابدأ رحلتك مع ",
+    "title_suffix": "",
     "subtitle": "سجل حساب شركتك للبدء",
     "company_name": "اسم الشركة",
-    "company_name_placeholder": "مثال: مجموعة التجزئة الكبرى",
+    "company_name_placeholder": "مثل: Super Retail Group",
     "tenant_id": "معرف الشركة (Tenant ID)",
-    "tenant_id_placeholder": "مثال: superstore-01 (معرف فريد)",
-    "admin_email": "بريد المسؤول الإلكتروني",
+    "tenant_id_placeholder": "مثل: superstore-01 (معرف فريد)",
+    "admin_email": "بريد المسؤول",
     "admin_email_placeholder": "admin@example.com",
     "password": "تعيين كلمة المرور",
     "confirm_password": "تأكيد كلمة المرور",
     "password_placeholder": "••••••••",
+    "submit": "إنشاء حساب",
     "signIn": "سجل الآن",
-    "has_account": "لديك حساب بالفعل؟",
-    "login_now": "سجل دخولك هنا",
+    "has_account": "هل لديك حساب بالفعل؟",
+    "login_now": "تسجيل الدخول من هنا",
     "success_title": "تم التسجيل بنجاح!",
-    "success_msg": "تم إنشاء حساب شركتك بنجاح. جاري تحويلك إلى صفحة تسجيل الدخول...",
-    "goto_login": "سجل دخولك الآن",
-    "error_password_mismatch": "كلمات المرور غير متطابقة",
+    "success_msg": "تم إنشاء حساب شركتك. جاري التحويل إلى صفحة تسجيل الدخول...",
+    "goto_login": "تسجيل الدخول الآن",
+    "error_password_mismatch": "كلمة المرور غير متطابقة",
     "error_default": "فشل التسجيل، يرجى المحاولة مرة أخرى"
   },
   "reports": {
-    "revenue_title": "تقرير العمليات",
+    "revenue_title": "التقرير التشغيلي",
     "date_start": "تاريخ البدء",
     "date_end": "تاريخ الانتهاء",
     "presets": {
@@ -183,13 +191,13 @@
       "thisMonth": "هذا الشهر",
       "lastMonth": "الشهر الماضي",
       "last7": "آخر 7 أيام",
-      "last30": "آخر 30 يومًا"
+      "last30": "آخر 30 يوم"
     },
     "metrics": {
       "total_revenue": "إجمالي المبيعات",
       "gross_profit": "إجمالي الربح",
-      "discounts": "الخصومات الممنوحة",
-      "expenditure": "مصروفات المتجر"
+      "discounts": "الخصومات المقدمة",
+      "expenditure": "مصاريف المتجر"
     },
     "charts": {
       "trend_title": "توقعات واتجاهات المبيعات",
@@ -198,8 +206,8 @@
       "profit": "الربح"
     },
     "tabs": {
-      "daily_detail": "تفاصيل الدخل والمصروفات اليومية",
-      "hot_products": "تصنيف المنتجات الأكثر مبيعاً",
+      "daily_detail": "تفاصيل الإيرادات والمصاريف اليومية",
+      "hot_products": "أكثر المنتجات مبيعاً",
       "category_analysis": "تحليل بيانات الفئات"
     },
     "table": {
@@ -207,25 +215,25 @@
       "net_sales": "صافي المبيعات",
       "cost": "تكلفة البضاعة المباعة",
       "profit": "إجمالي الربح",
-      "expenses": "المصروفات",
+      "expenses": "المصاريف",
       "margin": "هامش الربح",
       "product_name": "اسم المنتج",
       "qty_sold": "الكمية المباعة",
       "total_sales": "إجمالي المبيعات",
       "performance": "الأداء",
       "category_name": "اسم الفئة",
-      "total_items": "إجمالي الأصناف",
+      "total_items": "إجمالي المنتجات",
       "share": "الحصة",
       "total": "الإجمالي",
-      "unit": "قطعة",
+      "unit": "وحدة",
       "unknown_product": "منتج غير معروف",
-      "uncategorized": "غير مصنف"
+      "uncategorized": "بدون فئة"
     },
     "export": {
       "button": "تصدير تقرير {{type}}",
       "type_detail": "التفاصيل",
-      "type_product": "المنتجات",
-      "type_category": "الفئات"
+      "type_product": "المنتج",
+      "type_category": "الفئة"
     },
     "errors": {
       "load_fail": "فشل تحميل بيانات التقرير",
@@ -234,22 +242,22 @@
   },
   "settings": {
     "title": "إعدادات النظام",
-    "subtitle": "إدارة قواعد المتجر وبرنامج الولاء",
+    "subtitle": "إدارة قواعد متجرك وبرامج الولاء",
     "tabs": {
       "general": "الإعدادات العامة",
       "loyalty": "برنامج الولاء",
-      "tax": "إعدادات الضرائب",
+      "tax": "إعدادات الضريبة",
       "security": "الأمان والصلاحيات"
     },
     "loyalty": {
-      "title": "برنامج الولاء (Loyalty)",
-      "enable_points": "تفعيل نقاط مكافآت الاستهلاك",
-      "enable_desc": "سيحصل العملاء على نقاط بناءً على مبلغ كل عملية شراء",
-      "rate_label": "نسبة المكافأة (كم ينفق للحصول على نقطة واحدة)"
+      "title": "برنامج الولاء",
+      "enable_points": "تفعيل نقاط المكافآت",
+      "enable_desc": "يكسب العملاء نقاطاً بناءً على مبالغ إنفاقهم",
+      "rate_label": "معدل النقاط (مبلغ الإنفاق مقابل نقطة واحدة)"
     },
     "tax": {
-      "title": "تكوين الضرائب (Taxes)",
-      "rate_label": "نسبة الضريبة الافتراضية (%)"
+      "title": "الضرائب",
+      "rate_label": "نسبة الضريبة القياسية (%)"
     },
     "regional": {
       "title": "المنطقة والعملة",
@@ -264,146 +272,152 @@
     "title": "إدارة الموظفين",
     "add_staff": "إضافة موظف",
     "search_placeholder": "البحث بالاسم أو الحساب...",
-    "no_data": "لا توجد بيانات موظفين حالياً",
+    "no_data": "لم يتم العثور على بيانات الموظفين",
     "table": {
       "name": "الاسم",
-      "account": "حساب تسجيل الدخول",
-      "role": "المسمى الوظيفي",
+      "account": "حساب الدخول",
+      "role": "الدور",
       "status": "الحالة",
       "joined_at": "تاريخ الانضمام",
-      "actions": "إجراءات"
+      "actions": "الإجراءات"
     },
     "status": {
-      "active": "على رأس العمل",
+      "active": "نشط",
       "disabled": "معطل"
     },
     "roles": {
-      "level_1": "مدير النظام العام",
+      "level_1": "سوبر أدمن",
       "level_2": "وكيل إقليمي",
       "level_3": "موزع",
-      "level_4": "مدير فرع",
+      "level_4": "مدير متجر",
       "level_5": "كاشير",
-      "level_6": "مسؤول مخزون",
-      "default": "موظف عادي"
+      "level_6": "مشرف مخزون",
+      "default": "موظف"
     },
     "modal": {
-      "title_add": "إضافة حساب موظف جديد",
+      "title_add": "إضافة حساب موظف",
       "title_edit": "تعديل بيانات الموظف",
       "label_name": "اسم الموظف",
-      "label_username": "اسم المستخدم (Username)",
+      "label_username": "اسم المستخدم",
       "label_password_add": "كلمة المرور الافتراضية",
-      "label_password_edit": "تغيير كلمة المرور (اتركه فارغاً إذا لم ترغب بالتغيير)",
-      "placeholder_name": "مثال: أحمد محمد",
-      "placeholder_username": "مثال: ahmed_pos",
-      "placeholder_password_add": "يرجى إدخال كلمة المرور",
-      "placeholder_password_edit": "أدخل كلمة المرور الجديدة",
-      "label_role": "مستوى الوظيفة",
+      "label_password_edit": "تغيير كلمة المرور (اتركها فارغة إذا لم يتم تغييرها)",
+      "placeholder_name": "مثل: محمد أحمد",
+      "placeholder_username": "مثل: mohamed_pos",
+      "placeholder_password_add": "أدخل كلمة المرور",
+      "placeholder_password_edit": "أدخل كلمة مرور جديدة",
+      "label_role": "مستوى الدور",
       "role_immutable": "{{role}} (لا يمكن تغييره)"
     },
     "alerts": {
-      "reset_confirm": "هل أنت متأكد من إعادة تعيين كلمة مرور الموظف «{{name}}» إلى Aa1357؟",
-      "reset_success": "تمت إعادة تعيين كلمة المرور إلى Aa1357",
-      "reset_fail": "فشلت إعادة التعيين",
+      "reset_confirm": "هل أنت متأكد من إعادة تعيين كلمة مرور \"{{name}}\" إلى Aa1357؟",
+      "reset_success": "تم إعادة تعيين كلمة المرور إلى Aa1357",
+      "reset_fail": "فشل إعادة التعيين",
       "update_status_fail": "فشل تحديث الحالة",
-      "action_fail": "فشلت العملية"
+      "action_fail": "فشل الإجراء"
+    },
+    "actions": {
+      "edit": "تعديل",
+      "disable": "تعطيل",
+      "enable": "تفعيل",
+      "reset_password": "إعادة تعيين كلمة المرور"
     }
   },
   "staff_reports": {
-    "title": "تقارير أداء الموظفين",
-    "today_overview": "نظرة عامة اليوم",
-    "no_data": "لم يتم إنتاج بيانات بعد",
+    "title": "تقرير أداء الموظفين",
+    "today_overview": "نظرة عامة لهذا اليوم",
+    "no_data": "لم يتم إنشاء بيانات بعد",
     "stats": {
-      "total_revenue": "إجمالي المبيعات",
+      "total_revenue": "إجمالي الإيرادات",
       "total_orders": "إجمالي الطلبات"
     },
     "table": {
-      "title": "قائمة ترتيب مبيعات الموظفين",
+      "title": "ترتيب الموظفين حسب المبيعات",
       "staff_name": "اسم الموظف",
-      "order_count": "عدد الطلبات",
-      "revenue": "إجمالي مبلغ المبيعات",
+      "order_count": "الطلبات",
+      "revenue": "إجمالي قيمة المبيعات",
       "avg_order_value": "متوسط قيمة الطلب",
-      "order_unit": "طلب",
-      "empty": "لا توجد بيانات مبيعات للموظفين حالياً",
-      "fallback_name": "الموظف {{index}}"
+      "order_unit": "طلبات",
+      "empty": "لا توجد بيانات مبيعات للموظفين",
+      "fallback_name": "موظف {{index}}"
     }
   },
   "suppliers": {
     "title": "إدارة الموردين",
     "add_btn": "إضافة مورد",
-    "search_placeholder": "البحث باسم المورد...",
-    "empty_state": "لا توجد بيانات موردين بعد",
+    "search_placeholder": "البحث عن اسم المورد...",
+    "empty_state": "لا توجد بيانات موردين",
     "card": {
       "contact_person": "الشخص المسؤول",
-      "not_available": "غير متوفر"
+      "not_available": "غير متاح"
     },
     "modal": {
       "title_add": "إضافة مورد",
       "title_edit": "تعديل مورد",
       "label_name": "اسم المورد",
       "label_contact": "الشخص المسؤول",
-      "label_phone": "الهاتف",
+      "label_phone": "رقم الهاتف",
       "label_email": "البريد الإلكتروني",
       "label_address": "العنوان"
     },
     "alerts": {
-      "delete_confirm": "هل أنت متأكد من حذف هذا المورد؟",
+      "delete_confirm": "حذف هذا المورد؟",
       "delete_fail": "فشل الحذف",
-      "action_fail": "فشلت العملية: {{msg}}"
+      "action_fail": "فشل الإجراء: {{msg}}"
     }
   },
   "timecards": {
     "title": "إدارة الحضور",
     "status": {
-      "working": "أنت الآن في الدوام",
-      "off_duty": "أنت الآن خارج الدوام",
-      "clock_in_time": "وقت تسجيل الدخول: {{time}}",
-      "in_progress": "جاري التنفيذ..."
+      "working": "يعمل حالياً",
+      "off_duty": "لا يعمل حالياً",
+      "clock_in_time": "وقت البدء: {{time}}",
+      "in_progress": "قيد التنفيذ..."
     },
     "buttons": {
-      "clock_in": "تسجيل حضور",
-      "clock_out": "تسجيل انصراف"
+      "clock_in": "تسجيل البدء",
+      "clock_out": "تسجيل الانتهاء"
     },
     "history": {
       "title": "سجل الحضور",
       "table": {
         "date": "التاريخ",
-        "clock_in": "وقت الحضور",
-        "clock_out": "وقت الانصراف",
-        "total_hours": "إجمالي الساعات (ساعة)"
+        "clock_in": "وقت البدء",
+        "clock_out": "وقت الانتهاء",
+        "total_hours": "إجمالي الساعات"
       }
     },
     "alerts": {
-      "action_fail": "فشلت العملية"
+      "action_fail": "فشل الإجراء"
     }
   },
   "discounts": {
     "title": "إدارة الخصومات",
     "add_btn": "إضافة خصم",
-    "empty_state": "لم يتم إنشاء أي خصومات بعد",
+    "empty_state": "لم يتم إنشاء أي خصومات",
     "types": {
       "percentage": "نسبة مئوية (%)",
       "fixed": "مبلغ ثابت ({{currency}})",
       "desc_percentage": "خصم {{value}}%",
-      "desc_fixed": "مبلغ ثابت -{{currency}}{{value}}"
+      "desc_fixed": "خصم -{{currency}}{{value}}"
     },
     "modal": {
       "title": "إضافة خصم",
       "label_name": "الاسم",
       "label_type": "النوع",
       "label_value": "القيمة",
-      "placeholder_name": "مثال: عرض نهاية الأسبوع",
-      "placeholder_value": "مثال: 10"
+      "placeholder_name": "مثل: خصم عطلة نهاية الأسبوع",
+      "placeholder_value": "مثل: 10"
     },
     "alerts": {
-      "delete_confirm": "هل أنت متأكد من حذف هذا الخصم؟",
+      "delete_confirm": "حذف هذا الخصم؟",
       "delete_fail": "فشل الحذف",
       "add_fail": "فشل الإضافة: {{msg}}"
     }
   },
   "inventory": {
-    "title": "جرد وتعديل المخزون",
-    "add_adjustment": "إضافة تعديل",
-    "search_placeholder": "ابحث عن منتج لعرض المخزون...",
+    "title": "جرد وتصحيح المخزون",
+    "add_adjustment": "إضافة تصحيح",
+    "search_placeholder": "البحث عن منتج لعرض المخزون...",
     "table": {
       "product_name": "اسم المنتج",
       "sku": "SKU",
@@ -411,22 +425,23 @@
       "unit": "الوحدة"
     },
     "modal": {
-      "title": "إضافة تعديل مخزون",
+      "title": "إضافة تصحيح مخزون",
       "product": "المنتج",
       "select_product": "اختر المنتج",
-      "variant": "المواصفة (Variant)",
-      "select_variant": "اختر المواصفة",
+      "variant": "الخيار",
+      "select_variant": "اختر الخيار",
       "stock_display": " (المخزون: {{stock}})",
-      "qty_label": "كمية التعديل (قيمة موجبة للزيادة، سالبة للنقص)",
+      "qty_label": "كمية التصحيح (موجب للزيادة، سالب للنقصان)",
       "reason": "السبب",
       "note": "ملاحظة",
-      "signIn": "تأكيد التعديل"
+      "signIn": "تأكيد التصحيح",
+      "submit": "إرسال"
     },
     "reasons": {
-      "correction": "تصحيح جرد",
-      "damage": "تلف / هالك",
-      "received": "استلام أصناف",
-      "inventory_count": "جرد المخزون",
+      "correction": "تصحيح مخزون",
+      "damage": "تالف/منتهي الصلاحية",
+      "received": "بضاعة مستلمة",
+      "inventory_count": "جرد",
       "other": "أخرى"
     },
     "units": {
@@ -434,23 +449,23 @@
       "pcs": "قطعة"
     },
     "alerts": {
-      "adjust_fail": "فشل التعديل"
+      "adjust_fail": "فشل التصحيح"
     }
   },
   "orders": {
     "title": "إدارة الطلبات",
-    "export_summary": "تصدير الملخص",
-    "export_details": "تصدير التفاصيل",
+    "export_summary": "تصدير ملخص",
+    "export_details": "تصدير تفاصيل",
     "status_all": "جميع الطلبات",
-    "status_paid": "مدفوع",
-    "status_pending": "قيد الانتظار",
-    "status_cancelled": "ملغي",
-    "no_data": "لا توجد بيانات حالياً",
+    "status_paid": "تم الدفع",
+    "status_pending": "معلق",
+    "status_cancelled": "تم الإلغاء",
+    "no_data": "لا توجد بيانات",
     "loading": "جاري التحميل...",
-    "error_fetch": "تعذر تحميل قائمة الطلبات",
+    "error_fetch": "فشل تحميل قائمة الطلبات",
     "error_server": "فشل الاتصال بالخادم",
-    "error_export": "فشل التصدير",
-    "backdate_label": "طلب بتاريخ سابق",
+    "error_export": "فشل تصدير البيانات",
+    "backdate_label": "تغيير تاريخ الطلب",
     "anonymous_customer": "عميل مجهول",
     "details_title": "تفاصيل الطلب",
     "product_name": "اسم المنتج",
@@ -460,8 +475,8 @@
     "discount": "الخصم",
     "final_amount": "المبلغ النهائي",
     "close": "إغلاق",
-    "return_btn": "إرجاع",
-    "confirm_return_msg": "هل أنت متأكد من أنك تريد إرجاع هذا العنصر؟",
+    "return_btn": "إرجاع منتج",
+    "confirm_return_msg": "هل أنت متأكد من إرجاع هذا المنتج؟",
     "return_success": "تم إرجاع المنتج بنجاح",
     "status_returned": "تم الإرجاع",
     "status_partially_returned": "تم الإرجاع جزئياً",
@@ -474,41 +489,90 @@
     }
   },
   "dashboard": {
-    "title": "نظرة عامة على العمليات",
+    "title": "نظرة عامة تشغيلية",
     "total_tenants": "إجمالي المستأجرين",
     "active_tenants": "المستأجرون النشطون",
-    "total_products": "إجمالي منتجات النظام",
+    "total_products": "المنتجات في النظام",
     "archive_progress": "تقدم الأرشفة",
     "managed_tenants": "المستأجرون المدارون",
     "managed_accounts": "الحسابات المدارة",
-    "est_inventory_value": "قيمة المخزون التقديرية",
+    "est_inventory_value": "القيمة التقديرية للمخزون",
     "managed_product_count": "عدد المنتجات المدارة",
     "today_sales": "مبيعات اليوم",
     "inventory_total_value": "إجمالي قيمة المخزون",
-    "stock_count": "عدد القطع في المخزن",
+    "stock_count": "منتجات في المخزون",
     "current_user": "المستخدم الحالي",
     "sales_trend": "اتجاه المبيعات",
-    "popular_products": "المنتجات الأكثر شعبية",
-    "no_popular_products": "لا توجد بيانات للمنتجات الشعبية حالياً",
-    "sold": "تم بيع"
+    "popular_products": "المنتجات الرائجة",
+    "no_popular_products": "لا توجد بيانات للمنتجات الرائجة",
+    "sold": "مباع"
   },
   "nav": {
-    "overview": "لوحة القيادة",
-    "pos": "نظام البيع (POS)",
+    "overview": "لوحة التحكم",
+    "pos": "نقطة البيع (POS)",
     "product_mgmt": "إدارة المنتجات",
     "inventory_count": "جرد المخزون",
     "purchase_order": "أوامر الشراء",
     "suppliers": "إدارة الموردين",
     "discount_mgmt": "إدارة الخصومات",
-    "order_mgmt": "الاستعلام عن الطلبات",
+    "order_mgmt": "البحث عن طلب",
     "revenue_report": "تقرير الإيرادات",
     "customer_data": "بيانات العملاء",
     "staff_mgmt": "إدارة الموظفين",
     "attendance": "سجل الحضور",
     "staff_performance": "تقرير الأداء",
     "system_settings": "إعدادات النظام",
-    "api_integration": "ربط API"
+    "api_integration": "تكامل API",
+    "sales_summary": "ملخص المبيعات",
+    "product_sales": "مبيعات المنتجات",
+    "category_sales": "مبيعات الفئات",
+    "employee_sales": "مبيعات الموظفين",
+    "payment_sales": "مبيعات طرق الدفع",
+    "receipts_report": "الإيصالات",
+    "modifier_sales": "مبيعات الخيارات الإضافية",
+    "discount_report": "تقرير الخصومات",
+    "tax_report": "تقرير الضرائب",
+    "shifts_report": "الورديات",
+    "product_list": "قائمة المنتجات",
+    "categories": "الفئات",
+    "modifiers": "الخيارات الإضافية",
+    "inventory_overview": "إدارة المخزون",
+    "employee_list": "قائمة الموظفين",
+    "access_rights": "صلاحيات الوصول",
+    "integration_apps": "تطبيقات التكامل",
+    "access_tokens": "رموز الوصول",
+    "feature_settings": "المميزات",
+    "billing": "الفواتير والاشتراكات",
+    "payment_methods": "طرق الدفع",
+    "loyalty": "برنامج الولاء",
+    "tax_settings": "إعدادات الضرائب",
+    "receipt_settings": "إعدادات الإيصالات",
+    "stores": "المتاجر",
+    "pos_devices": "أجهزة POS",
+    "help_center": "مركز المساعدة",
+    "community": "المجتمع",
+    "live_chat": "الدردشة المباشرة"
   },
-  "search_placeholder": "البحث عن الطلبات، المنتجات...",
-  "logout": "تسجيل الخروج"
+  "navGroup": {
+    "reports": "التقارير",
+    "products": "المنتجات",
+    "inventory": "المخزون",
+    "employees": "الموظفون",
+    "customers": "العملاء",
+    "integrations": "التكامل",
+    "settings": "الإعدادات",
+    "help": "المساعدة"
+  },
+  "search_placeholder": "البحث عن طلبات، منتجات...",
+  "logout": "تسجيل الخروج",
+  "products.import.submit": "استيراد المنتجات",
+  "purchase_orders.supplier": "المورد",
+  "create_failed": "فشل الإنشاء",
+  "update_failed": "فشل التحديث",
+  "delete_failed": "فشل الحذف",
+  "edit_customer": "تعديل عميل",
+  "placeholder_name_example": "مثل: محمد أحمد",
+  "placeholder_email": "email@example.com",
+  "placeholder_phone": "+966 5...",
+  "placeholder_address": "اسم الشارع، رقم المبنى، المدينة"
 }

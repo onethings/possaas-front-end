@@ -12,28 +12,6 @@
     "forgotPassword": "Forgot password?",
     "applyTrial": "Request a Trial"
   },
-  "register": {
-    "title_prefix": "Start Your ",
-    "title_suffix": " Journey",
-    "subtitle": "Create a new account to get started",
-    "company_name": "Company Name",
-    "company_name_placeholder": "Enter your company name",
-    "tenant_id": "Company ID",
-    "tenant_id_placeholder": "Enter a unique Company ID",
-    "admin_email": "Admin Email",
-    "admin_email_placeholder": "admin@example.com",
-    "password": "Password",
-    "password_placeholder": "Create a password",
-    "confirm_password": "Confirm Password",
-    "submit": "Create Account",
-    "error_password_mismatch": "Passwords do not match",
-    "error_default": "Registration failed. Please try again.",
-    "success_title": "Registration Successful!",
-    "success_msg": "Your account has been created. You will be redirected to the login page shortly.",
-    "goto_login": "Go to Login",
-    "has_account": "Already have an account?",
-    "login_now": "Log In"
-  },
   "customer_management": "Customer Management",
   "add_customer": "Add Customer",
   "search_placeholder_name_phone": "Search customer name or phone...",
@@ -61,9 +39,16 @@
     "reset": "Reset",
     "preview": "Preview",
     "cancel": "Cancel",
+    "confirm": "Confirm",
     "confirm_update": "Confirm Update",
     "confirm_add": "Confirm Add",
-    "unknown": "Unknown"
+    "error": "Error",
+    "update": "Update",
+    "unknown": "Unknown",
+    "no_data": "No data available",
+    "export": "Export",
+    "page_info": "Page {{current}} of {{total}}",
+    "rows": "rows"
   },
   "pos": {
     "search_placeholder": "Search products or scan barcode...",
@@ -137,11 +122,9 @@
       ],
       "signIn": "Confirm Import"
     },
-    "update_failed": "Update Failed",
     "add_failed": "Add Failed",
     "image_upload_failed": "Image Upload Failed",
     "add_category_failed": "Add Category Failed",
-    "delete_failed": "Delete Failed",
     "export_failed": "Export Failed",
     "import_failed": "Import Failed",
     "select_csv_msg": "Please select a CSV file",
@@ -175,6 +158,8 @@
   },
   "register": {
     "title": "Start Your <1>Kevin POS</1> Journey",
+    "title_prefix": "Start Your ",
+    "title_suffix": " Journey",
     "subtitle": "Register your company account to get started",
     "company_name": "Company Name",
     "company_name_placeholder": "e.g., Super Retail Group",
@@ -185,6 +170,7 @@
     "password": "Set Password",
     "confirm_password": "Confirm Password",
     "password_placeholder": "••••••••",
+    "submit": "Create Account",
     "signIn": "Register Now",
     "has_account": "Already have an account?",
     "login_now": "Login here",
@@ -328,6 +314,12 @@
       "reset_fail": "Reset Failed",
       "update_status_fail": "Update Status Failed",
       "action_fail": "Operation Failed"
+    },
+    "actions": {
+      "edit": "Edit",
+      "disable": "Disable",
+      "enable": "Enable",
+      "reset_password": "Reset Password"
     }
   },
   "staff_reports": {
@@ -442,7 +434,8 @@
       "qty_label": "Adjustment Quantity (Positive to increase, negative to decrease)",
       "reason": "Reason",
       "note": "Note",
-      "signIn": "Confirm Adjustment"
+      "signIn": "Confirm Adjustment",
+      "submit": "Submit"
     },
     "reasons": {
       "correction": "Stocktake Correction",
@@ -571,5 +564,15 @@
     "help": "Help"
   },
   "search_placeholder": "Search orders, products...",
-  "logout": "Logout"
+  "logout": "Logout",
+  "products.import.submit": "Import Products",
+  "purchase_orders.supplier": "Supplier",
+  "create_failed": "Create Failed",
+  "update_failed": "Update Failed",
+  "delete_failed": "Delete Failed",
+  "edit_customer": "Edit Customer",
+  "placeholder_name_example": "e.g. John Doe",
+  "placeholder_email": "email@example.com",
+  "placeholder_phone": "+1 234 567 890",
+  "placeholder_address": "123 Main St, City"
 }

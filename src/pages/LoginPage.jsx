@@ -298,10 +298,10 @@ const LoginPage = () => {
 
 const inputStyle = {
     width: '100%',
-    background: 'rgba(255, 255, 255, 0.05)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+    background: 'var(--input-bg)',
+    border: '1px solid var(--glass-border)',
     borderRadius: 'var(--radius-md)',
-    color: 'white',
+    color: 'var(--text-main)',
     outline: 'none',
     transition: 'all 0.3s ease',
     fontSize: '1rem',
@@ -309,9 +309,9 @@ const inputStyle = {
 };
 
 const selectStyle = {
-    background: 'rgba(255, 255, 255, 0.1)',
-    color: 'white',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
+    background: 'var(--input-bg)',
+    color: 'var(--text-main)',
+    border: '1px solid var(--glass-border)',
     borderRadius: '4px',
     padding: '4px 8px',
     fontSize: '0.8rem',

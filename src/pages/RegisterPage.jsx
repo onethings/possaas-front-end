@@ -239,10 +239,10 @@ const RegisterPage = () => {
     const inputStyle = {
         width: '100%',
         padding: '0.75rem 1rem 0.75rem 40px',
-        background: 'rgba(255, 255, 255, 0.05)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
+        background: 'var(--input-bg)',
+        border: '1px solid var(--glass-border)',
         borderRadius: 'var(--radius-md)',
-        color: 'white',
+        color: 'var(--text-main)',
         outline: 'none',
         transition: 'all 0.3s ease',
         fontSize: '1rem'

@@ -39,9 +39,16 @@
     "reset": "Reset",
     "preview": "Preview",
     "cancel": "Cancel",
+    "confirm": "Confirm",
     "confirm_update": "Confirm Update",
     "confirm_add": "Confirm Add",
-    "unknown": "Unknown"
+    "error": "Error",
+    "update": "Update",
+    "unknown": "Unknown",
+    "no_data": "No data available",
+    "export": "Export",
+    "page_info": "Page {{current}} of {{total}}",
+    "rows": "rows"
   },
   "pos": {
     "search_placeholder": "Search products or scan barcode...",
@@ -115,11 +122,9 @@
       ],
       "signIn": "Confirm Import"
     },
-    "update_failed": "Update Failed",
     "add_failed": "Add Failed",
     "image_upload_failed": "Image Upload Failed",
     "add_category_failed": "Add Category Failed",
-    "delete_failed": "Delete Failed",
     "export_failed": "Export Failed",
     "import_failed": "Import Failed",
     "select_csv_msg": "Please select a CSV file",
@@ -153,6 +158,8 @@
   },
   "register": {
     "title": "Start Your <1>Kevin POS</1> Journey",
+    "title_prefix": "Start Your ",
+    "title_suffix": " Journey",
     "subtitle": "Register your company account to get started",
     "company_name": "Company Name",
     "company_name_placeholder": "e.g., Super Retail Group",
@@ -163,6 +170,7 @@
     "password": "Set Password",
     "confirm_password": "Confirm Password",
     "password_placeholder": "••••••••",
+    "submit": "Create Account",
     "signIn": "Register Now",
     "has_account": "Already have an account?",
     "login_now": "Login here",
@@ -306,6 +314,12 @@
       "reset_fail": "Reset Failed",
       "update_status_fail": "Update Status Failed",
       "action_fail": "Operation Failed"
+    },
+    "actions": {
+      "edit": "Edit",
+      "disable": "Disable",
+      "enable": "Enable",
+      "reset_password": "Reset Password"
     }
   },
   "staff_reports": {
@@ -420,7 +434,8 @@
       "qty_label": "Adjustment Quantity (Positive to increase, negative to decrease)",
       "reason": "Reason",
       "note": "Note",
-      "signIn": "Confirm Adjustment"
+      "signIn": "Confirm Adjustment",
+      "submit": "Submit"
     },
     "reasons": {
       "correction": "Stocktake Correction",
@@ -507,8 +522,57 @@
     "attendance": "Attendance Records",
     "staff_performance": "Performance Report",
     "system_settings": "System Settings",
-    "api_integration": "API Integration"
+    "api_integration": "API Integration",
+    "sales_summary": "Sales Summary",
+    "product_sales": "Sales by Product",
+    "category_sales": "Sales by Category",
+    "employee_sales": "Sales by Employee",
+    "payment_sales": "Sales by Payment Type",
+    "receipts_report": "Receipts",
+    "modifier_sales": "Sales by Modifier",
+    "discount_report": "Discount Report",
+    "tax_report": "Tax Report",
+    "shifts_report": "Shifts",
+    "product_list": "Product List",
+    "categories": "Categories",
+    "modifiers": "Modifiers",
+    "inventory_overview": "Inventory Management",
+    "employee_list": "Employee List",
+    "access_rights": "Access Rights",
+    "integration_apps": "Integrations",
+    "access_tokens": "Access Tokens",
+    "feature_settings": "Features",
+    "billing": "Billing & Subscription",
+    "payment_methods": "Payment Methods",
+    "loyalty": "Loyalty Program",
+    "tax_settings": "Tax Settings",
+    "receipt_settings": "Receipt Settings",
+    "stores": "Stores",
+    "pos_devices": "POS Devices",
+    "help_center": "Help Center",
+    "community": "Community",
+    "live_chat": "Live Chat"
+  },
+  "navGroup": {
+    "reports": "Reports",
+    "products": "Products",
+    "inventory": "Inventory",
+    "employees": "Employees",
+    "customers": "Customers",
+    "integrations": "Integrations",
+    "settings": "Settings",
+    "help": "Help"
   },
   "search_placeholder": "Search orders, products...",
-  "logout": "Logout"
+  "logout": "Logout",
+  "products.import.submit": "Import Products",
+  "purchase_orders.supplier": "Supplier",
+  "create_failed": "Create Failed",
+  "update_failed": "Update Failed",
+  "delete_failed": "Delete Failed",
+  "edit_customer": "Edit Customer",
+  "placeholder_name_example": "e.g. John Doe",
+  "placeholder_email": "email@example.com",
+  "placeholder_phone": "+1 234 567 890",
+  "placeholder_address": "123 Main St, City"
 }

@@ -1,18 +1,18 @@
 {
   "login": {
-    "welcome": "Selamat datang kembali",
-    "subtitle": "Masuk ke dasbor admin Anda untuk melanjutkan",
+    "welcome": "Selamat Datang Kembali",
+    "subtitle": "Silakan masuk ke dasbor admin Anda untuk melanjutkan",
     "email": "Alamat Email",
     "password": "Kata Sandi",
     "companyId": "ID Perusahaan",
     "signIn": "Masuk",
-    "errorDefault": "Gagal masuk. Silakan periksa akun, kata sandi, atau ID perusahaan Anda.",
+    "errorDefault": "Gagal masuk. Silakan periksa kembali akun, kata sandi, atau ID Perusahaan Anda.",
     "loading": "Sedang masuk...",
     "loginWithCompanyId": "Masuk dengan ID Perusahaan?",
-    "forgotPassword": "Lupa kata sandi?",
-    "applyTrial": "Ajukan uji coba"
+    "forgotPassword": "Lupa Kata Sandi?",
+    "applyTrial": "Ajukan Uji Coba"
   },
-  "customer_management": "Manajemen Data Pelanggan",
+  "customer_management": "Manajemen Pelanggan",
   "add_customer": "Tambah Pelanggan",
   "search_placeholder_name_phone": "Cari nama atau telepon pelanggan...",
   "delete_selected_confirm": "Apakah Anda yakin ingin menghapus {{count}} pelanggan yang dipilih?",
@@ -21,13 +21,13 @@
   "status_pending": "Tertunda",
   "checkout_now": "Bayar Sekarang",
   "reason_correction": "Koreksi Inventaris",
-  "multi_variants": "Multi-varian",
+  "multi_variants": "Multi Varian",
   "common": {
     "loading": "Memuat data...",
-    "retry": "Coba lagi",
+    "retry": "Coba Lagi",
     "error_load_data": "Gagal memuat data",
-    "last_update": "Terakhir diperbarui",
-    "no_data_today": "Tidak ada data tersedia hari ini",
+    "last_update": "Pembaruan Terakhir",
+    "no_data_today": "Tidak ada data untuk hari ini",
     "logout": "Keluar",
     "search_placeholder": "Cari pesanan, produk...",
     "sync_data": "Sinkronisasi Data",
@@ -39,16 +39,23 @@
     "reset": "Atur Ulang",
     "preview": "Pratinjau",
     "cancel": "Batal",
+    "confirm": "Konfirmasi",
     "confirm_update": "Konfirmasi Pembaruan",
     "confirm_add": "Konfirmasi Penambahan",
-    "unknown": "Tidak Diketahui"
+    "error": "Kesalahan",
+    "update": "Perbarui",
+    "unknown": "Tidak Diketahui",
+    "no_data": "Tidak ada data",
+    "export": "Ekspor",
+    "page_info": "Halaman {{current}} dari {{total}}",
+    "rows": "baris"
   },
   "pos": {
-    "search_placeholder": "Cari produk atau pindai barcode...",
+    "search_placeholder": "Cari produk atau pindai kode batang...",
     "category_all": "Semua",
-    "multi_variants": "Multi-varian",
-    "cart": "Keranjang",
-    "cart_empty": "Belum ada item yang ditambahkan",
+    "multi_variants": "Multi Varian",
+    "cart": "Keranjang Belanja",
+    "cart_empty": "Belum ada produk yang ditambahkan",
     "search_customer": "Cari nama pelanggan...",
     "select_customer": "Pilih Pelanggan",
     "select_discount": "Pilih Diskon",
@@ -60,8 +67,8 @@
     "hold_order": "Tahan Pesanan",
     "checkout_now": "Bayar Sekarang",
     "checkout_success": "Pembayaran Berhasil",
-    "order_created_msg": "Pesanan dibuat dan inventaris telah diperbarui",
-    "error_no_store_id": "Gagal mendapatkan ID Toko. Silakan segarkan halaman.",
+    "order_created_msg": "Pesanan berhasil dibuat dan stok inventaris telah diperbarui.",
+    "error_no_store_id": "Tidak dapat mengambil ID Toko. Silakan muat ulang halaman dan coba lagi.",
     "checkout_failed": "Pembayaran Gagal"
   },
   "products": {
@@ -69,35 +76,35 @@
     "import_csv": "Impor CSV",
     "export_csv": "Ekspor CSV",
     "add_product": "Tambah Produk",
-    "edit_product": "Edit Produk",
+    "edit_product": "Ubah Produk",
     "search_placeholder": "Cari nama atau SKU...",
-    "no_products_msg": "Silakan tambah produk terlebih dahulu",
+    "no_products_msg": "Silakan tambahkan produk terlebih dahulu",
     "add_now": "Tambah Sekarang",
-    "sku_barcode": "SKU / Barcode",
+    "sku_barcode": "SKU / Kode Batang",
     "product_name": "Nama Produk",
     "price": "Harga",
     "stock": "Stok",
     "category": "Kategori",
-    "no_match_msg": "Tidak ada produk yang cocok",
-    "units": "unit",
+    "no_match_msg": "Tidak ada produk yang cocok dengan kriteria",
+    "units": "satuan",
     "uncategorized": "Tanpa Kategori",
-    "product_image": "Gambar Produk (Pratinjau untuk restorasi)",
-    "select_category": "Pilih kategori",
+    "product_image": "Foto Produk (Pratinjau untuk Makanan & Minuman)",
+    "select_category": "Pilih Kategori",
     "add_category": "Tambah Kategori",
     "category_name": "Nama Kategori",
-    "category_placeholder": "Contoh: Minuman, Makanan Penutup",
-    "color_tag": "Tag Warna",
-    "sold_by": "Unit Penjualan",
-    "sold_each": "Jual per unit",
-    "sold_weight": "Jual berdasarkan berat",
+    "category_placeholder": "mis. Minuman, Makanan Penutup",
+    "color_tag": "Label Warna",
+    "sold_by": "Dijual Berdasarkan",
+    "sold_each": "Dijual per Satuan",
+    "sold_weight": "Dijual Berdasarkan Berat",
     "repair_price": "Harga Perbaikan (Opsional)",
-    "has_variants_msg": "Produk ini memiliki beberapa varian (misal: ukuran, warna)",
-    "variants": "Varian Produk",
+    "has_variants_msg": "Produk ini memiliki beberapa varian (mis. ukuran, warna)",
+    "variants": "Varian",
     "add_variant": "Tambah Varian",
     "variant_name": "Nama Varian",
-    "name_placeholder": "Contoh: Kopi Americano Klasik",
+    "name_placeholder": "mis. Americano Klasik",
     "import": {
-      "title": "Impor Produk dari CSV",
+      "title": "Impor CSV Produk",
       "select_file": "Pilih File CSV",
       "file_name": "Nama File:",
       "file_size": "Ukuran File:",
@@ -110,59 +117,60 @@
         "Stok",
         "Kategori",
         "Deskripsi",
-        "Barcode",
-        "Unit Penjualan"
+        "Kode Batang",
+        "Satuan"
       ],
       "signIn": "Konfirmasi Impor"
     },
-    "update_failed": "Gagal memperbarui",
-    "add_failed": "Gagal menambah",
-    "image_upload_failed": "Gagal mengunggah gambar",
-    "add_category_failed": "Gagal menambah kategori",
-    "delete_failed": "Gagal menghapus",
-    "export_failed": "Gagal mengekspor",
-    "import_failed": "Gagal mengimpor",
+    "add_failed": "Gagal Menambahkan",
+    "image_upload_failed": "Gagal Mengunggah Gambar",
+    "add_category_failed": "Gagal Menambahkan Kategori",
+    "export_failed": "Gagal Mengekspor",
+    "import_failed": "Gagal Mengimpor",
     "select_csv_msg": "Silakan pilih file CSV",
     "delete_selected_confirm": "Apakah Anda yakin ingin menghapus {{count}} produk yang dipilih?"
   },
   "purchase_orders": {
-    "add_failed": "Gagal menambah",
+    "add_failed": "Gagal Menambahkan",
     "confirm_receive": "Konfirmasi penerimaan barang? Ini akan memperbarui stok produk terkait.",
-    "receive_failed": "Gagal menerima",
+    "receive_failed": "Gagal Menerima Barang",
     "status_received": "Diterima",
     "status_ordered": "Dipesan",
     "status_cancelled": "Dibatalkan",
     "status_draft": "Draf",
     "title": "Pesanan Pembelian (PO)",
-    "add": "Tambah PO Baru",
+    "add": "Pesanan Pembelian Baru",
     "order_no": "No. Pesanan",
     "suppliers": "Pemasok",
     "amount": "Jumlah",
     "status": "Status",
     "date": "Tanggal",
     "actions": "Tindakan",
-    "receive": "Terima Stok",
+    "receive": "Terima Barang",
     "select_supplier": "Pilih Pemasok",
     "items": "Detail Produk",
     "select_product": "Pilih Produk",
-    "add_product": "Tambah Produk (Jendela baru)",
+    "add_product": "Tambah Produk (Jendela Baru)",
     "quantity": "Jumlah",
     "cost_price": "Harga Modal",
-    "add_item": "Tambah Item",
+    "add_item": "Tambah Produk",
     "create_draft": "Buat Draf"
   },
   "register": {
-    "title": "Mulai Perjalanan Anda dengan <1>Kevin POS</1>",
+    "title": "Mulai perjalanan Anda dengan <1>Kevin POS</1>",
+    "title_prefix": "Mulai perjalanan Anda dengan ",
+    "title_suffix": "",
     "subtitle": "Daftarkan akun perusahaan Anda untuk memulai",
     "company_name": "Nama Perusahaan",
-    "company_name_placeholder": "Contoh: Grup Ritel Makmur",
-    "tenant_id": "ID Perusahaan (Tenant ID)",
-    "tenant_id_placeholder": "Contoh: tokosuper-01 (ID Unik)",
+    "company_name_placeholder": "mis. Super Retail Group",
+    "tenant_id": "ID Perusahaan (ID Tenant)",
+    "tenant_id_placeholder": "mis. superstore-01 (Pengidentifikasi Unik)",
     "admin_email": "Email Admin",
-    "admin_email_placeholder": "admin@contoh.com",
+    "admin_email_placeholder": "admin@example.com",
     "password": "Atur Kata Sandi",
     "confirm_password": "Konfirmasi Kata Sandi",
     "password_placeholder": "••••••••",
+    "submit": "Buat Akun",
     "signIn": "Daftar Sekarang",
     "has_account": "Sudah punya akun?",
     "login_now": "Masuk di sini",
@@ -186,29 +194,29 @@
       "last30": "30 Hari Terakhir"
     },
     "metrics": {
-      "total_revenue": "Total Pendapatan",
+      "total_revenue": "Total Penjualan",
       "gross_profit": "Laba Kotor",
-      "discounts": "Diskon yang Diberikan",
+      "discounts": "Diskon Diberikan",
       "expenditure": "Pengeluaran Toko"
     },
     "charts": {
-      "trend_title": "Prediksi dan Tren Penjualan",
-      "category_pie": "Persentase Penjualan per Kategori",
+      "trend_title": "Prakiraan & Tren Penjualan",
+      "category_pie": "Pangsa Penjualan per Kategori",
       "revenue": "Pendapatan",
       "profit": "Keuntungan"
     },
     "tabs": {
-      "daily_detail": "Detail Pemasukan & Pengeluaran Harian",
-      "hot_products": "Peringkat Produk Terlaris",
+      "daily_detail": "Detail Pendapatan & Pengeluaran Harian",
+      "hot_products": "Produk Terlaris",
       "category_analysis": "Analisis Data Kategori"
     },
     "table": {
       "date": "Tanggal",
       "net_sales": "Penjualan Bersih",
-      "cost": "Harga Pokok Penjualan",
+      "cost": "Harga Pokok Penjualan (HPP)",
       "profit": "Laba Kotor",
       "expenses": "Pengeluaran",
-      "margin": "Margin Laba",
+      "margin": "Margin Keuntungan",
       "product_name": "Nama Produk",
       "qty_sold": "Jumlah Terjual",
       "total_sales": "Total Penjualan",
@@ -217,8 +225,8 @@
       "total_items": "Total Produk",
       "share": "Pangsa",
       "total": "Total",
-      "unit": "buah",
-      "unknown_product": "Produk Tidak Diketahui",
+      "unit": "pcs",
+      "unknown_product": "Produk Tidak Dikenal",
       "uncategorized": "Tanpa Kategori"
     },
     "export": {
@@ -239,17 +247,17 @@
       "general": "Pengaturan Umum",
       "loyalty": "Program Loyalitas",
       "tax": "Pengaturan Pajak",
-      "security": "Keamanan & Izin"
+      "security": "Keamanan & Hak Akses"
     },
     "loyalty": {
       "title": "Program Loyalitas",
-      "enable_points": "Aktifkan Poin Hadiah",
-      "enable_desc": "Pelanggan mendapatkan poin berdasarkan jumlah pembelian mereka",
-      "rate_label": "Tingkat Hadiah (Berapa banyak belanja untuk 1 poin)"
+      "enable_points": "Aktifkan Poin Reward",
+      "enable_desc": "Pelanggan mendapatkan poin berdasarkan jumlah pengeluaran mereka",
+      "rate_label": "Nilai Tukar Poin (Jumlah pengeluaran untuk 1 poin)"
     },
     "tax": {
-      "title": "Konfigurasi Pajak",
-      "rate_label": "Tarif Pajak Default (%)"
+      "title": "Pajak",
+      "rate_label": "Tarif Pajak Standar (%)"
     },
     "regional": {
       "title": "Wilayah & Mata Uang",
@@ -258,19 +266,19 @@
     },
     "save_btn": "Simpan Perubahan",
     "save_success": "Pengaturan berhasil disimpan!",
-    "save_fail": "Gagal menyimpan"
+    "save_fail": "Gagal Menyimpan"
   },
   "staff": {
-    "title": "Manajemen Karyawan",
-    "add_staff": "Tambah Karyawan",
+    "title": "Manajemen Staf",
+    "add_staff": "Tambah Staf",
     "search_placeholder": "Cari nama atau akun...",
-    "no_data": "Tidak ada data karyawan saat ini",
+    "no_data": "Data staf tidak ditemukan",
     "table": {
       "name": "Nama",
       "account": "Akun Masuk",
-      "role": "Jabatan",
+      "role": "Peran / Jabatan",
       "status": "Status",
-      "joined_at": "Tanggal Bergabung",
+      "joined_at": "Bergabung Pada",
       "actions": "Tindakan"
     },
     "status": {
@@ -283,76 +291,82 @@
       "level_3": "Distributor",
       "level_4": "Manajer Toko",
       "level_5": "Kasir",
-      "level_6": "Supervisor Inventaris",
-      "default": "Karyawan Umum"
+      "level_6": "Pengawas Inventaris",
+      "default": "Staf"
     },
     "modal": {
-      "title_add": "Tambah Akun Karyawan",
-      "title_edit": "Edit Informasi Karyawan",
-      "label_name": "Nama Karyawan",
+      "title_add": "Tambah Akun Staf",
+      "title_edit": "Ubah Informasi Staf",
+      "label_name": "Nama Staf",
       "label_username": "Nama Pengguna",
-      "label_password_add": "Kata Sandi Default",
-      "label_password_edit": "Ubah Kata Sandi (kosongkan jika tidak berubah)",
-      "placeholder_name": "Contoh: Budi Santoso",
-      "placeholder_username": "Contoh: budi_pos",
+      "label_password_add": "Kata Sandi Standar",
+      "label_password_edit": "Ubah Kata Sandi (kosongkan jika tidak diubah)",
+      "placeholder_name": "mis. Budi Santoso",
+      "placeholder_username": "mis. budisantoso_pos",
       "placeholder_password_add": "Masukkan kata sandi",
       "placeholder_password_edit": "Masukkan kata sandi baru",
-      "label_role": "Level Jabatan",
+      "label_role": "Tingkat Peran",
       "role_immutable": "{{role}} (Tidak dapat diubah)"
     },
     "alerts": {
-      "reset_confirm": "Apakah Anda yakin ingin mengatur ulang kata sandi '{{name}}' menjadi Aa1357?",
-      "reset_success": "Kata sandi diatur ulang menjadi Aa1357",
-      "reset_fail": "Gagal mengatur ulang",
-      "update_status_fail": "Gagal memperbarui status",
-      "action_fail": "Tindakan gagal"
+      "reset_confirm": "Apakah Anda yakin ingin mengatur ulang kata sandi \"{{name}}\" menjadi Aa1357?",
+      "reset_success": "Kata sandi telah diatur ulang menjadi Aa1357",
+      "reset_fail": "Gagal Mengatur Ulang",
+      "update_status_fail": "Gagal Memperbarui Status",
+      "action_fail": "Tindakan Gagal"
+    },
+    "actions": {
+      "edit": "Ubah",
+      "disable": "Nonaktifkan",
+      "enable": "Aktifkan",
+      "reset_password": "Atur Ulang Kata Sandi"
     }
   },
   "staff_reports": {
-    "title": "Laporan Performa Karyawan",
+    "title": "Laporan Performa Staf",
     "today_overview": "Ringkasan Hari Ini",
     "no_data": "Belum ada data yang dihasilkan",
     "stats": {
-      "total_revenue": "Total Pendapatan Penjualan",
-      "total_orders": "Total Jumlah Pesanan"
+      "total_revenue": "Total Pendapatan",
+      "total_orders": "Total Pesanan"
     },
     "table": {
-      "title": "Peringkat Penjualan Karyawan",
-      "staff_name": "Nama Karyawan",
-      "order_count": "Jumlah Pesanan",
-      "revenue": "Total Penjualan",
-      "avg_order_value": "Rata-rata Transaksi",
-      "order_unit": "psn.",
-      "empty": "Tidak ada data penjualan karyawan saat ini",
-      "fallback_name": "Karyawan {{index}}"
+      "title": "Peringkat Penjualan Staf",
+      "staff_name": "Nama Staf",
+      "order_count": "Pesanan",
+      "revenue": "Total Jumlah Penjualan",
+      "avg_order_value": "Rata-rata Nilai Pesanan",
+      "order_unit": "transaksi",
+      "empty": "Tidak ada data penjualan staf",
+      "fallback_name": "Staf {{index}}"
     }
   },
   "suppliers": {
     "title": "Manajemen Pemasok",
     "add_btn": "Tambah Pemasok",
     "search_placeholder": "Cari nama pemasok...",
-    "empty_state": "Belum ada data pemasok",
+    "empty_state": "Data pemasok tidak tersedia",
     "card": {
-      "contact_person": "Orang yang Dapat Dihubungi",
-      "not_available": "Tidak tersedia"
+      "contact_person": "Narahubung",
+      "not_available": "N/A"
     },
     "modal": {
       "title_add": "Tambah Pemasok",
-      "title_edit": "Edit Pemasok",
+      "title_edit": "Ubah Pemasok",
       "label_name": "Nama Pemasok",
-      "label_contact": "Kontak Person",
-      "label_phone": "Telepon",
+      "label_contact": "Narahubung",
+      "label_phone": "No. Telepon",
       "label_email": "Email",
       "label_address": "Alamat"
     },
     "alerts": {
       "delete_confirm": "Hapus pemasok ini?",
-      "delete_fail": "Gagal menghapus",
-      "action_fail": "Tindakan gagal: {{msg}}"
+      "delete_fail": "Gagal Menghapus",
+      "action_fail": "Tindakan Gagal: {{msg}}"
     }
   },
   "timecards": {
-    "title": "Manajemen Absensi",
+    "title": "Manajemen Kehadiran",
     "status": {
       "working": "Sedang Bertugas",
       "off_duty": "Sedang Tidak Bertugas",
@@ -360,20 +374,20 @@
       "in_progress": "Sedang berlangsung..."
     },
     "buttons": {
-      "clock_in": "Masuk (Clock In)",
-      "clock_out": "Pulang (Clock Out)"
+      "clock_in": "Masuk Kerja (Clock In)",
+      "clock_out": "Pulang Kerja (Clock Out)"
     },
     "history": {
-      "title": "Catatan Riwayat Absensi",
+      "title": "Riwayat Kehadiran",
       "table": {
         "date": "Tanggal",
-        "clock_in": "Masuk",
-        "clock_out": "Keluar",
-        "total_hours": "Total Jam (Jam)"
+        "clock_in": "Jam Masuk",
+        "clock_out": "Jam Keluar",
+        "total_hours": "Total Jam (JAM)"
       }
     },
     "alerts": {
-      "action_fail": "Tindakan gagal"
+      "action_fail": "Tindakan Gagal"
     }
   },
   "discounts": {
@@ -382,51 +396,52 @@
     "empty_state": "Belum ada diskon yang dibuat",
     "types": {
       "percentage": "Persentase (%)",
-      "fixed": "Jumlah Tetap ({{currency}})",
+      "fixed": "Nominal Tetap ({{currency}})",
       "desc_percentage": "Diskon {{value}}%",
-      "desc_fixed": "Potongan Tetap -{{currency}}{{value}}"
+      "desc_fixed": "Potongan -{{currency}}{{value}}"
     },
     "modal": {
       "title": "Tambah Diskon",
       "label_name": "Nama",
-      "label_type": "Tipe",
+      "label_type": "Jenis",
       "label_value": "Nilai",
-      "placeholder_name": "Contoh: Spesial Akhir Pekan",
-      "placeholder_value": "Contoh: 10"
+      "placeholder_name": "mis. Spesial Akhir Pekan",
+      "placeholder_value": "mis. 10"
     },
     "alerts": {
       "delete_confirm": "Hapus diskon ini?",
-      "delete_fail": "Gagal menghapus",
-      "add_fail": "Gagal menambah: {{msg}}"
+      "delete_fail": "Gagal Menghapus",
+      "add_fail": "Gagal Menambahkan: {{msg}}"
     }
   },
   "inventory": {
-    "title": "Audit & Penyesuaian Inventaris",
+    "title": "Pemeriksaan & Penyesuaian Stok",
     "add_adjustment": "Tambah Penyesuaian",
-    "search_placeholder": "Cari produk untuk cek stok...",
+    "search_placeholder": "Cari produk untuk melihat stok...",
     "table": {
       "product_name": "Nama Produk",
       "sku": "SKU",
       "current_stock": "Stok Saat Ini",
-      "unit": "Unit"
+      "unit": "Satuan"
     },
     "modal": {
-      "title": "Tambah Penyesuaian Inventaris",
+      "title": "Tambah Penyesuaian Stok",
       "product": "Produk",
       "select_product": "Pilih Produk",
       "variant": "Varian",
       "select_variant": "Pilih Varian",
       "stock_display": " (Stok: {{stock}})",
-      "qty_label": "Jumlah Penyesuaian (positif menambah, negatif mengurangi)",
+      "qty_label": "Jumlah Penyesuaian (Gunakan angka positif untuk menambah, negatif untuk mengurangi)",
       "reason": "Alasan",
       "note": "Catatan",
-      "signIn": "Konfirmasi Penyesuaian"
+      "signIn": "Konfirmasi Penyesuaian",
+      "submit": "Kirim"
     },
     "reasons": {
-      "correction": "Koreksi Audit",
-      "damage": "Kerusakan / Kedaluwarsa",
+      "correction": "Koreksi Inventaris",
+      "damage": "Kerusakan/Kedaluwarsa",
       "received": "Barang Diterima",
-      "inventory_count": "Perhitungan Stok",
+      "inventory_count": "Opname Stok (Stock Take)",
       "other": "Lainnya"
     },
     "units": {
@@ -434,42 +449,42 @@
       "pcs": "pcs"
     },
     "alerts": {
-      "adjust_fail": "Gagal menyesuaikan"
+      "adjust_fail": "Penyesuaian Gagal"
     }
   },
   "orders": {
     "title": "Manajemen Pesanan",
     "export_summary": "Ekspor Ringkasan",
-    "export_details": "Ekspor Rincian",
+    "export_details": "Ekspor Detail",
     "status_all": "Semua Pesanan",
-    "status_paid": "Dibayar",
-    "status_pending": "Menunggu",
+    "status_paid": "Lunas",
+    "status_pending": "Tertunda",
     "status_cancelled": "Dibatalkan",
     "no_data": "Tidak ada data",
     "loading": "Memuat...",
-    "error_fetch": "Gagal mengambil daftar pesanan",
-    "error_server": "Koneksi server gagal",
-    "error_export": "Ekspor gagal",
-    "backdate_label": "Pesanan Susulan",
+    "error_fetch": "Gagal memuat daftar pesanan",
+    "error_server": "Koneksi ke server gagal",
+    "error_export": "Gagal mengekspor data",
+    "backdate_label": "Atur Mundur Tanggal Pesanan",
     "anonymous_customer": "Pelanggan Anonim",
-    "details_title": "Rincian Pesanan",
+    "details_title": "Detail Pesanan",
     "product_name": "Nama Produk",
     "unit_price": "Harga Satuan",
     "quantity": "Jumlah",
     "subtotal": "Subtotal",
     "discount": "Diskon",
-    "final_amount": "Total Pembayaran",
+    "final_amount": "Jumlah Akhir",
     "close": "Tutup",
-    "return_btn": "Kembalikan",
-    "confirm_return_msg": "Apakah Anda yakin ingin mengembalikan item ini?",
-    "return_success": "Produk berhasil dikembalikan",
-    "status_returned": "Dikembalikan",
-    "status_partially_returned": "Dikembalikan sebagian",
+    "return_btn": "Retur Barang",
+    "confirm_return_msg": "Apakah Anda yakin ingin melakukan retur pada produk ini?",
+    "return_success": "Produk berhasil diretur",
+    "status_returned": "Diretur",
+    "status_partially_returned": "Diretur Sebagian",
     "csv_headers": {
       "id": "ID Pesanan",
-      "no": "Nomor Pesanan",
+      "no": "No. Pesanan",
       "time": "Waktu Dibuat",
-      "cost": "Modal",
+      "cost": "Biaya",
       "status": "Status"
     }
   },
@@ -477,38 +492,87 @@
     "title": "Ringkasan Operasional",
     "total_tenants": "Total Tenant",
     "active_tenants": "Tenant Aktif",
-    "total_products": "Produk Sistem",
-    "archive_progress": "Progres Arsip",
-    "managed_tenants": "Tenant Terkelola",
-    "managed_accounts": "Akun Terkelola",
+    "total_products": "Produk dalam Sistem",
+    "archive_progress": "Progres Pengarsipan",
+    "managed_tenants": "Tenant yang Dikelola",
+    "managed_accounts": "Akun yang Dikelola",
     "est_inventory_value": "Estimasi Nilai Inventaris",
-    "managed_product_count": "Jumlah Produk Terkelola",
+    "managed_product_count": "Jumlah Produk yang Dikelola",
     "today_sales": "Penjualan Hari Ini",
-    "inventory_total_value": "Nilai Total Inventaris",
-    "stock_count": "Jumlah Stok",
+    "inventory_total_value": "Total Nilai Inventaris",
+    "stock_count": "Produk dalam Stok",
     "current_user": "Pengguna Saat Ini",
     "sales_trend": "Tren Penjualan",
     "popular_products": "Produk Populer",
-    "no_popular_products": "Belum ada data produk populer",
+    "no_popular_products": "Tidak ada data produk populer",
     "sold": "Terjual"
   },
   "nav": {
-    "overview": "Ikhtisar",
-    "pos": "Sistem Kasir (POS)",
+    "overview": "Dasbor",
+    "pos": "Mesin Kasir (POS)",
     "product_mgmt": "Manajemen Produk",
-    "inventory_count": "Stok Opname",
+    "inventory_count": "Opname Stok",
     "purchase_order": "Pesanan Pembelian",
     "suppliers": "Manajemen Pemasok",
     "discount_mgmt": "Manajemen Diskon",
-    "order_mgmt": "Riwayat Pesanan",
+    "order_mgmt": "Pencarian Pesanan",
     "revenue_report": "Laporan Pendapatan",
     "customer_data": "Data Pelanggan",
-    "staff_mgmt": "Manajemen Karyawan",
-    "attendance": "Absensi",
-    "staff_performance": "Laporan Kinerja",
+    "staff_mgmt": "Manajemen Staf",
+    "attendance": "Catatan Kehadiran",
+    "staff_performance": "Laporan Performa",
     "system_settings": "Pengaturan Sistem",
-    "api_integration": "Integrasi API"
+    "api_integration": "Integrasi API",
+    "sales_summary": "Ringkasan Penjualan",
+    "product_sales": "Penjualan per Produk",
+    "category_sales": "Penjualan per Kategori",
+    "employee_sales": "Penjualan per Karyawan",
+    "payment_sales": "Penjualan per Jenis Pembayaran",
+    "receipts_report": "Struk Pembayaran",
+    "modifier_sales": "Penjualan per Modifikator",
+    "discount_report": "Laporan Diskon",
+    "tax_report": "Laporan Pajak",
+    "shifts_report": "Shift Kerja",
+    "product_list": "Daftar Produk",
+    "categories": "Kategori",
+    "modifiers": "Modifikator",
+    "inventory_overview": "Manajemen Inventaris",
+    "employee_list": "Daftar Karyawan",
+    "access_rights": "Hak Akses",
+    "integration_apps": "Integrasi Aplikasi",
+    "access_tokens": "Token Akses",
+    "feature_settings": "Fitur-Fitur",
+    "billing": "Penagihan & Langganan",
+    "payment_methods": "Metode Pembayaran",
+    "loyalty": "Program Loyalitas",
+    "tax_settings": "Pengaturan Pajak",
+    "receipt_settings": "Pengaturan Struk",
+    "stores": "Outlet / Toko",
+    "pos_devices": "Perangkat POS",
+    "help_center": "Pusat Bantuan",
+    "community": "Komunitas",
+    "live_chat": "Obrolan Langsung"
+  },
+  "navGroup": {
+    "reports": "Laporan",
+    "products": "Produk",
+    "inventory": "Inventaris",
+    "employees": "Karyawan",
+    "customers": "Pelanggan",
+    "integrations": "Integrasi",
+    "settings": "Pengaturan",
+    "help": "Bantuan"
   },
   "search_placeholder": "Cari pesanan, produk...",
-  "logout": "Keluar"
+  "logout": "Keluar",
+  "products.import.submit": "Impor Produk",
+  "purchase_orders.supplier": "Pemasok",
+  "create_failed": "Gagal Membuat",
+  "update_failed": "Gagal Memperbarui",
+  "delete_failed": "Gagal Menghapus",
+  "edit_customer": "Ubah Pelanggan",
+  "placeholder_name_example": "mis. Budi Santoso",
+  "placeholder_email": "email@contoh.com",
+  "placeholder_phone": "+62 8...",
+  "placeholder_address": "No. Rumah, Nama Jalan, Kota"
 }

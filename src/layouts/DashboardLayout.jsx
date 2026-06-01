@@ -24,6 +24,7 @@ import {
     TrendingUp,
     Percent,
     Receipt,
+    Moon,
     Sun,
     HelpCircle,
     MessageCircle,
@@ -45,6 +46,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTabs } from '../contexts/TabContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import TabBar from '../components/TabBar';
 import TabContent from '../components/TabContent';
@@ -203,6 +205,7 @@ const sidebarGroups = [
 const DashboardLayout = ({ children }) => {
     const { user, logout } = useAuth();
     const { addTab, activeTabId } = useTabs();
+    const { toggleTheme, isLight } = useTheme();
     const [isSidebarOpen, setSidebarOpen] = useState(true);
     const [expandedGroups, setExpandedGroups] = useState({});
     const { t, i18n } = useTranslation();
@@ -238,7 +241,7 @@ const DashboardLayout = ({ children }) => {
     };
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg-dark)' }}>
+        <div style={{ display: 'flex', height: '100vh', minHeight: '100vh', backgroundColor: 'var(--bg-dark)', overflow: 'hidden' }}>
             {/* Sidebar */}
             <motion.aside
                 className="glass-panel"
@@ -334,7 +337,7 @@ const DashboardLayout = ({ children }) => {
                                             fontSize: '0.85rem',
                                         }}
                                         onMouseEnter={(e) => {
-                                            if (!isActive) e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                                            if (!isActive) e.currentTarget.style.background = 'var(--hover-bg)';
                                         }}
                                         onMouseLeave={(e) => {
                                             if (!isActive) e.currentTarget.style.background = 'transparent';
@@ -414,23 +417,45 @@ const DashboardLayout = ({ children }) => {
                             placeholder={t('search_placeholder', '搜尋訂單、產品...')}
                             style={{
                                 padding: '0.5rem 1rem 0.5rem 40px',
-                                background: 'rgba(0,0,0,0.2)',
-                                border: 'none',
+                                background: 'var(--input-bg)',
+                                border: '1px solid var(--glass-border)',
                                 borderRadius: 'var(--radius-md)',
-                                color: 'white',
+                                color: 'var(--text-main)',
                                 width: '100%',
                                 fontSize: '0.85rem',
                             }}
                         />
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        {/* Theme Toggle */}
+                        <button
+                            onClick={toggleTheme}
+                            title={isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+                            style={{
+                                background: 'var(--badge-bg)',
+                                border: 'none',
+                                borderRadius: 'var(--radius-md)',
+                                padding: '0.4rem',
+                                cursor: 'pointer',
+                                color: 'var(--text-muted)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                transition: 'all 0.2s',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-main)'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                        >
+                            {isLight ? <Moon size={18} /> : <Sun size={18} />}
+                        </button>
+
                         {/* Language Switcher */}
                         <div style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: '0.5rem',
-                            background: 'rgba(255,255,255,0.05)',
+                            background: 'var(--badge-bg)',
                             padding: '0.3rem 0.8rem',
                             borderRadius: 'var(--radius-md)'
                         }}>
@@ -450,7 +475,7 @@ const DashboardLayout = ({ children }) => {
                                 }}
                             >
                                 {languages.map(lang => (
-                                    <option key={lang.code} value={lang.code} style={{ background: '#1a1a1a', color: 'white' }}>
+                                    <option key={lang.code} value={lang.code} style={{ background: 'var(--select-bg)', color: 'var(--text-main)' }}>
                                         {lang.name}
                                     </option>
                                 ))}
@@ -495,7 +520,7 @@ const DashboardLayout = ({ children }) => {
                 <TabBar />
 
                 {/* Tab Content */}
-                <section style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+                <section style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
                     <TabContent />
                 </section>
             </main>

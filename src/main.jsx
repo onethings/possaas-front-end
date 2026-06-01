@@ -6,14 +6,17 @@ import App from './App.jsx'
 
 import { AuthProvider } from './contexts/AuthContext';
 import { TenantProvider } from './contexts/TenantContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <TenantProvider>
-        <App />
-      </TenantProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <TenantProvider>
+          <App />
+        </TenantProvider>
+      </AuthProvider>
+    </ThemeProvider>
   </StrictMode>,
 )
 
