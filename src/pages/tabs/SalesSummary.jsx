@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import {
-    TrendingUp, DollarSign, Loader2, Download
+    TrendingUp, DollarSign, Loader2, Download, FileText, FileSpreadsheet
 } from 'lucide-react';
 import {
     Chart as ChartJS,
@@ -14,6 +14,7 @@ import { getRangeReport } from '../../api/reports';
 import { useTenant } from '../../contexts/TenantContext';
 import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
+import { exportCSV, exportPDF } from '../../utils/exportUtils';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -27,6 +28,8 @@ const SalesSummary = () => {
     const [isMobile, setIsMobile] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
+    const [showExportMenu, setShowExportMenu] = useState(false);
+    const exportRef = useRef(null);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -38,6 +41,15 @@ const SalesSummary = () => {
     useEffect(() => {
         fetchSummary();
     }, [dateRange]);
+
+    // 點擊外部關閉匯出選單
+    useEffect(() => {
+        const handleClick = (e) => {
+            if (exportRef.current && !exportRef.current.contains(e.target)) setShowExportMenu(false);
+        };
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, []);
 
     const fetchSummary = async (range) => {
         const d = range || dateRange;
@@ -110,6 +122,23 @@ const SalesSummary = () => {
     const totalPages = Math.max(1, Math.ceil(salesTrend.length / pageSize));
     const pagedData = salesTrend.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
+    const handleExport = (type) => {
+        setShowExportMenu(false);
+        const columns = [
+            { label: t('report.date', '日期'), value: 'date' },
+            { label: t('report.net_sales', '淨銷售額'), value: (r) => r.totalRevenue || 0 },
+            { label: t('report.cost', '銷售成本'), value: (r) => r.totalCost || 0 },
+            { label: t('report.gross_profit', '毛利潤'), value: (r) => (r.totalRevenue || 0) - (r.totalCost || 0) },
+            { label: t('report.profit_margin', '利潤率'), value: (r) => r.totalRevenue ? ((((r.totalRevenue - (r.totalCost || 0)) / r.totalRevenue) * 100).toFixed(1) + '%') : '0%' },
+        ];
+        const filename = `daily_detail_${dateRange.start}_${dateRange.end}`;
+        if (type === 'csv') {
+            exportCSV(columns, salesTrend, [], `${filename}.csv`);
+        } else {
+            exportPDF(t('report.daily_detail', '每日明細'), columns, salesTrend, tenantConfig.currency);
+        }
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -159,9 +188,23 @@ const SalesSummary = () => {
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                     <h3 style={{ fontSize: '1.1rem' }}>{t('report.daily_detail', '每日明細')}</h3>
-                    <button className="btn-primary" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)' }}>
-                        <Download size={14} /> {t('common.export', '匯出')}
-                    </button>
+                    <div ref={exportRef} style={{ position: 'relative' }}>
+                        <button onClick={() => setShowExportMenu(!showExportMenu)} className="btn-primary" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: '0.3rem', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer' }}>
+                            <Download size={14} /> {t('common.export', '匯出')}
+                        </button>
+                        {showExportMenu && (
+                            <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
+                                <button onClick={() => handleExport('csv')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                    onMouseEnter={e => e.target.style.background = 'rgba(255,255,255,0.05)'} onMouseLeave={e => e.target.style.background = 'transparent'}>
+                                    <FileSpreadsheet size={16} color="#4ade80" /> CSV
+                                </button>
+                                <button onClick={() => handleExport('pdf')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                    onMouseEnter={e => e.target.style.background = 'rgba(255,255,255,0.05)'} onMouseLeave={e => e.target.style.background = 'transparent'}>
+                                    <FileText size={16} color="#f87171" /> PDF
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>

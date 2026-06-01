@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download, Loader2, Search } from 'lucide-react';
+import { Download, Loader2, Search, FileText, FileSpreadsheet } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
 import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
 import { getOrders } from '../../api/orders';
+import { exportCSV, exportPDF } from '../../utils/exportUtils';
 
 const ReceiptsReport = () => {
     const { t } = useTranslation();
@@ -13,17 +14,27 @@ const ReceiptsReport = () => {
     const { dateRange } = useReportFilters();
     const [loading, setLoading] = useState(true);
     const [receipts, setReceipts] = useState([]);
+    const [showExportMenu, setShowExportMenu] = useState(false);
+    const exportRef = useRef(null);
 
     useEffect(() => {
         fetchData();
     }, [dateRange]);
 
+    useEffect(() => {
+        const handleClick = (e) => {
+            if (exportRef.current && !exportRef.current.contains(e.target)) setShowExportMenu(false);
+        };
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, []);
+
     const fetchData = async () => {
         setLoading(true);
         try {
-            const result = await getOrders({ start: dateRange.start, end: dateRange.end });
+            const result = await getOrders({ startDate: dateRange.start, endDate: dateRange.end });
             if (result.success) {
-                const mapped = (result.data || []).slice(0, 10).map(order => ({
+                const mapped = (result.data || []).map(order => ({
                     no: order.orderNo || '—',
                     date: order.createdAt ? new Date(order.createdAt).toLocaleString() : '—',
                     employee: order.staffName || '—',
@@ -63,9 +74,30 @@ const ReceiptsReport = () => {
 
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                    <button style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                        <Download size={14} /> {t('common.export', '匯出')}
-                    </button>
+                    <div ref={exportRef} style={{ position: 'relative' }}>
+                        <button onClick={() => setShowExportMenu(!showExportMenu)} style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                            <Download size={14} /> {t('common.export', '匯出')}
+                        </button>
+                        {showExportMenu && (
+                            <div style={{ position: 'absolute', left: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
+                                <button onClick={() => { setShowExportMenu(false); exportCSV(
+                                    [{label:t('report.receipt_no','收據號碼'),value:'no'},{label:t('report.date','日期'),value:'date'},{label:t('report.employee','員工'),value:'employee'},{label:t('report.customer','客戶'),value:'customer'},{label:t('report.type','種類'),value:'type'},{label:t('report.total','總計'),value:(r)=>r.total}],
+                                    receipts, [], `receipts_${dateRange.start}_${dateRange.end}.csv`
+                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                    onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
+                                    <FileSpreadsheet size={16} color="#4ade80" /> CSV
+                                </button>
+                                <button onClick={() => { setShowExportMenu(false); exportPDF(
+                                    t('report.receipts_report','小票收據'),
+                                    [{label:t('report.receipt_no','收據號碼'),value:'no'},{label:t('report.date','日期'),value:'date'},{label:t('report.employee','員工'),value:'employee'},{label:t('report.customer','客戶'),value:'customer'},{label:t('report.type','種類'),value:'type'},{label:t('report.total','總計'),value:(r)=>r.total}],
+                                    receipts, tenantConfig.currency
+                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                    onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
+                                    <FileText size={16} color="#f87171" /> PDF
+                                </button>
+                            </div>
+                        )}
+                    </div>
                     <Search size={16} color="var(--text-muted)" style={{ cursor: 'pointer' }} />
                 </div>
                 <div style={{ overflowX: 'auto' }}>

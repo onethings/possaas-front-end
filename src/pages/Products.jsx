@@ -622,10 +622,11 @@ const Products = () => {
                                 </div>
                             )}
                             <div style={{ padding: '1rem', background: 'rgba(99, 102, 241, 0.1)', borderRadius: '8px', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
-                                <p style={{ fontSize: '0.85rem', color: '#a5b4fc', marginBottom: '0.5rem', fontWeight: 600 }}>{t('products.import.format_requirement')}</p>
-                                <p style={{ fontSize: '0.8rem', color: '#a5b4fc', margin: 0, lineHeight: '1.4' }}>
-                                    {t('products.import.required_columns', { returnObjects: true })?.join?.(', ') || ''}
-                                </p>
+                                <p style={{ fontSize: '0.85rem', color: '#a5b4fc', marginBottom: '0.5rem', fontWeight: 600 }}>{t('products.import.supported_formats', '支援格式')}</p>
+                                <div style={{ fontSize: '0.8rem', color: '#a5b4fc', lineHeight: '1.6' }}>
+                                    <p style={{ margin: '0 0 0.3rem 0' }}><strong>標準格式：</strong>SKU, Name, Category, Price, Cost, Stock</p>
+                                    <p style={{ margin: '0' }}><strong>Loyverse：</strong>SKU, Name, Category, Description, Cost, Barcode, Price [GR], In stock [GR], Low stock [GR], Track stock, Available for sale [GR]</p>
+                                </div>
                             </div>
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                                 <button type="button" onClick={() => { setImportModalOpen(false); setCsvFile(null); }} className="btn-secondary" style={{ flex: 1 }}>

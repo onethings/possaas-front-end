@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, FileText, FileSpreadsheet } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
 import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
 import { getRangeReport } from '../../api/reports';
+import { exportCSV, exportPDF } from '../../utils/exportUtils';
 
 const CategorySalesReport = () => {
     const { t } = useTranslation();
@@ -13,10 +14,20 @@ const CategorySalesReport = () => {
     const { dateRange } = useReportFilters();
     const [loading, setLoading] = useState(true);
     const [categories, setCategories] = useState([]);
+    const [showExportMenu, setShowExportMenu] = useState(false);
+    const exportRef = useRef(null);
 
     useEffect(() => {
         fetchData();
     }, [dateRange]);
+
+    useEffect(() => {
+        const handleClick = (e) => {
+            if (exportRef.current && !exportRef.current.contains(e.target)) setShowExportMenu(false);
+        };
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, []);
 
     const fetchData = async () => {
         setLoading(true);
@@ -58,9 +69,30 @@ const CategorySalesReport = () => {
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                     <h3 style={{ fontSize: '1.1rem' }}>{t('report.category_sales', '類別銷售')}</h3>
-                    <button style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                        <Download size={14} /> {t('common.export', '匯出')}
-                    </button>
+                    <div ref={exportRef} style={{ position: 'relative' }}>
+                        <button onClick={() => setShowExportMenu(!showExportMenu)} style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                            <Download size={14} /> {t('common.export', '匯出')}
+                        </button>
+                        {showExportMenu && (
+                            <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
+                                <button onClick={() => { setShowExportMenu(false); exportCSV(
+                                    [{label:t('report.category','類別'),value:'name'},{label:t('report.qty_sold','售出商品'),value:'qty'},{label:t('report.net_sales','淨銷售額'),value:(r)=>r.netSales},{label:t('report.cost','銷售成本'),value:(r)=>r.cost},{label:t('report.gross_profit','毛利潤'),value:(r)=>r.netSales-r.cost},{label:t('report.profit_margin','利潤率'),value:(r)=>r.margin+'%'}],
+                                    categories, [], `category_sales_${dateRange.start}_${dateRange.end}.csv`
+                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                    onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
+                                    <FileSpreadsheet size={16} color="#4ade80" /> CSV
+                                </button>
+                                <button onClick={() => { setShowExportMenu(false); exportPDF(
+                                    t('report.category_sales','類別銷售'),
+                                    [{label:t('report.category','類別'),value:'name'},{label:t('report.qty_sold','售出商品'),value:'qty'},{label:t('report.net_sales','淨銷售額'),value:(r)=>r.netSales},{label:t('report.cost','銷售成本'),value:(r)=>r.cost},{label:t('report.gross_profit','毛利潤'),value:(r)=>r.netSales-r.cost},{label:t('report.profit_margin','利潤率'),value:(r)=>r.margin+'%'}],
+                                    categories, tenantConfig.currency
+                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                    onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
+                                    <FileText size={16} color="#f87171" /> PDF
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
