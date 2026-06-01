@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Calendar, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useReportFilters } from '../contexts/ReportFilterContext';
 import { getStaff } from '../api/staff';
+import DateRangeFilter from './DateRangeFilter';
 
 const FilterBar = ({ onFilter }) => {
   const { t } = useTranslation();
@@ -41,27 +42,15 @@ const FilterBar = ({ onFilter }) => {
     if (onFilter) onFilter(dateRange);
   };
 
+  const handleDateChange = (newRange) => {
+    setDateRange(newRange.start, newRange.end);
+    if (onFilter) onFilter(newRange);
+  };
+
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
-      {/* Date Range */}
-      <div className="glass-panel" style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <Calendar size={14} color="var(--text-muted)" />
-        <input
-          name="filter-start-date"
-          type="date"
-          value={dateRange.start}
-          onChange={(e) => { setDateRange(e.target.value, dateRange.end); if (onFilter) onFilter({ start: e.target.value, end: dateRange.end }); }}
-          style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: '0.8rem', outline: 'none', width: '110px' }}
-        />
-        <span style={{ color: 'var(--text-muted)' }}>–</span>
-        <input
-          name="filter-end-date"
-          type="date"
-          value={dateRange.end}
-          onChange={(e) => { setDateRange(dateRange.start, e.target.value); if (onFilter) onFilter({ start: dateRange.start, end: e.target.value }); }}
-          style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: '0.8rem', outline: 'none', width: '110px' }}
-        />
-      </div>
+      {/* Date Range - 使用新的 DateRangeFilter 元件 */}
+      <DateRangeFilter dateRange={dateRange} onDateRangeChange={handleDateChange} />
 
       {/* Time Filter */}
       <div className="glass-panel" style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>

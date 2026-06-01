@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download, Loader2, BarChart3, LineChart, PieChart, FileText, FileSpreadsheet } from 'lucide-react';
+import { Download, Loader2, BarChart3, LineChart, PieChart, FileText, FileSpreadsheet, Settings2 } from 'lucide-react';
 import {
     Chart as ChartJS,
     CategoryScale, LinearScale, BarElement, PointElement, LineElement,
@@ -19,6 +19,52 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineEleme
 const CHART_TYPES = ['bar', 'line', 'pie'];
 const CHART_TYPE_ICONS = { bar: BarChart3, line: LineChart, pie: PieChart };
 
+// ── 欄位定義 ──
+const COLUMN_DEFS = [
+  { key: 'name',         label: '商品',     align: 'left',  isCurrency: false,
+    getVal: (p) => p.name },
+  { key: 'sku',          label: 'SKU',       align: 'left',  isCurrency: false,
+    getVal: (p) => p.sku || '—' },
+  { key: 'category',     label: '類別',     align: 'left',  isCurrency: false,
+    getVal: (p) => p.category || '—' },
+  { key: 'qty',          label: '售出商品', align: 'right', isCurrency: false,
+    getVal: (p) => p.qty },
+  { key: 'totalRevenue', label: '銷售總額', align: 'right', isCurrency: true,
+    getVal: (p) => p.totalRevenue || 0 },
+  { key: 'returnQty',    label: '商品退還數量', align: 'right', isCurrency: false,
+    getVal: (p) => p.returnQty || 0 },
+  { key: 'refund',       label: '退款',     align: 'right', isCurrency: true,
+    getVal: (p) => p.refund || 0 },
+  { key: 'discount',     label: '折扣',     align: 'right', isCurrency: true,
+    getVal: (p) => p.discount || 0 },
+  { key: 'netSales',     label: '淨銷售額', align: 'right', isCurrency: true,
+    getVal: (p) => p.netSales },
+  { key: 'cost',         label: '銷售成本', align: 'right', isCurrency: true,
+    getVal: (p) => p.cost },
+  { key: 'grossProfit',  label: '毛利潤',   align: 'right', isCurrency: true,
+    getVal: (p) => p.netSales - p.cost },
+  { key: 'profitMargin', label: '利潤率',   align: 'right', isCurrency: false,
+    getVal: (p) => p.profitMargin + '%' },
+  { key: 'tax',          label: '稅務',     align: 'right', isCurrency: true,
+    getVal: (p) => p.tax || 0 },
+];
+
+const DEFAULT_VISIBLE = {
+  name: true,         // 商品
+  sku: false,         // SKU
+  category: true,     // 類別
+  qty: true,          // 售出商品
+  totalRevenue: false,// 銷售總額
+  returnQty: false,   // 商品退還數量
+  refund: false,      // 退款
+  discount: false,    // 折扣
+  netSales: true,     // 淨銷售額
+  cost: false,        // 銷售成本
+  grossProfit: true,  // 毛利潤
+  profitMargin: true, // 利潤率
+  tax: true,          // 稅務
+};
+
 const ProductSalesReport = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
@@ -29,7 +75,10 @@ const ProductSalesReport = () => {
     const [chartType, setChartType] = useState('bar');
     const [timeGrouping, setTimeGrouping] = useState('day');
     const [showExportMenu, setShowExportMenu] = useState(false);
+    const [showColumnPicker, setShowColumnPicker] = useState(false);
+    const [visibleCols, setVisibleCols] = useState(DEFAULT_VISIBLE);
     const exportRef = useRef(null);
+    const colPickerRef = useRef(null);
 
     // 計算日期範圍天數
     const dateDiffDays = useMemo(() => {
@@ -64,6 +113,7 @@ const ProductSalesReport = () => {
     useEffect(() => {
         const handleClick = (e) => {
             if (exportRef.current && !exportRef.current.contains(e.target)) setShowExportMenu(false);
+            if (colPickerRef.current && !colPickerRef.current.contains(e.target)) setShowColumnPicker(false);
         };
         document.addEventListener('mousedown', handleClick);
         return () => document.removeEventListener('mousedown', handleClick);
@@ -77,11 +127,18 @@ const ProductSalesReport = () => {
                 if (result.data.topProducts) {
                     const mapped = result.data.topProducts.map(p => ({
                         name: p.name || 'Unknown',
+                        sku: p.sku || '',
                         category: p.category || '—',
                         qty: p.qty || 0,
+                        totalRevenue: p.revenue || 0,
+                        returnQty: 0,          // 後端尚無此欄位
+                        refund: 0,              // 後端尚無此欄位
+                        discount: 0,            // 後端尚無此欄位
                         netSales: p.revenue || 0,
                         cost: p.cost || 0,
+                        grossProfit: (p.revenue || 0) - (p.cost || 0),
                         profitMargin: p.revenue ? (((p.revenue - (p.cost || 0)) / p.revenue) * 100).toFixed(1) : 0,
+                        tax: 0,                 // 後端尚無此欄位
                     }));
                     setProducts(mapped);
                 }
@@ -260,6 +317,19 @@ const ProductSalesReport = () => {
         }
     };
 
+    const handleExport = (type) => {
+        const activeCols = COLUMN_DEFS.filter(c => visibleCols[c.key]);
+        const columns = [
+            ...activeCols.map(c => ({
+                label: c.label,
+                value: (r) => c.getVal(r),
+            }))
+        ];
+        const filename = `product_sales_${dateRange.start}_${dateRange.end}`;
+        if (type === 'csv') exportCSV(columns, products, [], `${filename}.csv`);
+        else exportPDF(t('report.product_details', '商品銷售明細'), columns, products, tenantConfig.currency);
+    };
+
     const chartTypeLabels = { bar: t('report.chart_bar', '直方圖'), line: t('report.chart_line', '折線圖'), pie: t('report.chart_pie', '圓餅圖') };
     const groupingLabels = { hour: t('report.group_hour', '時'), day: t('report.group_day', '天'), week: t('report.group_week', '週'), month: t('report.group_month', '月'), quarter: t('report.group_quarter', '季度'), year: t('report.group_year', '年') };
 
@@ -362,54 +432,86 @@ const ProductSalesReport = () => {
 
             {/* Product Detail Table */}
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                     <h3 style={{ fontSize: '1.1rem' }}>{t('report.product_details', '商品銷售明細')}</h3>
-                    <div ref={exportRef} style={{ position: 'relative' }}>
-                        <button onClick={() => setShowExportMenu(!showExportMenu)} style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                            <Download size={14} /> {t('common.export', '匯出')}
-                        </button>
-                        {showExportMenu && (
-                            <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
-                                <button onClick={() => { setShowExportMenu(false); exportCSV(
-                                    [{label:t('report.product','商品'),value:'name'},{label:t('report.category','類別'),value:'category'},{label:t('report.qty_sold','售出商品'),value:'qty'},{label:t('report.net_sales','淨銷售額'),value:(r)=>r.netSales},{label:t('report.gross_profit','毛利潤'),value:(r)=>r.netSales-r.cost},{label:t('report.profit_margin','利潤率'),value:(r)=>r.profitMargin+'%'}],
-                                    products, [], `product_sales_${dateRange.start}_${dateRange.end}.csv`
-                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
-                                    onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
-                                    <FileSpreadsheet size={16} color="#4ade80" /> CSV
-                                </button>
-                                <button onClick={() => { setShowExportMenu(false); exportPDF(
-                                    t('report.product_details','商品銷售明細'),
-                                    [{label:t('report.product','商品'),value:'name'},{label:t('report.category','類別'),value:'category'},{label:t('report.qty_sold','售出商品'),value:'qty'},{label:t('report.net_sales','淨銷售額'),value:(r)=>r.netSales},{label:t('report.gross_profit','毛利潤'),value:(r)=>r.netSales-r.cost},{label:t('report.profit_margin','利潤率'),value:(r)=>r.profitMargin+'%'}],
-                                    products, tenantConfig.currency
-                                )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
-                                    onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
-                                    <FileText size={16} color="#f87171" /> PDF
-                                </button>
-                            </div>
-                        )}
+                    <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                        {/* 欄位選擇 */}
+                        <div ref={colPickerRef} style={{ position: 'relative' }}>
+                            <button onClick={() => setShowColumnPicker(!showColumnPicker)}
+                                style={{ padding: '0.4rem 0.7rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                <Settings2 size={14} /> {t('common.columns', '欄位')}
+                            </button>
+                            {showColumnPicker && (
+                                <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '170px', padding: '0.5rem', overflow: 'hidden' }}>
+                                    {COLUMN_DEFS.map(c => (
+                                        <label key={c.key} style={{
+                                            display: 'flex', alignItems: 'center', gap: '0.5rem',
+                                            padding: '0.4rem 0.4rem', cursor: 'pointer', borderRadius: '4px',
+                                            fontSize: '0.8rem', color: 'var(--text-main)', whiteSpace: 'nowrap',
+                                        }}
+                                            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                                            <input type="checkbox" checked={!!visibleCols[c.key]}
+                                                onChange={() => setVisibleCols(prev => ({ ...prev, [c.key]: !prev[c.key] }))}
+                                                style={{ accentColor: 'var(--primary)', cursor: 'pointer' }} />
+                                            {c.label}
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        {/* 匯出 */}
+                        <div ref={exportRef} style={{ position: 'relative' }}>
+                            <button onClick={() => setShowExportMenu(!showExportMenu)} style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                <Download size={14} /> {t('common.export', '匯出')}
+                            </button>
+                            {showExportMenu && (
+                                <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
+                                    <button onClick={() => { setShowExportMenu(false); handleExport('csv'); }} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                        onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
+                                        <FileSpreadsheet size={16} color="#4ade80" /> CSV
+                                    </button>
+                                    <button onClick={() => { setShowExportMenu(false); handleExport('pdf'); }} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                        onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
+                                        <FileText size={16} color="#f87171" /> PDF
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.product', '商品')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.category', '類別')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.qty_sold', '售出商品')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.net_sales', '淨銷售額')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.gross_profit', '毛利潤')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.profit_margin', '利潤率')}</th>
+                                {COLUMN_DEFS.filter(c => visibleCols[c.key]).map(c => (
+                                    <th key={c.key} style={{ padding: '0.75rem 0.5rem', textAlign: c.align, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                                        {c.label}
+                                    </th>
+                                ))}
                             </tr>
                         </thead>
                         <tbody>
                             {products.map((p, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-                                    <td style={{ padding: '0.75rem 0.5rem', fontWeight: 600 }}>{p.name}</td>
-                                    <td style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)' }}>{p.category}</td>
-                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{p.qty}</td>
-                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{tenantConfig.currency}{p.netSales.toLocaleString()}</td>
-                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{tenantConfig.currency}{(p.netSales - p.cost).toLocaleString()}</td>
-                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: '#4ade80' }}>{p.profitMargin}%</td>
+                                    {COLUMN_DEFS.filter(c => visibleCols[c.key]).map(c => {
+                                        const rawVal = c.getVal(p);
+                                        const isPercent = c.key === 'profitMargin';
+                                        const isNumeric = c.isCurrency || c.key === 'qty' || c.key === 'returnQty';
+                                        const displayVal = c.isCurrency
+                                            ? `${tenantConfig.currency}${rawVal.toLocaleString()}`
+                                            : rawVal;
+                                        return (
+                                            <td key={c.key} style={{
+                                                padding: '0.75rem 0.5rem', textAlign: c.align,
+                                                fontWeight: c.key === 'name' ? 600 : 400,
+                                                color: isPercent ? '#4ade80' : (c.key === 'category' || c.key === 'sku' ? 'var(--text-muted)' : 'var(--text-main)'),
+                                                whiteSpace: 'nowrap',
+                                            }}>
+                                                {displayVal}
+                                            </td>
+                                        );
+                                    })}
                                 </tr>
                             ))}
                         </tbody>
