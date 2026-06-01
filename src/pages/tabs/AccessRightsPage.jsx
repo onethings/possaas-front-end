@@ -146,25 +146,25 @@ const AccessRightsPage = () => {
                         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
                                 <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.level', '層級')}</label>
-                                <input id="role-level" name="role-level" type="number" min="1" max="9" required
+                                <input name="role-level" type="number" min="1" max="9" required
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none' }}
                                     value={formData.level} onChange={(e) => setFormData({ ...formData, level: e.target.value })} />
                             </div>
                             <div className="input-group">
                                 <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.role', '角色名稱')}</label>
-                                <input id="role-name" name="role-name" type="text" required
+                                <input name="role-name" type="text" required
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none' }}
                                     value={formData.roleName} onChange={(e) => setFormData({ ...formData, roleName: e.target.value })} />
                             </div>
                             <div className="input-group">
                                 <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.permissions', '權限 (逗號分隔)')}</label>
-                                <input id="role-permissions" name="role-permissions" type="text"
+                                <input name="role-permissions" type="text"
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none' }}
                                     value={formData.permissions} onChange={(e) => setFormData({ ...formData, permissions: e.target.value })} />
                             </div>
                             <div className="input-group">
                                 <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.description', '說明')}</label>
-                                <textarea id="role-description" name="role-description"
+                                <textarea name="role-description"
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none', resize: 'vertical', minHeight: '60px' }}
                                     value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
                             </div>

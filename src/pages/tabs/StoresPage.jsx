@@ -122,19 +122,19 @@ const StoresPage = () => {
                         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
                                 <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('stores.name', '門店名稱')} *</label>
-                                <input id="store-name" name="store-name" type="text" required
+                                <input name="store-name" type="text" required
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none' }}
                                     value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
                             </div>
                             <div className="input-group">
                                 <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('stores.address', '地址')}</label>
-                                <input id="store-address" name="store-address" type="text"
+                                <input name="store-address" type="text"
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none' }}
                                     value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
                             </div>
                             <div className="input-group">
                                 <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('stores.phone', '電話')}</label>
-                                <input id="store-phone" name="store-phone" type="text"
+                                <input name="store-phone" type="text"
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none' }}
                                     value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
                             </div>

@@ -93,17 +93,17 @@ const TaxSettingsPage = () => {
                         <form onSubmit={handleSubmit}>
                             <div style={{ marginBottom: '1rem' }}>
                                 <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>{t('tax_settings.name', '名稱')}</label>
-                                <input id="tax-name" name="tax-name" value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                                <input name="tax-name" value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)' }} required />
                             </div>
                             <div style={{ marginBottom: '1rem' }}>
                                 <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>{t('tax_settings.rate', '稅率, %')}</label>
-                                <input id="tax-rate" name="tax-rate" type="number" step="0.01" value={formData.rate} onChange={e => setFormData(prev => ({ ...prev, rate: e.target.value }))}
+                                <input name="tax-rate" type="number" step="0.01" value={formData.rate} onChange={e => setFormData(prev => ({ ...prev, rate: e.target.value }))}
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)' }} required />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>{t('tax_settings.type', '種類')}</label>
-                                <select id="tax-type" name="tax-type" value={formData.type} onChange={e => setFormData(prev => ({ ...prev, type: e.target.value }))}
+                                <select name="tax-type" value={formData.type} onChange={e => setFormData(prev => ({ ...prev, type: e.target.value }))}
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)' }}>
                                     <option value="EXCLUSIVE">{t('tax_settings.exclusive', '價外稅')}</option>
                                     <option value="INCLUSIVE">{t('tax_settings.inclusive', '價內稅')}</option>
