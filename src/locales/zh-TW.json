@@ -498,7 +498,7 @@
     "managed_accounts": "託管帳號",
     "est_inventory_value": "預估庫存價值",
     "managed_product_count": "託管商品總數",
-    "today_sales": "今日銷售額",
+    "total_sales": "銷售總額",
     "inventory_total_value": "總庫存價值",
     "stock_count": "在庫商品件數",
     "current_user": "當前使用者",

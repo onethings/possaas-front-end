@@ -70,7 +70,7 @@ const SalesSummary = () => {
     const totalOrders = d.totalOrders || 0;
 
     const kpiCards = [
-        { label: t('dashboard.today_sales', '銷售總額'), value: `${tenantConfig.currency}${totalRevenue.toLocaleString()}` },
+        { label: t('dashboard.total_sales', '銷售總額'), value: `${tenantConfig.currency}${totalRevenue.toLocaleString()}` },
         { label: t('dashboard.refund', '退款'), value: `${tenantConfig.currency}${totalRefunds.toLocaleString()}` },
         { label: t('dashboard.discount', '折扣'), value: `${tenantConfig.currency}${totalDiscount.toLocaleString()}` },
         { label: t('dashboard.net_sales', '淨銷售額'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds).toLocaleString()}` },

@@ -498,7 +498,7 @@
     "managed_accounts": "บัญชีภายใต้การดูแล",
     "est_inventory_value": "มูลค่าสต็อกโดยประมาณ",
     "managed_product_count": "จำนวนสินค้าที่ดูแล",
-    "today_sales": "ยอดขายวันนี้",
+    "total_sales": "ยอดขายวันนี้",
     "inventory_total_value": "มูลค่าสต็อกรวม",
     "stock_count": "จำนวนสินค้าในสต็อก",
     "current_user": "ผู้ใช้งานปัจจุบัน",

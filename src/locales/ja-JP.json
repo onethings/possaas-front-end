@@ -498,7 +498,7 @@
     "managed_accounts": "管理下のアカウント",
     "est_inventory_value": "推計在庫価値",
     "managed_product_count": "管理商品数",
-    "today_sales": "本日の売上高",
+    "total_sales": "本日の売上高",
     "inventory_total_value": "総在庫価値",
     "stock_count": "在庫商品数",
     "current_user": "現在のユーザー",

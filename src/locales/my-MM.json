@@ -498,7 +498,7 @@
     "managed_accounts": "စီမံခန့်ခွဲထားသော အကောင့်များ",
     "est_inventory_value": "ခန့်မှန်းခြေ စာရင်းအင်း တန်ဖိုး",
     "managed_product_count": "စီမံခန့်ခွဲထားသော ကုန်ပစ္စည်း အရေအတွက်",
-    "today_sales": "ယနေ့ အရောင်း",
+    "total_sales": "ယနေ့ အရောင်း",
     "inventory_total_value": "စုစုပေါင်း စာရင်းအင်း တန်ဖိုး",
     "stock_count": "လက်ကျန်ရှိ ပစ္စည်းများ",
     "current_user": "လက်ရှိ အသုံးပြုသူ",

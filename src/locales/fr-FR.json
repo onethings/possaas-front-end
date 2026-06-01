@@ -498,7 +498,7 @@
     "managed_accounts": "Comptes gérés",
     "est_inventory_value": "Valeur estimée du stock",
     "managed_product_count": "Nombre de produits gérés",
-    "today_sales": "Ventes d'aujourd'hui",
+    "total_sales": "Ventes d'aujourd'hui",
     "inventory_total_value": "Valeur totale du stock",
     "stock_count": "Articles en stock",
     "current_user": "Utilisateur actuel",
