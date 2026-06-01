@@ -22,9 +22,9 @@ const ProductSalesReport = () => {
         setLoading(true);
         try {
             const result = await getRangeReport(dateRange.start, dateRange.end);
-            if (result.success && result.data.productsSummary) {
-                const mapped = Object.values(result.data.productsSummary).map(p => ({
-                    name: p.name || 'Unknown',
+            if (result.success && result.data.topProducts) {
+                const mapped = result.data.topProducts.map(p => ({
+                    name: p.name || p.productId || 'Unknown',
                     category: p.category || '—',
                     qty: p.qty || 0,
                     netSales: p.revenue || 0,

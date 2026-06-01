@@ -22,9 +22,9 @@ const CategorySalesReport = () => {
         setLoading(true);
         try {
             const result = await getRangeReport(dateRange.start, dateRange.end);
-            if (result.success && result.data.categoriesSummary) {
-                const mapped = Object.values(result.data.categoriesSummary).map(c => ({
-                    name: c.name || 'Unknown',
+            if (result.success && result.data.categorySummary) {
+                const mapped = result.data.categorySummary.map(c => ({
+                    name: c.categoryName || 'Unknown',
                     qty: c.qty || 0,
                     netSales: c.revenue || 0,
                     cost: c.cost || 0,

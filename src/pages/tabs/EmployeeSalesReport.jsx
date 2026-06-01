@@ -22,9 +22,9 @@ const EmployeeSalesReport = () => {
         setLoading(true);
         try {
             const result = await getRangeReport(dateRange.start, dateRange.end);
-            if (result.success && result.data.staffSummary) {
-                const mapped = Object.values(result.data.staffSummary).map(s => ({
-                    name: s.name || 'Unknown',
+            if (result.success && result.data.staffPerformance) {
+                const mapped = result.data.staffPerformance.map(s => ({
+                    name: s.staffName || 'Unknown',
                     totalSales: s.revenue || 0,
                     refund: 0,
                     discount: 0,
