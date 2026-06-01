@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { BarChart, TrendingUp, DollarSign, Loader2, Calendar } from 'lucide-react';
-import { getReportSummary } from '../api/reports';
+import { getRangeReport } from '../api/reports';
 import { useTenant } from '../contexts/TenantContext';
 
 const StaffReports = () => {
@@ -32,7 +32,7 @@ const StaffReports = () => {
     const fetchReport = async () => {
         setLoading(true);
         try {
-            const result = await getReportSummary();
+            const result = await getRangeReport('2026-05-03', '2026-06-01');
             if (result.success) setReport(result.data);
         } catch (error) {
             console.error(error);
@@ -40,6 +40,13 @@ const StaffReports = () => {
             setLoading(false);
         }
     };
+
+    // Map staffSummary from range report to the expected format
+    const staffPerformance = report?.staffSummary ? Object.values(report.staffSummary).map(s => ({
+        staffName: s.name || 'Unknown',
+        orderCount: s.orderCount || 0,
+        revenue: s.revenue || 0,
+    })) : (report?.staffPerformance || []);
 
     return (
         <motion.div 
@@ -119,7 +126,7 @@ const StaffReports = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {report.staffPerformance?.length > 0 ? report.staffPerformance.map((stat, idx) => (
+                                    {staffPerformance.length > 0 ? staffPerformance.map((stat, idx) => (
                                         <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                                             <td style={{ padding: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                                                 <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 700 }}>
@@ -147,12 +154,12 @@ const StaffReports = () => {
                         ) : (
                             /* ---------------- Mobile 響應式卡片模式 ---------------- */
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                {report.staffPerformance?.length > 0 ? report.staffPerformance.map((stat, idx) => (
+                                {staffPerformance.length > 0 ? staffPerformance.map((stat, idx) => (
                                     <div 
                                         key={idx} 
                                         style={{ 
                                             padding: '1.2rem', 
-                                            borderBottom: idx === report.staffPerformance.length - 1 ? 'none' : '1px solid rgba(255,255,255,0.05)',
+                                            borderBottom: idx === staffPerformance.length - 1 ? 'none' : '1px solid rgba(255,255,255,0.05)',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             gap: '0.8rem'

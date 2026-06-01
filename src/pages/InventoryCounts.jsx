@@ -215,14 +215,18 @@ const InventoryCounts = () => {
                                     id="adj-qty"
                                     name="changeQty"
                                     type="number" 
-                                    step="0.01" 
+                                    step="1" 
                                     required 
+                                    placeholder={t('inventory.modal.qty_placeholder', 'e.g. 10 or -5')}
                                     value={isNaN(adjustment.changeQty) ? '' : adjustment.changeQty} 
                                     onChange={e => {
-                                        const val = e.target.value === '' ? 0 : parseFloat(e.target.value);
+                                        const val = e.target.value === '' ? 0 : Math.round(parseFloat(e.target.value));
                                         setAdjustment({ ...adjustment, changeQty: val });
                                     }} 
                                 />
+                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>
+                                    {t('inventory.modal.qty_hint', '正數 = 增加庫存，負數 = 減少庫存（僅接受整數）')}
+                                </div>
                             </div>
 
                             <div className="input-group">

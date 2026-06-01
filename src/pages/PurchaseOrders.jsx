@@ -21,6 +21,7 @@ const PurchaseOrders = () => {
         supplierId: '',
         items: [{ productId: '', qty: 1, costPrice: 0 }]
     });
+    const [expandedPO, setExpandedPO] = useState(null);
 
     useEffect(() => {
         fetchInitialData();
@@ -176,25 +177,64 @@ const PurchaseOrders = () => {
                     <tbody>
                         {pos.map(po => {
                             const status = getStatusStyle(po.status);
+                            const isExpanded = expandedPO === po._id;
                             return (
-                                <tr key={po._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                    <td style={tdStyle}><code>{po.orderNo}</code></td>
-                                    <td style={tdStyle}>{po.supplierId?.name || t('common.unknown')}</td>
-                                    <td style={tdStyle}>{tenantConfig.currency}{po.totalAmount.toLocaleString()}</td>
-                                    <td style={tdStyle}>
-                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: status.color, fontSize: '0.85rem' }}>
-                                            {status.icon} {status.label}
-                                        </span>
-                                    </td>
-                                    <td style={tdStyle}>{new Date(po.createdAt).toLocaleDateString()}</td>
-                                    <td style={tdStyle}>
-                                        {po.status === 'draft' && (
-                                            <button onClick={() => handleReceive(po._id)} className="btn-secondary" style={{ padding: '4px 12px', fontSize: '0.8rem', borderColor: '#4ade80', color: '#4ade80' }}>
-                                                {t('purchase_orders.receive')}
-                                            </button>
-                                        )}
-                                    </td>
-                                </tr>
+                                <React.Fragment key={po._id}>
+                                    <tr 
+                                        style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', cursor: 'pointer' }}
+                                        onClick={() => setExpandedPO(isExpanded ? null : po._id)}
+                                    >
+                                        <td style={tdStyle}><code>{po.orderNo}</code></td>
+                                        <td style={tdStyle}>{po.supplierId?.name || t('common.unknown')}</td>
+                                        <td style={tdStyle}>{tenantConfig.currency}{(po.totalAmount || 0).toLocaleString()}</td>
+                                        <td style={tdStyle}>
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: status.color, fontSize: '0.85rem' }}>
+                                                {status.icon} {status.label}
+                                            </span>
+                                        </td>
+                                        <td style={tdStyle}>{new Date(po.createdAt).toLocaleDateString()}</td>
+                                        <td style={tdStyle}>
+                                            {po.status === 'draft' && (
+                                                <button onClick={(e) => { e.stopPropagation(); handleReceive(po._id); }} className="btn-secondary" style={{ padding: '4px 12px', fontSize: '0.8rem', borderColor: '#4ade80', color: '#4ade80' }}>
+                                                    {t('purchase_orders.receive')}
+                                                </button>
+                                            )}
+                                        </td>
+                                    </tr>
+                                    {isExpanded && (
+                                        <tr>
+                                            <td colSpan={6} style={{ padding: '0 1.2rem 1.2rem 1.2rem', background: 'rgba(255,255,255,0.02)' }}>
+                                                <div style={{ fontSize: '0.85rem' }}>
+                                                    <strong style={{ color: 'var(--text-muted)' }}>{t('purchase_orders.items', '採購品項')}:</strong>
+                                                    {po.items && po.items.length > 0 ? (
+                                                        <table style={{ width: '100%', marginTop: '0.5rem', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+                                                            <thead>
+                                                                <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
+                                                                    <th style={{ padding: '0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('purchase_orders.product', '產品')}</th>
+                                                                    <th style={{ padding: '0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('purchase_orders.quantity', '數量')}</th>
+                                                                    <th style={{ padding: '0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('purchase_orders.cost_price', '成本價')}</th>
+                                                                    <th style={{ padding: '0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('purchase_orders.subtotal', '小計')}</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {po.items.map((item, i) => (
+                                                                    <tr key={i}>
+                                                                        <td style={{ padding: '0.5rem', fontWeight: 500 }}>{item.productId?.name || item.productName || `#${item.productId}`}</td>
+                                                                        <td style={{ padding: '0.5rem', textAlign: 'right' }}>{item.qty}</td>
+                                                                        <td style={{ padding: '0.5rem', textAlign: 'right' }}>{tenantConfig.currency}{(item.costPrice || 0).toLocaleString()}</td>
+                                                                        <td style={{ padding: '0.5rem', textAlign: 'right', fontWeight: 600 }}>{tenantConfig.currency}{((item.qty || 0) * (item.costPrice || 0)).toLocaleString()}</td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    ) : (
+                                                        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('common.no_data', '暫無資料')}</p>
+                                                    )}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </React.Fragment>
                             );
                         })}
                     </tbody>
@@ -226,8 +266,9 @@ const PurchaseOrders = () => {
                                                 value={item.productId} 
                                                 onChange={e => {
                                                     const items = [...newPO.items];
-                                                    items[idx].productId = e.target.value;
-                                                    setNewPO({ ...newPO, items });
+                                                    items[idx].productId = e.target.value;                                                    // Auto-fill costPrice from selected product
+                                                    const prod = products.find(p => p._id === e.target.value);
+                                                    if (prod) items[idx].costPrice = prod.cost || 0;                                                    setNewPO({ ...newPO, items });
                                                 }}
                                             >
                                                 <option value="">{t('purchase_orders.select_product')}</option>
