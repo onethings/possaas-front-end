@@ -29,7 +29,9 @@ const SalesSummary = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [showExportMenu, setShowExportMenu] = useState(false);
+    const [showTrendExport, setShowTrendExport] = useState(false);
     const exportRef = useRef(null);
+    const trendExportRef = useRef(null);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -46,6 +48,7 @@ const SalesSummary = () => {
     useEffect(() => {
         const handleClick = (e) => {
             if (exportRef.current && !exportRef.current.contains(e.target)) setShowExportMenu(false);
+            if (trendExportRef.current && !trendExportRef.current.contains(e.target)) setShowTrendExport(false);
         };
         document.addEventListener('mousedown', handleClick);
         return () => document.removeEventListener('mousedown', handleClick);
@@ -139,6 +142,21 @@ const SalesSummary = () => {
         }
     };
 
+    const handleTrendExport = (type) => {
+        setShowTrendExport(false);
+        const columns = [
+            { label: t('report.date', '日期'), value: 'date' },
+            { label: t('report.net_sales', '淨銷售額'), value: (r) => r.totalRevenue || 0 },
+            { label: t('report.cost', '銷售成本'), value: (r) => r.totalCost || 0 },
+        ];
+        const filename = `sales_trend_${dateRange.start}_${dateRange.end}`;
+        if (type === 'csv') {
+            exportCSV(columns, salesTrend, [], `${filename}.csv`);
+        } else {
+            exportPDF(t('dashboard.sales_trend', '銷售趨勢'), columns, salesTrend, tenantConfig.currency);
+        }
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -171,9 +189,23 @@ const SalesSummary = () => {
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                     <h3 style={{ fontSize: '1.1rem' }}>{t('dashboard.sales_trend')}</h3>
-                    <button className="btn-primary" style={{ padding: '0.4rem 1rem', fontSize: '0.8rem' }}>
-                        <Download size={14} /> {t('common.export', '匯出')}
-                    </button>
+                    <div ref={trendExportRef} style={{ position: 'relative' }}>
+                        <button onClick={() => setShowTrendExport(!showTrendExport)} style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                            <Download size={14} /> {t('common.export', '匯出')}
+                        </button>
+                        {showTrendExport && (
+                            <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
+                                <button onClick={() => handleTrendExport('csv')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                    onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
+                                    <FileSpreadsheet size={16} color="#4ade80" /> CSV
+                                </button>
+                                <button onClick={() => handleTrendExport('pdf')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
+                                    onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
+                                    <FileText size={16} color="#f87171" /> PDF
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div style={{ height: '300px' }}>
                     {chartLabels.length > 0 ? <Line data={chartData} options={chartOptions} /> : (
