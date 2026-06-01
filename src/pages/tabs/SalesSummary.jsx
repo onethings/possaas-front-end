@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import {
-    TrendingUp, Users, ShoppingBag, DollarSign,
-    ArrowUpRight, ArrowDownRight, Loader2, Download
+    TrendingUp, DollarSign, Loader2, Download
 } from 'lucide-react';
 import {
     Chart as ChartJS,
@@ -70,27 +69,15 @@ const SalesSummary = () => {
     const totalRefunds = d.totalRefunds || 0;
     const totalOrders = d.totalOrders || 0;
 
-    const prevRevenue = totalRevenue * 0.63; // Simulated previous period for comparison
-    const prevDiscount = totalDiscount * 2.21;
-    const prevRefunds = totalRefunds || 100000;
-    const prevCost = totalCost * 0.68;
-    const prevGrossProfit = (totalRevenue - totalCost) * 0.63;
-
-    const calcChange = (current, previous) => {
-        if (!previous) return '+0%';
-        const pct = ((current - previous) / previous * 100);
-        return `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`;
-    };
-
     const kpiCards = [
-        { label: t('dashboard.today_sales', '銷售總額'), value: `${tenantConfig.currency}${totalRevenue.toLocaleString()}`, change: calcChange(totalRevenue, prevRevenue), positive: totalRevenue >= prevRevenue },
-        { label: t('dashboard.refund', '退款'), value: `${tenantConfig.currency}${totalRefunds.toLocaleString()}`, change: calcChange(totalRefunds, prevRefunds), positive: totalRefunds <= prevRefunds },
-        { label: t('dashboard.discount', '折扣'), value: `${tenantConfig.currency}${totalDiscount.toLocaleString()}`, change: calcChange(totalDiscount, prevDiscount), positive: totalDiscount <= prevDiscount },
-        { label: t('dashboard.net_sales', '淨銷售額'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds).toLocaleString()}`, change: calcChange(totalRevenue - totalRefunds, prevRevenue - prevRefunds), positive: true },
-        { label: t('dashboard.gross_profit', '毛利潤'), value: `${tenantConfig.currency}${(totalRevenue - totalCost).toLocaleString()}`, change: calcChange(totalRevenue - totalCost, prevGrossProfit), positive: true },
+        { label: t('dashboard.today_sales', '銷售總額'), value: `${tenantConfig.currency}${totalRevenue.toLocaleString()}` },
+        { label: t('dashboard.refund', '退款'), value: `${tenantConfig.currency}${totalRefunds.toLocaleString()}` },
+        { label: t('dashboard.discount', '折扣'), value: `${tenantConfig.currency}${totalDiscount.toLocaleString()}` },
+        { label: t('dashboard.net_sales', '淨銷售額'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds).toLocaleString()}` },
+        { label: t('dashboard.gross_profit', '毛利潤'), value: `${tenantConfig.currency}${(totalRevenue - totalCost).toLocaleString()}` },
     ];
 
-    const salesTrend = d.salesTrend || [];
+    const salesTrend = d.reports || [];
     // If range report doesn't include daily trend, derive from DailyReport array
     const chartLabels = salesTrend.length > 0 ? salesTrend.map(s => s.date || s._id) : [];
     const chartDataValues = salesTrend.length > 0 ? salesTrend.map(s => s.totalRevenue || 0) : [];
@@ -143,11 +130,8 @@ const SalesSummary = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
                 {kpiCards.map((kpi, idx) => (
                     <div key={idx} className="glass-panel" style={{ padding: '1.25rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                        <div style={{ marginBottom: '0.5rem' }}>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{kpi.label}</span>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '2px', color: kpi.positive ? '#4ade80' : '#f87171', fontSize: '0.75rem', fontWeight: 600 }}>
-                                {kpi.change} {kpi.positive ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
-                            </span>
                         </div>
                         <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{kpi.value}</div>
                     </div>
@@ -195,10 +179,10 @@ const SalesSummary = () => {
                                 <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                                     <td style={{ padding: '0.75rem 0.5rem' }}>{row.date || row._id || `Day ${idx + 1}`}</td>
                                     <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{tenantConfig.currency}{(row.totalRevenue || 0).toLocaleString()}</td>
-                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{tenantConfig.currency}{(row.cost || 0).toLocaleString()}</td>
-                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{tenantConfig.currency}{((row.totalRevenue || 0) - (row.cost || 0)).toLocaleString()}</td>
+                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{tenantConfig.currency}{(row.totalCost || 0).toLocaleString()}</td>
+                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{tenantConfig.currency}{((row.totalRevenue || 0) - (row.totalCost || 0)).toLocaleString()}</td>
                                     <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: '#4ade80' }}>
-                                        {row.totalRevenue ? ((((row.totalRevenue - (row.cost || 0)) / row.totalRevenue) * 100).toFixed(1)) : 0}%
+                                        {row.totalRevenue ? ((((row.totalRevenue - (row.totalCost || 0)) / row.totalRevenue) * 100).toFixed(1)) : 0}%
                                     </td>
                                 </tr>
                             )) : (
