@@ -574,5 +574,22 @@
   "placeholder_name_example": "z. B. Max Mustermann",
   "placeholder_email": "e-mail@beispiel.de",
   "placeholder_phone": "+49 123 4567890",
-  "placeholder_address": "Musterstraße 123, Stadt"
+  "placeholder_address": "Musterstraße 123, Stadt",
+  "api_docs": {
+    "title": "API-Dokumentation",
+    "open_swagger": "Swagger UI öffnen",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "Interaktive API-Dokumentation – testen Sie jeden Endpunkt direkt in Ihrem Browser",
+    "auth": "Authentifizierung",
+    "auth_desc": "Alle API-Anfragen erfordern ein Bearer Token im Authorization-Header",
+    "endpoints": "Endpunkt-Übersicht",
+    "endpoints_desc": "Über 50 API-Endpunkte für Bestellungen, Produkte, Kunden, Mitarbeiter, Berichte und mehr",
+    "base_url": "Basis-URL",
+    "base_url_desc": "Die Basis-URL für alle API-Anfragen",
+    "api_keys": "API-Schlüssel",
+    "api_keys_desc": "Gehen Sie zu den Entwicklereinstellungen, um Ihre API-Schlüssel zu verwalten",
+    "public_api": "Öffentliche API",
+    "public_api_desc": "Endpunkte für externe Integrationen mit x-api-key-Header-Authentifizierung",
+    "open": "Öffnen"
+  }
 }

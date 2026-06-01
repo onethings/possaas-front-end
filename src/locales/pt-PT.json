@@ -574,5 +574,22 @@
   "placeholder_name_example": "ex. João Silva",
   "placeholder_email": "email@exemplo.com",
   "placeholder_phone": "+351 912 345 678",
-  "placeholder_address": "Rua Principal, n.º 123, Cidade"
+  "placeholder_address": "Rua Principal, n.º 123, Cidade",
+  "api_docs": {
+    "title": "Documentação da API",
+    "open_swagger": "Abrir Swagger UI",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "Documentação interativa da API - teste cada endpoint diretamente no seu navegador",
+    "auth": "Autenticação",
+    "auth_desc": "Todos os pedidos à API requerem um Bearer Token no cabeçalho Authorization",
+    "endpoints": "Visão geral dos endpoints",
+    "endpoints_desc": "Mais de 50 endpoints de API que abrangem encomendas, produtos, clientes, funcionários, relatórios e muito mais",
+    "base_url": "URL base",
+    "base_url_desc": "O URL base para todos os pedidos à API",
+    "api_keys": "Chaves de API",
+    "api_keys_desc": "Vá às Definições de Programador para gerir as suas chaves de API",
+    "public_api": "API pública",
+    "public_api_desc": "Endpoints de integração externa que utilizam autenticação por cabeçalho x-api-key",
+    "open": "Abrir"
+  }
 }

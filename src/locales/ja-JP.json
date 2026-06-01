@@ -574,5 +574,22 @@
   "placeholder_name_example": "例: 山田 太郎",
   "placeholder_email": "email@example.com",
   "placeholder_phone": "03-1234-5678",
-  "placeholder_address": "東京都新宿区西新宿1-1-1"
+  "placeholder_address": "東京都新宿区西新宿1-1-1",
+  "api_docs": {
+    "title": "API ドキュメント",
+    "open_swagger": "Swagger UI を開く",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "インタラクティブな API ドキュメント - ブラウザ上で各エンドポイントを直接テスト可能",
+    "auth": "認証",
+    "auth_desc": "すべての API リクエストには、Authorization ヘッダーに Bearer Token が必要です",
+    "endpoints": "エンドポイント概要",
+    "endpoints_desc": "注文、製品、顧客、従業員、レポートなど、50以上の API エンドポイントを網羅",
+    "base_url": "ベース URL",
+    "base_url_desc": "すべての API リクエストのベースとなる URL",
+    "api_keys": "API キー",
+    "api_keys_desc": "開発者設定から API キーを管理してください",
+    "public_api": "公開 API",
+    "public_api_desc": "x-api-key ヘッダー認証を使用する外部連携用エンドポイント",
+    "open": "開く"
+  }
 }

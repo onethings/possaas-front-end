@@ -574,5 +574,22 @@
   "placeholder_name_example": "例如：張三",
   "placeholder_email": "email@example.com",
   "placeholder_phone": "+1 234 567 890",
-  "placeholder_address": "北京市朝陽區大屯路 123 號"
+  "placeholder_address": "北京市朝陽區大屯路 123 號",
+  "api_docs": {
+    "title": "API 文档",
+    "open_swagger": "打开 Swagger UI",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "交互式 API 文档 - 可直接在浏览器中测试各个端点",
+    "auth": "验证",
+    "auth_desc": "所有 API 请求均需在 Authorization 标头中包含 Bearer Token",
+    "endpoints": "端点总览",
+    "endpoints_desc": "超过 50 个 API 端点，涵盖订单、产品、客户、员工、报表等功能",
+    "base_url": "基础地址 (Base URL)",
+    "base_url_desc": "所有 API 请求的基础地址",
+    "api_keys": "API 密钥",
+    "api_keys_desc": "前往开发者设置管理您的 API 密钥",
+    "public_api": "公开 API",
+    "public_api_desc": "使用 x-api-key 标头验证的外部集成端点",
+    "open": "打开"
+  }
 }

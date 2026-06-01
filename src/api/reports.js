@@ -14,3 +14,8 @@ export const getRevenueReport = async (start, end) => {
     const response = await api.get(`/api/reports/revenue?start=${start}&end=${end}`);
     return response.data;
 };
+
+export const getRangeReport = async (start, end, forceRefresh = false) => {
+    const response = await api.get(`/api/reports/range?start=${start}&end=${end}&force=${forceRefresh}`);
+    return response.data;
+};

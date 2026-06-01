@@ -574,5 +574,22 @@
   "placeholder_name_example": "bijv. Jan Jansen",
   "placeholder_email": "e-mail@voorbeeld.com",
   "placeholder_phone": "+31 6...",
-  "placeholder_address": "Straatnaam, huisnummer, woonplaats"
+  "placeholder_address": "Straatnaam, huisnummer, woonplaats",
+  "api_docs": {
+    "title": "API-documentatie",
+    "open_swagger": "Swagger UI openen",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "Interactieve API-documentatie - test elk eindpunt direct in je browser",
+    "auth": "Authenticatie",
+    "auth_desc": "Alle API-aanvragen vereisen een Bearer Token in de Authorization-header",
+    "endpoints": "Overzicht van eindpunten",
+    "endpoints_desc": "Meer dan 50 API-eindpunten voor bestellingen, producten, klanten, medewerkers, rapporten en meer",
+    "base_url": "Basis-URL",
+    "base_url_desc": "De basis-URL voor alle API-aanvragen",
+    "api_keys": "API-sleutels",
+    "api_keys_desc": "Ga naar Ontwikkelaarsinstellingen om je API-sleutels te beheren",
+    "public_api": "Publieke API",
+    "public_api_desc": "Eindpunten voor externe integratie die gebruikmaken van x-api-key header-authenticatie",
+    "open": "Openen"
+  }
 }

@@ -1,16 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { Download, Loader2 } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
+import { getRangeReport } from '../../api/reports';
 
 const EmployeeSalesReport = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
+    const [loading, setLoading] = useState(true);
+    const [employees, setEmployees] = useState([]);
 
-    const employees = [
-        { name: '店主', totalSales: 160746000, refund: 0, discount: 811000, netSales: 159935000, receipts: 858, avgSale: 186404, registeredCustomers: 0 },
-    ];
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const result = await getRangeReport('2026-05-03', '2026-06-01');
+            if (result.success && result.data.staffSummary) {
+                const mapped = Object.values(result.data.staffSummary).map(s => ({
+                    name: s.name || 'Unknown',
+                    totalSales: s.revenue || 0,
+                    refund: 0,
+                    discount: 0,
+                    netSales: s.revenue || 0,
+                    receipts: s.orderCount || 0,
+                    avgSale: s.orderCount ? Math.round((s.revenue || 0) / s.orderCount) : 0,
+                    registeredCustomers: 0,
+                }));
+                setEmployees(mapped);
+            }
+        } catch (err) {
+            console.error('Failed to fetch employee sales:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                <Loader2 className="animate-spin" size={32} /> {t('common.loading')}
+            </div>
+        );
+    }
 
     return (
         <motion.div

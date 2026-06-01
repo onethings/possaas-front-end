@@ -574,5 +574,22 @@
   "placeholder_name_example": "örn. Ahmet Yılmaz",
   "placeholder_email": "e-posta@ornek.com",
   "placeholder_phone": "+90 5...",
-  "placeholder_address": "Mahalle, Cadde/Sokak, No, İl/İlçe"
+  "placeholder_address": "Mahalle, Cadde/Sokak, No, İl/İlçe",
+  "api_docs": {
+    "title": "API Dokümantasyonu",
+    "open_swagger": "Swagger UI'ı Aç",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "Etkileşimli API dokümantasyonu - her uç noktayı (endpoint) doğrudan tarayıcınızda test edin",
+    "auth": "Kimlik Doğrulama",
+    "auth_desc": "Tüm API istekleri, Authorization başlığında bir Bearer Token gerektirir",
+    "endpoints": "Uç Nokta Genel Bakış",
+    "endpoints_desc": "Siparişler, ürünler, müşteriler, çalışanlar, raporlar ve daha fazlasını kapsayan 50'den fazla API uç noktası",
+    "base_url": "Temel URL",
+    "base_url_desc": "Tüm API istekleri için temel URL",
+    "api_keys": "API Anahtarları",
+    "api_keys_desc": "API anahtarlarınızı yönetmek için Geliştirici Ayarlarına gidin",
+    "public_api": "Halka Açık API",
+    "public_api_desc": "x-api-key başlık kimlik doğrulamasını kullanan harici entegrasyon uç noktaları",
+    "open": "Aç"
+  }
 }

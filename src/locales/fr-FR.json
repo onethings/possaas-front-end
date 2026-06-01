@@ -574,5 +574,22 @@
   "placeholder_name_example": "ex. Jean Dupont",
   "placeholder_email": "email@exemple.com",
   "placeholder_phone": "+33 6 12 34 56 78",
-  "placeholder_address": "123 Rue Principale, Ville"
+  "placeholder_address": "123 Rue Principale, Ville",
+  "api_docs": {
+    "title": "Documentation de l'API",
+    "open_swagger": "Ouvrir Swagger UI",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "Documentation interactive de l'API - testez chaque endpoint directement dans votre navigateur",
+    "auth": "Authentification",
+    "auth_desc": "Toutes les requêtes API nécessitent un jeton Bearer (Bearer Token) dans l'en-tête Authorization",
+    "endpoints": "Vue d'ensemble des endpoints",
+    "endpoints_desc": "Plus de 50 endpoints API couvrant les commandes, les produits, les clients, les employés, les rapports et plus encore",
+    "base_url": "URL de base",
+    "base_url_desc": "L'URL de base pour toutes les requêtes API",
+    "api_keys": "Clés API",
+    "api_keys_desc": "Accédez aux paramètres développeur pour gérer vos clés API",
+    "public_api": "API publique",
+    "public_api_desc": "Endpoints d'intégration externe utilisant l'authentification par en-tête x-api-key",
+    "open": "Ouvrir"
+  }
 }

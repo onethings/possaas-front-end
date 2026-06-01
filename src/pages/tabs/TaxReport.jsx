@@ -1,17 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { Download, Loader2 } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
+import { getRangeReport } from '../../api/reports';
 
 const TaxReport = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
+    const [loading, setLoading] = useState(true);
+    const [taxes, setTaxes] = useState([]);
 
-    const taxes = [
-        { name: 'VAT 5%', netSales: 159935000, taxAmount: 7996750, rate: 5 },
-        { name: 'VAT 10%', netSales: 0, taxAmount: 0, rate: 10 },
-    ];
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const result = await getRangeReport('2026-05-03', '2026-06-01');
+            if (result.success) {
+                const d = result.data;
+                const totalRevenue = d.totalRevenue || 0;
+                setTaxes([{
+                    name: `VAT ${(d.taxRate || 5)}%`,
+                    netSales: totalRevenue,
+                    taxAmount: d.totalTax || Math.round(totalRevenue * (d.taxRate || 5) / 100),
+                    rate: d.taxRate || 5,
+                }]);
+            }
+        } catch (err) {
+            console.error('Failed to fetch tax report:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                <Loader2 className="animate-spin" size={32} /> {t('common.loading')}
+            </div>
+        );
+    }
 
     return (
         <motion.div

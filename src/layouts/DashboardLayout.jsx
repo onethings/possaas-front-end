@@ -87,6 +87,7 @@ import AccessRightsPage from '../pages/tabs/AccessRightsPage';
 // Integration tab components
 import IntegrationApps from '../pages/tabs/IntegrationApps';
 import AccessTokens from '../pages/tabs/AccessTokens';
+import ApiDocsPage from '../pages/tabs/ApiDocsPage';
 // Settings tab components
 import FeatureSettings from '../pages/tabs/FeatureSettings';
 import BillingPage from '../pages/tabs/BillingPage';
@@ -176,6 +177,7 @@ const sidebarGroups = [
         items: [
             { id: 'integration-apps',  icon: AppWindow,    title: 'nav.integration_apps',  component: IntegrationApps },
             { id: 'access-tokens',     icon: KeyRound,     title: 'nav.access_tokens',     component: AccessTokens },
+            { id: 'api-docs',           icon: BookOpen,     title: 'nav.api_docs',          component: ApiDocsPage },
         ]
     },
     {

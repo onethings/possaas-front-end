@@ -574,5 +574,22 @@
   "placeholder_name_example": "เช่น สมชาย ใจดี",
   "placeholder_email": "email@example.com",
   "placeholder_phone": "081-234-5678",
-  "placeholder_address": "123 ถนนหลัก เมือง"
+  "placeholder_address": "123 ถนนหลัก เมือง",
+  "api_docs": {
+    "title": "เอกสาร API",
+    "open_swagger": "เปิดใช้งาน Swagger UI",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "เอกสาร API แบบอินเทอร์แอคทีฟ - ทดสอบแต่ละ endpoint ได้โดยตรงในเบราว์เซอร์ของคุณ",
+    "auth": "การยืนยันตัวตน (Authentication)",
+    "auth_desc": "คำขอ API ทั้งหมดจำเป็นต้องมี Bearer Token ในส่วนหัวของ Authorization",
+    "endpoints": "ภาพรวมของ Endpoint",
+    "endpoints_desc": "มี API endpoint มากกว่า 50 รายการ ครอบคลุมทั้งคำสั่งซื้อ ผลิตภัณฑ์ ลูกค้า พนักงาน รายงาน และอื่นๆ",
+    "base_url": "URL หลัก (Base URL)",
+    "base_url_desc": "URL หลักสำหรับคำขอ API ทั้งหมด",
+    "api_keys": "API Key",
+    "api_keys_desc": "ไปที่การตั้งค่าสำหรับนักพัฒนาเพื่อจัดการ API Key ของคุณ",
+    "public_api": "Public API",
+    "public_api_desc": "Endpoint สำหรับการเชื่อมต่อภายนอกโดยใช้การยืนยันตัวตนผ่านส่วนหัว x-api-key",
+    "open": "เปิด"
+  }
 }

@@ -1,21 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download, Search } from 'lucide-react';
+import { Download, Loader2, Search } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
+import { getOrders } from '../../api/orders';
 
 const ReceiptsReport = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
+    const [loading, setLoading] = useState(true);
+    const [receipts, setReceipts] = useState([]);
 
-    const receipts = Array.from({ length: 10 }, (_, i) => ({
-        no: `2-${3134 - i}`,
-        date: i === 0 ? '31 May 2026 16:08' : `${31 - (i % 30)} May 2026 ${10 + i}:${i * 5}`,
-        employee: '所有者',
-        customer: '—',
-        type: '銷售',
-        total: Math.floor(Math.random() * 200000) + 10000,
-    }));
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const result = await getOrders({ start: '2026-05-03', end: '2026-06-01' });
+            if (result.success) {
+                const mapped = (result.data || []).slice(0, 10).map(order => ({
+                    no: order.orderNo || '—',
+                    date: order.createdAt ? new Date(order.createdAt).toLocaleString() : '—',
+                    employee: order.staffName || '—',
+                    customer: order.customerName || '—',
+                    type: order.status === 'returned' ? t('report.refund', '退款') : t('report.sales', '銷售'),
+                    total: order.finalAmount || 0,
+                }));
+                setReceipts(mapped);
+            }
+        } catch (err) {
+            console.error('Failed to fetch receipts:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                <Loader2 className="animate-spin" size={32} /> {t('common.loading')}
+            </div>
+        );
+    }
 
     return (
         <motion.div

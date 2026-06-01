@@ -574,5 +574,21 @@
   "placeholder_name_example": "例如：王小明",
   "placeholder_email": "email@example.com",
   "placeholder_phone": "+1 234 567 890",
-  "placeholder_address": "台北市大安區敦化南路一段 123 號"
+  "placeholder_address": "台北市大安區敦化南路一段 123 號",
+  "api_docs": {
+    "title": "API 文件",
+    "open_swagger": "開啟 Swagger UI",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "互動式 API 文件 - 可直接在瀏覽器中測試各個端點",
+    "auth": "驗證",
+    "auth_desc": "所有 API 請求皆需在 Authorization 標頭中包含 Bearer Token",
+    "endpoints": "端點總覽",
+    "endpoints_desc": "超過 50 個 API 端點，涵蓋訂單、產品、客戶、員工、報表等功能",
+    "base_url": "基礎網址 (Base URL)",
+    "base_url_desc": "所有 API 請求的基礎網址",
+    "api_keys": "API 金鑰",
+    "api_keys_desc": "前往開發人員設定管理您的 API 金鑰",
+    "public_api": "公開 API",
+    "public_api_desc": "使用 x-api-key 標頭驗證的外部整合端點",
+    "open": "開啟" }
 }

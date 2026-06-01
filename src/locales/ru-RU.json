@@ -574,5 +574,22 @@
   "placeholder_name_example": "например, Иван Иванов",
   "placeholder_email": "email@example.com",
   "placeholder_phone": "+7 ...",
-  "placeholder_address": "Улица, дом, квартира, город"
+  "placeholder_address": "Улица, дом, квартира, город",
+  "api_docs": {
+    "title": "Документация API",
+    "open_swagger": "Открыть Swagger UI",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "Интерактивная документация API — тестируйте каждый эндпоинт прямо в браузере",
+    "auth": "Аутентификация",
+    "auth_desc": "Все запросы API требуют наличия Bearer Token в заголовке Authorization",
+    "endpoints": "Обзор эндпоинтов",
+    "endpoints_desc": "Более 50 эндпоинтов API, охватывающих заказы, продукты, клиентов, сотрудников, отчеты и многое другое",
+    "base_url": "Базовый URL",
+    "base_url_desc": "Базовый URL для всех запросов API",
+    "api_keys": "API-ключи",
+    "api_keys_desc": "Перейдите в настройки разработчика для управления вашими API-ключами",
+    "public_api": "Публичный API",
+    "public_api_desc": "Эндпоинты для внешней интеграции с использованием аутентификации через заголовок x-api-key",
+    "open": "Открыть"
+  }
 }

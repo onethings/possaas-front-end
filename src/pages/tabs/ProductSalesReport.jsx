@@ -3,22 +3,49 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Download, Loader2 } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
+import { getRangeReport } from '../../api/reports';
 
 const ProductSalesReport = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
-    const [loading, setLoading] = useState(false);
-    const [products] = useState([
-        { name: 'Epson L3250', category: 'Ink', qty: 120, netSales: 27710253, cost: 12000000, profitMargin: 55 },
-        { name: 'Epson L3210', category: 'Ink', qty: 98, netSales: 21672222, cost: 10500000, profitMargin: 51.6 },
-        { name: 'Epson L18050', category: 'Ink', qty: 45, netSales: 13660000, cost: 6200000, profitMargin: 54.6 },
-        { name: 'Epson L8050', category: 'Ink', qty: 52, netSales: 12870000, cost: 6200000, profitMargin: 51.8 },
-        { name: 'Epson L14150', category: 'Ink', qty: 28, netSales: 9415000, cost: 4200000, profitMargin: 55.4 },
-        { name: '003 BK', category: 'Ink', qty: 85, netSales: 680000, cost: 306000, profitMargin: 55 },
-        { name: '003 C', category: 'Ink', qty: 72, netSales: 576000, cost: 465000, profitMargin: 19.21 },
-    ]);
+    const [loading, setLoading] = useState(true);
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const result = await getRangeReport('2026-05-03', '2026-06-01');
+            if (result.success && result.data.productsSummary) {
+                const mapped = Object.values(result.data.productsSummary).map(p => ({
+                    name: p.name || 'Unknown',
+                    category: p.category || '—',
+                    qty: p.qty || 0,
+                    netSales: p.revenue || 0,
+                    cost: p.cost || 0,
+                    profitMargin: p.revenue ? (((p.revenue - (p.cost || 0)) / p.revenue) * 100).toFixed(1) : 0,
+                }));
+                setProducts(mapped);
+            }
+        } catch (err) {
+            console.error('Failed to fetch product sales:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const top5 = products.slice(0, 5);
+
+    if (loading) {
+        return (
+            <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                <Loader2 className="animate-spin" size={32} /> {t('common.loading')}
+            </div>
+        );
+    }
 
     return (
         <motion.div

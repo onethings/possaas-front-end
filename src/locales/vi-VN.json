@@ -574,5 +574,22 @@
   "placeholder_name_example": "Ví dụ: Nguyễn Văn A",
   "placeholder_email": "email@example.com",
   "placeholder_phone": "+84 234 567 890",
-  "placeholder_address": "123 Đường Chính, Thành phố"
+  "placeholder_address": "123 Đường Chính, Thành phố",
+  "api_docs": {
+    "title": "Tài liệu API",
+    "open_swagger": "Mở Swagger UI",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "Tài liệu API tương tác - kiểm tra từng endpoint trực tiếp trong trình duyệt của bạn",
+    "auth": "Xác thực",
+    "auth_desc": "Tất cả các yêu cầu API đều yêu cầu Bearer Token trong tiêu đề Authorization",
+    "endpoints": "Tổng quan về Endpoint",
+    "endpoints_desc": "Hơn 50 endpoint API bao gồm đơn hàng, sản phẩm, khách hàng, nhân viên, báo cáo và nhiều hơn nữa",
+    "base_url": "URL cơ sở (Base URL)",
+    "base_url_desc": "URL cơ sở cho tất cả các yêu cầu API",
+    "api_keys": "Khóa API",
+    "api_keys_desc": "Truy cập Cài đặt nhà phát triển để quản lý khóa API của bạn",
+    "public_api": "API công khai",
+    "public_api_desc": "Các endpoint tích hợp bên ngoài sử dụng xác thực tiêu đề x-api-key",
+    "open": "Mở"
+  }
 }

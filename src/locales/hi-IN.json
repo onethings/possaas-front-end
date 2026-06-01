@@ -574,5 +574,22 @@
   "placeholder_name_example": "जैसे: राहुल कुमार",
   "placeholder_email": "email@example.com",
   "placeholder_phone": "+91 98765 43210",
-  "placeholder_address": "123 मुख्य सड़क, शहर"
+  "placeholder_address": "123 मुख्य सड़क, शहर",
+  "api_docs": {
+    "title": "API दस्तावेज़",
+    "open_swagger": "Swagger UI खोलें",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "इंटरैक्टिव API दस्तावेज़ - प्रत्येक एंडपॉइंट का सीधे अपने ब्राउज़र में परीक्षण करें",
+    "auth": "प्रमाणीकरण (Authentication)",
+    "auth_desc": "सभी API अनुरोधों के लिए Authorization हेडर में Bearer Token की आवश्यकता होती है",
+    "endpoints": "एंडपॉइंट अवलोकन",
+    "endpoints_desc": "50+ API एंडपॉइंट्स जो ऑर्डर, उत्पाद, ग्राहक, कर्मचारी, रिपोर्ट और बहुत कुछ कवर करते हैं",
+    "base_url": "आधार URL (Base URL)",
+    "base_url_desc": "सभी API अनुरोधों के लिए आधार URL",
+    "api_keys": "API कुंजियाँ (API Keys)",
+    "api_keys_desc": "अपनी API कुंजियों को प्रबंधित करने के लिए डेवलपर सेटिंग्स पर जाएं",
+    "public_api": "पब्लिक API",
+    "public_api_desc": "x-api-key हेडर प्रमाणीकरण का उपयोग करने वाले बाहरी एकीकरण एंडपॉइंट्स",
+    "open": "खोलें"
+  }
 }

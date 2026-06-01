@@ -574,5 +574,22 @@
   "placeholder_name_example": "e.g. John Doe",
   "placeholder_email": "email@example.com",
   "placeholder_phone": "+1 234 567 890",
-  "placeholder_address": "123 Main St, City"
+  "placeholder_address": "123 Main St, City",
+  "api_docs": {
+    "title": "API Documentation",
+    "open_swagger": "Open Swagger UI",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "Interactive API documentation - test each endpoint directly in your browser",
+    "auth": "Authentication",
+    "auth_desc": "All API requests require a Bearer Token in the Authorization header",
+    "endpoints": "Endpoint Overview",
+    "endpoints_desc": "50+ API endpoints covering orders, products, customers, employees, reports and more",
+    "base_url": "Base URL",
+    "base_url_desc": "The base URL for all API requests",
+    "api_keys": "API Keys",
+    "api_keys_desc": "Go to Developer Settings to manage your API keys",
+    "public_api": "Public API",
+    "public_api_desc": "External integration endpoints using x-api-key header authentication",
+    "open": "Open"
+  }
 }

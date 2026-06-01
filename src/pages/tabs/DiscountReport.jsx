@@ -1,25 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { Download, Loader2 } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
+import { getDiscounts } from '../../api/discounts';
 
 const DiscountReport = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
+    const [loading, setLoading] = useState(true);
+    const [discounts, setDiscounts] = useState([]);
 
-    const discounts = [
-        { name: 'Discound', count: 16, amount: 160000 },
-        { name: 'Discound', count: 5, amount: 5000 },
-        { name: 'Discound', count: 5, amount: 15000 },
-        { name: 'Discound', count: 24, amount: 120000 },
-        { name: 'Discound', count: 10, amount: 5000 },
-        { name: 'Discound', count: 8, amount: 16000 },
-        { name: 'Discount', count: 4, amount: 200000 },
-        { name: 'Discount', count: 1, amount: 90000 },
-        { name: 'Discount', count: 1, amount: 100000 },
-        { name: 'discount', count: 5, amount: 100000 },
-    ];
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const result = await getDiscounts();
+            if (result.success) {
+                setDiscounts((result.data || []).map(d => ({
+                    name: d.name || '—',
+                    count: d.count || d.usageCount || 0,
+                    amount: d.amount || d.totalDiscount || 0,
+                })));
+            }
+        } catch (err) {
+            console.error('Failed to fetch discounts:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                <Loader2 className="animate-spin" size={32} /> {t('common.loading')}
+            </div>
+        );
+    }
 
     return (
         <motion.div

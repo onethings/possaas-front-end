@@ -574,5 +574,22 @@
   "placeholder_name_example": "mis. Budi Santoso",
   "placeholder_email": "email@contoh.com",
   "placeholder_phone": "+62 8...",
-  "placeholder_address": "No. Rumah, Nama Jalan, Kota"
+  "placeholder_address": "No. Rumah, Nama Jalan, Kota",
+  "api_docs": {
+    "title": "Dokumentasi API",
+    "open_swagger": "Buka Swagger UI",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "Dokumentasi API interaktif - uji setiap endpoint secara langsung di browser Anda",
+    "auth": "Otentikasi",
+    "auth_desc": "Semua permintaan API memerlukan Bearer Token di header Authorization",
+    "endpoints": "Ringkasan Endpoint",
+    "endpoints_desc": "50+ endpoint API yang mencakup pesanan, produk, pelanggan, karyawan, laporan, dan lainnya",
+    "base_url": "URL Dasar (Base URL)",
+    "base_url_desc": "URL dasar untuk semua permintaan API",
+    "api_keys": "Kunci API",
+    "api_keys_desc": "Buka Pengaturan Pengembang untuk mengelola kunci API Anda",
+    "public_api": "API Publik",
+    "public_api_desc": "Endpoint integrasi eksternal yang menggunakan otentikasi header x-api-key",
+    "open": "Buka"
+  }
 }

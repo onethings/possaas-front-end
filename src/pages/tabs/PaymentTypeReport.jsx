@@ -1,16 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { Download, Loader2 } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
+import { getRangeReport } from '../../api/reports';
 
 const PaymentTypeReport = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
+    const [loading, setLoading] = useState(true);
+    const [payments, setPayments] = useState([]);
 
-    const payments = [
-        { method: '現金', transactions: 858, amount: 159935000, refundTrans: 0, refundAmount: 0, net: 159935000 },
-    ];
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const result = await getRangeReport('2026-05-03', '2026-06-01');
+            if (result.success) {
+                const d = result.data;
+                const totalRevenue = d.totalRevenue || 0;
+                const totalRefunds = d.totalRefunds || 0;
+                setPayments([{
+                    method: t('report.cash', '現金'),
+                    transactions: d.totalOrders || 0,
+                    amount: totalRevenue,
+                    refundTrans: 0,
+                    refundAmount: totalRefunds,
+                    net: totalRevenue - totalRefunds,
+                }]);
+            }
+        } catch (err) {
+            console.error('Failed to fetch payment types:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const totals = payments.reduce((acc, p) => ({
         transactions: acc.transactions + p.transactions,
@@ -19,6 +46,14 @@ const PaymentTypeReport = () => {
         refundAmount: acc.refundAmount + p.refundAmount,
         net: acc.net + p.net,
     }), { transactions: 0, amount: 0, refundTrans: 0, refundAmount: 0, net: 0 });
+
+    if (loading) {
+        return (
+            <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                <Loader2 className="animate-spin" size={32} /> {t('common.loading')}
+            </div>
+        );
+    }
 
     return (
         <motion.div

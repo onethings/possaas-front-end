@@ -1,25 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { Download, Loader2 } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
+import { getRangeReport } from '../../api/reports';
 
 const CategorySalesReport = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
+    const [loading, setLoading] = useState(true);
+    const [categories, setCategories] = useState([]);
 
-    const categories = [
-        { name: 'Accessories', qty: 120, netSales: 8500000, cost: 3400000, margin: 60 },
-        { name: 'Ink', qty: 450, netSales: 45800000, cost: 21000000, margin: 54.1 },
-        { name: 'Ink Cartridge', qty: 230, netSales: 12500000, cost: 6200000, margin: 50.4 },
-        { name: 'Original Ink&Cactridge', qty: 180, netSales: 9800000, cost: 4900000, margin: 50 },
-        { name: 'Paper', qty: 320, netSales: 4200000, cost: 2100000, margin: 50 },
-        { name: 'Printer', qty: 45, netSales: 28500000, cost: 14200000, margin: 50.2 },
-        { name: 'Ribbon', qty: 65, netSales: 1300000, cost: 650000, margin: 50 },
-        { name: 'Services', qty: 80, netSales: 6400000, cost: 1600000, margin: 75 },
-        { name: 'Toner', qty: 95, netSales: 5200000, cost: 2600000, margin: 50 },
-        { name: 'Toner Cratridge', qty: 150, netSales: 8900000, cost: 4400000, margin: 50.6 },
-    ];
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const result = await getRangeReport('2026-05-03', '2026-06-01');
+            if (result.success && result.data.categoriesSummary) {
+                const mapped = Object.values(result.data.categoriesSummary).map(c => ({
+                    name: c.name || 'Unknown',
+                    qty: c.qty || 0,
+                    netSales: c.revenue || 0,
+                    cost: c.cost || 0,
+                    margin: c.revenue ? (((c.revenue - (c.cost || 0)) / c.revenue) * 100).toFixed(1) : 0,
+                }));
+                setCategories(mapped);
+            }
+        } catch (err) {
+            console.error('Failed to fetch category sales:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                <Loader2 className="animate-spin" size={32} /> {t('common.loading')}
+            </div>
+        );
+    }
 
     return (
         <motion.div

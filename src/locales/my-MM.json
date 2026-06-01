@@ -574,5 +574,22 @@
   "placeholder_name_example": "ဥပမာ - မောင်မောင်",
   "placeholder_email": "email@example.com",
   "placeholder_phone": "+95 9...",
-  "placeholder_address": "အိမ်အမှတ်၊ လမ်း၊ မြို့နယ်"
+  "placeholder_address": "အိမ်အမှတ်၊ လမ်း၊ မြို့နယ်",
+  "api_docs": {
+    "title": "API စာရွက်စာတမ်းများ",
+    "open_swagger": "Swagger UI ကိုဖွင့်ပါ",
+    "swagger_ui": "Swagger UI",
+    "swagger_desc": "အပြန်အလှန်အကျိုးပြုသော API စာရွက်စာတမ်း - endpoint တစ်ခုချင်းစီကို browser ပေါ်တွင် တိုက်ရိုက်စမ်းသပ်နိုင်သည်",
+    "auth": "စစ်မှန်ကြောင်းအတည်ပြုခြင်း (Authentication)",
+    "auth_desc": "API တောင်းဆိုမှုအားလုံးအတွက် Authorization header တွင် Bearer Token ထည့်သွင်းရန် လိုအပ်သည်",
+    "endpoints": "Endpoint များ၏ခြုံငုံသုံးသပ်ချက်",
+    "endpoints_desc": "အော်ဒါများ၊ ထုတ်ကုန်များ၊ သုံးစွဲသူများ၊ ဝန်ထမ်းများ၊ အစီရင်ခံစာများနှင့် အခြားအရာများပါဝင်သော API endpoint ပေါင်း ၅၀ ကျော်",
+    "base_url": "အခြေခံ URL (Base URL)",
+    "base_url_desc": "API တောင်းဆိုမှုအားလုံးအတွက် အခြေခံ URL",
+    "api_keys": "API သော့များ (API Keys)",
+    "api_keys_desc": "သင်၏ API သော့များကို စီမံခန့်ခွဲရန် Developer Settings သို့သွားပါ",
+    "public_api": "Public API",
+    "public_api_desc": "x-api-key header authentication ကိုအသုံးပြုသော ပြင်ပချိတ်ဆက်မှုဆိုင်ရာ endpoint များ",
+    "open": "ဖွင့်ရန်"
+  }
 }
