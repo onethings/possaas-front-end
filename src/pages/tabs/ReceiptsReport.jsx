@@ -3,22 +3,25 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Download, Loader2, Search } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
+import { useReportFilters } from '../../contexts/ReportFilterContext';
+import FilterBar from '../../components/FilterBar';
 import { getOrders } from '../../api/orders';
 
 const ReceiptsReport = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
+    const { dateRange } = useReportFilters();
     const [loading, setLoading] = useState(true);
     const [receipts, setReceipts] = useState([]);
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [dateRange]);
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            const result = await getOrders({ start: '2026-05-03', end: '2026-06-01' });
+            const result = await getOrders({ start: dateRange.start, end: dateRange.end });
             if (result.success) {
                 const mapped = (result.data || []).slice(0, 10).map(order => ({
                     no: order.orderNo || '—',
@@ -51,22 +54,10 @@ const ReceiptsReport = () => {
             animate={{ opacity: 1, y: 0 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1.5rem', height: '100%', overflow: 'auto' }}
         >
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                    <div className="glass-panel" style={{ padding: '0.5rem 1rem' }}>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>3 May 2026 – 1 Jun 2026</span>
-                    </div>
-                    <div className="glass-panel" style={{ padding: '0.5rem 1rem' }}>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('report.all_day', '全天')}</span>
-                    </div>
-                    <div className="glass-panel" style={{ padding: '0.5rem 1rem' }}>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('report.all_employees', '所有員工')}</span>
-                    </div>
-                </div>
-                <div className="glass-panel" style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{t('report.total_receipts', '所有收據')}: 858</span>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('report.sales', '銷售')}: 858</span>
-                    <span style={{ fontSize: '0.8rem', color: '#f87171' }}>{t('report.refund', '退款')}: 0</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <FilterBar />
+                <div className="glass-panel" style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', alignSelf: 'flex-end' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{t('report.total_receipts', '所有收據')}: {receipts.length}</span>
                 </div>
             </div>
 

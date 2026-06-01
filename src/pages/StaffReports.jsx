@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { BarChart, TrendingUp, DollarSign, Loader2, Calendar } from 'lucide-react';
+import { BarChart, TrendingUp, DollarSign, Loader2 } from 'lucide-react';
 import { getRangeReport } from '../api/reports';
+import { useReportFilters } from '../contexts/ReportFilterContext';
+import FilterBar from '../components/FilterBar';
 import { useTenant } from '../contexts/TenantContext';
 
 const StaffReports = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
+    const { dateRange } = useReportFilters();
     const [report, setReport] = useState(null);
     const [loading, setLoading] = useState(true);
     
@@ -27,12 +30,12 @@ const StaffReports = () => {
         
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [dateRange]);
 
     const fetchReport = async () => {
         setLoading(true);
         try {
-            const result = await getRangeReport('2026-05-03', '2026-06-01');
+            const result = await getRangeReport(dateRange.start, dateRange.end);
             if (result.success) setReport(result.data);
         } catch (error) {
             console.error(error);
@@ -71,9 +74,7 @@ const StaffReports = () => {
                 <h2 style={{ fontSize: isMobile ? '1.3rem' : '1.5rem', margin: 0 }}>
                     {t('staff_reports.title')}
                 </h2>
-                <div className="glass-panel" style={{ padding: '0.6rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', width: isMobile ? '100%' : 'auto', boxSizing: 'border-box' }}>
-                    <Calendar size={18} /> {t('staff_reports.today_overview')}
-                </div>
+                <FilterBar />
             </div>
 
             {loading ? (

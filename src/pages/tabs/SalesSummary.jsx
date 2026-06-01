@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import {
     TrendingUp, Users, ShoppingBag, DollarSign,
-    ArrowUpRight, ArrowDownRight, Loader2, Download, Calendar
+    ArrowUpRight, ArrowDownRight, Loader2, Download
 } from 'lucide-react';
 import {
     Chart as ChartJS,
@@ -13,18 +13,18 @@ import {
 import { Line } from 'react-chartjs-2';
 import { getRangeReport } from '../../api/reports';
 import { useTenant } from '../../contexts/TenantContext';
+import { useReportFilters } from '../../contexts/ReportFilterContext';
+import FilterBar from '../../components/FilterBar';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const SalesSummary = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
+    const { dateRange, setDateRange } = useReportFilters();
     const [summary, setSummary] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [dateRange, setDateRange] = useState({ start: '2026-05-03', end: '2026-06-01' });
-    const [timeFilter, setTimeFilter] = useState('all');
-    const [employeeFilter, setEmployeeFilter] = useState('all');
     const [isMobile, setIsMobile] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -40,11 +40,12 @@ const SalesSummary = () => {
         fetchSummary();
     }, [dateRange]);
 
-    const fetchSummary = async () => {
+    const fetchSummary = async (range) => {
+        const d = range || dateRange;
         setLoading(true);
         setError('');
         try {
-            const result = await getRangeReport(dateRange.start, dateRange.end, true);
+            const result = await getRangeReport(d.start, d.end, true);
             if (result.success) setSummary(result.data);
             else setError(t('common.error_load_data'));
         } catch (err) {
@@ -122,13 +123,6 @@ const SalesSummary = () => {
     const totalPages = Math.max(1, Math.ceil(salesTrend.length / pageSize));
     const pagedData = salesTrend.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
-    const timeOptions = [
-        { value: 'all', label: t('report.all_day', '全天') },
-        { value: 'morning', label: t('report.morning', '早上') },
-        { value: 'afternoon', label: t('report.afternoon', '下午') },
-        { value: 'evening', label: t('report.evening', '晚上') },
-    ];
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -142,56 +136,8 @@ const SalesSummary = () => {
                 </div>
             )}
 
-            {/* Filter Bar */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
-                <div className="glass-panel" style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Calendar size={14} color="var(--text-muted)" />
-                    <input
-                        id="sales-start-date"
-                        name="sales-start-date"
-                        type="date"
-                        value={dateRange.start}
-                        onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
-                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: '0.8rem', outline: 'none', width: '110px' }}
-                    />
-                    <span style={{ color: 'var(--text-muted)' }}>–</span>
-                    <input
-                        id="sales-end-date"
-                        name="sales-end-date"
-                        type="date"
-                        value={dateRange.end}
-                        onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
-                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: '0.8rem', outline: 'none', width: '110px' }}
-                    />
-                </div>
-                <div className="glass-panel" style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <select
-                        id="sales-time-filter"
-                        name="sales-time-filter"
-                        value={timeFilter}
-                        onChange={(e) => setTimeFilter(e.target.value)}
-                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: '0.8rem', outline: 'none', cursor: 'pointer' }}
-                    >
-                        {timeOptions.map(o => (
-                            <option key={o.value} value={o.value} style={{ background: 'var(--select-bg)', color: 'var(--text-main)' }}>{o.label}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="glass-panel" style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <select
-                        id="sales-employee-filter"
-                        name="sales-employee-filter"
-                        value={employeeFilter}
-                        onChange={(e) => setEmployeeFilter(e.target.value)}
-                        style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: '0.8rem', outline: 'none', cursor: 'pointer' }}
-                    >
-                        <option value="all" style={{ background: 'var(--select-bg)', color: 'var(--text-main)' }}>{t('report.all_employees', '所有員工')}</option>
-                    </select>
-                </div>
-                <button onClick={fetchSummary} style={{ padding: '0.4rem 0.8rem', background: 'var(--primary)', border: 'none', borderRadius: 'var(--radius-md)', color: 'white', fontSize: '0.8rem', cursor: 'pointer' }}>
-                    {t('common.filter', '篩選')}
-                </button>
-            </div>
+            {/* Filter Bar - Shared across all report tabs */}
+            <FilterBar onFilter={(range) => fetchSummary(range)} />
 
             {/* KPI Cards */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>

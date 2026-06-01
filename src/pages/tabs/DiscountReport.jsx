@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Download, Loader2 } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
+import FilterBar from '../../components/FilterBar';
 import { getDiscounts } from '../../api/discounts';
 
 const DiscountReport = () => {
@@ -47,17 +48,7 @@ const DiscountReport = () => {
             animate={{ opacity: 1, y: 0 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1.5rem', height: '100%', overflow: 'auto' }}
         >
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
-                <div className="glass-panel" style={{ padding: '0.5rem 1rem' }}>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>3 May 2026 – 1 Jun 2026</span>
-                </div>
-                <div className="glass-panel" style={{ padding: '0.5rem 1rem' }}>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('report.all_day', '全天')}</span>
-                </div>
-                <div className="glass-panel" style={{ padding: '0.5rem 1rem' }}>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('report.all_employees', '所有員工')}</span>
-                </div>
-            </div>
+            <FilterBar />
 
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>

@@ -3,22 +3,25 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Download, Loader2 } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
+import { useReportFilters } from '../../contexts/ReportFilterContext';
+import FilterBar from '../../components/FilterBar';
 import { getRangeReport } from '../../api/reports';
 
 const ProductSalesReport = () => {
     const { t } = useTranslation();
     const { tenantConfig } = useTenant();
+    const { dateRange } = useReportFilters();
     const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [dateRange]);
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            const result = await getRangeReport('2026-05-03', '2026-06-01');
+            const result = await getRangeReport(dateRange.start, dateRange.end);
             if (result.success && result.data.productsSummary) {
                 const mapped = Object.values(result.data.productsSummary).map(p => ({
                     name: p.name || 'Unknown',
@@ -53,19 +56,7 @@ const ProductSalesReport = () => {
             animate={{ opacity: 1, y: 0 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1.5rem', height: '100%', overflow: 'auto' }}
         >
-            {/* Filter Bar */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
-                <div className="glass-panel" style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('report.date_range', '日期範圍')}:</span>
-                    <span style={{ fontSize: '0.85rem' }}>3 May 2026 – 1 Jun 2026</span>
-                </div>
-                <div className="glass-panel" style={{ padding: '0.5rem 1rem' }}>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('report.all_day', '全天')}</span>
-                </div>
-                <div className="glass-panel" style={{ padding: '0.5rem 1rem' }}>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('report.all_employees', '所有員工')}</span>
-                </div>
-            </div>
+            <FilterBar />
 
             {/* Top 5 Products */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>

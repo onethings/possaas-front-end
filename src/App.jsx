@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
 import { TabProvider } from './contexts/TabContext';
+import { ReportFilterProvider } from './contexts/ReportFilterContext';
 import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import LoginPage from './pages/LoginPage';
@@ -45,14 +46,18 @@ function App() {
         <Route path="/" element={
           <ProtectedRoute>
             <TabProvider>
-              <DashboardLayout />
+              <ReportFilterProvider>
+                <DashboardLayout />
+              </ReportFilterProvider>
             </TabProvider>
           </ProtectedRoute>
         } />
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <TabProvider>
-              <DashboardLayout />
+              <ReportFilterProvider>
+                <DashboardLayout />
+              </ReportFilterProvider>
             </TabProvider>
           </ProtectedRoute>
         } />
@@ -61,7 +66,9 @@ function App() {
         <Route path="*" element={
           <ProtectedRoute>
             <TabProvider>
-              <DashboardLayout />
+              <ReportFilterProvider>
+                <DashboardLayout />
+              </ReportFilterProvider>
             </TabProvider>
           </ProtectedRoute>
         } />
