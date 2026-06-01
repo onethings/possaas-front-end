@@ -436,6 +436,8 @@ const DashboardLayout = ({ children }) => {
                         }}>
                             <Globe size={16} color="var(--text-muted)" />
                             <select
+                                id="header-language"
+                                name="header-language"
                                 value={i18n.language}
                                 onChange={changeLanguage}
                                 style={{

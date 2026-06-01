@@ -118,11 +118,13 @@ const Settings = () => {
                                     <div style={{ fontWeight: 500 }}>{t('settings.loyalty.enable_points')}</div>
                                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('settings.loyalty.enable_desc')}</div>
                                 </div>
-                                <input type="checkbox" checked={config.loyaltyEnabled} onChange={(e) => setConfig({ ...config, loyaltyEnabled: e.target.checked })} />
+                                <input id="settings-loyalty-enabled" name="settings-loyalty-enabled" type="checkbox" checked={config.loyaltyEnabled} onChange={(e) => setConfig({ ...config, loyaltyEnabled: e.target.checked })} />
                             </div>
                             <div className="input-group">
                                 <label style={labelStyle}>{t('settings.loyalty.rate_label')}</label>
                                 <input
+                                    id="settings-loyalty-rate"
+                                    name="settings-loyalty-rate"
                                     type="number"
                                     style={inputStyle}
                                     value={config.loyaltyRate}
@@ -139,6 +141,8 @@ const Settings = () => {
                         <div className="input-group">
                             <label style={labelStyle}>{t('settings.tax.rate_label')}</label>
                             <input
+                                id="settings-tax-rate"
+                                name="settings-tax-rate"
                                 type="number"
                                 step="0.01"
                                 style={inputStyle}
@@ -159,6 +163,8 @@ const Settings = () => {
                             <div className="input-group">
                                 <label style={labelStyle}>{t('settings.regional.currency_label')}</label>
                                 <select 
+                                    id="settings-currency"
+                                    name="settings-currency"
                                     style={inputStyle} 
                                     value={config.currency} 
                                     onChange={(e) => setConfig({ ...config, currency: e.target.value })}
@@ -182,7 +188,7 @@ const Settings = () => {
                             </div>
                             <div className="input-group">
                                 <label style={labelStyle}>{t('settings.regional.timezone_label')}</label>
-                                <select style={inputStyle} value={config.timezone} onChange={(e) => setConfig({ ...config, timezone: e.target.value })}>
+                                <select id="settings-timezone" name="settings-timezone" style={inputStyle} value={config.timezone} onChange={(e) => setConfig({ ...config, timezone: e.target.value })}>
                                     <option value="Asia/Taipei">Asia/Taipei (GMT+8)</option>
                                     <option value="UTC">UTC</option>
                                 </select>

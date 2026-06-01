@@ -310,8 +310,8 @@ const POS = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '8px' }}>
                         <Calendar size={14} style={{ opacity: 0.6 }} />
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{t('pos.checkout_date', '結帳日期')}</span>
-                        <input
-                            type="date"
+                        <input                            id="pos-order-date"
+                            name="pos-order-date"                            type="date"
                             value={orderDate}
                             max={new Date().toISOString().split('T')[0]}
                             onChange={(e) => setOrderDate(e.target.value)}

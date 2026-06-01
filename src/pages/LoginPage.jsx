@@ -115,6 +115,8 @@ const LoginPage = () => {
                     [isRtl ? 'left' : 'right']: '1rem'
                 }}>
                     <select
+                        id="login-language"
+                        name="login-language"
                         onChange={(e) => changeLanguage(e.target.value)}
                         value={i18n.language}
                         style={selectStyle}

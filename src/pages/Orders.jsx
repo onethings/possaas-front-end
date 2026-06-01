@@ -305,9 +305,9 @@ const Orders = () => {
 
                     <div className="date-picker-wrapper">
                         <Calendar size={16} color="#94a3b8" />
-                        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="date-input" />
+                        <input id="orders-start-date" name="orders-start-date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="date-input" />
                         <span style={{ color: '#64748b' }}>-</span>
-                        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="date-input" />
+                        <input id="orders-end-date" name="orders-end-date" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="date-input" />
                     </div>
                 </div>
 
