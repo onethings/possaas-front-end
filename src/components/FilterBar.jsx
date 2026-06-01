@@ -47,7 +47,6 @@ const FilterBar = ({ onFilter }) => {
       <div className="glass-panel" style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <Calendar size={14} color="var(--text-muted)" />
         <input
-          id="filter-start-date"
           name="filter-start-date"
           type="date"
           value={dateRange.start}
@@ -56,7 +55,6 @@ const FilterBar = ({ onFilter }) => {
         />
         <span style={{ color: 'var(--text-muted)' }}>–</span>
         <input
-          id="filter-end-date"
           name="filter-end-date"
           type="date"
           value={dateRange.end}
@@ -68,7 +66,6 @@ const FilterBar = ({ onFilter }) => {
       {/* Time Filter */}
       <div className="glass-panel" style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
         <select
-          id="filter-time"
           name="filter-time"
           value={timeFilter}
           onChange={(e) => setTimeFilter(e.target.value)}
@@ -83,7 +80,6 @@ const FilterBar = ({ onFilter }) => {
       {/* Employee Filter - Connected to Staff List */}
       <div className="glass-panel" style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
         <select
-          id="filter-employee"
           name="filter-employee"
           value={employeeFilter}
           onChange={(e) => setEmployeeFilter(e.target.value)}
