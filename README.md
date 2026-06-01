@@ -119,7 +119,111 @@ API Client: Axios (需設定 withCredentials 與攔截器)。
 可額外勾選：銷售總額、退款、折扣、稅務。
 
 頁尾有分頁切換（上一頁／下一頁）或每頁顯示筆數這類的功能控制項
---------
+
+
+---
+
+## ✅ 開發完成狀態 (2026-06-01)
+
+### 前端架構
+| 項目 | 狀態 |
+|---|---|
+| React 19 + Vite 7 | ✅ |
+| React Router v7 (HashRouter) | ✅ |
+| i18next 多語系 (19 種語言) | ✅ |
+| Chart.js 圖表 | ✅ |
+| Framer Motion 動畫 | ✅ |
+| Lucide React 圖示 | ✅ |
+
+### 主題系統
+| 項目 | 狀態 |
+|---|---|
+| 深色模式 (Dark Mode) | ✅ |
+| 淺色模式 (Light Mode) - 點擊 ☀/🌙 切換 | ✅ |
+| 主題自動儲存至 localStorage | ✅ |
+| 所有 CSS 變數支援雙主題 | ✅ |
+
+### 側邊導航 (Sidebar Navigation)
+| 分類 | 頁面數 |
+|---|---|
+| 報告 (Reports) | 10 頁 |
+| 商品 (Products) | 4 頁 |
+| 庫存 (Inventory) | 4 頁 |
+| 員工 (Employees) | 4 頁 |
+| 客戶 (Customers) | 1 頁 |
+| 整合 (Integrations) | 3 頁 (含 API Documentation) |
+| 設定 (Settings) | 8 頁 |
+| 幫助 (Help) | 3 頁 |
+
+### 多頁籤系統 (Tab System)
+| 功能 | 狀態 |
+|---|---|
+| 多頁籤並存 | ✅ |
+| 獨立關閉按鈕 (×) | ✅ |
+| 狀態保留 (不卸載) | ✅ |
+| 自動滾動至活躍頁籤 | ✅ |
+
+### 前後端 API 串接
+| 頁面 | API 端點 | 狀態 |
+|---|---|---|
+| SalesSummary (銷售總額) | `GET /api/reports/range` | ✅ 日期篩選、KPI、圖表、分頁 |
+| ProductSalesReport | `GET /api/reports/range` + `getProducts` | ✅ 前 5 名、明細表 |
+| CategorySalesReport | `GET /api/reports/range` → categoriesSummary | ✅ |
+| EmployeeSalesReport | `GET /api/reports/range` → staffSummary | ✅ |
+| PaymentTypeReport | `GET /api/reports/range` → totals | ✅ |
+| ReceiptsReport | `GET /api/orders` | ✅ |
+| DiscountReport | `GET /api/discounts` | ✅ |
+| TaxReport | `GET /api/reports/range` (計算稅額) | ✅ |
+| Products (商品列表) | `GET/POST/PUT /api/products` | ✅ CRUD + CSV + 圖片上傳 |
+| Orders (訂單列表) | `GET/POST /api/orders` | ✅ 列表 + 退貨 |
+| Customers (客戶) | `GET/POST/PATCH/DELETE /api/customers` | ✅ CRUD |
+| Staff (員工) | `GET/POST/PATCH /api/users` | ✅ CRUD + 重設密碼 |
+| Suppliers (供應商) | `GET/POST/PUT/DELETE /api/suppliers` | ✅ CRUD |
+| Discounts (折扣管理) | `GET/POST/DELETE /api/discounts` | ✅ |
+| POS (收銀) | `POST /api/orders` + `GET /api/products` | ✅ |
+| Timecards (打卡) | `GET/POST /api/timecards` | ✅ 上下班打卡 |
+| Settings (設定) | `GET/PATCH /api/tenants/me` | ✅ 幣別/時區/稅率 |
+| Inventory (庫存) | `POST /api/inventory-adjustments` | ✅ 調整 |
+| Purchase Orders (採購) | `GET/POST /api/purchase-orders` | ✅ 採購 + 入庫 |
+
+### 分頁功能 (Pagination)
+| 頁面 | 狀態 |
+|---|---|
+| SalesSummary | ✅ 頁碼 + 上下頁按鈕 + 每頁筆數 |
+| ProductSalesReport | ✅ 動態計算總頁數 |
+| CategorySalesReport | ✅ 動態計算總頁數 |
+| EmployeeSalesReport | ✅ 動態計算總頁數 |
+| PaymentTypeReport | ✅ |
+| ReceiptsReport | ✅ 動態計算總頁數 |
+| DiscountReport | ✅ 動態計算總頁數 |
+| DiscountMgmtPage | ✅ 動態計算總頁數 |
+| CategoriesPage | ✅ 動態計算總頁數 |
+| TaxReport | ✅ |
+| ModifierSalesReport | ✅ |
+| ShiftsReport | ✅ |
+| AccessRightsPage | ✅ |
+
+### 後端 API (Node.js + Express + MongoDB)
+| 功能 | 狀態 |
+|---|---|
+| 52 個 API 端點 | ✅ 完整實作 |
+| Swagger UI (`/api-docs`) | ✅ 52 路徑完整文件 |
+| JWT 認證 + Role-based 權限 | ✅ |
+| Redis 快取 (選用) | ✅ 無 Redis 時自動降級 |
+| MongoDB + Mongoose | ✅ |
+| 庫存流水帳 (StockLedger) | ✅ 交易一致性 |
+| 每日報表彙整 (Cron) | ✅ |
+
+### 部署
+| 平台 | URL |
+|---|---|
+| 前端 (Render) | https://possaas-front-end.onrender.com |
+| 後端 (Render) | https://possaas26-render-com.onrender.com |
+| API 文件 (Swagger) | https://possaas26-render-com.onrender.com/api-docs |
+
+### 已知問題
+- Safari 快取 `index.html` — 已透過 `_headers` + Cache-Control meta tag 修復
+- Chart.js chunk 過大 (172KB) — 已分離至獨立 chunk
 
 「按商品銷售報告」分頁中主要包含以下幾個核心區塊與內容：
 

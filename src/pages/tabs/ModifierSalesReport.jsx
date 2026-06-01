@@ -54,7 +54,7 @@ const ModifierSalesReport = () => {
                     </table>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    <span>{t('common.page_info', '頁面：1 分之 0')}</span>
+                    <span>{t('common.page_info', { current: 1, total: 1 })}</span>
                     <select style={{ background: 'rgba(0,0,0,0.2)', border: 'none', color: 'var(--text-muted)', padding: '0.3rem', borderRadius: '4px', fontSize: '0.8rem' }}>
                         <option>10 {t('common.rows', '行')}</option>
                     </select>
