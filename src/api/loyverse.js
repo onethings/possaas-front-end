@@ -60,6 +60,11 @@ export const fixLoyverseOrderDates = async () => {
     return response.data;
 };
 
+export const reimportLoyverseReceipts = async () => {
+    const response = await api.post('/api/loyverse/reimport-receipts');
+    return response.data;
+};
+
 export const importAllLoyverse = async () => {
     const response = await api.post('/api/loyverse/import/all');
     return response.data;

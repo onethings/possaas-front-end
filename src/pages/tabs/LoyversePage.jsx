@@ -36,7 +36,8 @@ import {
     importLoyverseReceipts,
     importLoyverseInventory,
     importAllLoyverse,
-    fixLoyverseOrderDates
+    fixLoyverseOrderDates,
+    reimportLoyverseReceipts
 } from '../../api/loyverse';
 
 const LoyversePage = () => {
@@ -320,6 +321,40 @@ const LoyversePage = () => {
                                 >
                                     {loyverseImporting === 'fix-dates' ? <Loader size={14} className="spin" /> : <RefreshCw size={14} />}
                                     修復訂單日期
+                                </button>
+                                <button
+                                    onClick={async () => {
+                                        setLoyverseImporting('reimport');
+                                        setLoyverseMessage(null);
+                                        try {
+                                            const res = await reimportLoyverseReceipts();
+                                            if (res.success) {
+                                                setLoyverseMessage({ type: 'success', text: `已刪除 ${res.deleted} 筆舊訂單，重新匯入 ${res.imported} 筆新訂單` });
+                                                await checkLoyverse();
+                                            }
+                                        } catch (err) {
+                                            setLoyverseMessage({ type: 'error', text: '重新匯入失敗：' + (err.response?.data?.error || err.message) });
+                                        } finally {
+                                            setLoyverseImporting(null);
+                                        }
+                                    }}
+                                    disabled={loyverseImporting !== null}
+                                    style={{
+                                        fontSize: '0.8rem',
+                                        padding: '0.4rem 1rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.35rem',
+                                        background: 'rgba(239,68,68,0.15)',
+                                        border: '1px solid rgba(239,68,68,0.3)',
+                                        borderRadius: 'var(--radius-md)',
+                                        color: '#ef4444',
+                                        cursor: loyverseImporting !== null ? 'not-allowed' : 'pointer',
+                                        opacity: loyverseImporting !== null ? 0.5 : 1
+                                    }}
+                                >
+                                    {loyverseImporting === 'reimport' ? <Loader size={14} className="spin" /> : <RefreshCw size={14} />}
+                                    重新匯入訂單
                                 </button>
                                 <button
                                     onClick={() => runImport(importAllLoyverse, '全部資料')}
