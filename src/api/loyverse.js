@@ -83,3 +83,8 @@ export const importAllLoyverse = async () => {
     const response = await api.post('/api/loyverse/import/all');
     return response.data;
 };
+
+export const convertCsvReceipts = async () => {
+    const response = await api.post('/api/loyverse/convert-csv-receipts');
+    return response.data;
+};

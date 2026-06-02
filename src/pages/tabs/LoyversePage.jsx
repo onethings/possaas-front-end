@@ -24,7 +24,8 @@ import {
     Shield,
     Upload,
     CheckSquare,
-    HelpCircle
+    HelpCircle,
+    Loader2
 } from 'lucide-react';
 import {
     getLoyverseToken,
@@ -42,7 +43,8 @@ import {
     fixLoyverseOrderDates,
     reimportLoyverseReceipts,
     getLoyverseTaskStatus,
-    importLoyverseCsv
+    importLoyverseCsv,
+    convertCsvReceipts
 } from '../../api/loyverse';
 
 const LoyversePage = () => {
@@ -749,6 +751,46 @@ const LoyversePage = () => {
                             />
                         </React.Fragment>
                     ))}
+                </div>
+                <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    <button
+                        onClick={async () => {
+                            setLoyverseImporting('convert-receipts');
+                            setLoyverseMessage({ type: 'info', text: '正在轉換現有 CSV 收據資料為訂單...' });
+                            try {
+                                const res = await convertCsvReceipts();
+                                if (res.success) {
+                                    setLoyverseMessage({ type: 'success', text: `CSV 收據轉換完成！${res.converted} 筆已轉換，${res.skipped} 筆略過` });
+                                } else {
+                                    setLoyverseMessage({ type: 'error', text: `轉換失敗：${res.error}` });
+                                }
+                            } catch (err) {
+                                setLoyverseMessage({ type: 'error', text: `轉換失敗：${err.response?.data?.error || err.message}` });
+                            }
+                            setLoyverseImporting(null);
+                        }}
+                        disabled={loyverseImporting === 'convert-receipts'}
+                        style={{
+                            display: 'flex', alignItems: 'center', gap: '0.5rem',
+                            padding: '0.6rem 1rem', borderRadius: 'var(--radius-md)',
+                            background: 'rgba(251,191,36,0.1)',
+                            border: '1px solid rgba(251,191,36,0.25)',
+                            cursor: 'pointer', fontSize: '0.8rem',
+                            transition: 'all 0.2s',
+                            opacity: loyverseImporting === 'convert-receipts' ? 0.6 : 1
+                        }}
+                        onMouseEnter={e => e.currentTarget.style.background = 'rgba(251,191,36,0.2)'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'rgba(251,191,36,0.1)'}
+                    >
+                        {loyverseImporting === 'convert-receipts' ? (
+                            <><Loader2 className="animate-spin" size={16} /> 轉換中...</>
+                        ) : (
+                            <><RefreshCw size={16} /> 修復現有 CSV 收據 → 訂單</>
+                        )}
+                    </button>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                        ⚠️ 如之前已匯入小票收據 CSV 但未顯示在訂單頁，點此修復
+                    </span>
                 </div>
             </div>
 
