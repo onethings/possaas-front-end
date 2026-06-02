@@ -541,6 +541,7 @@
     "access_rights": "Droits d'accès",
     "integration_apps": "Applications intégrées",
     "access_tokens": "Jetons d'accès (Tokens)",
+    "loyverse": "Importation depuis Loyverse",
     "feature_settings": "Fonctionnalités",
     "billing": "Facturation & Abonnement",
     "payment_methods": "Modes de paiement",

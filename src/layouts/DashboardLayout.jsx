@@ -43,6 +43,7 @@ import {
     TimerReset,
     Building2,
     AppWindow,
+    Database,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTabs } from '../contexts/TabContext';
@@ -88,6 +89,7 @@ import AccessRightsPage from '../pages/tabs/AccessRightsPage';
 import IntegrationApps from '../pages/tabs/IntegrationApps';
 import AccessTokens from '../pages/tabs/AccessTokens';
 import ApiDocsPage from '../pages/tabs/ApiDocsPage';
+import LoyversePage from '../pages/tabs/LoyversePage';
 // Settings tab components
 import FeatureSettings from '../pages/tabs/FeatureSettings';
 import BillingPage from '../pages/tabs/BillingPage';
@@ -178,6 +180,7 @@ const sidebarGroups = [
             { id: 'integration-apps',  icon: AppWindow,    title: 'nav.integration_apps',  component: IntegrationApps },
             { id: 'access-tokens',     icon: KeyRound,     title: 'nav.access_tokens',     component: AccessTokens },
             { id: 'api-docs',           icon: BookOpen,     title: 'nav.api_docs',          component: ApiDocsPage },
+            { id: 'loyverse',           icon: Database,     title: 'nav.loyverse',          component: LoyversePage },
         ]
     },
     {

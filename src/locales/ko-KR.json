@@ -541,6 +541,7 @@
     "access_rights": "접근 권한",
     "integration_apps": "연동 앱",
     "access_tokens": "액세스 토큰",
+    "loyverse": "Loyverse 가져오기",
     "feature_settings": "기능 설정",
     "billing": "결제 및 구독",
     "payment_methods": "결제 수단 설정",

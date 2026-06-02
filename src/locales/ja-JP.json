@@ -541,6 +541,7 @@
     "access_rights": "アクセス権限",
     "integration_apps": "連携アプリ",
     "access_tokens": "アクセストークン",
+    "loyverse": "Loyverseからインポート",
     "feature_settings": "機能設定",
     "billing": "請求とサブスクリプション",
     "payment_methods": "決済方法",

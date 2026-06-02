@@ -541,6 +541,7 @@
     "access_rights": "權限管理",
     "integration_apps": "整合應用",
     "access_tokens": "存取權杖 (Tokens)",
+    "loyverse": "Loyverse 匯入",
     "feature_settings": "功能設定",
     "billing": "帳單與訂閱",
     "payment_methods": "支付方式",
