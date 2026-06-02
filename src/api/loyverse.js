@@ -55,6 +55,11 @@ export const importLoyverseInventory = async () => {
     return response.data;
 };
 
+export const fixLoyverseOrderDates = async () => {
+    const response = await api.post('/api/loyverse/fix-dates');
+    return response.data;
+};
+
 export const importAllLoyverse = async () => {
     const response = await api.post('/api/loyverse/import/all');
     return response.data;

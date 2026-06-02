@@ -35,7 +35,8 @@ import {
     importLoyverseSuppliers,
     importLoyverseReceipts,
     importLoyverseInventory,
-    importAllLoyverse
+    importAllLoyverse,
+    fixLoyverseOrderDates
 } from '../../api/loyverse';
 
 const LoyversePage = () => {
@@ -103,9 +104,15 @@ const LoyversePage = () => {
         try {
             const res = await importFn();
             if (res.success) {
-                const msg = res.results
-                    ? Object.entries(res.results).map(([k, v]) => `${k}: ${v.imported}/${v.total}`).join(' | ')
-                    : `已匯入 ${res.imported || 0} 筆`;
+                let msg;
+                if (res.results) {
+                    msg = Object.entries(res.results).map(([k, v]) => {
+                        if (v.error) return `${k}: ❌ ${v.error}`;
+                        return `${k}: ${v.imported ?? 0}/${v.total ?? 0}`;
+                    }).join(' | ');
+                } else {
+                    msg = `已匯入 ${res.imported || 0} 筆`;
+                }
                 setLoyverseMessage({ type: 'success', text: `${label} 匯入完成！${msg}` });
                 await checkLoyverse();
             }
@@ -279,6 +286,41 @@ const LoyversePage = () => {
                                     <Download size={16} style={{ color: 'var(--primary-light)' }} />
                                     各類資料一鍵匯入
                                 </h4>
+                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                <button
+                                    onClick={async () => {
+                                        setLoyverseImporting('fix-dates');
+                                        setLoyverseMessage(null);
+                                        try {
+                                            const res = await fixLoyverseOrderDates();
+                                            if (res.success) {
+                                                setLoyverseMessage({ type: 'success', text: `已修復 ${res.fixed} 筆訂單日期，並重新彙整 ${res.reportDates?.length || 0} 天的報表` });
+                                                await checkLoyverse();
+                                            }
+                                        } catch (err) {
+                                            setLoyverseMessage({ type: 'error', text: '修復失敗：' + (err.response?.data?.error || err.message) });
+                                        } finally {
+                                            setLoyverseImporting(null);
+                                        }
+                                    }}
+                                    disabled={loyverseImporting !== null}
+                                    style={{
+                                        fontSize: '0.8rem',
+                                        padding: '0.4rem 1rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.35rem',
+                                        background: 'rgba(255,255,255,0.05)',
+                                        border: '1px solid var(--glass-border)',
+                                        borderRadius: 'var(--radius-md)',
+                                        color: 'var(--text-muted)',
+                                        cursor: loyverseImporting !== null ? 'not-allowed' : 'pointer',
+                                        opacity: loyverseImporting !== null ? 0.5 : 1
+                                    }}
+                                >
+                                    {loyverseImporting === 'fix-dates' ? <Loader size={14} className="spin" /> : <RefreshCw size={14} />}
+                                    修復訂單日期
+                                </button>
                                 <button
                                     onClick={() => runImport(importAllLoyverse, '全部資料')}
                                     disabled={loyverseImporting !== null}
@@ -299,6 +341,7 @@ const LoyversePage = () => {
                                     )}
                                     一鍵匯入所有資料
                                 </button>
+                            </div>
                             </div>
 
                             <div style={{
