@@ -37,7 +37,8 @@ import {
     importLoyverseInventory,
     importAllLoyverse,
     fixLoyverseOrderDates,
-    reimportLoyverseReceipts
+    reimportLoyverseReceipts,
+    getLoyverseTaskStatus
 } from '../../api/loyverse';
 
 const LoyversePage = () => {
@@ -104,7 +105,67 @@ const LoyversePage = () => {
         setLoyverseMessage(null);
         try {
             const res = await importFn();
-            if (res.success) {
+            if (!res.success) {
+                setLoyverseMessage({ type: 'error', text: `${label} 匯入失敗：` + (res.error || 'Unknown error') });
+                setLoyverseImporting(null);
+                return;
+            }
+
+            // If the response has a taskId, it's an async background task — poll for completion
+            if (res.taskId) {
+                setLoyverseMessage({ type: 'info', text: `${label} 背景匯入中，請稍候...` });
+                let attempts = 0;
+                const maxAttempts = 120; // 2 minutes max
+                const poll = async () => {
+                    try {
+                        const status = await getLoyverseTaskStatus(res.taskId);
+                        if (status.success && status.data) {
+                            if (status.data.status === 'completed') {
+                                const result = status.data.result;
+                                let msg;
+                                if (result) {
+                                    msg = Object.entries(result).map(([k, v]) => {
+                                        if (v.error) return `${k}: ❌ ${v.error}`;
+                                        return `${k}: ${v.imported ?? 0}/${v.total ?? 0}`;
+                                    }).join(' | ');
+                                } else {
+                                    msg = '完成';
+                                }
+                                setLoyverseMessage({ type: 'success', text: `${label} 匯入完成！${msg}` });
+                                setLoyverseImporting(null);
+                                await checkLoyverse();
+                                return;
+                            } else if (status.data.status === 'failed') {
+                                setLoyverseMessage({ type: 'error', text: `${label} 匯入失敗：${status.data.error || 'Unknown error'}` });
+                                setLoyverseImporting(null);
+                                return;
+                            } else {
+                                // Still running — update progress
+                                if (status.data.progress) {
+                                    setLoyverseMessage({ type: 'info', text: `${label} ${status.data.progress}` });
+                                }
+                                attempts++;
+                                if (attempts < maxAttempts) {
+                                    setTimeout(poll, 1000);
+                                } else {
+                                    setLoyverseMessage({ type: 'info', text: `${label} 仍在背景執行中，請稍後重整頁面查看結果` });
+                                    setLoyverseImporting(null);
+                                }
+                            }
+                        }
+                    } catch (pollErr) {
+                        attempts++;
+                        if (attempts < maxAttempts) {
+                            setTimeout(poll, 1000);
+                        } else {
+                            setLoyverseMessage({ type: 'info', text: `${label} 已在背景啟動，請稍後重整頁面` });
+                            setLoyverseImporting(null);
+                        }
+                    }
+                };
+                poll();
+            } else {
+                // Synchronous result
                 let msg;
                 if (res.results) {
                     msg = Object.entries(res.results).map(([k, v]) => {
@@ -115,11 +176,11 @@ const LoyversePage = () => {
                     msg = `已匯入 ${res.imported || 0} 筆`;
                 }
                 setLoyverseMessage({ type: 'success', text: `${label} 匯入完成！${msg}` });
+                setLoyverseImporting(null);
                 await checkLoyverse();
             }
         } catch (err) {
             setLoyverseMessage({ type: 'error', text: `${label} 匯入失敗：` + (err.response?.data?.error || err.message) });
-        } finally {
             setLoyverseImporting(null);
         }
     };
@@ -271,11 +332,11 @@ const LoyversePage = () => {
                                 padding: '0.75rem 1rem',
                                 borderRadius: 'var(--radius-md)',
                                 marginBottom: '1.25rem',
-                                background: loyverseMessage.type === 'success' ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)',
-                                border: `1px solid ${loyverseMessage.type === 'success' ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}`,
-                                color: loyverseMessage.type === 'success' ? '#22c55e' : '#ef4444'
+                                background: loyverseMessage.type === 'success' ? 'rgba(34,197,94,0.1)' : loyverseMessage.type === 'info' ? 'rgba(6,182,212,0.1)' : 'rgba(239,68,68,0.1)',
+                                border: `1px solid ${loyverseMessage.type === 'success' ? 'rgba(34,197,94,0.2)' : loyverseMessage.type === 'info' ? 'rgba(6,182,212,0.2)' : 'rgba(239,68,68,0.2)'}`,
+                                color: loyverseMessage.type === 'success' ? '#22c55e' : loyverseMessage.type === 'info' ? '#06b6d4' : '#ef4444'
                             }}>
-                                {loyverseMessage.type === 'success' ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
+                                {loyverseMessage.type === 'success' ? <CheckCircle2 size={16} /> : loyverseMessage.type === 'info' ? <Loader size={16} style={{ animation: 'spin 1s linear infinite' }} /> : <XCircle size={16} />}
                                 {loyverseMessage.text}
                             </div>
                         )}

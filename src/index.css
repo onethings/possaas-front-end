@@ -18,6 +18,12 @@
   --glass-blur: 12px;
 
   --shadow-lg: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
   --radius-lg: 16px;
   --radius-md: 8px;
 

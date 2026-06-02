@@ -55,6 +55,11 @@ export const importLoyverseInventory = async () => {
     return response.data;
 };
 
+export const getLoyverseTaskStatus = async (taskId) => {
+    const response = await api.get(`/api/loyverse/task/${taskId}`);
+    return response.data;
+};
+
 export const fixLoyverseOrderDates = async () => {
     const response = await api.post('/api/loyverse/fix-dates');
     return response.data;
