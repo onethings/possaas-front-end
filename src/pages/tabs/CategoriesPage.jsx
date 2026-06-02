@@ -40,18 +40,7 @@ const CategoriesPage = () => {
         </div>;
     }
 
-    const defaultCategories = categories.length > 0 ? categories : [
-        { _id: '1', name: 'Accessories', color: '#808080', productCount: 108 },
-        { _id: '2', name: 'Ink', color: '#808080', productCount: 40 },
-        { _id: '3', name: 'Ink Cartridge', color: '#808080', productCount: 22 },
-        { _id: '4', name: 'Original Ink&Cactridge', color: '#808080', productCount: 29 },
-        { _id: '5', name: 'Paper', color: '#808080', productCount: 29 },
-        { _id: '6', name: 'Printer', color: '#ef4444', productCount: 24 },
-        { _id: '7', name: 'Ribbon', color: '#808080', productCount: 5 },
-        { _id: '8', name: 'Services', color: '#3b82f6', productCount: 21 },
-        { _id: '9', name: 'Toner', color: '#808080', productCount: 7 },
-        { _id: '10', name: 'Toner Cratridge', color: '#808080', productCount: 26 },
-    ];
+    const displayCategories = categories.length > 0 ? categories : [];
 
     return (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -63,6 +52,11 @@ const CategoriesPage = () => {
                 </button>
             </div>
 
+            {displayCategories.length === 0 ? (
+                <div className="glass-panel" style={{ padding: '3rem', textAlign: 'center' }}>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{t('categories.no_categories', '尚無任何類別')}</p>
+                </div>
+            ) : (
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
@@ -74,7 +68,7 @@ const CategoriesPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {defaultCategories.map((cat, idx) => (
+                            {displayCategories.map((cat, idx) => (
                                 <tr key={cat._id || idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                                     <td style={{ padding: '0.75rem 0.5rem' }}>
                                         <input type="checkbox" style={{ accentColor: 'var(--primary)' }} />
@@ -90,12 +84,13 @@ const CategoriesPage = () => {
                     </table>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    <span>{t('common.page_info', { current: 1, total: Math.max(1, Math.ceil((categories.length || 1) / 10)) })}</span>
+                    <span>{t('common.page_info', { current: 1, total: Math.max(1, Math.ceil((displayCategories.length || 1) / 10)) })}</span>
                     <select style={{ background: 'rgba(0,0,0,0.2)', border: 'none', color: 'var(--text-muted)', padding: '0.3rem', borderRadius: '4px', fontSize: '0.8rem' }}>
                         <option>10 {t('common.rows', '行')}</option>
                     </select>
                 </div>
             </div>
+            )}
 
             {/* Create Modal */}
             {isModalOpen && (
