@@ -21,7 +21,8 @@ import {
     Receipt,
     ListTree,
     AlertCircle,
-    Shield
+    Shield,
+    Upload
 } from 'lucide-react';
 import {
     getLoyverseToken,
@@ -38,7 +39,8 @@ import {
     importAllLoyverse,
     fixLoyverseOrderDates,
     reimportLoyverseReceipts,
-    getLoyverseTaskStatus
+    getLoyverseTaskStatus,
+    importLoyverseCsv
 } from '../../api/loyverse';
 
 const LoyversePage = () => {
@@ -555,6 +557,78 @@ const LoyversePage = () => {
                         )}
                     </>
                 )}
+            </div>
+
+            {/* CSV Manual Import */}
+            <div className="glass-panel" style={{
+                padding: '1.25rem',
+                border: '1px solid var(--glass-border)'
+            }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', fontWeight: 700 }}>
+                    <Upload size={18} style={{ color: 'var(--primary-light)' }} />
+                    手動匯入報告報表 CSV
+                </div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+                    從 Loyverse 後台匯出 CSV 報告檔，手動上傳至本系統
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.65rem' }}>
+                    {[
+                        { label: '銷售摘要', key: 'sales_summary', ref: React.createRef() },
+                        { label: '按商品銷售', key: 'item_sales', ref: React.createRef() },
+                        { label: '按分類銷售', key: 'category_sales', ref: React.createRef() },
+                        { label: '按員工銷售', key: 'employee_sales', ref: React.createRef() },
+                        { label: '小票收據', key: 'receipts', ref: React.createRef() },
+                        { label: '按加料/自訂項銷售', key: 'modifier_sales', ref: React.createRef() },
+                        { label: '折扣報告', key: 'discount', ref: React.createRef() },
+                        { label: '稅務報告', key: 'tax', ref: React.createRef() },
+                        { label: '交接班', key: 'shift', ref: React.createRef() }
+                    ].map(item => (
+                        <React.Fragment key={item.key}>
+                            <button
+                                onClick={() => document.getElementById(`csv-${item.key}`).click()}
+                                style={{
+                                    display: 'flex', alignItems: 'center', gap: '0.5rem',
+                                    padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)',
+                                    background: 'rgba(255,255,255,0.03)',
+                                    border: '1px solid var(--glass-border)',
+                                    cursor: 'pointer', textAlign: 'left', fontSize: '0.85rem',
+                                    transition: 'all 0.2s'
+                                }}
+                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+                                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.03)'}
+                            >
+                                <Upload size={16} style={{ color: 'var(--text-muted)' }} />
+                                <span>{item.label}</span>
+                                <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--primary-light)' }}>匯入</span>
+                            </button>
+                            <input
+                                id={`csv-${item.key}`}
+                                type="file"
+                                accept=".csv"
+                                style={{ display: 'none' }}
+                                onChange={async (e) => {
+                                    const file = e.target.files?.[0];
+                                    if (!file) return;
+                                    setLoyverseImporting(item.key);
+                                    setLoyverseMessage({ type: 'info', text: `正在匯入 ${item.label}...` });
+                                    try {
+                                        const res = await importLoyverseCsv(file);
+                                        if (res.success) {
+                                            setLoyverseMessage({ type: 'success', text: `${item.label} CSV 匯入完成！${res.imported} 筆` });
+                                            await checkLoyverse();
+                                        } else {
+                                            setLoyverseMessage({ type: 'error', text: `${item.label} 匯入失敗：${res.error}` });
+                                        }
+                                    } catch (err) {
+                                        setLoyverseMessage({ type: 'error', text: `${item.label} 匯入失敗：${err.response?.data?.error || err.message}` });
+                                    }
+                                    setLoyverseImporting(null);
+                                    e.target.value = '';
+                                }}
+                            />
+                        </React.Fragment>
+                    ))}
+                </div>
             </div>
 
             {/* Security Note */}

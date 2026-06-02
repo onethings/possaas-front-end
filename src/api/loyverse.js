@@ -70,6 +70,15 @@ export const reimportLoyverseReceipts = async () => {
     return response.data;
 };
 
+export const importLoyverseCsv = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.post('/api/loyverse/import-csv', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+};
+
 export const importAllLoyverse = async () => {
     const response = await api.post('/api/loyverse/import/all');
     return response.data;
