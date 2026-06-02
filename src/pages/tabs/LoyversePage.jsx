@@ -34,6 +34,7 @@ import {
     importLoyverseModifiers,
     importLoyverseSuppliers,
     importLoyverseReceipts,
+    importLoyverseInventory,
     importAllLoyverse
 } from '../../api/loyverse';
 
@@ -118,6 +119,7 @@ const LoyversePage = () => {
     const importButtons = [
         { label: '分類 Categories', icon: ListTree, action: () => runImport(importLoyverseCategories, '分類'), color: 'var(--blue-500)' },
         { label: '商品 Items', icon: Package, action: () => runImport(importLoyverseItems, '商品'), color: 'var(--green-500)' },
+        { label: '庫存 Inventory', icon: Package, action: () => runImport(importLoyverseInventory, '庫存'), color: 'var(--teal-500)' },
         { label: '客戶 Customers', icon: Users, action: () => runImport(importLoyverseCustomers, '客戶'), color: 'var(--yellow-500)' },
         { label: '折扣 Discounts', icon: Percent, action: () => runImport(importLoyverseDiscounts, '折扣'), color: 'var(--purple-500)' },
         { label: '自訂選項 Modifiers', icon: Sliders, action: () => runImport(importLoyverseModifiers, '自訂選項'), color: 'var(--pink-500)' },

@@ -50,6 +50,11 @@ export const importLoyverseReceipts = async () => {
     return response.data;
 };
 
+export const importLoyverseInventory = async () => {
+    const response = await api.post('/api/loyverse/import/inventory');
+    return response.data;
+};
+
 export const importAllLoyverse = async () => {
     const response = await api.post('/api/loyverse/import/all');
     return response.data;
