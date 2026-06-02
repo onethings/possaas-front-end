@@ -5,7 +5,7 @@ import { Download, Loader2, Search, FileText, FileSpreadsheet } from 'lucide-rea
 import { useTenant } from '../../contexts/TenantContext';
 import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
-import { getOrders } from '../../api/orders';
+import { getReceipts } from '../../api/receipts';
 import { exportCSV, exportPDF } from '../../utils/exportUtils';
 
 const ReceiptsReport = () => {
@@ -32,15 +32,16 @@ const ReceiptsReport = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const result = await getOrders({ startDate: dateRange.start, endDate: dateRange.end });
+            const result = await getReceipts({ startDate: dateRange.start, endDate: dateRange.end, limit: 500 });
             if (result.success) {
-                const mapped = (result.data || []).map(order => ({
-                    no: order.orderNo || '—',
-                    date: order.createdAt ? new Date(order.createdAt).toLocaleString() : '—',
-                    employee: order.staffName || '—',
-                    customer: order.customerName || '—',
-                    type: order.status === 'returned' ? t('report.refund', '退款') : t('report.sales', '銷售'),
-                    total: order.finalAmount || 0,
+                const mapped = (result.data || []).map(r => ({
+                    _id: r._id,
+                    no: r.receiptNumber || '—',
+                    date: r.date ? new Date(r.date).toLocaleString() : '—',
+                    employee: r.employee || '—',
+                    customer: r.customer || '—',
+                    type: r.status === 'refund' || r.status === 'returned' ? t('report.refund', '退款') : t('report.sales', '銷售'),
+                    total: r.totalAmount || 0,
                 }));
                 setReceipts(mapped);
             }

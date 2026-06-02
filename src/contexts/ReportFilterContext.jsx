@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 const ReportFilterContext = createContext();
 
 const DEFAULT_FILTERS = {
-  dateRange: { start: '2026-05-03', end: '2026-06-01' },
+  dateRange: { start: '2026-05-03', end: '2026-06-02' },
   timeFilter: 'all',
   employeeFilter: 'all',
 };
