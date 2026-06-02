@@ -301,7 +301,7 @@ const DashboardLayout = ({ children }) => {
                                         borderRadius: 'var(--radius-md)',
                                         cursor: 'pointer',
                                         color: 'var(--text-muted)',
-                                        fontSize: '0.7rem',
+                                        fontSize: '1.0rem',
                                         fontWeight: 700,
                                         textTransform: 'uppercase',
                                         letterSpacing: '0.05em',
