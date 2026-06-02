@@ -22,7 +22,9 @@ import {
     ListTree,
     AlertCircle,
     Shield,
-    Upload
+    Upload,
+    CheckSquare,
+    HelpCircle
 } from 'lucide-react';
 import {
     getLoyverseToken,
@@ -52,6 +54,7 @@ const LoyversePage = () => {
     const [loyverseImportLogs, setLoyverseImportLogs] = useState([]);
     const [loyverseLogsExpanded, setLoyverseLogsExpanded] = useState(false);
     const [loyverseMessage, setLoyverseMessage] = useState(null);
+    const [showGuide, setShowGuide] = useState(true);
 
     useEffect(() => {
         checkLoyverse();
@@ -211,6 +214,124 @@ const LoyversePage = () => {
                 overflow: 'auto'
             }}
         >
+            {/* Interactive Guide */}
+            <div className="glass-panel" style={{
+                padding: '1.25rem',
+                border: '1px solid rgba(99,102,241,0.2)',
+                background: 'linear-gradient(135deg, rgba(99,102,241,0.06), rgba(6,182,212,0.04))'
+            }}>
+                <div
+                    onClick={() => setShowGuide(!showGuide)}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700 }}>
+                        <HelpCircle size={18} style={{ color: 'var(--primary-light)' }} />
+                        導入引導教學
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 400 }}>點擊展開/收合</span>
+                    </div>
+                    {showGuide ? <ChevronUp size={18} style={{ color: 'var(--text-muted)' }} /> : <ChevronDown size={18} style={{ color: 'var(--text-muted)' }} />}
+                </div>
+
+                {showGuide && (
+                    <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        {[
+                            {
+                                step: 1,
+                                title: '取得 Loyverse 存取憑證',
+                                desc: '登入 Loyverse 後台 → 設定 → 整合 → Personal Access Token → 複製 Token',
+                                done: false,
+                                action: '前往 Loyverse 後台'
+                            },
+                            {
+                                step: 2,
+                                title: '連線到 Loyverse',
+                                desc: '將 Token 貼到下方的輸入框中，點擊「連線」按鈕',
+                                done: loyverseConnected,
+                                action: null
+                            },
+                            {
+                                step: 3,
+                                title: '一鍵匯入商品與客戶資料',
+                                desc: '點擊「一鍵匯入所有資料」，自動匯入分類、商品、庫存、客戶、折扣等',
+                                done: loyverseImportLogs.some(log => log.type === 'items' && log.status === 'success'),
+                                action: '開始匯入'
+                            },
+                            {
+                                step: 4,
+                                title: '匯入訂單/收據',
+                                desc: '將 Loyverse 的銷售訂單匯入本系統（需訂閱 Unlimited Sales History）',
+                                done: loyverseImportLogs.some(log => log.type === 'receipts' && log.status === 'success' && log.importedCount > 0),
+                                action: '匯入訂單'
+                            },
+                            {
+                                step: 5,
+                                title: '上傳銷售報告 CSV',
+                                desc: '從 Loyverse 後台匯出銷售摘要 CSV，使用下方「手動匯入報告報表 CSV」上傳',
+                                done: loyverseImportLogs.length > 0,
+                                action: '上傳 CSV'
+                            },
+                            {
+                                step: 6,
+                                title: '檢視報告報表',
+                                desc: '前往「報告報表」頁面查看銷售摘要、商品銷售、分類銷售等分析數據',
+                                done: false,
+                                action: '前往報表'
+                            }
+                        ].map(item => {
+                            const isDone = item.done;
+                            return (
+                                <div key={item.step} style={{
+                                    display: 'flex', alignItems: 'flex-start', gap: '0.75rem',
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: 'var(--radius-md)',
+                                    background: isDone ? 'rgba(34,197,94,0.06)' : 'rgba(255,255,255,0.02)',
+                                    border: `1px solid ${isDone ? 'rgba(34,197,94,0.15)' : 'var(--glass-border)'}`,
+                                    opacity: isDone ? 0.7 : 1
+                                }}>
+                                    <div style={{
+                                        width: 28, height: 28, borderRadius: '50%',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        background: isDone ? 'rgba(34,197,94,0.15)' : 'rgba(99,102,241,0.15)',
+                                        color: isDone ? '#22c55e' : 'var(--primary-light)',
+                                        fontSize: '0.8rem', fontWeight: 700, flexShrink: 0
+                                    }}>
+                                        {isDone ? <CheckCircle2 size={16} /> : item.step}
+                                    </div>
+                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                        <div style={{
+                                            fontSize: '0.9rem', fontWeight: 600,
+                                            color: isDone ? 'var(--text-muted)' : 'var(--text-main)',
+                                            textDecoration: isDone ? 'line-through' : 'none'
+                                        }}>
+                                            {item.title}
+                                        </div>
+                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
+                                            {item.desc}
+                                        </div>
+                                    </div>
+                                    {item.action && !isDone && (
+                                        <span style={{
+                                            fontSize: '0.75rem', color: 'var(--primary-light)',
+                                            whiteSpace: 'nowrap', flexShrink: 0, marginTop: '0.1rem'
+                                        }}>
+                                            {item.action} →
+                                        </span>
+                                    )}
+                                    {isDone && (
+                                        <span style={{
+                                            fontSize: '0.75rem', color: '#22c55e',
+                                            whiteSpace: 'nowrap', flexShrink: 0, marginTop: '0.1rem'
+                                        }}>
+                                            已完成 ✓
+                                        </span>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+            </div>
+
             {/* Header */}
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
