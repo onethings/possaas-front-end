@@ -286,7 +286,7 @@ const Products = () => {
             {/* Header 區塊自適應 */}
             <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
                 <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{t('products.title')}</h2>
-                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', width: '100%', smWidth: 'auto', justifyContent: 'flex-start' }} className="responsive-action-bar">
+                <div data-tour-id="products-import-export" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', width: '100%', smWidth: 'auto', justifyContent: 'flex-start' }} className="responsive-action-bar">
                     <button onClick={() => setImportModalOpen(true)} className="btn-secondary" style={headerBtnStyle}>
                         <Upload size={18} /> <span className="btn-text">{t('products.import_csv')}</span>
                     </button>
@@ -298,7 +298,7 @@ const Products = () => {
                             <Trash2 size={18} /> <span>{t('common.delete')} ({selectedProducts.length})</span>
                         </button>
                     )}
-                    <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ ...headerBtnStyle, marginLeft: 'auto' }}>
+                    <button data-tour-id="products-add" onClick={() => setModalOpen(true)} className="btn-primary" style={{ ...headerBtnStyle, marginLeft: 'auto' }}>
                         <Plus size={18} /> <span>{t('products.add_product')}</span>
                     </button>
                 </div>
@@ -313,6 +313,7 @@ const Products = () => {
                         name="product-search"
                         type="text"
                         autoComplete="off"
+                        data-tour-id="products-search"
                         placeholder={t('products.search_placeholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -341,7 +342,7 @@ const Products = () => {
                             <button onClick={() => setModalOpen(true)} className="btn-secondary">{t('products.add_now')}</button>
                         </div>
                     ) : (
-                        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '700px' }}>
+                        <table data-tour-id="products-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '700px' }}>
                             <thead>
                                 <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
                                     <th style={{ ...thStyle, width: '50px' }}>

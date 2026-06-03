@@ -50,6 +50,28 @@
     "page_info": "第 {{current}} 页，共 {{total}} 页",
     "rows": "行"
   },
+  "datefilter": {
+    "weekday_sun": "日",
+    "weekday_mon": "一",
+    "weekday_tue": "二",
+    "weekday_wed": "三",
+    "weekday_thu": "四",
+    "weekday_fri": "五",
+    "weekday_sat": "六",
+    "today": "今天",
+    "yesterday": "昨天",
+    "this_week": "本周",
+    "last_week": "上周",
+    "this_month": "本月",
+    "last_month": "上个月",
+    "past_7_days": "过去7天",
+    "past_30_days": "过去30天",
+    "quick_select": "快速选择",
+    "select_start_date": "请选择开始日期",
+    "select_end_date": "请选择结束日期",
+    "apply": "应用",
+    "select_date_range": "选择日期范围"
+  },
   "pos": {
     "search_placeholder": "搜寻商品或扫描条码...",
     "category_all": "全部",

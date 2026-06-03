@@ -318,7 +318,7 @@ const RevenueReport = () => {
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingBottom: '2rem', width: '100%' }}
         >
             {/* Control Bar (加上了 responsive class 處理手機端換行) */}
-            <div className="glass-panel responsive-ctrl-bar" style={{ padding: '1.2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.2rem' }}>
+            <div data-tour-id="rev-filter" className="glass-panel responsive-ctrl-bar" style={{ padding: '1.2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.2rem' }}>
                 <div className="responsive-date-picker" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', width: 'auto' }}>
                     <div className="responsive-date-container" style={dateInputContainer}>
                         <Calendar size={16} color="var(--text-muted)" />
@@ -354,7 +354,7 @@ const RevenueReport = () => {
             </div>
 
             {/* Metrics Dashboard (優化最小寬度為 140px，讓手機端能完美呈現 2x2 網格) */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
+            <div data-tour-id="rev-summary" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
                 <MetricCard icon={DollarSign} label={t('reports.metrics.total_revenue')} value={summary?.salesIncome} color="#60a5fa" currency={tenantConfig.currency} trend={2.5} />
                 <MetricCard icon={TrendingUp} label={t('reports.metrics.gross_profit')} value={summary?.estimatedProfit} color="#4ade80" currency={tenantConfig.currency} trend={5.4} />
                 <MetricCard icon={Tag} label={t('reports.metrics.discounts')} value={summary?.totalDiscount} color="#fbbf24" currency={tenantConfig.currency} trend={-1.2} />
@@ -404,6 +404,7 @@ const RevenueReport = () => {
                         <TabButton active={activeTab === 'categories'} onClick={() => setActiveTab('categories')} label={t('reports.tabs.category_analysis')} />
                     </div>
                     <button
+                        data-tour-id="rev-export"
                         className="btn-primary"
                         onClick={activeTab === 'products' ? exportProductsCSV : activeTab === 'categories' ? exportCategoriesCSV : exportOverviewCSV}
                         style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.5rem 1rem', fontSize: '0.85rem' }}

@@ -355,6 +355,7 @@ const POS = () => {
                         <History size={18} /> {t('pos.hold_order', 'Hold Order')}
                     </button>
                     <button
+                        data-tour-id="pos-checkout"
                         disabled={submitting || cart.length === 0}
                         onClick={() => handleCheckout('paid')}
                         className="btn-primary"
@@ -380,7 +381,7 @@ const POS = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', overflow: 'hidden' }}>
 
                 {/* 搜尋與控制列 */}
-                <div className="glass-panel" style={{ padding: '0.6rem 1rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                <div data-tour-id="pos-search" className="glass-panel" style={{ padding: '0.6rem 1rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                     <div style={{ position: 'relative', flex: 1 }}>
                         <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                         <input
@@ -416,7 +417,7 @@ const POS = () => {
                 </div>
 
                 {/* Category Bar */}
-                <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', padding: '4px 0', minHeight: '38px', width: '100%' }} className="no-scrollbar">
+                <div data-tour-id="pos-categories" style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', padding: '4px 0', minHeight: '38px', width: '100%' }} className="no-scrollbar">
                     <button
                         onClick={() => setActiveCategory('all')}
                         style={{
@@ -446,7 +447,7 @@ const POS = () => {
                 </div>
 
                 {/* Products Container */}
-                <div style={{
+                <div data-tour-id="pos-product-grid" style={{
                     flex: 1,
                     overflowY: 'auto',
                     display: 'grid',
@@ -532,7 +533,7 @@ const POS = () => {
             {/* Desktop Cart Section */}
             {/* 🖥️ 桌機端正常顯示右側購物車 */}
             {!isMobile && (
-                <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                <div data-tour-id="pos-cart" className="glass-panel" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                     {renderCartContent()}
                 </div>
             )}

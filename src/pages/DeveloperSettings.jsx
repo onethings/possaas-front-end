@@ -212,7 +212,7 @@ const DeveloperSettings = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left: Keys List */}
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="glass-panel p-6">
+                    <div data-tour-id="dev-api" className="glass-panel p-6">
                         <div className="flex items-center gap-2 mb-6 text-xl font-semibold">
                             <Key className="text-primary-light" />
                             有效中的 API Keys
@@ -356,7 +356,7 @@ const DeveloperSettings = () => {
                                 )}
 
                                 {/* Import Buttons */}
-                                <div className="mb-4">
+                                <div data-tour-id="dev-imports" className="mb-4">
                                     <div className="flex items-center justify-between mb-3">
                                         <h4 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
                                             <Download size={16} className="text-cyan-400" />

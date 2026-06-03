@@ -79,13 +79,13 @@ const Discounts = () => {
             {/* 頁頭：手機端自動改為垂直排列或緊湊佈局 */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexDirection: isMobile ? 'row' : 'row' }}>
                 <h2 style={{ fontSize: isMobile ? '1.25rem' : '1.5rem', margin: 0 }}>{t('discounts.title')}</h2>
-                <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: isMobile ? '0.5rem 1rem' : '0.75rem 1.2rem' }}>
+                <button data-tour-id="disc-add" onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: isMobile ? '0.5rem 1rem' : '0.75rem 1.2rem' }}>
                     <Plus size={18} /> {!isMobile && t('discounts.add_btn')}
                 </button>
             </div>
 
             {/* 網格列表：調整 minmax 確保在小螢幕（如 320px）下不會爆版 */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: isMobile ? '1rem' : '1.5rem' }}>
+            <div data-tour-id="disc-table" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: isMobile ? '1rem' : '1.5rem' }}>
                 {loading ? (
                     <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '3rem' }}><Loader2 className="animate-spin" /></div>
                 ) : discounts.length === 0 ? (

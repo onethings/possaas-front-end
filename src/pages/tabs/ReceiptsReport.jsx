@@ -163,7 +163,7 @@ const ReceiptsReport = () => {
 
                     {/* Table */}
                     <div style={{ overflowY: 'auto', flex: 1, minHeight: 0 }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
+                        <table data-tour-id="receipts-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
                             <thead>
                                 <tr style={{ borderBottom: '1px solid var(--glass-border)', position: 'sticky', top: 0, background: 'var(--glass-bg)', zIndex: 1 }}>
                                     <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.receipt_no', 'Receipt No')}</th>
@@ -224,6 +224,7 @@ const ReceiptsReport = () => {
                 </div>
 
                 {/* Right: Receipt Detail Panel (Desktop) — or Modal (Mobile) */}
+                <div data-tour-id="receipts-detail">
                 {!isMobile && (
                     <div className="glass-panel no-print" style={{
                         padding: '1rem',
@@ -248,6 +249,7 @@ const ReceiptsReport = () => {
                         )}
                     </div>
                 )}
+                </div>
             </div>
 
             {/* Mobile Modal for Detail */}

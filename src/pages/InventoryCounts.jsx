@@ -98,6 +98,7 @@ const InventoryCounts = () => {
             <div style={headerStyle}>
                 <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{t('inventory.title')}</h2>
                 <button 
+                    data-tour-id="inv-add"
                     onClick={() => setModalOpen(true)} 
                     className="btn-primary" 
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.75rem 1rem' }}
@@ -113,6 +114,7 @@ const InventoryCounts = () => {
                         id="product-search"
                         name="product-search"
                         type="text"
+                        data-tour-id="inv-search"
                         placeholder={t('inventory.search_placeholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -142,7 +144,7 @@ const InventoryCounts = () => {
                     </div>
                 ) : (
                     // 電腦端：傳統表格
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <table data-tour-id="inv-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
                                 <th style={thStyle}>{t('inventory.table.product_name')}</th>

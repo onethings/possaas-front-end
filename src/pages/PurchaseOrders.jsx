@@ -158,13 +158,13 @@ const PurchaseOrders = () => {
 
             <div className="po-header">
                 <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{t('purchase_orders.title')}</h2>
-                <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <button data-tour-id="po-add" onClick={() => setModalOpen(true)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Plus size={18} /> {t('purchase_orders.add')}
                 </button>
             </div>
 
             {/* 外層包覆 RWD Container，防止手機端破版 */}
-            <div className="glass-panel po-table-container" style={{ overflow: 'hidden' }}>
+            <div data-tour-id="po-table" className="glass-panel po-table-container" style={{ overflow: 'hidden' }}>
                 <table className="po-table">
                     <thead>
                         <tr style={{ background: 'rgba(255,255,255,0.02)' }}>

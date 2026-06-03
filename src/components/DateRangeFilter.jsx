@@ -1,53 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Calendar, ChevronLeft, ChevronRight, Check } from 'lucide-react';
-
-const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
-
-const quickPresets = [
-  { key: 'today', label: '今天', getValue: () => {
-    const now = new Date();
-    return { start: formatDate(now), end: formatDate(now) };
-  }},
-  { key: 'yesterday', label: '昨天', getValue: () => {
-    const d = new Date(); d.setDate(d.getDate() - 1);
-    return { start: formatDate(d), end: formatDate(d) };
-  }},
-  { key: 'this_week', label: '本週', getValue: () => {
-    const now = new Date();
-    const start = new Date(now); start.setDate(now.getDate() - now.getDay());
-    const end = new Date(now);
-    return { start: formatDate(start), end: formatDate(end) };
-  }},
-  { key: 'last_week', label: '上週', getValue: () => {
-    const now = new Date();
-    const end = new Date(now); end.setDate(now.getDate() - now.getDay() - 1);
-    const start = new Date(end); start.setDate(end.getDate() - 6);
-    return { start: formatDate(start), end: formatDate(end) };
-  }},
-  { key: 'this_month', label: '本月', getValue: () => {
-    const now = new Date();
-    const start = new Date(now.getFullYear(), now.getMonth(), 1);
-    const end = new Date(now);
-    return { start: formatDate(start), end: formatDate(end) };
-  }},
-  { key: 'last_month', label: '上個月', getValue: () => {
-    const now = new Date();
-    const start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    const end = new Date(now.getFullYear(), now.getMonth(), 0);
-    return { start: formatDate(start), end: formatDate(end) };
-  }},
-  { key: 'past_7', label: '過去7天', getValue: () => {
-    const now = new Date();
-    const start = new Date(now); start.setDate(now.getDate() - 6);
-    return { start: formatDate(start), end: formatDate(now) };
-  }},
-  { key: 'past_30', label: '過去30天', getValue: () => {
-    const now = new Date();
-    const start = new Date(now); start.setDate(now.getDate() - 29);
-    return { start: formatDate(start), end: formatDate(now) };
-  }},
-];
 
 function formatDate(d) {
   const y = d.getFullYear();
@@ -92,6 +45,63 @@ const DateRangeFilter = ({ dateRange, onDateRangeChange }) => {
   const [viewMonth, setViewMonth] = useState(() => parseDate(dateRange.start || dateRange.end || formatDate(new Date())).getMonth());
 
   const ref = useRef(null);
+
+  // i18n-aware weekday constants
+  const WEEKDAYS = useMemo(() => [
+    t('datefilter.weekday_sun', 'Sun'),
+    t('datefilter.weekday_mon', 'Mon'),
+    t('datefilter.weekday_tue', 'Tue'),
+    t('datefilter.weekday_wed', 'Wed'),
+    t('datefilter.weekday_thu', 'Thu'),
+    t('datefilter.weekday_fri', 'Fri'),
+    t('datefilter.weekday_sat', 'Sat'),
+  ], [t]);
+
+  // i18n-aware quick presets
+  const quickPresets = useMemo(() => [
+    { key: 'today', label: t('datefilter.today', 'Today'), getValue: () => {
+      const now = new Date();
+      return { start: formatDate(now), end: formatDate(now) };
+    }},
+    { key: 'yesterday', label: t('datefilter.yesterday', 'Yesterday'), getValue: () => {
+      const d = new Date(); d.setDate(d.getDate() - 1);
+      return { start: formatDate(d), end: formatDate(d) };
+    }},
+    { key: 'this_week', label: t('datefilter.this_week', 'This Week'), getValue: () => {
+      const now = new Date();
+      const start = new Date(now); start.setDate(now.getDate() - now.getDay());
+      const end = new Date(now);
+      return { start: formatDate(start), end: formatDate(end) };
+    }},
+    { key: 'last_week', label: t('datefilter.last_week', 'Last Week'), getValue: () => {
+      const now = new Date();
+      const end = new Date(now); end.setDate(now.getDate() - now.getDay() - 1);
+      const start = new Date(end); start.setDate(end.getDate() - 6);
+      return { start: formatDate(start), end: formatDate(end) };
+    }},
+    { key: 'this_month', label: t('datefilter.this_month', 'This Month'), getValue: () => {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), 1);
+      const end = new Date(now);
+      return { start: formatDate(start), end: formatDate(end) };
+    }},
+    { key: 'last_month', label: t('datefilter.last_month', 'Last Month'), getValue: () => {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      const end = new Date(now.getFullYear(), now.getMonth(), 0);
+      return { start: formatDate(start), end: formatDate(end) };
+    }},
+    { key: 'past_7', label: t('datefilter.past_7_days', 'Past 7 Days'), getValue: () => {
+      const now = new Date();
+      const start = new Date(now); start.setDate(now.getDate() - 6);
+      return { start: formatDate(start), end: formatDate(now) };
+    }},
+    { key: 'past_30', label: t('datefilter.past_30_days', 'Past 30 Days'), getValue: () => {
+      const now = new Date();
+      const start = new Date(now); start.setDate(now.getDate() - 29);
+      return { start: formatDate(start), end: formatDate(now) };
+    }},
+  ], [t]);
 
   // Close on outside click
   useEffect(() => {
@@ -160,7 +170,7 @@ const DateRangeFilter = ({ dateRange, onDateRangeChange }) => {
 
   const displayLabel = dateRange.start && dateRange.end
     ? `${dateRange.start} ~ ${dateRange.end}`
-    : t('common.select_date_range', '選擇日期範圍');
+    : t('datefilter.select_date_range', 'Select Date Range');
 
   return (
     <div ref={ref} style={{ position: 'relative' }}>
@@ -209,7 +219,7 @@ const DateRangeFilter = ({ dateRange, onDateRangeChange }) => {
                 <ChevronLeft size={16} />
               </button>
               <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>
-                {viewYear} 年 {viewMonth + 1} 月
+                {new Date(viewYear, viewMonth).toLocaleDateString(undefined, { year: 'numeric', month: 'long' })}
               </span>
               <button onClick={nextMonth} style={navBtnStyle}>
                 <ChevronRight size={16} />
@@ -274,7 +284,7 @@ const DateRangeFilter = ({ dateRange, onDateRangeChange }) => {
 
             {/* Selection Hint */}
             <div style={{ marginTop: '0.75rem', fontSize: '0.7rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-              {selecting === 'start' ? '請選擇開始日期' : '請選擇結束日期'}
+              {selecting === 'start' ? t('datefilter.select_start_date', 'Select start date') : t('datefilter.select_end_date', 'Select end date')}
             </div>
 
             {/* Apply Button */}
@@ -296,7 +306,7 @@ const DateRangeFilter = ({ dateRange, onDateRangeChange }) => {
                 }}
               >
                 <Check size={14} />
-                套用
+                {t('datefilter.apply', 'Apply')}
               </button>
             </div>
           </div>
@@ -311,7 +321,7 @@ const DateRangeFilter = ({ dateRange, onDateRangeChange }) => {
             gap: '0.25rem',
           }}>
             <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', padding: '0.25rem 0.5rem', marginBottom: '0.25rem' }}>
-              快速選擇
+              {t('datefilter.quick_select', 'Quick Select')}
             </div>
             {quickPresets.map((preset) => (
               <button

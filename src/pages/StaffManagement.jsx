@@ -140,7 +140,7 @@ const StaffManagement = () => {
             {/* 標題與按鈕：在手機端改為上下排列 */}
             <div style={headerWrapperStyle}>
                 <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{t('staff.title')}</h2>
-                <button onClick={() => handleOpenModal()} className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: 'auto', padding: '0.6rem 1.2rem' }}>
+                <button data-tour-id="staff-add" onClick={() => handleOpenModal()} className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: 'auto', padding: '0.6rem 1.2rem' }}>
                     <Plus size={18} /> {t('staff.add_staff')}
                 </button>
             </div>
@@ -153,6 +153,7 @@ const StaffManagement = () => {
                         id="staff-search"
                         name="staff-search"
                         type="text"
+                        data-tour-id="staff-search"
                         placeholder={t('staff.search_placeholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -171,7 +172,7 @@ const StaffManagement = () => {
                     <>
                         {/* 電腦端：顯示傳統表格 (利用 CSS Class 控制顯示隱藏) */}
                         <div className="hidden-mobile" style={{ overflowX: 'auto', width: '100%' }}>
-                            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <table data-tour-id="staff-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                                 <thead>
                                     <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
                                         <th style={thStyle}>{t('staff.table.name')}</th>

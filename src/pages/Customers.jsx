@@ -113,7 +113,7 @@ const Customers = () => {
                             <Trash2 size={18} /> <span className="hide-on-mobile">{t('delete')}</span> ({selectedIds.length})
                         </button>
                     )}
-                    <button onClick={() => { setEditId(null); setNewCustomer({ name: '', phone: '', email: '', address: '' }); setModalOpen(true); }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flex: '1' }}>
+                    <button data-tour-id="customers-add" onClick={() => { setEditId(null); setNewCustomer({ name: '', phone: '', email: '', address: '' }); setModalOpen(true); }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flex: '1' }}>
                         <Plus size={18} /> {t('add_customer')}
                     </button>
                 </div>
@@ -126,6 +126,7 @@ const Customers = () => {
                         id="customer-search"
                         name="customer-search"
                         type="text"
+                        data-tour-id="customers-search"
                         placeholder={t('search_placeholder_name_phone')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -141,7 +142,7 @@ const Customers = () => {
                 ) : customers.length === 0 ? (
                     <div style={centerStyle}>{t('no_data')}</div>
                 ) : (
-                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '320px' }}>
+                    <table data-tour-id="customers-table" style={{ width: '100%', borderCollapse: 'collapse', minWidth: '320px' }}>
                         <thead>
                             <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
                                 <th style={{ padding: '1rem 0.5rem', width: '40px', textAlign: 'center' }}>

@@ -76,7 +76,9 @@ const StaffReports = () => {
                 <h2 style={{ fontSize: isMobile ? '1.3rem' : '1.5rem', margin: 0 }}>
                     {t('staff_reports.title')}
                 </h2>
+                <div data-tour-id="sr-filter">
                 <FilterBar />
+                </div>
             </div>
 
             {loading ? (
@@ -119,7 +121,7 @@ const StaffReports = () => {
 
                         {!isMobile ? (
                             /* ---------------- Desktop 傳統表格模式 ---------------- */
-                            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <table data-tour-id="sr-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                                 <thead>
                                     <tr style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
                                         <th style={{ padding: '1.2rem' }}>{t('staff_reports.table.staff_name')}</th>

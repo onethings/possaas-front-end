@@ -32,7 +32,7 @@ const Orders = () => {
                 setOrders(result.data);
             }
         } catch (err) {
-            setError(t('orders.error_fetch', 'Error Fetch'));
+            setError(t('orders.error_fetch', 'Failed to load orders'));
         } finally {
             setLoading(false);
         }
@@ -44,20 +44,20 @@ const Orders = () => {
 
         const maxAvailable = item.qty - (item.returnQty || 0);
         if (maxAvailable <= 0) {
-            alert(t('orders.already_returned', 'Already Returned'));
+            alert(t('orders.already_returned', 'Item already fully returned'));
             return;
         }
 
-        const returnQtyStr = prompt(t('orders.enter_return_qty', `請輸入退貨數量 (最大 ${maxAvailable}):`), "1");
+        const returnQtyStr = prompt(t('orders.enter_return_qty', `Enter return quantity (max ${maxAvailable}):`), "1");
         if (!returnQtyStr) return;
 
         const returnQty = parseInt(returnQtyStr, 10);
         if (isNaN(returnQty) || returnQty <= 0 || returnQty > maxAvailable) {
-            alert(t('orders.invalid_qty', 'Invalid Qty'));
+            alert(t('orders.invalid_qty', 'Invalid quantity'));
             return;
         }
 
-        const reason = prompt(t('orders.enter_return_reason', 'Enter Return Reason'), "");
+        const reason = prompt(t('orders.enter_return_reason', 'Enter return reason:'), "");
         if (reason === null) return;
 
         try {
@@ -66,7 +66,7 @@ const Orders = () => {
 
             const payload = {
                 orderNo: orderNo,
-                reason: reason || 'Web 後台操作退貨',
+                reason: reason || 'Return from web backend',
                 shiftId: currentShiftId,
                 paymentMethod: 'cash',
                 itemsToReturn: [{
@@ -105,11 +105,11 @@ const Orders = () => {
                     return o;
                 }));
 
-                alert(t('orders.return_success', 'Return Success'));
+                alert(t('orders.return_success', 'Return processed successfully'));
             }
         } catch (err) {
             console.error('Return error:', err);
-            alert(err.message || t('orders.return_failed', 'Return Failed'));
+            alert(err.message || t('orders.return_failed', 'Return failed'));
         } finally {
             setLoading(false);
         }
@@ -119,7 +119,7 @@ const Orders = () => {
         try {
             await exportOrdersCSV({ startDate, endDate, status: activeTab });
         } catch (err) {
-            alert(t('orders.error_export', 'Error Export'));
+            alert(t('orders.error_export', 'Export failed'));
         }
     };
 
@@ -129,18 +129,18 @@ const Orders = () => {
     });
 
     const tabs = [
-        { id: 'all', label: t('orders.status_all', 'Status All') }, // 手機端精簡字詞避免擠壓
-        { id: 'paid', label: t('orders.status_paid', 'Status Paid') },
-        { id: 'partially_returned', label: t('orders.status_partially_returned', 'Status Partially Returned') },
-        { id: 'returned', label: t('orders.status_returned', 'Status Returned') },
-        { id: 'cancelled', label: t('orders.status_cancelled', 'Status Cancelled') }
+        { id: 'all', label: t('orders.status_all', 'All') },
+        { id: 'paid', label: t('orders.status_paid', 'Paid') },
+        { id: 'partially_returned', label: t('orders.status_partially_returned', 'Partially Returned') },
+        { id: 'returned', label: t('orders.status_returned', 'Returned') },
+        { id: 'cancelled', label: t('orders.status_cancelled', 'Cancelled') }
     ];
 
     if (loading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: '#6366f1' }}>
                 <Loader2 className="animate-spin" size={40} />
-                <span style={{ marginLeft: '8px' }}>{t('orders.loading', 'Loading')}</span>
+                <span style={{ marginLeft: '8px' }}>{t('orders.loading', 'Loading...')}</span>
             </div>
         );
     }
@@ -272,9 +272,9 @@ const Orders = () => {
                 <div>
                     <h1>{t('orders.title')}</h1>
                 </div>
-                <button onClick={handleExport} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.6rem 1.2rem', background: '#4f46e5', border: 'none', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '0.9rem' }}>
+                <button onClick={handleExport} data-tour-id="orders-export" className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.6rem 1.2rem', background: '#4f46e5', border: 'none', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '0.9rem' }}>
                     <Download size={16} />
-                    {t('orders.export_summary', 'Export Summary')}
+                    {t('orders.export_summary', 'Export')}
                 </button>
             </div>
 
@@ -289,7 +289,7 @@ const Orders = () => {
             }}>
                 {/* 篩選與工具列 */}
                 <div className="filter-bar">
-                    <div className="tab-group">
+                    <div className="tab-group" data-tour-id="orders-tabs">
                         {tabs.map(tab => (
                             <button
                                 key={tab.id}
@@ -305,7 +305,7 @@ const Orders = () => {
                         ))}
                     </div>
 
-                    <div className="date-picker-wrapper">
+                    <div className="date-picker-wrapper" data-tour-id="orders-date">
                         <Calendar size={16} color="#94a3b8" />
                         <input id="orders-start-date" name="orders-start-date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="date-input" />
                         <span style={{ color: '#64748b' }}>-</span>
@@ -314,28 +314,28 @@ const Orders = () => {
                 </div>
 
                 {/* 1. 桌機平板端：顯示傳統表格 (在行動端會自動 hidden) */}
-                <div className="responsive-table-wrapper">
+                <div className="responsive-table-wrapper" data-tour-id="orders-table">
                     <table className="responsive-table">
                         <thead>
                             <tr style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
-                                <th>{t('orders.csv_headers.no', 'No')}</th>
-                                <th>{t('orders.anonymous_customer', 'Anonymous Customer')}</th>
-                                <th>{t('orders.final_amount', 'Final Amount')}</th>
+                                <th>{t('orders.csv_headers.no', 'Order #')}</th>
+                                <th>{t('orders.anonymous_customer', 'Customer')}</th>
+                                <th>{t('orders.final_amount', 'Amount')}</th>
                                 <th>{t('orders.csv_headers.status', 'Status')}</th>
                                 <th>{t('orders.csv_headers.time', 'Time')}</th>
-                                <th style={{ textAlign: 'right' }}>{t('orders.csv_headers.id', 'ID')}</th>
+                                <th style={{ textAlign: 'right' }}>{t('orders.csv_headers.id', 'Actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredOrders.length === 0 ? (
                                 <tr>
-                                    <td colSpan="6" style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('orders.no_data', 'No Data')}</td>
+                                    <td colSpan="6" style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('orders.no_data', 'No orders found')}</td>
                                 </tr>
                             ) : (
                                 filteredOrders.map((order) => (
                                     <tr key={order._id} style={{ fontSize: '0.9rem' }}>
                                         <td style={{ fontWeight: 600, color: '#38bdf8' }}>{order.orderNo}</td>
-                                        <td style={{ color: '#e2e8f0' }}>{order.customerName || t('orders.anonymous_customer', 'Anonymous Customer')}</td>
+                                        <td style={{ color: '#e2e8f0' }}>{order.customerName || t('orders.anonymous_customer', 'Walk-in Customer')}</td>
                                         <td style={{ fontWeight: 700, color: '#f8fafc' }}>
                                             {tenantConfig.currency}{(order.finalAmount || 0).toLocaleString()}
                                         </td>
@@ -351,7 +351,7 @@ const Orders = () => {
                                                 style={{ background: 'rgba(255,255,255,0.05)', border: 'none', padding: '6px 10px', borderRadius: '6px', color: '#cbd5e1', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                                             >
                                                 <Eye size={14} />
-                                                <span>{t('orders.details_title', 'Details Title')}</span>
+                                                <span>{t('orders.details_title', 'Details')}</span>
                                             </button>
                                         </td>
                                     </tr>
@@ -364,7 +364,7 @@ const Orders = () => {
                 {/* 2. 手機端：轉換為精緻卡片流 (在桌機平板端自動 hidden) */}
                 <div className="mobile-card-list">
                     {filteredOrders.length === 0 ? (
-                        <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('orders.no_data', 'No Data')}</div>
+                        <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('orders.no_data', 'No orders found')}</div>
                     ) : (
                         filteredOrders.map((order) => (
                             <div key={order._id} className="mobile-order-card">
@@ -373,7 +373,7 @@ const Orders = () => {
                                     <StatusBadge status={order.status} t={t} />
                                 </div>
                                 <div className="card-row" style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
-                                    <span>{order.customerName || t('orders.anonymous_customer', 'Anonymous Customer')}</span>
+                                    <span>{order.customerName || t('orders.anonymous_customer', 'Walk-in Customer')}</span>
                                     <span>{new Date(order.createdAt).toLocaleDateString()}</span>
                                 </div>
                                 <div className="card-row">
@@ -385,7 +385,7 @@ const Orders = () => {
                                         style={{ background: 'rgba(255,255,255,0.08)', border: 'none', padding: '6px 12px', borderRadius: '6px', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem' }}
                                     >
                                         <Eye size={12} />
-                                        <span>{t('orders.details_title', 'Details Title')}</span>
+                                        <span>{t('orders.details_title', 'Details')}</span>
                                     </button>
                                 </div>
                             </div>
@@ -429,7 +429,7 @@ const Orders = () => {
                                                     onClick={() => handleReturn(selectedOrder.orderNo, item)}
                                                     style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#f97316', border: '1px solid rgba(249, 115, 22, 0.3)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', cursor: 'pointer', marginLeft: '8px' }}
                                                 >
-                                                    {t('orders.return_btn', 'Return Btn')}
+                                                    {t('orders.return_btn', 'Return')}}
                                                 </button>
                                             )}
                                         </div>
@@ -454,11 +454,11 @@ const Orders = () => {
 
 const StatusBadge = ({ status, t }) => {
     const configs = {
-        paid: { color: '#4ade80', icon: CheckCircle, text: t('orders.status_paid', 'Status Paid') },
-        pending: { color: '#fbbf24', icon: Clock, text: t('orders.status_pending', 'Status Pending') },
-        cancelled: { color: '#f87171', icon: XCircle, text: t('orders.status_cancelled', 'Status Cancelled') },
-        returned: { color: '#ef4444', icon: CheckCircle, text: t('orders.status_returned', 'Status Returned') },
-        partially_returned: { color: '#f97316', icon: CheckCircle, text: t('orders.status_partially_returned', 'Status Partially Returned') },
+        paid: { color: '#4ade80', icon: CheckCircle, text: t('orders.status_paid', 'Paid') },
+        pending: { color: '#fbbf24', icon: Clock, text: t('orders.status_pending', 'Pending') },
+        cancelled: { color: '#f87171', icon: XCircle, text: t('orders.status_cancelled', 'Cancelled') },
+        returned: { color: '#ef4444', icon: CheckCircle, text: t('orders.status_returned', 'Returned') },
+        partially_returned: { color: '#f97316', icon: CheckCircle, text: t('orders.status_partially_returned', 'Partially Returned') },
     };
     const config = configs[status] || configs.pending;
     const Icon = config.icon;

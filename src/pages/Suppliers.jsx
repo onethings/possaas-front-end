@@ -79,6 +79,7 @@ const Suppliers = () => {
             <div style={headerStyle}>
                 <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{t('suppliers.title')}</h2>
                 <button 
+                    data-tour-id="suppliers-add"
                     onClick={() => { setNewSupplier({ name: '', contactPerson: '', email: '', phone: '', address: '' }); setModalOpen(true); }} 
                     className="btn-primary" 
                     style={addBtnStyle}
@@ -94,6 +95,7 @@ const Suppliers = () => {
                         id="supplier-search"
                         name="supplier-search"
                         type="text"
+                        data-tour-id="suppliers-search"
                         placeholder={t('suppliers.search_placeholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -103,7 +105,7 @@ const Suppliers = () => {
             </div>
 
             {/* 卡片網格佈局：利用 minmax 自動適應寬度，手機端會自動單列顯示 */}
-            <div style={gridStyle}>
+            <div data-tour-id="suppliers-grid" style={gridStyle}>
                 {loading ? (
                     <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '3rem' }}><Loader2 className="animate-spin" /></div>
                 ) : filtered.map(s => (

@@ -56,7 +56,7 @@ const Timecards = () => {
             <h2 className="text-xl md:text-2xl font-semibold">{t('timecards.title')}</h2>
 
             {/* 打卡主控制面板 */}
-            <div className="glass-panel p-6 md:p-8 flex flex-col items-center gap-4 md:gap-6 text-center">
+            <div data-tour-id="tc-add" className="glass-panel p-6 md:p-8 flex flex-col items-center gap-4 md:gap-6 text-center">
                 <div style={statusCircleStyle(activeCard)}>
                     <Clock size={40} />
                 </div>
@@ -105,7 +105,7 @@ const Timecards = () => {
                     <>
                         {/* 1. 桌面端顯示的表格 (md 以上顯示) */}
                         <div className="hidden md:block overflow-x-auto">
-                            <table className="w-full border-collapse">
+                            <table data-tour-id="tc-table" className="w-full border-collapse">
                                 <thead>
                                     <tr className="text-left border-b border-white/10 text-xs font-semibold" style={{ color: 'var(--text-muted)' }}>
                                         <th className="p-4">{t('timecards.history.table.date')}</th>

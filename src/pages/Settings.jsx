@@ -88,7 +88,7 @@ const Settings = () => {
                 alignItems: 'start'
             }}>
                 {/* 左側導覽列 - 手機端會自動變更排列方向（可選，目前維持垂直排列，亦可改為橫向滾動） */}
-                <div className="glass-panel" style={{ 
+                <div data-tour-id="settings-tabs" className="glass-panel" style={{ 
                     padding: '1rem', 
                     display: 'flex', 
                     flexDirection: isMobile ? 'row' : 'column', 
@@ -104,7 +104,7 @@ const Settings = () => {
                 </div>
 
                 {/* 右側內容區 */}
-                <div className="glass-panel" style={{ 
+                <div data-tour-id="settings-content" className="glass-panel" style={{ 
                     padding: isMobile ? '1.25rem' : '2rem', 
                     display: 'flex', 
                     flexDirection: 'column', 
