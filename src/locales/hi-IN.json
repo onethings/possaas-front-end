@@ -772,7 +772,12 @@
     "description": "विवरण",
     "status": "स्थिति",
     "items": "आइटम",
-    "payment": "भुगतान"
+    "payment": "भुगतान",
+    "all_day": "पूरे दिन",
+    "morning": "सुबह (06:00-12:00)",
+    "afternoon": "दोपहर (12:00-18:00)",
+    "evening": "शाम (18:00-24:00)",
+    "all_employees": "सभी कर्मचारी"
   },
   "loyverse": {
     "title": "लॉयवर्स (Loyverse) इम्पोर्ट",

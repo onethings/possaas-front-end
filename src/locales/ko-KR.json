@@ -776,7 +776,12 @@
     "description": "설명",
     "status": "상태",
     "items": "품목",
-    "payment": "결제"
+    "payment": "결제",
+    "all_day": "종일",
+    "morning": "오전 (06:00-12:00)",
+    "afternoon": "오후 (12:00-18:00)",
+    "evening": "저녁 (18:00-24:00)",
+    "all_employees": "전 직원"
   },
   "loyverse": {
     "title": "Loyverse 가져오기",

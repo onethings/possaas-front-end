@@ -776,7 +776,12 @@
     "description": "Beschrijving",
     "status": "Status",
     "items": "Items",
-    "payment": "Betaling"
+    "payment": "Betaling",
+    "all_day": "Hele dag",
+    "morning": "Ochtend (06:00-12:00)",
+    "afternoon": "Middag (12:00-18:00)",
+    "evening": "Avond (18:00-24:00)",
+    "all_employees": "Alle werknemers"
   },
   "loyverse": {
     "title": "Loyverse Import",

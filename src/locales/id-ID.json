@@ -772,7 +772,12 @@
     "description": "Deskripsi",
     "status": "Status",
     "items": "Item",
-    "payment": "Pembayaran"
+    "payment": "Pembayaran",
+    "all_day": "Sepanjang hari",
+    "morning": "Pagi (06:00-12:00)",
+    "afternoon": "Siang/Sore (12:00-18:00)",
+    "evening": "Malam (18:00-24:00)",
+    "all_employees": "Semua karyawan"
   },
   "loyverse": {
     "title": "Impor Loyverse",

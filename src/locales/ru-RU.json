@@ -776,7 +776,12 @@
     "description": "Описание",
     "status": "Статус",
     "items": "Позиции",
-    "payment": "Оплата"
+    "payment": "Оплата",
+    "all_day": "Весь день",
+    "morning": "Утро (06:00-12:00)",
+    "afternoon": "День (12:00-18:00)",
+    "evening": "Вечер (18:00-24:00)",
+    "all_employees": "Все сотрудники"
   },
   "loyverse": {
     "title": "Импорт из Loyverse",

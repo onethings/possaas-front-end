@@ -776,7 +776,12 @@
     "description": "説明",
     "status": "ステータス",
     "items": "アイテム",
-    "payment": "支払い"
+    "payment": "支払い",
+    "all_day": "終日",
+    "morning": "午前 (06:00-12:00)",
+    "afternoon": "午後 (12:00-18:00)",
+    "evening": "夜間 (18:00-24:00)",
+    "all_employees": "全従業員"
   },
   "loyverse": {
     "title": "Loyverseインポート",

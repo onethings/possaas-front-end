@@ -776,7 +776,12 @@
     "description": "Açıklama",
     "status": "Durum",
     "items": "Kalemler",
-    "payment": "Ödeme"
+    "payment": "Ödeme",
+    "all_day": "Tüm gün",
+    "morning": "Sabah (06:00-12:00)",
+    "afternoon": "Öğleden Sonra (12:00-18:00)",
+    "evening": "Akşam (18:00-24:00)",
+    "all_employees": "Tüm çalışanlar"
   },
   "loyverse": {
     "title": "Loyverse'ten Aktar",

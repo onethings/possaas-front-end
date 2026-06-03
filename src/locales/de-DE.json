@@ -772,7 +772,12 @@
     "description": "Beschreibung",
     "status": "Status",
     "items": "Artikel",
-    "payment": "Zahlung"
+    "payment": "Zahlung",
+    "all_day": "Ganztägig",
+    "morning": "Vormittag (06:00-12:00)",
+    "afternoon": "Nachmittag (12:00-18:00)",
+    "evening": "Abend (18:00-24:00)",
+    "all_employees": "Alle Mitarbeiter"
   },
   "loyverse": {
     "title": "Loyverse-Import",

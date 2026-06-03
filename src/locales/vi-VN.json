@@ -776,7 +776,12 @@
     "description": "Mô tả",
     "status": "Trạng thái",
     "items": "Mặt hàng",
-    "payment": "Thanh toán"
+    "payment": "Thanh toán",
+    "all_day": "Cả ngày",
+    "morning": "Sáng (06:00-12:00)",
+    "afternoon": "Chiều (12:00-18:00)",
+    "evening": "Tối (18:00-24:00)",
+    "all_employees": "Tất cả nhân viên"
   },
   "loyverse": {
     "title": "Nhập từ Loyverse",

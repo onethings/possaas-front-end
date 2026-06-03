@@ -776,7 +776,12 @@
     "description": "คำอธิบาย",
     "status": "สถานะ",
     "items": "รายการ",
-    "payment": "การชำระเงิน"
+    "payment": "การชำระเงิน",
+   "all_day": "ทั้งวัน",
+    "morning": "เช้า (06:00-12:00)",
+    "afternoon": "บ่าย (12:00-18:00)",
+    "evening": "เย็น/ค่ำ (18:00-24:00)",
+    "all_employees": "พนักงานทุกคน"
   },
   "loyverse": {
     "title": "นำเข้าจาก Loyverse",

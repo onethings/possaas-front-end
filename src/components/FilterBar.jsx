@@ -32,10 +32,10 @@ const FilterBar = ({ onFilter }) => {
   };
 
   const timeOptions = [
-    { value: 'all', label: t('report.all_day', '全天') },
-    { value: 'morning', label: t('report.morning', '早上 (06:00-12:00)') },
-    { value: 'afternoon', label: t('report.afternoon', '下午 (12:00-18:00)') },
-    { value: 'evening', label: t('report.evening', '晚上 (18:00-24:00)') },
+    { value: 'all', label: t('report.all_day', 'All Day') },
+    { value: 'morning', label: t('report.morning', 'Morning (06:00-12:00)') },
+    { value: 'afternoon', label: t('report.afternoon', 'Afternoon (12:00-18:00)') },
+    { value: 'evening', label: t('report.evening', 'Evening (18:00-24:00)') },
   ];
 
   const handleFilter = () => {
@@ -75,7 +75,7 @@ const FilterBar = ({ onFilter }) => {
           style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', fontSize: '0.8rem', outline: 'none', cursor: 'pointer', minWidth: '80px' }}
         >
           <option value="all" style={{ background: 'var(--select-bg)', color: 'var(--text-main)' }}>
-            {loadingStaff ? t('common.loading', '載入中...') : t('report.all_employees', '所有員工')}
+            {loadingStaff ? t('common.loading', 'Loading...') : t('report.all_employees', 'All Employees')}
           </option>
           {staffList.map(staff => (
             <option key={staff._id} value={staff._id} style={{ background: 'var(--select-bg)', color: 'var(--text-main)' }}>
@@ -100,7 +100,7 @@ const FilterBar = ({ onFilter }) => {
           whiteSpace: 'nowrap',
         }}
       >
-        {t('common.filter', '篩選')}
+        {t('common.filter', 'Filter')}
       </button>
     </div>
   );
