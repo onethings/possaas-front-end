@@ -429,7 +429,7 @@ const Orders = () => {
                                                     onClick={() => handleReturn(selectedOrder.orderNo, item)}
                                                     style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#f97316', border: '1px solid rgba(249, 115, 22, 0.3)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', cursor: 'pointer', marginLeft: '8px' }}
                                                 >
-                                                    {t('orders.return_btn', 'Return')}}
+                                                    {t('orders.return_btn', 'Return')}
                                                 </button>
                                             )}
                                         </div>
