@@ -207,15 +207,15 @@ const PurchaseOrders = () => {
                                         <tr>
                                             <td colSpan={6} style={{ padding: '0 1.2rem 1.2rem 1.2rem', background: 'rgba(255,255,255,0.02)' }}>
                                                 <div style={{ fontSize: '0.85rem' }}>
-                                                    <strong style={{ color: 'var(--text-muted)' }}>{t('purchase_orders.items', '採購品項')}:</strong>
+                                                    <strong style={{ color: 'var(--text-muted)' }}>{t('purchase_orders.items', 'Items')}:</strong>
                                                     {po.items && po.items.length > 0 ? (
                                                         <table style={{ width: '100%', marginTop: '0.5rem', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                                                             <thead>
                                                                 <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                                                    <th style={{ padding: '0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('purchase_orders.product', '產品')}</th>
-                                                                    <th style={{ padding: '0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('purchase_orders.quantity', '數量')}</th>
-                                                                    <th style={{ padding: '0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('purchase_orders.cost_price', '成本價')}</th>
-                                                                    <th style={{ padding: '0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('purchase_orders.subtotal', '小計')}</th>
+                                                                    <th style={{ padding: '0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('purchase_orders.product', 'Product')}</th>
+                                                                    <th style={{ padding: '0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('purchase_orders.quantity', 'Quantity')}</th>
+                                                                    <th style={{ padding: '0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('purchase_orders.cost_price', 'Cost Price')}</th>
+                                                                    <th style={{ padding: '0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('purchase_orders.subtotal', 'Subtotal')}</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -230,7 +230,7 @@ const PurchaseOrders = () => {
                                                             </tbody>
                                                         </table>
                                                     ) : (
-                                                        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('common.no_data', '暫無資料')}</p>
+                                                        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('common.no_data', 'No Data')}</p>
                                                     )}
                                                 </div>
                                             </td>

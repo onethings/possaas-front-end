@@ -57,19 +57,19 @@ const TaxReport = () => {
 
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                    <h3 style={{ fontSize: '1.1rem' }}>{t('report.tax_report', '稅務報告')}</h3>
+                    <h3 style={{ fontSize: '1.1rem' }}>{t('report.tax_report', 'Tax Report')}</h3>
                     <button style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                        <Download size={14} /> {t('common.export', '匯出')}
+                        <Download size={14} /> {t('common.export', 'Export')}
                     </button>
                 </div>
                 <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.tax_name', '稅項名稱')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.net_sales', '淨銷售額')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.tax_amount', '稅額')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.tax_rate', '稅率')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.tax_name', 'Tax Name')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.net_sales', 'Net Sales')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.tax_amount', 'Tax Amount')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.tax_rate', 'Tax Rate')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,7 +87,7 @@ const TaxReport = () => {
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                     <span>{t('common.page_info', { current: 1, total: 1 })}</span>
                     <select style={{ background: 'rgba(0,0,0,0.2)', border: 'none', color: 'var(--text-muted)', padding: '0.3rem', borderRadius: '4px', fontSize: '0.8rem' }}>
-                        <option>10 {t('common.rows', '行')}</option>
+                        <option>10 {t('common.rows', 'Rows')}</option>
                     </select>
                 </div>
             </div>

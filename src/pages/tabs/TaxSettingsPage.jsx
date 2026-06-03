@@ -30,7 +30,7 @@ const TaxSettingsPage = () => {
         setModalOpen(true);
     };
     const handleDelete = (idx) => {
-        if (!window.confirm(t('tax_settings.confirm_delete', '確定刪除？'))) return;
+        if (!window.confirm(t('tax_settings.confirm_delete', 'Confirm Delete'))) return;
         setTaxes(prev => prev.filter((_, i) => i !== idx));
     };
     const handleSubmit = (e) => {
@@ -50,9 +50,9 @@ const TaxSettingsPage = () => {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1.5rem', height: '100%', overflow: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1.1rem' }}>{t('tax_settings.title', '稅務設定')}</h3>
+                <h3 style={{ fontSize: '1.1rem' }}>{t('tax_settings.title', 'Title')}</h3>
                 <button onClick={openCreate} className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <Plus size={16} /> {t('tax_settings.add', '新增稅項')}
+                    <Plus size={16} /> {t('tax_settings.add', 'Add')}
                 </button>
             </div>
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
@@ -60,10 +60,10 @@ const TaxSettingsPage = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('tax_settings.name', '名稱')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('tax_settings.rate', '稅率')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>{t('tax_settings.type', '種類')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('common.actions', '操作')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('tax_settings.name', 'Name')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('tax_settings.rate', 'Rate')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>{t('tax_settings.type', 'Type')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('common.actions', 'Actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,7 +71,7 @@ const TaxSettingsPage = () => {
                                 <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                                     <td style={{ padding: '0.75rem 0.5rem', fontWeight: 600, cursor: 'pointer' }} onClick={() => openEdit(idx)}>{tax.name}</td>
                                     <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{tax.rate}%</td>
-                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>{tax.type === 'INCLUSIVE' ? t('tax_settings.inclusive', '價內稅') : t('tax_settings.exclusive', '價外稅')}</td>
+                                    <td style={{ padding: '0.75rem 0.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>{tax.type === 'INCLUSIVE' ? t('tax_settings.inclusive', 'Inclusive') : t('tax_settings.exclusive', 'Exclusive')}</td>
                                     <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>
                                         <button onClick={() => handleDelete(idx)} style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', padding: '0.3rem' }}>
                                             <Trash2 size={14} />
@@ -87,35 +87,35 @@ const TaxSettingsPage = () => {
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
                     <div className="glass-panel" style={{ padding: '2rem', width: '450px', maxWidth: '90vw' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h3>{editingIndex !== null ? t('tax_settings.edit', '編輯稅項') : t('tax_settings.create', '新增稅項')}</h3>
+                            <h3>{editingIndex !== null ? t('tax_settings.edit', 'Edit') : t('tax_settings.create', 'Create')}</h3>
                             <button onClick={() => setModalOpen(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><X size={20} /></button>
                         </div>
                         <form onSubmit={handleSubmit}>
                             <div style={{ marginBottom: '1rem' }}>
-                                <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>{t('tax_settings.name', '名稱')}</label>
+                                <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>{t('tax_settings.name', 'Name')}</label>
                                 <input name="tax-name" value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)' }} required />
                             </div>
                             <div style={{ marginBottom: '1rem' }}>
-                                <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>{t('tax_settings.rate', '稅率, %')}</label>
+                                <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>{t('tax_settings.rate', 'Rate')}</label>
                                 <input name="tax-rate" type="number" step="0.01" value={formData.rate} onChange={e => setFormData(prev => ({ ...prev, rate: e.target.value }))}
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)' }} required />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>{t('tax_settings.type', '種類')}</label>
+                                <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>{t('tax_settings.type', 'Type')}</label>
                                 <select name="tax-type" value={formData.type} onChange={e => setFormData(prev => ({ ...prev, type: e.target.value }))}
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)' }}>
-                                    <option value="EXCLUSIVE">{t('tax_settings.exclusive', '價外稅')}</option>
-                                    <option value="INCLUSIVE">{t('tax_settings.inclusive', '價內稅')}</option>
+                                    <option value="EXCLUSIVE">{t('tax_settings.exclusive', 'Exclusive')}</option>
+                                    <option value="INCLUSIVE">{t('tax_settings.inclusive', 'Inclusive')}</option>
                                 </select>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
                                 <button type="button" onClick={() => setModalOpen(false)}
                                     style={{ padding: '0.5rem 1.2rem', background: 'transparent', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer' }}>
-                                    {t('common.cancel', '取消')}
+                                    {t('common.cancel', 'Cancel')}
                                 </button>
                                 <button type="submit" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.85rem' }}>
-                                    {editingIndex !== null ? t('common.update', '更新') : t('common.save', '新增')}
+                                    {editingIndex !== null ? t('common.update', 'Update') : t('common.save', 'Save')}
                                 </button>
                             </div>
                         </form>

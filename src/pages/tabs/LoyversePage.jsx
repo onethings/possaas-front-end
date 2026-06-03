@@ -82,7 +82,7 @@ const LoyversePage = () => {
             const res = await saveLoyverseToken(loyverseToken.trim());
             if (res.success) {
                 setLoyverseConnected(true);
-                setLoyverseMessage({ type: 'success', text: 'Loyverse 連線成功！' });
+                setLoyverseMessage({ type: 'success', text: t('loyverse.connect_success', 'Loyverse Connected\!') });
                 await checkLoyverse();
             }
         } catch (err) {
@@ -193,13 +193,13 @@ const LoyversePage = () => {
     };
 
     const importButtons = [
-        { label: '分類 Categories', icon: ListTree, action: () => runImport(importLoyverseCategories, '分類'), color: 'var(--blue-500)' },
-        { label: '商品 Items', icon: Package, action: () => runImport(importLoyverseItems, '商品'), color: 'var(--green-500)' },
+        { label: '分類 Categories', icon: ListTree, action: () => runImport(importLoyverseCategories, t('loyverse.categories', 'Categories')), color: 'var(--blue-500)' },
+        { label: '商品 Items', icon: Package, action: () => runImport(importLoyverseItems, t('loyverse.products', 'Products')), color: 'var(--green-500)' },
         { label: '庫存 Inventory', icon: Package, action: () => runImport(importLoyverseInventory, '庫存'), color: 'var(--teal-500)' },
-        { label: '客戶 Customers', icon: Users, action: () => runImport(importLoyverseCustomers, '客戶'), color: 'var(--yellow-500)' },
+        { label: '客戶 Customers', icon: Users, action: () => runImport(importLoyverseCustomers, t('loyverse.customers', 'Customers')), color: 'var(--yellow-500)' },
         { label: '折扣 Discounts', icon: Percent, action: () => runImport(importLoyverseDiscounts, '折扣'), color: 'var(--purple-500)' },
         { label: '自訂選項 Modifiers', icon: Sliders, action: () => runImport(importLoyverseModifiers, '自訂選項'), color: 'var(--pink-500)' },
-        { label: '供應商 Suppliers', icon: Truck, action: () => runImport(importLoyverseSuppliers, '供應商'), color: 'var(--orange-500)' },
+        { label: t('loyverse.suppliers', 'Suppliers'), icon: Truck, action: () => runImport(importLoyverseSuppliers, t('loyverse.suppliers', 'Suppliers')), color: 'var(--orange-500)' },
         { label: '訂單/收據 Receipts', icon: Receipt, action: () => runImport(importLoyverseReceipts, '訂單'), color: 'var(--red-500)' },
     ];
 
@@ -242,7 +242,7 @@ const LoyversePage = () => {
                                 title: '取得 Loyverse 存取憑證',
                                 desc: '登入 Loyverse 後台 → 設定 → 整合 → Personal Access Token → 複製 Token',
                                 done: false,
-                                action: '前往 Loyverse 後台'
+                                action: t('loyverse.go_to_loyverse', 'Go to Loyverse Back Office')
                             },
                             {
                                 step: 2,
@@ -253,7 +253,7 @@ const LoyversePage = () => {
                             },
                             {
                                 step: 3,
-                                title: '一鍵匯入商品與客戶資料',
+                                title: t('loyverse.one_click_import', 'One-Click Import Products & Customers'),
                                 desc: '點擊「一鍵匯入所有資料」，自動匯入分類、商品、庫存、客戶、折扣等',
                                 done: loyverseImportLogs.some(log => log.type === 'items' && log.status === 'success'),
                                 action: '開始匯入'
@@ -267,17 +267,17 @@ const LoyversePage = () => {
                             },
                             {
                                 step: 5,
-                                title: '上傳銷售報告 CSV',
+                                title: t('loyverse.upload_sales_csv', 'Upload Sales Report CSV'),
                                 desc: '從 Loyverse 後台匯出銷售摘要 CSV，使用下方「手動匯入報告報表 CSV」上傳',
                                 done: loyverseImportLogs.length > 0,
-                                action: '上傳 CSV'
+                                action: t('loyverse.upload_csv', 'Upload CSV')
                             },
                             {
                                 step: 6,
                                 title: '檢視報告報表',
-                                desc: '前往「報告報表」頁面查看銷售摘要、商品銷售、分類銷售等分析數據',
+                                desc: t('loyverse.go_to_reports_desc', 'View sales summary, product sales, category sales analysis in the Reports section'),
                                 done: false,
-                                action: '前往報表'
+                                action: t('loyverse.go_to_reports', 'Go to Reports')
                             }
                         ].map(item => {
                             const isDone = item.done;
@@ -485,7 +485,7 @@ const LoyversePage = () => {
                                                 await checkLoyverse();
                                             }
                                         } catch (err) {
-                                            setLoyverseMessage({ type: 'error', text: '修復失敗：' + (err.response?.data?.error || err.message) });
+                                            setLoyverseMessage({ type: 'error', text: t('loyverse.fix_failed', 'Repair Failed: ') + (err.response?.data?.error || err.message) });
                                         } finally {
                                             setLoyverseImporting(null);
                                         }
@@ -543,7 +543,7 @@ const LoyversePage = () => {
                                     重新匯入訂單
                                 </button>
                                 <button
-                                    onClick={() => runImport(importAllLoyverse, '全部資料')}
+                                    onClick={() => runImport(importAllLoyverse, t('loyverse.all_data', 'All Data'))}
                                     disabled={loyverseImporting !== null}
                                     className="btn-primary"
                                     style={{
@@ -555,7 +555,7 @@ const LoyversePage = () => {
                                         opacity: loyverseImporting !== null ? 0.5 : 1
                                     }}
                                 >
-                                    {loyverseImporting === '全部資料' ? (
+                                    {loyverseImporting === t('loyverse.all_data', 'All Data') ? (
                                         <Loader size={14} className="spin" />
                                     ) : (
                                         <RefreshCw size={14} />

@@ -11,35 +11,35 @@ const ApiDocsPage = () => {
         {
             icon: BookOpen,
             title: t('api_docs.swagger_ui', 'Swagger UI'),
-            desc: t('api_docs.swagger_desc', '互動式 API 文件，可直接在瀏覽器中測試每個端點'),
+            desc: t('api_docs.swagger_desc', 'Swagger Desc'),
             url: `${apiBaseUrl}/api-docs`,
         },
         {
             icon: Shield,
-            title: t('api_docs.auth', '認證方式'),
-            desc: t('api_docs.auth_desc', '所有 API 需在 Header 帶入 Bearer Token 進行身份驗證'),
+            title: t('api_docs.auth', 'Auth'),
+            desc: t('api_docs.auth_desc', 'Auth Desc'),
             code: 'Authorization: Bearer <your_token>',
         },
         {
             icon: Code,
-            title: t('api_docs.endpoints', '端點總覽'),
-            desc: t('api_docs.endpoints_desc', '涵蓋訂單、商品、客戶、員工、報告等 50+ 個 API 端點'),
+            title: t('api_docs.endpoints', 'Endpoints'),
+            desc: t('api_docs.endpoints_desc', 'Endpoints Desc'),
         },
         {
             icon: Server,
-            title: t('api_docs.base_url', 'API 基礎網址'),
-            desc: t('api_docs.base_url_desc', '所有 API 請求的基礎 URL'),
+            title: t('api_docs.base_url', 'Base URL'),
+            desc: t('api_docs.base_url_desc', 'Base URL Desc'),
             code: apiBaseUrl,
         },
         {
             icon: Key,
             title: t('api_docs.api_keys', 'API Keys'),
-            desc: t('api_docs.api_keys_desc', '前往「開發者設定」頁面管理您的 API 授權碼'),
+            desc: t('api_docs.api_keys_desc', 'Api Keys Desc'),
         },
         {
             icon: Globe,
-            title: t('api_docs.public_api', '公開 API'),
-            desc: t('api_docs.public_api_desc', '使用 x-api-key 頭部驗證的外部整合端點'),
+            title: t('api_docs.public_api', 'Public Api'),
+            desc: t('api_docs.public_api_desc', 'Public Api Desc'),
             code: 'x-api-key: <your_api_key>',
         },
     ];
@@ -51,7 +51,7 @@ const ApiDocsPage = () => {
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1.5rem', height: '100%', overflow: 'auto' }}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1.3rem' }}>{t('api_docs.title', 'API 文件')}</h3>
+                <h3 style={{ fontSize: '1.3rem' }}>{t('api_docs.title', 'Title')}</h3>
                 <a
                     href={`${apiBaseUrl}/api-docs`}
                     target="_blank"
@@ -60,7 +60,7 @@ const ApiDocsPage = () => {
                     style={{ padding: '0.5rem 1.2rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none' }}
                 >
                     <ExternalLink size={16} />
-                    {t('api_docs.open_swagger', '開啟 Swagger UI')}
+                    {t('api_docs.open_swagger', 'Open Swagger')}
                 </a>
             </div>
 
@@ -89,7 +89,7 @@ const ApiDocsPage = () => {
                                     style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', marginTop: '0.75rem', fontSize: '0.85rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: 500 }}
                                 >
                                     <ExternalLink size={14} />
-                                    {t('api_docs.open', '開啟')}
+                                    {t('api_docs.open', 'Open')}
                                 </a>
                             )}
                         </div>

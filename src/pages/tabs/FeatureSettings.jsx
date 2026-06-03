@@ -6,17 +6,17 @@ const FeatureSettings = () => {
     const { t } = useTranslation();
 
     const features = [
-        { label: t('settings.shift_management', '值班管理'), key: 'shifts' },
-        { label: t('settings.clock_in', '考勤打卡'), key: 'clockIn' },
-        { label: t('settings.negative_stock', '負庫存警告'), key: 'negativeStock' },
-        { label: t('settings.loyalty', '客戶忠誠度計劃'), key: 'loyalty' },
-        { label: t('settings.inventory', '進階庫存管理'), key: 'inventory' },
+        { label: t('settings.shift_management', 'Shift Management'), key: 'shifts' },
+        { label: t('settings.clock_in', 'Clock In'), key: 'clockIn' },
+        { label: t('settings.negative_stock', 'Negative Stock'), key: 'negativeStock' },
+        { label: t('settings.loyalty', 'Loyalty'), key: 'loyalty' },
+        { label: t('settings.inventory', 'Inventory'), key: 'inventory' },
     ];
 
     return (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1.5rem', height: '100%', overflow: 'auto' }}>
-            <h3 style={{ fontSize: '1.1rem' }}>{t('settings.features', '功能設定')}</h3>
+            <h3 style={{ fontSize: '1.1rem' }}>{t('settings.features', 'Features')}</h3>
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {features.map((f, idx) => (

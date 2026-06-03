@@ -42,7 +42,7 @@ const AccessRightsPage = () => {
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm(t('access_rights.confirm_delete', '確定刪除此角色？'))) return;
+        if (!window.confirm(t('access_rights.confirm_delete', 'Confirm Delete'))) return;
         try {
             const result = await deleteRole(id);
             if (result.success) fetchRoles();
@@ -81,10 +81,10 @@ const AccessRightsPage = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h3 style={{ fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Shield size={20} style={{ color: 'var(--primary-light)' }} />
-                    {t('access_rights.title', '存取權限')}
+                    {t('access_rights.title', 'Title')}
                 </h3>
                 <button onClick={openCreate} className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <Plus size={16} /> {t('access_rights.add_role', '新增角色')}
+                    <Plus size={16} /> {t('access_rights.add_role', 'Add Role')}
                 </button>
             </div>
 
@@ -96,11 +96,11 @@ const AccessRightsPage = () => {
                         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                             <thead>
                                 <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('access_rights.level', '層級')}</th>
-                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('access_rights.role', '角色')}</th>
-                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('access_rights.permissions', '權限')}</th>
-                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('access_rights.description', '說明')}</th>
-                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('common.actions', '操作')}</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('access_rights.level', 'Level')}</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('access_rights.role', 'Role')}</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('access_rights.permissions', 'Permissions')}</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('access_rights.description', 'Description')}</th>
+                                    <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('common.actions', 'Actions')}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -138,39 +138,39 @@ const AccessRightsPage = () => {
                     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
                         className="glass-panel" style={{ padding: '2rem', width: '500px', maxWidth: '90vw' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h3>{editingRole ? t('access_rights.edit_role', '編輯角色') : t('access_rights.add_role', '新增角色')}</h3>
+                            <h3>{editingRole ? t('access_rights.edit_role', 'Edit Role') : t('access_rights.add_role', 'Add Role')}</h3>
                             <button onClick={() => setModalOpen(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
                                 <X size={20} />
                             </button>
                         </div>
                         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div className="input-group">
-                                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.level', '層級')}</label>
+                                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.level', 'Level')}</label>
                                 <input name="role-level" type="number" min="1" max="9" required
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none' }}
                                     value={formData.level} onChange={(e) => setFormData({ ...formData, level: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.role', '角色名稱')}</label>
+                                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.role', 'Role')}</label>
                                 <input name="role-name" type="text" required
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none' }}
                                     value={formData.roleName} onChange={(e) => setFormData({ ...formData, roleName: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.permissions', '權限 (逗號分隔)')}</label>
+                                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.permissions', 'Permissions')}</label>
                                 <input name="role-permissions" type="text"
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none' }}
                                     value={formData.permissions} onChange={(e) => setFormData({ ...formData, permissions: e.target.value })} />
                             </div>
                             <div className="input-group">
-                                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.description', '說明')}</label>
+                                <label style={{ display: 'block', marginBottom: '0.4rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('access_rights.description', 'Description')}</label>
                                 <textarea name="role-description"
                                     style={{ width: '100%', padding: '0.6rem', background: 'var(--input-bg)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-main)', outline: 'none', resize: 'vertical', minHeight: '60px' }}
                                     value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
                             </div>
                             <button type="submit" className="btn-primary" disabled={submitting}
                                 style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: submitting ? 0.7 : 1 }}>
-                                {submitting ? <Loader2 className="animate-spin" size={18} /> : (editingRole ? t('common.update', '更新') : t('common.confirm_add', '新增'))}
+                                {submitting ? <Loader2 className="animate-spin" size={18} /> : (editingRole ? t('common.update', 'Update') : t('common.confirm_add', 'Confirm Add'))}
                             </button>
                         </form>
                     </motion.div>

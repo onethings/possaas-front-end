@@ -75,7 +75,7 @@ const ReceiptsReport = () => {
         date: r.date ? new Date(r.date).toLocaleString() : '—',
         employee: r.employee || '—',
         customer: r.customer || '—',
-        type: r.status === 'refund' || r.status === 'returned' ? t('report.refund', '退款') : t('report.sales', '銷售'),
+        type: r.status === 'refund' || r.status === 'returned' ? t('report.refund', 'Refund') : t('report.sales', 'Sales'),
         total: r.totalAmount || 0,
         paymentType: r.paymentType || '',
         status: r.status || 'paid',
@@ -117,7 +117,7 @@ const ReceiptsReport = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }} className="no-print">
                 <FilterBar />
                 <div className="glass-panel" style={{ padding: '0.4rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', alignSelf: 'flex-end' }}>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{t('report.total_receipts', '所有收據')}: {receipts.length}</span>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{t('report.total_receipts', 'Total Receipts')}: {receipts.length}</span>
                 </div>
             </div>
 
@@ -136,20 +136,20 @@ const ReceiptsReport = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', flexShrink: 0 }}>
                         <div ref={exportRef} style={{ position: 'relative' }}>
                             <button onClick={() => setShowExportMenu(!showExportMenu)} style={{ padding: '0.35rem 0.8rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                <Download size={14} /> {t('common.export', '匯出')}
+                                <Download size={14} /> {t('common.export', 'Export')}
                             </button>
                             {showExportMenu && (
                                 <div style={{ position: 'absolute', left: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
                                     <button onClick={() => { setShowExportMenu(false); exportCSV(
-                                        [{label:t('report.receipt_no','收據號碼'),value:'no'},{label:t('report.date','日期'),value:'date'},{label:t('report.employee','員工'),value:'employee'},{label:t('report.customer','客戶'),value:'customer'},{label:t('report.type','種類'),value:'type'},{label:t('report.total','總計'),value:(r)=>r.total}],
+                                        [{label:t('report.receipt_no', 'Receipt No'),value:'no'},{label:t('report.date', 'Date'),value:'date'},{label:t('report.employee', 'Employee'),value:'employee'},{label:t('report.customer', 'Customer'),value:'customer'},{label:t('report.type', 'Type'),value:'type'},{label:t('report.total', 'Total'),value:(r)=>r.total}],
                                         receipts, [], `receipts_${dateRange.start}_${dateRange.end}.csv`
                                     )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
                                         onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
                                         <FileSpreadsheet size={16} color="#4ade80" /> CSV
                                     </button>
                                     <button onClick={() => { setShowExportMenu(false); exportPDF(
-                                        t('report.receipts_report','小票收據'),
-                                        [{label:t('report.receipt_no','收據號碼'),value:'no'},{label:t('report.date','日期'),value:'date'},{label:t('report.employee','員工'),value:'employee'},{label:t('report.customer','客戶'),value:'customer'},{label:t('report.type','種類'),value:'type'},{label:t('report.total','總計'),value:(r)=>r.total}],
+                                        t('report.receipts_report', 'Receipts Report'),
+                                        [{label:t('report.receipt_no', 'Receipt No'),value:'no'},{label:t('report.date', 'Date'),value:'date'},{label:t('report.employee', 'Employee'),value:'employee'},{label:t('report.customer', 'Customer'),value:'customer'},{label:t('report.type', 'Type'),value:'type'},{label:t('report.total', 'Total'),value:(r)=>r.total}],
                                         receipts, tenantConfig?.currency
                                     )}} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.6rem 1rem', border: 'none', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', textAlign: 'left' }}
                                         onMouseEnter={e=>e.target.style.background='rgba(255,255,255,0.05)'} onMouseLeave={e=>e.target.style.background='transparent'}>
@@ -166,11 +166,11 @@ const ReceiptsReport = () => {
                         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
                             <thead>
                                 <tr style={{ borderBottom: '1px solid var(--glass-border)', position: 'sticky', top: 0, background: 'var(--glass-bg)', zIndex: 1 }}>
-                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.receipt_no', '收據號碼')}</th>
-                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.date', '日期')}</th>
-                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.employee', '員工')}</th>
-                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.type', '種類')}</th>
-                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'right', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.total', '總計')}</th>
+                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.receipt_no', 'Receipt No')}</th>
+                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.date', 'Date')}</th>
+                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.employee', 'Employee')}</th>
+                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.type', 'Type')}</th>
+                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'right', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.total', 'Total')}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -215,7 +215,7 @@ const ReceiptsReport = () => {
                                 })}
                                 {receipts.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('common.no_data', '暫無數據')}</td>
+                                        <td colSpan={5} style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('common.no_data', 'No Data')}</td>
                                     </tr>
                                 )}
                             </tbody>
@@ -243,7 +243,7 @@ const ReceiptsReport = () => {
                         ) : (
                             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', gap: '0.75rem' }}>
                                 <Hash size={40} opacity={0.3} />
-                                <span style={{ fontSize: '0.9rem' }}>{t('report.select_receipt_hint', '點選左側收據查看更多詳細資料')}</span>
+                                <span style={{ fontSize: '0.9rem' }}>{t('report.select_receipt_hint', 'Select Receipt Hint')}</span>
                             </div>
                         )}
                     </div>
@@ -296,15 +296,15 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
     const rd = (key) => (raw[key] || '');
 
     // Extract all fields
-    const receiptNumber = rv(receipt, 'receiptNumber', '收據號碼');
-    const dateStr = rv(receipt, 'date', '日期');
-    const employee = rv(receipt, 'employee', '收銀員名稱');
-    const customer = rv(receipt, 'customer', '客戶名稱');
-    const customerPhone = rd('客戶聯繫電話');
-    const items = rv(receipt, 'items', '描述');
-    const paymentType = rv(receipt, 'paymentType', '付款方式');
-    const status = rv(receipt, 'status', '狀態');
-    const receiptType = rd('收據類型');
+    const receiptNumber = rv(receipt, 'receiptNumber', t('report.receipt_no', 'Receipt No.'));
+    const dateStr = rv(receipt, 'date', t('report.date', 'Date'));
+    const employee = rv(receipt, 'employee', t('report.employee', 'Employee'));
+    const customer = rv(receipt, 'customer', t('report.customer_name', 'Customer Name'));
+    const customerPhone = rd(t('report.customer_phone', 'Customer Phone'));
+    const items = rv(receipt, 'items', t('report.description', 'Description'));
+    const paymentType = rv(receipt, 'paymentType', t('report.payment_method', 'Payment Method'));
+    const status = rv(receipt, 'status', t('report.status', 'Status'));
+    const receiptType = rd(t('report.receipt_type', 'Receipt Type'));
     const grossSales = rd('銷售總額');
     const discountRaw = rd('折扣');
     const netSales = rd('淨銷售額');
@@ -312,9 +312,9 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
     const totalCollected = rd('總收集');
     const costOfSales = rd('銷售成本');
     const grossProfit = rd('毛利潤');
-    const orderType = rd('訂單種類');
+    const orderType = rd(t('report.order_type', 'Order Type'));
     const pos = rd('POS');
-    const store = rd('商店');
+    const store = rd(t('report.store', 'Store'));
     const totalAmount = rn(receipt, 'totalAmount');
     const discountAmount = rn(receipt, 'discountAmount');
     const taxAmount = rn(receipt, 'taxAmount');
@@ -342,7 +342,7 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                 <div style={{ display: 'flex', gap: '0.25rem' }}>
                     <button
                         onClick={handlePrint}
-                        title={t('common.print', '列印')}
+                        title={t('common.print', 'Print')}
                         style={{
                             background: 'var(--hover-bg-strong)', border: 'none', color: 'var(--text-muted)',
                             padding: '0.35rem', borderRadius: '6px', cursor: 'pointer',
@@ -383,13 +383,13 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                 <div style={{ borderTop: '1px dashed var(--glass-border)', margin: '0.5rem 0' }} />
 
                 {/* --- Info Rows --- */}
-                <InfoRow icon={<Hash size={11} />} label={t('report.receipt_no', '收據號碼')} value={`#${receiptNumber}`} />
-                {receiptType && <InfoRow icon={<ShoppingBag size={11} />} label={t('report.type', '類型')} value={receiptType} />}
-                <InfoRow icon={<Calendar size={11} />} label={t('report.date', '日期')} value={displayDate} />
-                {employee && <InfoRow icon={<User size={11} />} label={t('report.employee', '員工')} value={employee} />}
-                {customer && <InfoRow icon={<User size={11} />} label={t('report.customer', '客戶')} value={customer} />}
-                {customerPhone && <InfoRow icon={<MapPin size={11} />} label={t('report.phone', '電話')} value={customerPhone} />}
-                {orderType && <InfoRow icon={<ShoppingBag size={11} />} label={t('report.order_type', '訂單種類')} value={orderType} />}
+                <InfoRow icon={<Hash size={11} />} label={t('report.receipt_no', 'Receipt No')} value={`#${receiptNumber}`} />
+                {receiptType && <InfoRow icon={<ShoppingBag size={11} />} label={t('report.type', 'Type')} value={receiptType} />}
+                <InfoRow icon={<Calendar size={11} />} label={t('report.date', 'Date')} value={displayDate} />
+                {employee && <InfoRow icon={<User size={11} />} label={t('report.employee', 'Employee')} value={employee} />}
+                {customer && <InfoRow icon={<User size={11} />} label={t('report.customer', 'Customer')} value={customer} />}
+                {customerPhone && <InfoRow icon={<MapPin size={11} />} label={t('report.phone', 'Phone')} value={customerPhone} />}
+                {orderType && <InfoRow icon={<ShoppingBag size={11} />} label={t('report.order_type', 'Order Type')} value={orderType} />}
                 {pos && <InfoRow icon={<Store size={11} />} label="POS" value={pos} />}
 
                 <div style={{ borderTop: '1px dashed var(--glass-border)', margin: '0.5rem 0' }} />
@@ -398,7 +398,7 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                 {items && (
                     <>
                         <div style={{ fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.3rem', fontSize: '0.75rem' }}>
-                            {t('report.items', '商品')}
+                            {t('report.items', 'Items')}
                         </div>
                         <div style={{
                             background: 'var(--hover-bg)', borderRadius: '6px', padding: '0.5rem 0.6rem',
@@ -411,26 +411,26 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                 )}
 
                 {/* --- Financial Summary --- */}
-                <AmountRow label={t('report.total_sales', '銷售總額')} value={grossSales || formatCurrency(totalAmount)} bold />
+                <AmountRow label={t('report.total_sales', 'Total Sales')} value={grossSales || formatCurrency(totalAmount)} bold />
                 {(discountRaw && discountRaw !== '0.00') || discountAmount > 0 ? (
-                    <AmountRow label={t('report.discount', '折扣')} value={discountRaw || formatCurrency(discountAmount)} color="#f97316" />
+                    <AmountRow label={t('report.discount', 'Discount')} value={discountRaw || formatCurrency(discountAmount)} color="#f97316" />
                 ) : null}
-                <AmountRow label={t('report.net_sales', '淨銷售額')} value={netSales || formatCurrency(netAmount)} />
+                <AmountRow label={t('report.net_sales', 'Net Sales')} value={netSales || formatCurrency(netAmount)} />
                 {(taxRaw && taxRaw !== '0.00') || taxAmount > 0 ? (
-                    <AmountRow label={t('report.tax', '稅務')} value={taxRaw || formatCurrency(taxAmount)} />
+                    <AmountRow label={t('report.tax', 'Tax')} value={taxRaw || formatCurrency(taxAmount)} />
                 ) : null}
                 {costOfSales && costOfSales !== '0.00' && (
-                    <AmountRow label={t('report.cogs', '銷售成本')} value={costOfSales} color="var(--text-muted)" />
+                    <AmountRow label={t('report.cogs', 'Cogs')} value={costOfSales} color="var(--text-muted)" />
                 )}
                 {grossProfit && grossProfit !== '0.00' && (
-                    <AmountRow label={t('report.gross_profit', '毛利潤')} value={grossProfit} color="#16a34a" />
+                    <AmountRow label={t('report.gross_profit', 'Gross Profit')} value={grossProfit} color="#16a34a" />
                 )}
 
                 <div style={{ borderTop: '2px solid var(--glass-border)', margin: '0.5rem 0' }} />
 
                 {/* --- Grand Total --- */}
                 <AmountRow
-                    label={t('report.total_collected', '總收集')}
+                    label={t('report.total_collected', 'Total Collected')}
                     value={totalCollected || formatCurrency(netAmount)}
                     bold
                     large
@@ -441,7 +441,7 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                 {/* --- Payment & Status --- */}
                 {paymentType && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.15rem 0' }}>
-                        <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>{t('report.payment_method', '付款方式')}</span>
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>{t('report.payment_method', 'Payment Method')}</span>
                         <span style={{ color: 'var(--text-main)', fontWeight: 500, fontSize: '0.73rem' }}>
                             <CreditCard size={11} style={{ marginRight: 3, verticalAlign: 'middle' }} />
                             {paymentType}
@@ -450,7 +450,7 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                 )}
                 {status && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.15rem 0' }}>
-                        <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>{t('report.status', '狀態')}</span>
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>{t('report.status', 'Status')}</span>
                         <span style={{
                             padding: '0.1rem 0.5rem', borderRadius: '10px', fontSize: '0.68rem',
                             background: isReturned ? 'rgba(248,113,113,0.15)' : 'rgba(74,222,128,0.15)',
@@ -464,7 +464,7 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
 
                 <div style={{ borderTop: '1px dashed var(--glass-border)', margin: '0.75rem 0 0.5rem' }} />
                 <div style={{ textAlign: 'center', fontSize: '0.65rem', color: 'var(--text-muted)' }}>
-                    {t('report.receipt_footer', '感謝您的惠顧')}
+                    {t('report.receipt_footer', 'Receipt Footer')}
                 </div>
             </div>
         </div>
@@ -477,18 +477,18 @@ const PrintReceipt = ({ receipt, currency }) => {
     const raw = receipt?.rawData || {};
     const rd = (key) => (raw[key] || '');
 
-    const receiptNumber = rv(receipt, 'receiptNumber', '收據號碼');
-    const dateStr = rv(receipt, 'date', '日期');
-    const employee = rv(receipt, 'employee', '收銀員名稱');
-    const customer = rv(receipt, 'customer', '客戶名稱');
-    const items = rv(receipt, 'items', '描述');
-    const paymentType = rv(receipt, 'paymentType', '付款方式');
-    const status = rv(receipt, 'status', '狀態');
+    const receiptNumber = rv(receipt, 'receiptNumber', t('report.receipt_no', 'Receipt No.'));
+    const dateStr = rv(receipt, 'date', t('report.date', 'Date'));
+    const employee = rv(receipt, 'employee', t('report.employee', 'Employee'));
+    const customer = rv(receipt, 'customer', t('report.customer_name', 'Customer Name'));
+    const items = rv(receipt, 'items', t('report.description', 'Description'));
+    const paymentType = rv(receipt, 'paymentType', t('report.payment_method', 'Payment Method'));
+    const status = rv(receipt, 'status', t('report.status', 'Status'));
     const grossSales = rd('銷售總額');
     const discountRaw = rd('折扣');
     const netSales = rd('淨銷售額');
     const totalCollected = rd('總收集');
-    const store = rd('商店');
+    const store = rd(t('report.store', 'Store'));
 
     const displayDate = dateStr ? (() => {
         try { return new Date(dateStr).toLocaleString(); } catch { return dateStr; }

@@ -229,10 +229,10 @@ const SalesSummary = () => {
 
     const kpiCards = [
         { label: t('dashboard.total_sales', 'Total Sales'), value: `${tenantConfig.currency}${totalRevenue.toLocaleString()}` },
-        { label: t('dashboard.refund', '退款'), value: `${tenantConfig.currency}${totalRefunds.toLocaleString()}` },
-        { label: t('dashboard.discount', '折扣'), value: `${tenantConfig.currency}${totalDiscount.toLocaleString()}` },
-        { label: t('dashboard.net_sales', '淨銷售額'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds).toLocaleString()}` },
-        { label: t('dashboard.gross_profit', '毛利潤'), value: `${tenantConfig.currency}${(totalRevenue - totalCost).toLocaleString()}` },
+        { label: t('dashboard.refund', 'Refund'), value: `${tenantConfig.currency}${totalRefunds.toLocaleString()}` },
+        { label: t('dashboard.discount', 'Discount'), value: `${tenantConfig.currency}${totalDiscount.toLocaleString()}` },
+        { label: t('dashboard.net_sales', 'Net Sales'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds).toLocaleString()}` },
+        { label: t('dashboard.gross_profit', 'Gross Profit'), value: `${tenantConfig.currency}${(totalRevenue - totalCost).toLocaleString()}` },
     ];
 
     const salesTrend = d.reports || [];
@@ -244,7 +244,7 @@ const SalesSummary = () => {
         setShowExportMenu(false);
         const activeCols = allColumns.filter(c => visibleCols[c.key]);
         const columns = [
-            { label: t('report.date', '日期'), value: 'date' },
+            { label: t('report.date', 'Date'), value: 'date' },
             ...activeCols.map(c => ({
                 label: c.label,
                 value: (r) => {
@@ -258,18 +258,18 @@ const SalesSummary = () => {
         ];
         const filename = `daily_detail_${dateRange.start}_${dateRange.end}`;
         if (type === 'csv') exportCSV(columns, salesTrend, [], `${filename}.csv`);
-        else exportPDF(t('report.daily_detail', '每日明細'), columns, salesTrend, tenantConfig.currency);
+        else exportPDF(t('report.daily_detail', 'Daily Detail'), columns, salesTrend, tenantConfig.currency);
     };
 
     const handleTrendExport = (type) => {
         setShowTrendExport(false);
         const columns = [
-            { label: t('report.date', '日期'), value: 'date' },
+            { label: t('report.date', 'Date'), value: 'date' },
             { label: metricDef.label, value: (r) => metricDef.get(r) },
         ];
         const filename = `sales_trend_${dateRange.start}_${dateRange.end}`;
         if (type === 'csv') exportCSV(columns, salesTrend, [], `${filename}.csv`);
-        else exportPDF(t('dashboard.sales_trend', '銷售趨勢'), columns, salesTrend, tenantConfig.currency);
+        else exportPDF(t('dashboard.sales_trend', 'Sales Trend'), columns, salesTrend, tenantConfig.currency);
     };
 
     const toggleCol = (key) => {
@@ -382,7 +382,7 @@ const SalesSummary = () => {
                             : <Line data={chartData} options={chartOptions} />
                     ) : (
                         <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-                            {t('common.no_data', '暫無數據')}
+                            {t('common.no_data', 'No data')}
                         </div>
                     )}
                 </div>
@@ -391,13 +391,13 @@ const SalesSummary = () => {
             {/* ═══ Daily Detail Table ═══ */}
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <h3 style={{ fontSize: '1.1rem' }}>{t('report.daily_detail', '每日明細')}</h3>
+                    <h3 style={{ fontSize: '1.1rem' }}>{t('report.daily_detail', 'Daily Detail')}</h3>
                     <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
                         {/* Column visibility toggle */}
                         <div ref={colPickerRef} style={{ position: 'relative' }}>
                             <button onClick={() => setShowColumnPicker(!showColumnPicker)}
                                 style={{ padding: '0.4rem 0.7rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                <Settings2 size={14} /> {t('common.columns', '欄位')}
+                                <Settings2 size={14} /> {t('common.columns', 'Columns')}
                             </button>
                             {showColumnPicker && (
                                 <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '170px', padding: '0.5rem', overflow: 'hidden' }}>
@@ -423,7 +423,7 @@ const SalesSummary = () => {
                         <div ref={exportRef} style={{ position: 'relative' }}>
                             <button onClick={() => setShowExportMenu(!showExportMenu)}
                                 style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: '0.3rem', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer' }}>
-                                <Download size={14} /> {t('common.export', '匯出')}
+                                <Download size={14} /> {t('common.export', 'Export')}
                             </button>
                             {showExportMenu && (
                                 <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
@@ -447,7 +447,7 @@ const SalesSummary = () => {
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
                                 <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                                    {t('report.date', '日期')}
+                                    {t('report.date', 'Date')}
                                 </th>
                                 {allColumns.filter(c => visibleCols[c.key]).map(c => (
                                     <th key={c.key} style={{ padding: '0.75rem 0.5rem', textAlign: c.align, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
@@ -489,7 +489,7 @@ const SalesSummary = () => {
                             )) : (
                                 <tr><td colSpan={Object.keys(visibleCols).filter(k => visibleCols[k]).length + 1}
                                     style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
-                                    {t('common.no_data', '暫無數據')}</td></tr>
+                                    {t('common.no_data', 'No data')}</td></tr>
                             )}
                         </tbody>
                     </table>
@@ -503,9 +503,9 @@ const SalesSummary = () => {
                         onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}
                         style={{ background: 'rgba(0,0,0,0.2)', border: 'none', color: 'var(--text-muted)', padding: '0.3rem', borderRadius: '4px', fontSize: '0.8rem' }}
                     >
-                        <option value={10}>10 {t('common.rows', '行')}</option>
-                        <option value={25}>25 {t('common.rows', '行')}</option>
-                        <option value={50}>50 {t('common.rows', '行')}</option>
+                        <option value={10}>10 {t('common.rows', 'Rows')}</option>
+                        <option value={25}>25 {t('common.rows', 'Rows')}</option>
+                        <option value={50}>50 {t('common.rows', 'Rows')}</option>
                     </select>
                     <div style={{ display: 'flex', gap: '0.3rem' }}>
                         <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage <= 1}

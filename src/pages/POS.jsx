@@ -170,7 +170,7 @@ const POS = () => {
     const handleCheckout = async (status = 'paid') => {
         const finalStoreId = localStorage.getItem('storeId');
         if (!finalStoreId || finalStoreId === 'undefined') {
-            alert(t('pos.error_no_store_id', '無法獲取商店 ID，請刷新頁面重試。'));
+            alert(t('pos.error_no_store_id', 'Error No Store ID'));
             return;
         }
 
@@ -209,7 +209,7 @@ const POS = () => {
             }
         } catch (error) {
             const msg = error.response?.data?.message || error.message;
-            alert(`${t('pos.checkout_failed', '結帳失敗')}: ${JSON.stringify(msg)}`);
+            alert(`${t('pos.checkout_failed', 'Checkout Failed')}: ${JSON.stringify(msg)}`);
         } finally {
             setSubmitting(false);
         }
@@ -228,10 +228,10 @@ const POS = () => {
         <>
             <div style={{ padding: '1.2rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700 }}>
-                    <ShoppingCart size={20} /> {t('pos.cart', '購物車')} ({cartTotalQty})
+                    <ShoppingCart size={20} /> {t('pos.cart', 'Cart')} ({cartTotalQty})
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <button onClick={() => setCart([])} style={{ background: 'none', border: 'none', color: '#f87171', fontSize: '0.8rem', cursor: 'pointer' }}>{t('common.clear', '清空')}</button>
+                    <button onClick={() => setCart([])} style={{ background: 'none', border: 'none', color: '#f87171', fontSize: '0.8rem', cursor: 'pointer' }}>{t('common.clear', 'Clear')}</button>
                     {isMobile && (
                         <button onClick={() => setShowMobileCart(false)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
                             <X size={20} />
@@ -244,7 +244,7 @@ const POS = () => {
                 {cart.length === 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--text-muted)', gap: '1rem', minHeight: '200px' }}>
                         <ShoppingCart size={40} opacity={0.2} />
-                        <span>{t('pos.cart_empty', '尚未加入任何商品')}</span>
+                        <span>{t('pos.cart_empty', 'Cart Empty')}</span>
                     </div>
                 ) : (
                     cart.map(item => (
@@ -272,7 +272,7 @@ const POS = () => {
                         <input
                             id="pos-customer-search"
                             name="custSearchTerm"
-                            placeholder={t('pos.search_customer', '搜尋客戶姓名...')}
+                            placeholder={t('pos.search_customer', 'Search Customer')}
                             style={{ ...miniSelectStyle, paddingLeft: '30px', width: '100%' }}
                             value={custSearchTerm}
                             onChange={(e) => setCustSearchTerm(e.target.value)}
@@ -289,7 +289,7 @@ const POS = () => {
                                 setSelectedCustomer(cust);
                             }}
                         >
-                            <option value="">{t('pos.select_customer', '選擇客戶')} ({customers.filter(c => c.name.toLowerCase().includes(custSearchTerm.toLowerCase())).length})</option>
+                            <option value="">{t('pos.select_customer', 'Select Customer')} ({customers.filter(c => c.name.toLowerCase().includes(custSearchTerm.toLowerCase())).length})</option>
                             {customers
                                 .filter(c => c.name.toLowerCase().includes(custSearchTerm.toLowerCase()))
                                 .map(c => <option key={c._id} value={c._id}>{c.name} ({c.points || 0}pt)</option>)
@@ -305,13 +305,13 @@ const POS = () => {
                                 setAppliedDiscount(disc);
                             }}
                         >
-                            <option value="">{t('pos.select_discount', '選擇折扣')}</option>
+                            <option value="">{t('pos.select_discount', 'Select Discount')}</option>
                             {discounts.map(d => <option key={d._id} value={d._id}>{d.name}</option>)}
                         </select>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '8px' }}>
                         <Calendar size={14} style={{ opacity: 0.6 }} />
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{t('pos.checkout_date', '結帳日期')}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{t('pos.checkout_date', 'Checkout Date')}</span>
                         <input                            id="pos-order-date"
                             name="pos-order-date"                            type="date"
                             value={orderDate}
@@ -324,23 +324,23 @@ const POS = () => {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.9rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ color: 'var(--text-muted)' }}>{t('pos.subtotal', '小計')}</span>
+                        <span style={{ color: 'var(--text-muted)' }}>{t('pos.subtotal', 'Subtotal')}</span>
                         <span>{tenantConfig?.currency}{subtotal.toLocaleString()}</span>
                     </div>
                     {appliedDiscount && (
                         <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f87171' }}>
-                            <span>{t('pos.discount', '折扣')} ({appliedDiscount.name})</span>
+                            <span>{t('pos.discount', 'Discount')} ({appliedDiscount.name})</span>
                             <span>-{tenantConfig?.currency}{discountAmount.toLocaleString()}</span>
                         </div>
                     )}
                     {taxAmount > 0 && (
                         <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-                            <span>{t('pos.tax_amount', '稅額')} ({tenantConfig?.taxRate || 0}%)</span>
+                            <span>{t('pos.tax_amount', 'Tax Amount')} ({tenantConfig?.taxRate || 0}%)</span>
                             <span>+{tenantConfig?.currency}{taxAmount.toLocaleString()}</span>
                         </div>
                     )}
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 800, marginTop: '0.4rem' }}>
-                        <span>{t('pos.total', '總計')}</span>
+                        <span>{t('pos.total', 'Total')}</span>
                         <span style={{ color: 'var(--primary-light)' }}>{tenantConfig?.currency}{total.toLocaleString()}</span>
                     </div>
                 </div>
@@ -352,7 +352,7 @@ const POS = () => {
                         className="btn-secondary"
                         style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', padding: '0.6rem' }}
                     >
-                        <History size={18} /> {t('pos.hold_order', '掛單')}
+                        <History size={18} /> {t('pos.hold_order', 'Hold Order')}
                     </button>
                     <button
                         disabled={submitting || cart.length === 0}
@@ -360,7 +360,7 @@ const POS = () => {
                         className="btn-primary"
                         style={{ flex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.6rem' }}
                     >
-                        {submitting ? <Loader2 className="animate-spin" /> : <><CreditCard size={18} /> {t('pos.checkout_now', '立即結帳')}</>}
+                        {submitting ? <Loader2 className="animate-spin" /> : <><CreditCard size={18} /> {t('pos.checkout_now', 'Checkout Now')}</>}
                     </button>
                 </div>
             </div>
@@ -386,7 +386,7 @@ const POS = () => {
                         <input
                             id="pos-product-search"
                             name="searchTerm"
-                            placeholder={t('pos.search_placeholder', '搜尋產品...')}
+                            placeholder={t('pos.search_placeholder', 'Search Placeholder')}
                             style={searchStyle}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -397,7 +397,7 @@ const POS = () => {
                         <button
                             onClick={() => { localStorage.removeItem('cache_products'); localStorage.removeItem('cache_categories'); fetchData(); }}
                             style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer' }}
-                            title={t('common.sync_data', '同步數據')}
+                            title={t('common.sync_data', 'Sync Data')}
                         >
                             <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
                         </button>
@@ -425,7 +425,7 @@ const POS = () => {
                             color: 'white'
                         }}
                     >
-                        <ShoppingBag size={14} /> {t('pos.category_all', '全部')}
+                        <ShoppingBag size={14} /> {t('pos.category_all', 'Category All')}
                     </button>
 
                     {categories.length === 0 && <span style={{ color: 'gray', fontSize: '0.8rem' }}>{t('common.loading')}</span>}
@@ -501,7 +501,7 @@ const POS = () => {
                                         </span>
                                         {p.hasVariants && (
                                             <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '4px' }}>
-                                                {t('pos.multi_variants', '多規格')}
+                                                {t('pos.multi_variants', 'Multi Variants')}
                                             </span>
                                         )}
                                     </div>
@@ -627,8 +627,8 @@ const POS = () => {
                     >
                         <CheckCircle2 size={24} color="#4ade80" />
                         <div>
-                            <div style={{ fontWeight: 700 }}>{t('pos.checkout_success', '結帳成功')}</div>
-                            <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>{t('pos.order_created_msg', '訂單已成立並更新庫存')}</div>
+                            <div style={{ fontWeight: 700 }}>{t('pos.checkout_success', 'Checkout Success')}</div>
+                            <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>{t('pos.order_created_msg', 'Order Created Msg')}</div>
                         </div>
                     </motion.div>
                 )}

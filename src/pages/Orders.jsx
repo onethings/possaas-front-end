@@ -32,7 +32,7 @@ const Orders = () => {
                 setOrders(result.data);
             }
         } catch (err) {
-            setError(t('orders.error_fetch', '無法獲取訂單列表'));
+            setError(t('orders.error_fetch', 'Error Fetch'));
         } finally {
             setLoading(false);
         }
@@ -44,7 +44,7 @@ const Orders = () => {
 
         const maxAvailable = item.qty - (item.returnQty || 0);
         if (maxAvailable <= 0) {
-            alert(t('orders.already_returned', '該商品已全額退貨'));
+            alert(t('orders.already_returned', 'Already Returned'));
             return;
         }
 
@@ -53,11 +53,11 @@ const Orders = () => {
 
         const returnQty = parseInt(returnQtyStr, 10);
         if (isNaN(returnQty) || returnQty <= 0 || returnQty > maxAvailable) {
-            alert(t('orders.invalid_qty', '無效的退貨數量'));
+            alert(t('orders.invalid_qty', 'Invalid Qty'));
             return;
         }
 
-        const reason = prompt(t('orders.enter_return_reason', '請輸入退貨原因:'), "");
+        const reason = prompt(t('orders.enter_return_reason', 'Enter Return Reason'), "");
         if (reason === null) return;
 
         try {
@@ -105,11 +105,11 @@ const Orders = () => {
                     return o;
                 }));
 
-                alert(t('orders.return_success', '退貨處理成功，報表已即時重新彙總！'));
+                alert(t('orders.return_success', 'Return Success'));
             }
         } catch (err) {
             console.error('Return error:', err);
-            alert(err.message || t('orders.return_failed', '退貨處理失敗'));
+            alert(err.message || t('orders.return_failed', 'Return Failed'));
         } finally {
             setLoading(false);
         }
@@ -119,7 +119,7 @@ const Orders = () => {
         try {
             await exportOrdersCSV({ startDate, endDate, status: activeTab });
         } catch (err) {
-            alert(t('orders.error_export', '導出失敗'));
+            alert(t('orders.error_export', 'Error Export'));
         }
     };
 
@@ -129,18 +129,18 @@ const Orders = () => {
     });
 
     const tabs = [
-        { id: 'all', label: t('orders.status_all', '全部') }, // 手機端精簡字詞避免擠壓
-        { id: 'paid', label: t('orders.status_paid', '已支付') },
-        { id: 'partially_returned', label: t('orders.status_partially_returned', '部分退') },
-        { id: 'returned', label: t('orders.status_returned', '已退貨') },
-        { id: 'cancelled', label: t('orders.status_cancelled', '已取消') }
+        { id: 'all', label: t('orders.status_all', 'Status All') }, // 手機端精簡字詞避免擠壓
+        { id: 'paid', label: t('orders.status_paid', 'Status Paid') },
+        { id: 'partially_returned', label: t('orders.status_partially_returned', 'Status Partially Returned') },
+        { id: 'returned', label: t('orders.status_returned', 'Status Returned') },
+        { id: 'cancelled', label: t('orders.status_cancelled', 'Status Cancelled') }
     ];
 
     if (loading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', color: '#6366f1' }}>
                 <Loader2 className="animate-spin" size={40} />
-                <span style={{ marginLeft: '8px' }}>{t('orders.loading', '加載中...')}</span>
+                <span style={{ marginLeft: '8px' }}>{t('orders.loading', 'Loading')}</span>
             </div>
         );
     }
@@ -274,7 +274,7 @@ const Orders = () => {
                 </div>
                 <button onClick={handleExport} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.6rem 1.2rem', background: '#4f46e5', border: 'none', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '0.9rem' }}>
                     <Download size={16} />
-                    {t('orders.export_summary', '導出總表')}
+                    {t('orders.export_summary', 'Export Summary')}
                 </button>
             </div>
 
@@ -318,24 +318,24 @@ const Orders = () => {
                     <table className="responsive-table">
                         <thead>
                             <tr style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
-                                <th>{t('orders.csv_headers.no', '訂單編號')}</th>
-                                <th>{t('orders.anonymous_customer', '客戶')}</th>
-                                <th>{t('orders.final_amount', '實收金額')}</th>
-                                <th>{t('orders.csv_headers.status', '狀態')}</th>
-                                <th>{t('orders.csv_headers.time', '創建時間')}</th>
-                                <th style={{ textAlign: 'right' }}>{t('orders.csv_headers.id', '操作')}</th>
+                                <th>{t('orders.csv_headers.no', 'No')}</th>
+                                <th>{t('orders.anonymous_customer', 'Anonymous Customer')}</th>
+                                <th>{t('orders.final_amount', 'Final Amount')}</th>
+                                <th>{t('orders.csv_headers.status', 'Status')}</th>
+                                <th>{t('orders.csv_headers.time', 'Time')}</th>
+                                <th style={{ textAlign: 'right' }}>{t('orders.csv_headers.id', 'ID')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredOrders.length === 0 ? (
                                 <tr>
-                                    <td colSpan="6" style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('orders.no_data', '暫無數據')}</td>
+                                    <td colSpan="6" style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('orders.no_data', 'No Data')}</td>
                                 </tr>
                             ) : (
                                 filteredOrders.map((order) => (
                                     <tr key={order._id} style={{ fontSize: '0.9rem' }}>
                                         <td style={{ fontWeight: 600, color: '#38bdf8' }}>{order.orderNo}</td>
-                                        <td style={{ color: '#e2e8f0' }}>{order.customerName || t('orders.anonymous_customer', '匿名客戶')}</td>
+                                        <td style={{ color: '#e2e8f0' }}>{order.customerName || t('orders.anonymous_customer', 'Anonymous Customer')}</td>
                                         <td style={{ fontWeight: 700, color: '#f8fafc' }}>
                                             {tenantConfig.currency}{(order.finalAmount || 0).toLocaleString()}
                                         </td>
@@ -351,7 +351,7 @@ const Orders = () => {
                                                 style={{ background: 'rgba(255,255,255,0.05)', border: 'none', padding: '6px 10px', borderRadius: '6px', color: '#cbd5e1', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                                             >
                                                 <Eye size={14} />
-                                                <span>{t('orders.details_title', '詳情')}</span>
+                                                <span>{t('orders.details_title', 'Details Title')}</span>
                                             </button>
                                         </td>
                                     </tr>
@@ -364,7 +364,7 @@ const Orders = () => {
                 {/* 2. 手機端：轉換為精緻卡片流 (在桌機平板端自動 hidden) */}
                 <div className="mobile-card-list">
                     {filteredOrders.length === 0 ? (
-                        <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('orders.no_data', '暫無數據')}</div>
+                        <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>{t('orders.no_data', 'No Data')}</div>
                     ) : (
                         filteredOrders.map((order) => (
                             <div key={order._id} className="mobile-order-card">
@@ -373,7 +373,7 @@ const Orders = () => {
                                     <StatusBadge status={order.status} t={t} />
                                 </div>
                                 <div className="card-row" style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
-                                    <span>{order.customerName || t('orders.anonymous_customer', '匿名客戶')}</span>
+                                    <span>{order.customerName || t('orders.anonymous_customer', 'Anonymous Customer')}</span>
                                     <span>{new Date(order.createdAt).toLocaleDateString()}</span>
                                 </div>
                                 <div className="card-row">
@@ -385,7 +385,7 @@ const Orders = () => {
                                         style={{ background: 'rgba(255,255,255,0.08)', border: 'none', padding: '6px 12px', borderRadius: '6px', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem' }}
                                     >
                                         <Eye size={12} />
-                                        <span>{t('orders.details_title', '詳情')}</span>
+                                        <span>{t('orders.details_title', 'Details Title')}</span>
                                     </button>
                                 </div>
                             </div>
@@ -429,7 +429,7 @@ const Orders = () => {
                                                     onClick={() => handleReturn(selectedOrder.orderNo, item)}
                                                     style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#f97316', border: '1px solid rgba(249, 115, 22, 0.3)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', cursor: 'pointer', marginLeft: '8px' }}
                                                 >
-                                                    {t('orders.return_btn', '退貨')}
+                                                    {t('orders.return_btn', 'Return Btn')}
                                                 </button>
                                             )}
                                         </div>
@@ -440,7 +440,7 @@ const Orders = () => {
 
                         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
                             <button onClick={() => setSelectedOrder(null)} style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: '#fff', padding: '8px 20px', borderRadius: '8px', cursor: 'pointer', width: '100%', maxWidth: '100px' }}>
-                                {t('orders.close', '關閉')}
+                                {t('orders.close', 'Close')}
                             </button>
                         </div>
                     </motion.div>
@@ -454,11 +454,11 @@ const Orders = () => {
 
 const StatusBadge = ({ status, t }) => {
     const configs = {
-        paid: { color: '#4ade80', icon: CheckCircle, text: t('orders.status_paid', '已支付') },
-        pending: { color: '#fbbf24', icon: Clock, text: t('orders.status_pending', '待處理') },
-        cancelled: { color: '#f87171', icon: XCircle, text: t('orders.status_cancelled', '已取消') },
-        returned: { color: '#ef4444', icon: CheckCircle, text: t('orders.status_returned', '已退貨') },
-        partially_returned: { color: '#f97316', icon: CheckCircle, text: t('orders.status_partially_returned', '部分退貨') },
+        paid: { color: '#4ade80', icon: CheckCircle, text: t('orders.status_paid', 'Status Paid') },
+        pending: { color: '#fbbf24', icon: Clock, text: t('orders.status_pending', 'Status Pending') },
+        cancelled: { color: '#f87171', icon: XCircle, text: t('orders.status_cancelled', 'Status Cancelled') },
+        returned: { color: '#ef4444', icon: CheckCircle, text: t('orders.status_returned', 'Status Returned') },
+        partially_returned: { color: '#f97316', icon: CheckCircle, text: t('orders.status_partially_returned', 'Status Partially Returned') },
     };
     const config = configs[status] || configs.pending;
     const Icon = config.icon;

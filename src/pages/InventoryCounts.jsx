@@ -227,7 +227,7 @@ const InventoryCounts = () => {
                                     }} 
                                 />
                                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>
-                                    {t('inventory.modal.qty_hint', '正數 = 增加庫存，負數 = 減少庫存（僅接受整數）')}
+                                    {t('inventory.modal.qty_hint', 'Qty Hint')}
                                 </div>
                             </div>
 

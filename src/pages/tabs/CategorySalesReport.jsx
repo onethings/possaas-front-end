@@ -9,28 +9,28 @@ import { getRangeReport } from '../../api/reports';
 import { exportCSV, exportPDF } from '../../utils/exportUtils';
 
 // ── 欄位定義 ──
-const COLUMN_DEFS = [
-  { key: 'name',         label: '類別',     align: 'left',  isCurrency: false,
+const COLUMN_DEFS = (t) => [
+  { key: 'name',         label: t('report.category', 'Category'),     align: 'left',  isCurrency: false,
     getVal: (c) => c.name },
-  { key: 'qty',          label: '售出商品', align: 'right', isCurrency: false,
+  { key: 'qty',          label: t('report.qty_sold', 'Qty Sold'), align: 'right', isCurrency: false,
     getVal: (c) => c.qty },
-  { key: 'totalRevenue', label: '銷售總額', align: 'right', isCurrency: true,
+  { key: 'totalRevenue', label: t('report.total_sales', 'Total Sales'), align: 'right', isCurrency: true,
     getVal: (c) => c.totalRevenue || 0 },
-  { key: 'returnQty',    label: '商品退還數量', align: 'right', isCurrency: false,
+  { key: 'returnQty',    label: t('report.return_qty', 'Return Qty'), align: 'right', isCurrency: false,
     getVal: (c) => c.returnQty || 0 },
-  { key: 'refund',       label: '退款',     align: 'right', isCurrency: true,
+  { key: 'refund',       label: t('report.refunds', 'Refunds'),     align: 'right', isCurrency: true,
     getVal: (c) => c.refund || 0 },
-  { key: 'discount',     label: '折扣',     align: 'right', isCurrency: true,
+  { key: 'discount',     label: t('report.discount', 'Discount'),     align: 'right', isCurrency: true,
     getVal: (c) => c.discount || 0 },
-  { key: 'netSales',     label: '淨銷售額', align: 'right', isCurrency: true,
+  { key: 'netSales',     label: t('report.net_sales', 'Net Sales'), align: 'right', isCurrency: true,
     getVal: (c) => c.netSales },
-  { key: 'cost',         label: '銷售成本', align: 'right', isCurrency: true,
+  { key: 'cost',         label: t('report.cost_of_sales', 'Cost of Sales'), align: 'right', isCurrency: true,
     getVal: (c) => c.cost },
-  { key: 'grossProfit',  label: '毛利潤',   align: 'right', isCurrency: true,
+  { key: 'grossProfit',  label: t('report.gross_profit', 'Gross Profit'),   align: 'right', isCurrency: true,
     getVal: (c) => c.netSales - c.cost },
-  { key: 'profitMargin', label: '利潤率',   align: 'right', isCurrency: false,
+  { key: 'profitMargin', label: t('report.profit_margin', 'Profit Margin'),   align: 'right', isCurrency: false,
     getVal: (c) => c.margin + '%' },
-  { key: 'tax',          label: '稅務',     align: 'right', isCurrency: true,
+  { key: 'tax',          label: t('report.tax', 'Tax'),     align: 'right', isCurrency: true,
     getVal: (c) => c.tax || 0 },
 ];
 
@@ -101,11 +101,11 @@ const CategorySalesReport = () => {
     };
 
     const handleExport = (type) => {
-        const activeCols = COLUMN_DEFS.filter(c => visibleCols[c.key]);
+        const activeCols = COLUMN_DEFS(t).filter(c => visibleCols[c.key]);
         const columns = activeCols.map(c => ({ label: c.label, value: (r) => c.getVal(r) }));
         const filename = `category_sales_${dateRange.start}_${dateRange.end}`;
         if (type === 'csv') exportCSV(columns, categories, [], `${filename}.csv`);
-        else exportPDF(t('report.category_sales', '類別銷售'), columns, categories, tenantConfig.currency);
+        else exportPDF(t('report.category_sales', 'Category Sales'), columns, categories, tenantConfig.currency);
     };
 
     if (loading) {
@@ -126,17 +126,17 @@ const CategorySalesReport = () => {
 
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <h3 style={{ fontSize: '1.1rem' }}>{t('report.category_sales', '類別銷售')}</h3>
+                    <h3 style={{ fontSize: '1.1rem' }}>{t('report.category_sales', 'Category Sales')}</h3>
                     <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
                         {/* 欄位選擇 */}
                         <div ref={colPickerRef} style={{ position: 'relative' }}>
                             <button onClick={() => setShowColumnPicker(!showColumnPicker)}
                                 style={{ padding: '0.4rem 0.7rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                <Settings2 size={14} /> {t('common.columns', '欄位')}
+                                <Settings2 size={14} /> {t('common.columns', 'Columns')}
                             </button>
                             {showColumnPicker && (
                                 <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '170px', padding: '0.5rem', overflow: 'hidden' }}>
-                                    {COLUMN_DEFS.map(c => (
+                                    {COLUMN_DEFS(t).map(c => (
                                         <label key={c.key} style={{
                                             display: 'flex', alignItems: 'center', gap: '0.5rem',
                                             padding: '0.4rem 0.4rem', cursor: 'pointer', borderRadius: '4px',
@@ -156,7 +156,7 @@ const CategorySalesReport = () => {
                         {/* 匯出 */}
                         <div ref={exportRef} style={{ position: 'relative' }}>
                             <button onClick={() => setShowExportMenu(!showExportMenu)} style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                <Download size={14} /> {t('common.export', '匯出')}
+                                <Download size={14} /> {t('common.export', 'Export')}
                             </button>
                             {showExportMenu && (
                                 <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
@@ -177,7 +177,7 @@ const CategorySalesReport = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                {COLUMN_DEFS.filter(c => visibleCols[c.key]).map(c => (
+                                {COLUMN_DEFS(t).filter(c => visibleCols[c.key]).map(c => (
                                     <th key={c.key} style={{ padding: '0.75rem 0.5rem', textAlign: c.align, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                                         {c.label}
                                     </th>
@@ -187,7 +187,7 @@ const CategorySalesReport = () => {
                         <tbody>
                             {categories.map((cat, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-                                    {COLUMN_DEFS.filter(c => visibleCols[c.key]).map(c => {
+                                    {COLUMN_DEFS(t).filter(c => visibleCols[c.key]).map(c => {
                                         const rawVal = c.getVal(cat);
                                         const isPercent = c.key === 'profitMargin';
                                         const displayVal = c.isCurrency
@@ -212,9 +212,9 @@ const CategorySalesReport = () => {
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                     <span>{t('common.page_info', { current: 1, total: Math.max(1, Math.ceil(categories.length / 10)) })}</span>
                     <select style={{ background: 'rgba(0,0,0,0.2)', border: 'none', color: 'var(--text-muted)', padding: '0.3rem', borderRadius: '4px', fontSize: '0.8rem' }}>
-                        <option>10 {t('common.rows', '行')}</option>
-                        <option>25 {t('common.rows', '行')}</option>
-                        <option>50 {t('common.rows', '行')}</option>
+                        <option>10 {t('common.rows', 'Rows')}</option>
+                        <option>25 {t('common.rows', 'Rows')}</option>
+                        <option>50 {t('common.rows', 'Rows')}</option>
                     </select>
                 </div>
             </div>

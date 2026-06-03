@@ -12,9 +12,9 @@ const PaymentMethodsPage = () => {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1.5rem', height: '100%', overflow: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1.1rem' }}>{t('payment_methods.title', '付款方式')}</h3>
+                <h3 style={{ fontSize: '1.1rem' }}>{t('payment_methods.title', 'Title')}</h3>
                 <button className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <Plus size={16} /> {t('payment_methods.add', '新增付款方式')}
+                    <Plus size={16} /> {t('payment_methods.add', 'Add')}
                 </button>
             </div>
 
@@ -24,7 +24,7 @@ const PaymentMethodsPage = () => {
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
                                 <th style={{ padding: '0.75rem 0.5rem', width: '40px' }}></th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('payment_methods.name', '名字')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('payment_methods.name', 'Name')}</th>
                                 <th style={{ padding: '0.75rem 0.5rem', width: '40px' }}></th>
                             </tr>
                         </thead>

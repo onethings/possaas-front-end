@@ -20,32 +20,32 @@ const CHART_TYPES = ['bar', 'line', 'pie'];
 const CHART_TYPE_ICONS = { bar: BarChart3, line: LineChart, pie: PieChart };
 
 // ── 欄位定義 ──
-const COLUMN_DEFS = [
-  { key: 'name',         label: '商品',     align: 'left',  isCurrency: false,
+const COLUMN_DEFS = (t) => [
+  { key: 'name',         label: t('report.product', 'Product'),     align: 'left',  isCurrency: false,
     getVal: (p) => p.name },
   { key: 'sku',          label: 'SKU',       align: 'left',  isCurrency: false,
     getVal: (p) => p.sku || '—' },
-  { key: 'category',     label: '類別',     align: 'left',  isCurrency: false,
+  { key: 'category',     label: t('report.category', 'Category'),     align: 'left',  isCurrency: false,
     getVal: (p) => p.category || '—' },
-  { key: 'qty',          label: '售出商品', align: 'right', isCurrency: false,
+  { key: 'qty',          label: t('report.qty_sold', 'Qty Sold'), align: 'right', isCurrency: false,
     getVal: (p) => p.qty },
-  { key: 'totalRevenue', label: '銷售總額', align: 'right', isCurrency: true,
+  { key: 'totalRevenue', label: t('report.total_sales', 'Total Sales'), align: 'right', isCurrency: true,
     getVal: (p) => p.totalRevenue || 0 },
-  { key: 'returnQty',    label: '商品退還數量', align: 'right', isCurrency: false,
+  { key: 'returnQty',    label: t('report.return_qty', 'Return Qty'), align: 'right', isCurrency: false,
     getVal: (p) => p.returnQty || 0 },
-  { key: 'refund',       label: '退款',     align: 'right', isCurrency: true,
+  { key: 'refund',       label: t('report.refunds', 'Refunds'),     align: 'right', isCurrency: true,
     getVal: (p) => p.refund || 0 },
-  { key: 'discount',     label: '折扣',     align: 'right', isCurrency: true,
+  { key: 'discount',     label: t('report.discount', 'Discount'),     align: 'right', isCurrency: true,
     getVal: (p) => p.discount || 0 },
-  { key: 'netSales',     label: '淨銷售額', align: 'right', isCurrency: true,
+  { key: 'netSales',     label: t('report.net_sales', 'Net Sales'), align: 'right', isCurrency: true,
     getVal: (p) => p.netSales },
-  { key: 'cost',         label: '銷售成本', align: 'right', isCurrency: true,
+  { key: 'cost',         label: t('report.cost_of_sales', 'Cost of Sales'), align: 'right', isCurrency: true,
     getVal: (p) => p.cost },
-  { key: 'grossProfit',  label: '毛利潤',   align: 'right', isCurrency: true,
+  { key: 'grossProfit',  label: t('report.gross_profit', 'Gross Profit'),   align: 'right', isCurrency: true,
     getVal: (p) => p.netSales - p.cost },
-  { key: 'profitMargin', label: '利潤率',   align: 'right', isCurrency: false,
+  { key: 'profitMargin', label: t('report.profit_margin', 'Profit Margin'),   align: 'right', isCurrency: false,
     getVal: (p) => p.profitMargin + '%' },
-  { key: 'tax',          label: '稅務',     align: 'right', isCurrency: true,
+  { key: 'tax',          label: t('report.tax', 'Tax'),     align: 'right', isCurrency: true,
     getVal: (p) => p.tax || 0 },
 ];
 
@@ -221,7 +221,7 @@ const ProductSalesReport = () => {
         return {
             labels,
             datasets: [{
-                label: t('report.net_sales', '淨銷售額'),
+                label: t('report.net_sales', 'Net Sales'),
                 data: values,
                 backgroundColor: bgColors,
                 borderColor: borderColors,
@@ -253,7 +253,7 @@ const ProductSalesReport = () => {
             labels,
             datasets: [
                 {
-                    label: t('report.net_sales', '淨銷售額'),
+                    label: t('report.net_sales', 'Net Sales'),
                     data: groupedTrend.map(g => g.totalRevenue),
                     backgroundColor: chartType === 'bar' ? colors[0] : 'rgba(96,165,250,0.1)',
                     borderColor: 'rgba(96,165,250,0.9)',
@@ -305,7 +305,7 @@ const ProductSalesReport = () => {
         if (!data) {
             return (
                 <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-                    {t('common.no_data', '暫無數據')}
+                    {t('common.no_data', 'No Data')}
                 </div>
             );
         }
@@ -318,7 +318,7 @@ const ProductSalesReport = () => {
     };
 
     const handleExport = (type) => {
-        const activeCols = COLUMN_DEFS.filter(c => visibleCols[c.key]);
+        const activeCols = COLUMN_DEFS(t).filter(c => visibleCols[c.key]);
         const columns = [
             ...activeCols.map(c => ({
                 label: c.label,
@@ -327,11 +327,11 @@ const ProductSalesReport = () => {
         ];
         const filename = `product_sales_${dateRange.start}_${dateRange.end}`;
         if (type === 'csv') exportCSV(columns, products, [], `${filename}.csv`);
-        else exportPDF(t('report.product_details', '商品銷售明細'), columns, products, tenantConfig.currency);
+        else exportPDF(t('report.product_details', 'Product Details'), columns, products, tenantConfig.currency);
     };
 
-    const chartTypeLabels = { bar: t('report.chart_bar', '直方圖'), line: t('report.chart_line', '折線圖'), pie: t('report.chart_pie', '圓餅圖') };
-    const groupingLabels = { hour: t('report.group_hour', '時'), day: t('report.group_day', '天'), week: t('report.group_week', '週'), month: t('report.group_month', '月'), quarter: t('report.group_quarter', '季度'), year: t('report.group_year', '年') };
+    const chartTypeLabels = { bar: t('report.chart_bar', 'Chart Bar'), line: t('report.chart_line', 'Chart Line'), pie: t('report.chart_pie', 'Chart Pie') };
+    const groupingLabels = { hour: t('report.group_hour', 'Group Hour'), day: t('report.group_day', 'Group Day'), week: t('report.group_week', 'Group Week'), month: t('report.group_month', 'Group Month'), quarter: t('report.group_quarter', 'Group Quarter'), year: t('report.group_year', 'Group Year') };
 
     if (loading) {
         return (
@@ -353,7 +353,7 @@ const ProductSalesReport = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                 {/* 左邊：前5名商品列表 */}
                 <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                    <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>{t('report.top_5_products', '前 5 名商品')}</h3>
+                    <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>{t('report.top_5_products', 'Top 5 Products')}</h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                         {top5.map((p, idx) => (
                             <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(255,255,255,0.03)' }}>
@@ -397,7 +397,7 @@ const ProductSalesReport = () => {
                         </div>
                         {/* 時間分組選擇 */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{t('report.group_by', '按')}</span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{t('report.group_by', 'Group By')}</span>
                             <select
                                 value={timeGrouping}
                                 onChange={e => setTimeGrouping(e.target.value)}
@@ -423,7 +423,7 @@ const ProductSalesReport = () => {
             {/* 銷售趨勢圖表（依時間分組） */}
             {groupedTrend.length > 1 && (
                 <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                    <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>{t('report.sales_trend_chart', '銷售趨勢圖表')}</h3>
+                    <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>{t('report.sales_trend_chart', 'Sales Trend Chart')}</h3>
                     <div style={{ height: '280px' }}>
                         {renderChart(trendChartData, true)}
                     </div>
@@ -433,17 +433,17 @@ const ProductSalesReport = () => {
             {/* Product Detail Table */}
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <h3 style={{ fontSize: '1.1rem' }}>{t('report.product_details', '商品銷售明細')}</h3>
+                    <h3 style={{ fontSize: '1.1rem' }}>{t('report.product_details', 'Product Details')}</h3>
                     <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
                         {/* 欄位選擇 */}
                         <div ref={colPickerRef} style={{ position: 'relative' }}>
                             <button onClick={() => setShowColumnPicker(!showColumnPicker)}
                                 style={{ padding: '0.4rem 0.7rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                <Settings2 size={14} /> {t('common.columns', '欄位')}
+                                <Settings2 size={14} /> {t('common.columns', 'Columns')}
                             </button>
                             {showColumnPicker && (
                                 <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '170px', padding: '0.5rem', overflow: 'hidden' }}>
-                                    {COLUMN_DEFS.map(c => (
+                                    {COLUMN_DEFS(t).map(c => (
                                         <label key={c.key} style={{
                                             display: 'flex', alignItems: 'center', gap: '0.5rem',
                                             padding: '0.4rem 0.4rem', cursor: 'pointer', borderRadius: '4px',
@@ -463,7 +463,7 @@ const ProductSalesReport = () => {
                         {/* 匯出 */}
                         <div ref={exportRef} style={{ position: 'relative' }}>
                             <button onClick={() => setShowExportMenu(!showExportMenu)} style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                <Download size={14} /> {t('common.export', '匯出')}
+                                <Download size={14} /> {t('common.export', 'Export')}
                             </button>
                             {showExportMenu && (
                                 <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '140px', overflow: 'hidden' }}>
@@ -484,7 +484,7 @@ const ProductSalesReport = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                {COLUMN_DEFS.filter(c => visibleCols[c.key]).map(c => (
+                                {COLUMN_DEFS(t).filter(c => visibleCols[c.key]).map(c => (
                                     <th key={c.key} style={{ padding: '0.75rem 0.5rem', textAlign: c.align, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                                         {c.label}
                                     </th>
@@ -494,7 +494,7 @@ const ProductSalesReport = () => {
                         <tbody>
                             {products.map((p, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-                                    {COLUMN_DEFS.filter(c => visibleCols[c.key]).map(c => {
+                                    {COLUMN_DEFS(t).filter(c => visibleCols[c.key]).map(c => {
                                         const rawVal = c.getVal(p);
                                         const isPercent = c.key === 'profitMargin';
                                         const isNumeric = c.isCurrency || c.key === 'qty' || c.key === 'returnQty';
@@ -520,9 +520,9 @@ const ProductSalesReport = () => {
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                     <span>{t('common.page_info', { current: 1, total: Math.max(1, Math.ceil(products.length / 10)) })}</span>
                     <select style={{ background: 'rgba(0,0,0,0.2)', border: 'none', color: 'var(--text-muted)', padding: '0.3rem', borderRadius: '4px', fontSize: '0.8rem' }}>
-                        <option>10 {t('common.rows', '行')}</option>
-                        <option>25 {t('common.rows', '行')}</option>
-                        <option>50 {t('common.rows', '行')}</option>
+                        <option>10 {t('common.rows', 'Rows')}</option>
+                        <option>25 {t('common.rows', 'Rows')}</option>
+                        <option>50 {t('common.rows', 'Rows')}</option>
                     </select>
                 </div>
             </div>

@@ -47,9 +47,9 @@ const ShiftsReport = () => {
 
             <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                    <h3 style={{ fontSize: '1.1rem' }}>{t('report.shifts', '值班記錄')}</h3>
+                    <h3 style={{ fontSize: '1.1rem' }}>{t('report.shifts', 'Shifts')}</h3>
                     <button style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                        <Download size={14} /> {t('common.export', '匯出')}
+                        <Download size={14} /> {t('common.export', 'Export')}
                     </button>
                 </div>
                 {loading ? (
@@ -59,18 +59,18 @@ const ShiftsReport = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.date', '日期')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.employee', '員工')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.start_time', '上班時間')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.end_time', '下班時間')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.total_hours', '總時數')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.date', 'Date')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.employee', 'Employee')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.start_time', 'Start Time')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.end_time', 'End Time')}</th>
+                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.total_hours', 'Total Hours')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {shifts.length > 0 ? shifts.map((s, idx) => (
                                 <tr key={s._id || idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                                     <td style={{ padding: '0.75rem 0.5rem', fontWeight: 500 }}>{new Date(s.clockIn).toLocaleDateString()}</td>
-                                    <td style={{ padding: '0.75rem 0.5rem' }}>{s.staffName || s.userId || t('common.unknown', '未知')}</td>
+                                    <td style={{ padding: '0.75rem 0.5rem' }}>{s.staffName || s.userId || t('common.unknown', 'Unknown')}</td>
                                     <td style={{ padding: '0.75rem 0.5rem' }}>{new Date(s.clockIn).toLocaleTimeString()}</td>
                                     <td style={{ padding: '0.75rem 0.5rem' }}>{s.clockOut ? new Date(s.clockOut).toLocaleTimeString() : '—'}</td>
                                     <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right', fontWeight: 600 }}>
@@ -81,7 +81,7 @@ const ShiftsReport = () => {
                                 <tr>
                                     <td colSpan={5} style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
                                         <div style={{ fontSize: '2rem', marginBottom: '0.5rem', opacity: 0.3 }}>🕐</div>
-                                        <p>{t('report.no_shift_data', '沒有資料可顯示，在所選時間間隔，沒有值班結束')}</p>
+                                        <p>{t('report.no_shift_data', 'No Shift Data')}</p>
                                     </td>
                                 </tr>
                             )}

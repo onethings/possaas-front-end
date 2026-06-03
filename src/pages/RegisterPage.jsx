@@ -92,9 +92,9 @@ const RegisterPage = () => {
             <div style={{ textAlign: 'center', marginBottom: '2rem' }} data-tour-id="register-welcome">
                 <h1 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>
                     {/* 處理漸層文字：開始您的 Kevin POS 旅程 */}
-                    {t('register.title_prefix', '開始您的 ')}
+                    {t('register.title_prefix', 'Title Prefix')}
                     <span className="gradient-text">Kevin POS</span>
-                    {t('register.title_suffix', ' 旅程')}
+                    {t('register.title_suffix', 'Title Suffix')}
                 </h1>
                 <p style={{ color: 'var(--text-muted)' }}>{t('register.subtitle')}</p>
             </div>
@@ -265,44 +265,44 @@ const RegisterPage = () => {
 const registerTourSteps = (t) => [
     {
         target: 'register-welcome',
-        title: t('tour.register_welcome_title', '建立您的商店帳號'),
-        content: t('tour.register_welcome_content', '歡迎！讓我們逐步引導您完成 Kevin POS 的註冊流程，快速建立您的商店後台。'),
+        title: t('tour.register_welcome_title', 'Register Welcome Title'),
+        content: t('tour.register_welcome_content', 'Register Welcome Content'),
         placement: 'bottom',
     },
     {
         target: 'register-name',
-        title: t('tour.register_name_title', '商店名稱'),
-        content: t('tour.register_name_content', '請輸入您的商店或公司名稱。這將會顯示在您的收據和報表上。'),
+        title: t('tour.register_name_title', 'Register Name Title'),
+        content: t('tour.register_name_content', 'Register Name Content'),
         placement: 'right',
     },
     {
         target: 'register-tenantId',
-        title: t('tour.register_tenant_title', '公司編號'),
-        content: t('tour.register_tenant_content', '設定一個獨一無二的公司編號。這將用於您的團隊成員登入時識別所屬商店。'),
+        title: t('tour.register_tenant_title', 'Register Tenant Title'),
+        content: t('tour.register_tenant_content', 'Register Tenant Content'),
         placement: 'right',
     },
     {
         target: 'register-email',
-        title: t('tour.register_email_title', '管理員電子郵件'),
-        content: t('tour.register_email_content', '輸入管理員的電子郵件地址。這將作為您登入後台的超級管理員帳號。'),
+        title: t('tour.register_email_title', 'Register Email Title'),
+        content: t('tour.register_email_content', 'Register Email Content'),
         placement: 'right',
     },
     {
         target: 'register-password',
-        title: t('tour.register_password_title', '設定密碼'),
-        content: t('tour.register_password_content', '請設定一組安全的密碼。建議使用英文大小寫、數字和符號的組合。'),
+        title: t('tour.register_password_title', 'Register Password Title'),
+        content: t('tour.register_password_content', 'Register Password Content'),
         placement: 'right',
     },
     {
         target: 'register-confirm',
-        title: t('tour.register_confirm_title', '確認密碼'),
-        content: t('tour.register_confirm_content', '再次輸入相同的密碼以確認無誤。兩個密碼必須完全一致才能繼續。'),
+        title: t('tour.register_confirm_title', 'Register Confirm Title'),
+        content: t('tour.register_confirm_content', 'Register Confirm Content'),
         placement: 'right',
     },
     {
         target: 'register-submit',
-        title: t('tour.register_submit_title', '建立帳號'),
-        content: t('tour.register_submit_content', '所有資料填寫完成後，點擊此按鈕即可建立您的商店帳號並開始使用 Kevin POS！'),
+        title: t('tour.register_submit_title', 'Register Submit Title'),
+        content: t('tour.register_submit_content', 'Register Submit Content'),
         placement: 'top',
     },
 ];
