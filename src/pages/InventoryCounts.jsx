@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { ClipboardList, Plus, Search, AlertCircle, Loader2 } from 'lucide-react';
 import { getProducts } from '../api/products';
@@ -274,5 +276,7 @@ const tdStyle = { padding: '1.2rem', fontSize: '0.95rem' };
 const selectStyle = { padding: '0.75rem 1rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', outline: 'none', width: '100%' };
 const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' };
 const searchStyle = { padding: '0.8rem 1rem 0.8rem 40px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', width: '100%', outline: 'none' };
+
+            <GuidedTour tourId="inventoryCounts" steps={pageTours.inventoryCounts(t)} />
 
 export default InventoryCounts;

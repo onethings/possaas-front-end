@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Search, Filter, Plus, Mail, Phone, Edit2, Trash2, Loader2, Square, CheckSquare } from 'lucide-react';
 import { getCustomers, createCustomer, updateCustomer, deleteCustomer } from '../api/customers';
@@ -276,5 +278,7 @@ const tdStyle = { padding: '1rem 0.75rem', fontSize: '0.9rem' };
 const searchStyle = { padding: '0.8rem 1rem 0.8rem 40px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', color: 'white', width: '100%', outline: 'none' };
 const centerStyle = { height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', gap: '0.5rem' };
 const actionBtnStyle = { background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '4px', padding: '8px', cursor: 'pointer', color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center' };
+
+            <GuidedTour tourId="customers" steps={pageTours.customers(t)} />
 
 export default Customers;

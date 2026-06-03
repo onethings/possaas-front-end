@@ -29,6 +29,8 @@ import { getDiscounts } from '../api/discounts';
 import { createOrder } from '../api/orders';
 import { getMyTenant } from '../api/tenants';
 import { useTenant } from '../contexts/TenantContext';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 
 const POS = () => {
     const { t } = useTranslation();

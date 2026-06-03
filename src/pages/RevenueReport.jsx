@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Calendar,
@@ -648,5 +650,7 @@ const modernTableStyle = {
     borderSpacing: '0 8px',
     fontSize: '0.9rem'
 };
+
+            <GuidedTour tourId="revenueReport" steps={pageTours.revenueReport(t)} />
 
 export default RevenueReport;

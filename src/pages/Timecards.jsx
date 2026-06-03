@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Clock, LogIn, LogOut, Loader2, Calendar } from 'lucide-react';
 import { getMyTimecards, clockIn, clockOut } from '../api/timecards';
@@ -169,5 +171,7 @@ const statusCircleStyle = (active) => ({
     border: `2px solid ${active ? '#4ade80' : 'rgba(255,255,255,0.1)'}`,
     boxShadow: active ? '0 0 20px rgba(74, 222, 128, 0.2)' : 'none'
 });
+
+            <GuidedTour tourId="timecards" steps={pageTours.timecards(t)} />
 
 export default Timecards;

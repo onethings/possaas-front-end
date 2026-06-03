@@ -25,6 +25,8 @@ import { Line } from 'react-chartjs-2';
 import { getReportSummary } from '../api/reports';
 import { useAuth } from '../contexts/AuthContext';
 import { useTenant } from '../contexts/TenantContext';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 
 ChartJS.register(
     CategoryScale,
@@ -150,7 +152,7 @@ const Dashboard = () => {
         },
     };
 
-    return (
+    return (<>
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -158,7 +160,7 @@ const Dashboard = () => {
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: isMobile ? '0.5rem' : '0' }}
         >
             {/* Header 區塊在手機端改為上下排列 */}
-            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+            <div data-tour-id="dashboard-header" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
                 <h2 style={{ fontSize: isMobile ? '1.25rem' : '1.5rem' }}>{summary.personal?.tenantId || user?.tenantId} {t('dashboard.title')}</h2>
                 <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                     {t('common.last_update')}：{businessData.lastUpdate ? businessData.lastUpdate : t('common.no_data_today')}
@@ -166,7 +168,7 @@ const Dashboard = () => {
             </div>
 
             {/* Stats Grid: 手機端降為 1 或 2 欄，避免寬度卡死 */}
-            <div style={{ 
+            <div data-tour-id="dashboard-stats" style={{ 
                 display: 'grid', 
                 gridTemplateColumns: isMobile ? 'repeat(auto-fit, minmax(140px, 1fr))' : 'repeat(auto-fit, minmax(240px, 1fr))', 
                 gap: isMobile ? '0.75rem' : '1.5rem' 
@@ -202,7 +204,7 @@ const Dashboard = () => {
                 gap: isMobile ? '1rem' : '1.5rem' 
             }}>
                 {/* 趨勢圖 */}
-                <div className="glass-panel" style={{ padding: isMobile ? '1rem' : '1.5rem' }}>
+                <div data-tour-id="dashboard-chart" className="glass-panel" style={{ padding: isMobile ? '1rem' : '1.5rem' }}>
                     <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: isMobile ? '1.1rem' : '1.25rem' }}>
                         {t('dashboard.sales_trend')} <ArrowUpRight size={18} color="var(--primary)" />
                     </h3>
@@ -213,7 +215,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* 熱門商品 */}
-                <div className="glass-panel" style={{ padding: isMobile ? '1rem' : '1.5rem' }}>
+                <div data-tour-id="dashboard-products" className="glass-panel" style={{ padding: isMobile ? '1rem' : '1.5rem' }}>
                     <h3 style={{ marginBottom: '1rem', fontSize: isMobile ? '1.1rem' : '1.25rem' }}>{t('dashboard.popular_products')}</h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                         {businessData.topProducts?.length > 0 ? (
@@ -235,6 +237,9 @@ const Dashboard = () => {
                 </div>
             </div>
         </motion.div>
+
+        <GuidedTour tourId="dashboard" steps={pageTours.dashboard(t)} />
+        </>
     );
 };
 

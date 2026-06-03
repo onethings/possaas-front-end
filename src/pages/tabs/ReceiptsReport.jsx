@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Download, Loader2, Search, FileText, FileSpreadsheet, Printer, X, ChevronRight, Calendar, User, ShoppingBag, CreditCard, Store, Hash, MapPin } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
@@ -548,5 +550,7 @@ const AmountRow = ({ label, value, bold, color, large }) => (
         }}>{value}</span>
     </div>
 );
+
+            <GuidedTour tourId="receiptsReport" steps={pageTours.receiptsReport(t)} />
 
 export default ReceiptsReport;
