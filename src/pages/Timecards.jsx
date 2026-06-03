@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import GuidedTour from '../components/GuidedTour';
-import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Clock, LogIn, LogOut, Loader2, Calendar } from 'lucide-react';
 import { getMyTimecards, clockIn, clockOut } from '../api/timecards';

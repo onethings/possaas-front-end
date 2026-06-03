@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import GuidedTour from '../components/GuidedTour';
-import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Settings as SettingsIcon, Globe, Bell, Shield, CreditCard, Save, Loader2, Coins, Receipt } from 'lucide-react';
 import { getMyTenant, updateTenantConfig } from '../api/tenants';

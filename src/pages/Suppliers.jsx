@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import GuidedTour from '../components/GuidedTour';
-import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Plus, Search, Truck, Phone, Mail, MapPin, Loader2, Edit2, Trash2 } from 'lucide-react';
 import { getSuppliers, createSupplier, updateSupplier, deleteSupplier } from '../api/suppliers';

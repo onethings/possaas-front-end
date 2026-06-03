@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import GuidedTour from '../components/GuidedTour';
-import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Plus, Search, FileText, CheckCircle, Clock, XCircle, Loader2, ArrowRight } from 'lucide-react';
 import { getPurchaseOrders, createPurchaseOrder, receivePurchaseOrder } from '../api/purchaseOrders';

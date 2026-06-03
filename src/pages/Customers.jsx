@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import GuidedTour from '../components/GuidedTour';
-import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Search, Filter, Plus, Mail, Phone, Edit2, Trash2, Loader2, Square, CheckSquare } from 'lucide-react';
 import { getCustomers, createCustomer, updateCustomer, deleteCustomer } from '../api/customers';
