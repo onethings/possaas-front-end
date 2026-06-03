@@ -724,5 +724,20 @@
     "receipts_table_content": "查看所有匯入的收據。點擊查看詳細資訊。",
     "receipts_detail_title": "收據詳情",
     "receipts_detail_content": "完整收據明細：商品、金額、付款方式、狀態。"
+  },
+  "report": {
+    "period_day": "日",
+    "period_week": "週",
+    "period_month": "月",
+    "period_quarter": "季",
+    "period_year": "年",
+    "total_sales": "總銷售額",
+    "refunds": "退款",
+    "discount": "折扣",
+    "net_sales": "淨銷售額",
+    "gross_profit": "毛利潤",
+    "cost_of_sales": "銷售成本",
+    "profit_margin": "利潤率",
+    "tax": "稅務"
   }
 }

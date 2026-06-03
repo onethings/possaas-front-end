@@ -724,5 +724,20 @@
     "receipts_table_content": "查看所有导入的小票。点击任意行可查看详细信息。",
     "receipts_detail_title": "小票详情",
     "receipts_detail_content": "完整的小票明细：商品、金额、支付方式和状态。"
+  },
+  "report": {
+    "period_day": "日",
+    "period_week": "周",
+    "period_month": "月",
+    "period_quarter": "季",
+    "period_year": "年",
+    "total_sales": "总销售额",
+    "refunds": "退款",
+    "discount": "折扣",
+    "net_sales": "净销售额",
+    "gross_profit": "毛利润",
+    "cost_of_sales": "销售成本",
+    "profit_margin": "利润率",
+    "tax": "税务"
   }
 }

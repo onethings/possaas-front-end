@@ -67,86 +67,97 @@ const GuidedTour = ({ tourId, steps = [], onComplete }) => {
         const updatePosition = () => {
             const step = steps[currentStep];
             const el = document.querySelector(`[data-tour-id="${step.target}"]`);
-            if (!el) return;
 
-            const rect = el.getBoundingClientRect();
-            // Store for highlight
-            lastRectRef.current = rect;
-            setTargetRect(rect);
+            if (el) {
+                const rect = el.getBoundingClientRect();
+                // Store for highlight
+                lastRectRef.current = rect;
+                setTargetRect(rect);
 
-            const placement = step.placement || 'bottom';
-            const tooltipW = 320;
-            const tooltipH = 160;
-            const gap = 14;
-            const padding = 16;
+                const placement = step.placement || 'bottom';
+                const tooltipW = 320;
+                const tooltipH = 160;
+                const gap = 14;
+                const padding = 16;
 
-            let top = 0;
-            let left = 0;
-            let arrow = {};
+                let top = 0;
+                let left = 0;
+                let arrow = {};
 
-            switch (placement) {
-                case 'bottom':
-                    top = rect.bottom + gap;
-                    left = Math.min(
-                        Math.max(rect.left + rect.width / 2 - tooltipW / 2, padding),
-                        window.innerWidth - tooltipW - padding
-                    );
-                    arrow = {
-                        top: -6,
-                        left: rect.left + rect.width / 2 - left - 6,
-                        borderLeft: '6px solid transparent',
-                        borderRight: '6px solid transparent',
-                        borderBottom: '6px solid var(--bg-surface)',
-                    };
-                    break;
-                case 'top':
-                    top = rect.top - tooltipH - gap;
-                    left = Math.min(
-                        Math.max(rect.left + rect.width / 2 - tooltipW / 2, padding),
-                        window.innerWidth - tooltipW - padding
-                    );
-                    arrow = {
-                        bottom: -6,
-                        left: rect.left + rect.width / 2 - left - 6,
-                        borderLeft: '6px solid transparent',
-                        borderRight: '6px solid transparent',
-                        borderTop: '6px solid var(--bg-surface)',
-                    };
-                    break;
-                case 'right':
-                    top = rect.top + rect.height / 2 - tooltipH / 2;
-                    left = rect.right + gap;
-                    arrow = {
-                        left: -6,
-                        top: rect.top + rect.height / 2 - top - 6,
-                        borderTop: '6px solid transparent',
-                        borderBottom: '6px solid transparent',
-                        borderRight: '6px solid var(--bg-surface)',
-                    };
-                    break;
-                case 'left':
-                    top = rect.top + rect.height / 2 - tooltipH / 2;
-                    left = rect.left - tooltipW - gap;
-                    arrow = {
-                        right: -6,
-                        top: rect.top + rect.height / 2 - top - 6,
-                        borderTop: '6px solid transparent',
-                        borderBottom: '6px solid transparent',
-                        borderLeft: '6px solid var(--bg-surface)',
-                    };
-                    break;
-                default:
-                    break;
+                switch (placement) {
+                    case 'bottom':
+                        top = rect.bottom + gap;
+                        left = Math.min(
+                            Math.max(rect.left + rect.width / 2 - tooltipW / 2, padding),
+                            window.innerWidth - tooltipW - padding
+                        );
+                        arrow = {
+                            top: -6,
+                            left: rect.left + rect.width / 2 - left - 6,
+                            borderLeft: '6px solid transparent',
+                            borderRight: '6px solid transparent',
+                            borderBottom: '6px solid var(--bg-surface)',
+                        };
+                        break;
+                    case 'top':
+                        top = rect.top - tooltipH - gap;
+                        left = Math.min(
+                            Math.max(rect.left + rect.width / 2 - tooltipW / 2, padding),
+                            window.innerWidth - tooltipW - padding
+                        );
+                        arrow = {
+                            bottom: -6,
+                            left: rect.left + rect.width / 2 - left - 6,
+                            borderLeft: '6px solid transparent',
+                            borderRight: '6px solid transparent',
+                            borderTop: '6px solid var(--bg-surface)',
+                        };
+                        break;
+                    case 'right':
+                        top = rect.top + rect.height / 2 - tooltipH / 2;
+                        left = rect.right + gap;
+                        arrow = {
+                            left: -6,
+                            top: rect.top + rect.height / 2 - top - 6,
+                            borderTop: '6px solid transparent',
+                            borderBottom: '6px solid transparent',
+                            borderRight: '6px solid var(--bg-surface)',
+                        };
+                        break;
+                    case 'left':
+                        top = rect.top + rect.height / 2 - tooltipH / 2;
+                        left = rect.left - tooltipW - gap;
+                        arrow = {
+                            right: -6,
+                            top: rect.top + rect.height / 2 - top - 6,
+                            borderTop: '6px solid transparent',
+                            borderBottom: '6px solid transparent',
+                            borderLeft: '6px solid var(--bg-surface)',
+                        };
+                        break;
+                    default:
+                        break;
+                }
+
+                // Clamp top
+                if (top < padding) top = padding;
+                if (top + tooltipH > window.innerHeight - padding) {
+                    top = window.innerHeight - tooltipH - padding;
+                }
+
+                setTooltipPosition({ top, left });
+                setArrowStyle(arrow);
+            } else {
+                // Fallback: center the tooltip when target element is not found
+                const tooltipW = 320;
+                const tooltipH = 160;
+                setTargetRect(null);
+                setTooltipPosition({
+                    top: Math.max(20, (window.innerHeight - tooltipH) / 2),
+                    left: Math.max(16, (window.innerWidth - tooltipW) / 2),
+                });
+                setArrowStyle({ display: 'none' });
             }
-
-            // Clamp top
-            if (top < padding) top = padding;
-            if (top + tooltipH > window.innerHeight - padding) {
-                top = window.innerHeight - tooltipH - padding;
-            }
-
-            setTooltipPosition({ top, left });
-            setArrowStyle(arrow);
         };
 
         updatePosition();

@@ -725,5 +725,20 @@
     "receipts_table_content": "View all imported receipts. Click a row for details.",
     "receipts_detail_title": "Receipt Details",
     "receipts_detail_content": "Full receipt breakdown: items, amounts, payment, status."
+  },
+  "report": {
+    "period_day": "Day",
+    "period_week": "Week",
+    "period_month": "Month",
+    "period_quarter": "Quarter",
+    "period_year": "Year",
+    "total_sales": "Total Sales",
+    "refunds": "Refunds",
+    "discount": "Discount",
+    "net_sales": "Net Sales",
+    "gross_profit": "Gross Profit",
+    "cost_of_sales": "Cost of Sales",
+    "profit_margin": "Profit Margin",
+    "tax": "Tax"
   }
 }

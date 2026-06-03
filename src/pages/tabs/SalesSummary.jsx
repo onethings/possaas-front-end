@@ -36,45 +36,45 @@ function getQuarterId(dateStr) {
 
 function getYearId(dateStr) { return dateStr.slice(0, 4); }
 
-const GRANULARITIES = [
-  { key: 'day',     label: '天',   groupFn: (d) => d,              labelFn: (d) => d },
-  { key: 'week',    label: '週',   groupFn: getWeekId,             labelFn: (id) => id },
-  { key: 'month',   label: '月',   groupFn: getMonthId,            labelFn: (id) => id },
-  { key: 'quarter', label: '季度', groupFn: getQuarterId,          labelFn: (id) => id },
-  { key: 'year',    label: '年',   groupFn: getYearId,             labelFn: (id) => id },
+const GRANULARITIES = (t) => [
+  { key: 'day',     label: t('report.period_day', 'Day'),     groupFn: (d) => d,              labelFn: (d) => d },
+  { key: 'week',    label: t('report.period_week', 'Week'),   groupFn: getWeekId,             labelFn: (id) => id },
+  { key: 'month',   label: t('report.period_month', 'Month'),  groupFn: getMonthId,            labelFn: (id) => id },
+  { key: 'quarter', label: t('report.period_quarter', 'Quarter'), groupFn: getQuarterId,          labelFn: (id) => id },
+  { key: 'year',    label: t('report.period_year', 'Year'),    groupFn: getYearId,             labelFn: (id) => id },
 ];
 
-const METRICS = [
-  { key: 'totalRevenue', label: '銷售總額', color: 'hsl(230, 80%, 60%)', bg: 'rgba(99,102,241,0.15)',
+const METRICS = (t) => [
+  { key: 'totalRevenue', label: t('report.total_sales', 'Total Sales'), color: 'hsl(230, 80%, 60%)', bg: 'rgba(99,102,241,0.15)',
     get: (r) => (r.totalRevenue || 0) },
-  { key: 'refunds',      label: '退款',     color: 'hsl(0, 70%, 60%)',   bg: 'rgba(239,68,68,0.15)',
+  { key: 'refunds',      label: t('report.refunds', 'Refunds'),       color: 'hsl(0, 70%, 60%)',   bg: 'rgba(239,68,68,0.15)',
     get: (r) => (r.totalRefunds || 0) },
-  { key: 'discount',     label: '折扣',     color: 'hsl(35, 90%, 55%)',  bg: 'rgba(251,146,60,0.15)',
+  { key: 'discount',     label: t('report.discount', 'Discount'),     color: 'hsl(35, 90%, 55%)',  bg: 'rgba(251,146,60,0.15)',
     get: (r) => (r.totalDiscount || 0) },
-  { key: 'netSales',     label: '淨銷售額', color: 'hsl(160, 70%, 45%)', bg: 'rgba(52,211,153,0.15)',
+  { key: 'netSales',     label: t('report.net_sales', 'Net Sales'),   color: 'hsl(160, 70%, 45%)', bg: 'rgba(52,211,153,0.15)',
     get: (r) => ((r.totalRevenue || 0) - (r.totalRefunds || 0)) },
-  { key: 'grossProfit',  label: '毛利潤',   color: 'hsl(280, 70%, 60%)', bg: 'rgba(168,85,247,0.15)',
+  { key: 'grossProfit',  label: t('report.gross_profit', 'Gross Profit'), color: 'hsl(280, 70%, 60%)', bg: 'rgba(168,85,247,0.15)',
     get: (r) => ((r.totalRevenue || 0) - (r.totalCost || 0)) },
 ];
 
-const COLUMN_DEFS = [
-  { key: 'totalRevenue', label: '銷售總額', align: 'right',
+const COLUMN_DEFS = (t) => [
+  { key: 'totalRevenue', label: t('report.total_sales', 'Total Sales'), align: 'right',
     render: (r, cur) => cur + (r.totalRevenue || 0).toLocaleString() },
-  { key: 'totalRefunds', label: '退款',     align: 'right',
+  { key: 'totalRefunds', label: t('report.refunds', 'Refunds'),       align: 'right',
     render: (r, cur) => cur + (r.totalRefunds || 0).toLocaleString() },
-  { key: 'totalDiscount',label: '折扣',     align: 'right',
+  { key: 'totalDiscount',label: t('report.discount', 'Discount'),     align: 'right',
     render: (r, cur) => cur + (r.totalDiscount || 0).toLocaleString() },
-  { key: 'netSales',     label: '淨銷售額', align: 'right',
+  { key: 'netSales',     label: t('report.net_sales', 'Net Sales'),   align: 'right',
     render: (r, cur) => cur + ((r.totalRevenue || 0) - (r.totalRefunds || 0)).toLocaleString() },
-  { key: 'totalCost',    label: '銷售成本', align: 'right',
+  { key: 'totalCost',    label: t('report.cost_of_sales', 'Cost of Sales'), align: 'right',
     render: (r, cur) => cur + (r.totalCost || 0).toLocaleString() },
-  { key: 'grossProfit',  label: '毛利潤',   align: 'right',
+  { key: 'grossProfit',  label: t('report.gross_profit', 'Gross Profit'), align: 'right',
     render: (r, cur) => cur + ((r.totalRevenue || 0) - (r.totalCost || 0)).toLocaleString() },
-  { key: 'profitMargin', label: '利潤率',   align: 'right',
+  { key: 'profitMargin', label: t('report.profit_margin', 'Profit Margin'), align: 'right',
     render: (r, cur) => cur + (r.totalRevenue
       ? ((((r.totalRevenue - (r.totalCost || 0)) / r.totalRevenue) * 100).toFixed(1)) + '%'
       : '0%') },
-  { key: 'tax',          label: '稅務',     align: 'right',
+  { key: 'tax',          label: t('report.tax', 'Tax'),               align: 'right',
     render: (r, cur) => cur + (r.totalTax || 0).toLocaleString() },
 ];
 
@@ -152,8 +152,11 @@ const SalesSummary = () => {
     };
 
     // ── Aggregated chart data ──
-    const granularDef = GRANULARITIES.find(g => g.key === granularity) || GRANULARITIES[0];
-    const metricDef = METRICS.find(m => m.key === chartMetric) || METRICS[0];
+    const allGranularities = GRANULARITIES(t);
+    const allMetrics = METRICS(t);
+    const allColumns = COLUMN_DEFS(t);
+    const granularDef = allGranularities.find(g => g.key === granularity) || allGranularities[0];
+    const metricDef = allMetrics.find(m => m.key === chartMetric) || allMetrics[0];
 
     const aggregatedChartData = useMemo(() => {
         const reports = summary?.reports || [];
@@ -225,7 +228,7 @@ const SalesSummary = () => {
     const totalOrders = d.totalOrders || 0;
 
     const kpiCards = [
-        { label: t('dashboard.total_sales', '銷售總額'), value: `${tenantConfig.currency}${totalRevenue.toLocaleString()}` },
+        { label: t('dashboard.total_sales', 'Total Sales'), value: `${tenantConfig.currency}${totalRevenue.toLocaleString()}` },
         { label: t('dashboard.refund', '退款'), value: `${tenantConfig.currency}${totalRefunds.toLocaleString()}` },
         { label: t('dashboard.discount', '折扣'), value: `${tenantConfig.currency}${totalDiscount.toLocaleString()}` },
         { label: t('dashboard.net_sales', '淨銷售額'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds).toLocaleString()}` },
@@ -239,7 +242,7 @@ const SalesSummary = () => {
     // ── Export ──
     const handleExport = (type) => {
         setShowExportMenu(false);
-        const activeCols = COLUMN_DEFS.filter(c => visibleCols[c.key]);
+        const activeCols = allColumns.filter(c => visibleCols[c.key]);
         const columns = [
             { label: t('report.date', '日期'), value: 'date' },
             ...activeCols.map(c => ({
@@ -329,7 +332,7 @@ const SalesSummary = () => {
 
                     {/* Granularity */}
                     <div className="glass-panel" style={{ display: 'flex', padding: '2px', gap: '2px' }}>
-                        {GRANULARITIES.map(g => (
+                        {allGranularities.map(g => (
                             <button key={g.key} onClick={() => setGranularity(g.key)}
                                 style={granularity === g.key ? btnActive : btnBase}>
                                 {g.label}
@@ -339,7 +342,7 @@ const SalesSummary = () => {
 
                     {/* Metric selector */}
                     <div className="glass-panel" style={{ display: 'flex', padding: '2px', gap: '2px' }}>
-                        {METRICS.map(m => (
+                        {allMetrics.map(m => (
                             <button key={m.key} onClick={() => setChartMetric(m.key)}
                                 style={{
                                     ...(chartMetric === m.key ? btnActive : btnBase),
@@ -398,7 +401,7 @@ const SalesSummary = () => {
                             </button>
                             {showColumnPicker && (
                                 <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100, minWidth: '170px', padding: '0.5rem', overflow: 'hidden' }}>
-                                    {COLUMN_DEFS.map(c => (
+                                    {allColumns.map(c => (
                                         <label key={c.key} style={{
                                             display: 'flex', alignItems: 'center', gap: '0.5rem',
                                             padding: '0.4rem 0.4rem', cursor: 'pointer', borderRadius: '4px',
@@ -446,7 +449,7 @@ const SalesSummary = () => {
                                 <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                                     {t('report.date', '日期')}
                                 </th>
-                                {COLUMN_DEFS.filter(c => visibleCols[c.key]).map(c => (
+                                {allColumns.filter(c => visibleCols[c.key]).map(c => (
                                     <th key={c.key} style={{ padding: '0.75rem 0.5rem', textAlign: c.align, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                                         {c.label}
                                     </th>
@@ -459,7 +462,7 @@ const SalesSummary = () => {
                                     <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>
                                         {row.date || row._id || `Day ${idx + 1}`}
                                     </td>
-                                    {COLUMN_DEFS.filter(c => visibleCols[c.key]).map(c => {
+                                    {allColumns.filter(c => visibleCols[c.key]).map(c => {
                                         let val;
                                         if (c.key === 'netSales') val = (row.totalRevenue || 0) - (row.totalRefunds || 0);
                                         else if (c.key === 'grossProfit') val = (row.totalRevenue || 0) - (row.totalCost || 0);
