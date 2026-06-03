@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { ClipboardList, Plus, Search, AlertCircle, Loader2 } from 'lucide-react';
 import { getProducts } from '../api/products';
@@ -90,7 +92,7 @@ const InventoryCounts = () => {
         padding: isMobile ? '1.5rem' : '2rem'
     };
 
-    return (
+    return (<>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ padding: isMobile ? '0.5rem' : '0' }}>
             {/* 頂部標題與按鈕自適應 */}
             <div style={headerStyle}>
@@ -266,6 +268,8 @@ const InventoryCounts = () => {
                 </div>
             )}
         </motion.div>
+        <GuidedTour tourId="inventoryCounts" steps={pageTours.inventoryCounts(t)} />
+    </>
     );
 };
 

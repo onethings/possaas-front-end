@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Plus, Search, Shield, ShieldAlert, Loader2, Edit2, Lock, Calendar, User } from 'lucide-react';
 import { getStaff, registerStaff, updateStaff, updateStaffStatus, resetStaffPassword } from '../api/staff';
@@ -133,7 +135,7 @@ const StaffManagement = () => {
         </div>
     );
 
-    return (
+    return (<>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '100vw', boxSizing: 'border-box' }}>
             {/* 標題與按鈕：在手機端改為上下排列 */}
             <div style={headerWrapperStyle}>
@@ -319,6 +321,8 @@ const StaffManagement = () => {
                 }
             `}</style>
         </motion.div>
+        <GuidedTour tourId="staffManagement" steps={pageTours.staffManagement(t)} />
+    </>
     );
 };
 

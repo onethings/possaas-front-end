@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Settings as SettingsIcon, Globe, Bell, Shield, CreditCard, Save, Loader2, Coins, Receipt } from 'lucide-react';
 import { getMyTenant, updateTenantConfig } from '../api/tenants';
@@ -66,7 +68,7 @@ const Settings = () => {
 
     if (loading) return <div style={{ textAlign: 'center', padding: '5rem' }}><Loader2 className="animate-spin" /></div>;
 
-    return (
+    return (<>
         <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -217,6 +219,8 @@ const Settings = () => {
                 </div>
             </div>
         </motion.div>
+        <GuidedTour tourId="settings" steps={pageTours.settings(t)} />
+    </>
     );
 };
 

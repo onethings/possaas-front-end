@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Plus, Tag, Trash2, Loader2, Percent, DollarSign } from 'lucide-react';
 import { getDiscounts, createDiscount, deleteDiscount } from '../api/discounts';
@@ -72,7 +74,7 @@ const Discounts = () => {
         }
     };
 
-    return (
+    return (<>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: isMobile ? '0.5rem' : '0' }}>
             {/* 頁頭：手機端自動改為垂直排列或緊湊佈局 */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexDirection: isMobile ? 'row' : 'row' }}>
@@ -151,6 +153,8 @@ const Discounts = () => {
                 </div>
             )}
         </motion.div>
+        <GuidedTour tourId="discounts" steps={pageTours.discounts(t)} />
+    </>
     );
 };
 

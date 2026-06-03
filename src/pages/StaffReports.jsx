@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { BarChart, TrendingUp, DollarSign, Loader2 } from 'lucide-react';
 import { getRangeReport } from '../api/reports';
@@ -51,7 +53,7 @@ const StaffReports = () => {
         revenue: s.revenue || 0,
     })) : (report?.staffPerformance || []);
 
-    return (
+    return (<>
         <motion.div 
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
@@ -207,6 +209,8 @@ const StaffReports = () => {
                 </>
             )}
         </motion.div>
+        <GuidedTour tourId="staffReports" steps={pageTours.staffReports(t)} />
+    </>
     );
 };
 export default StaffReports;

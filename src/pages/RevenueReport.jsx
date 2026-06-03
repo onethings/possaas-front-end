@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Calendar,
@@ -309,7 +311,7 @@ const RevenueReport = () => {
     const { summary } = data || {};
 
     // 8. 渲染 JSX
-    return (
+    return (<>
         <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -536,6 +538,8 @@ const RevenueReport = () => {
                 </div>
             </div>
         </motion.div>
+        <GuidedTour tourId="revenueReport" steps={pageTours.revenueReport(t)} />
+    </>
     );
 };
 

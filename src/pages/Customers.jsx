@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Search, Filter, Plus, Mail, Phone, Edit2, Trash2, Loader2, Square, CheckSquare } from 'lucide-react';
 import { getCustomers, createCustomer, updateCustomer, deleteCustomer } from '../api/customers';
@@ -95,7 +97,7 @@ const Customers = () => {
         (c.phone && c.phone.includes(searchTerm))
     );
 
-    return (
+    return (<>
         <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -265,6 +267,8 @@ const Customers = () => {
                 </div>
             )}
         </motion.div>
+        <GuidedTour tourId="customers" steps={pageTours.customers(t)} />
+    </>
     );
 };
 

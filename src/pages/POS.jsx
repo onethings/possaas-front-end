@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Search,
@@ -365,7 +367,7 @@ const POS = () => {
         </>
     );
 
-    return (
+    return (<>
         <div style={{
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr' : '1fr 380px', // 📱 手機端自動變單欄
@@ -632,6 +634,8 @@ const POS = () => {
                 )}
             </AnimatePresence>
         </div>
+        <GuidedTour tourId="pos" steps={pageTours.pos(t)} />
+    </>
     );
 };
 

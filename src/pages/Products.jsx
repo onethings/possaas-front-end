@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import {
@@ -274,7 +276,7 @@ const Products = () => {
         p.sku?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    return (
+    return (<>
         <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -642,6 +644,8 @@ const Products = () => {
                 document.body
             )}
         </motion.div>
+        <GuidedTour tourId="products" steps={pageTours.products(t)} />
+    </>
     );
 };
 

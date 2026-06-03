@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import GuidedTour from '../components/GuidedTour';
+import { pageTours } from '../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Plus, Search, Truck, Phone, Mail, MapPin, Loader2, Edit2, Trash2 } from 'lucide-react';
 import { getSuppliers, createSupplier, updateSupplier, deleteSupplier } from '../api/suppliers';
@@ -71,7 +73,7 @@ const Suppliers = () => {
 
     const filtered = suppliers.filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    return (
+    return (<>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="animate-fade-in" style={containerStyle}>
             {/* 頂部標題列：手機端改為上下排列或自動換行 */}
             <div style={headerStyle}>
@@ -165,6 +167,8 @@ const Suppliers = () => {
                 </div>
             )}
         </motion.div>
+        <GuidedTour tourId="suppliers" steps={pageTours.suppliers(t)} />
+    </>
     );
 };
 
