@@ -551,6 +551,5 @@ const AmountRow = ({ label, value, bold, color, large }) => (
     </div>
 );
 
-            <GuidedTour tourId="receiptsReport" steps={pageTours.receiptsReport(t)} />
 
 export default ReceiptsReport;

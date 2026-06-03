@@ -172,6 +172,5 @@ const statusCircleStyle = (active) => ({
     boxShadow: active ? '0 0 20px rgba(74, 222, 128, 0.2)' : 'none'
 });
 
-            <GuidedTour tourId="timecards" steps={pageTours.timecards(t)} />
 
 export default Timecards;
