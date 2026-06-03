@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import GuidedTour from '../components/GuidedTour';
-import { pageTours } from '../utils/pageTours';
+import GuidedTour from '../../components/GuidedTour';
+import { pageTours } from '../../utils/pageTours';
 import { motion } from 'framer-motion';
 import { Download, Loader2, Search, FileText, FileSpreadsheet, Printer, X, ChevronRight, Calendar, User, ShoppingBag, CreditCard, Store, Hash, MapPin } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
