@@ -659,7 +659,4 @@ const selectStyle = { padding: '0.75rem 1rem', background: 'rgba(255,255,255,0.0
 const headerBtnStyle = { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flex: '1 1 auto', minWidth: 'max-content', padding: '0.6rem 1rem' };
 const modalContentStyle = { width: '100%', maxWidth: '600px', padding: '1.5rem', boxSizing: 'border-box' };
 const smallModalStyle = { width: '100%', maxWidth: '450px', padding: '1.5rem', boxSizing: 'border-box' };
-
-            <GuidedTour tourId="products" steps={pageTours.products(t)} />
-
 export default Products;

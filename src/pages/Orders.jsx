@@ -472,7 +472,4 @@ const StatusBadge = ({ status, t }) => {
         </div>
     );
 };
-
-            <GuidedTour tourId="orders" steps={pageTours.orders(t)} />
-
 export default Orders;

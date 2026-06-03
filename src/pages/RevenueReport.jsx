@@ -650,7 +650,4 @@ const modernTableStyle = {
     borderSpacing: '0 8px',
     fontSize: '0.9rem'
 };
-
-            <GuidedTour tourId="revenueReport" steps={pageTours.revenueReport(t)} />
-
 export default RevenueReport;

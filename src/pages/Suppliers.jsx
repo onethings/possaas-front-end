@@ -183,7 +183,4 @@ const actionBtnStyle = { background: 'rgba(255,255,255,0.05)', border: 'none', b
 // 彈窗自適應核心：用 width: '90%' 配合 maxWidth，確保大螢幕不放大、小螢幕不破版
 const modalOverlayStyle = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' };
 const modalContentStyle = { width: '90%', maxWidth: '420px', padding: '1.5rem', boxSizing: 'border-box', maxHeight: '90vh', overflowY: 'auto' };
-
-            <GuidedTour tourId="suppliers" steps={pageTours.suppliers(t)} />
-
 export default Suppliers;

@@ -365,7 +365,4 @@ const modalContentStyle = { width: '100%', maxWidth: '400px', padding: '1.5rem',
 const labelStyle = { display: 'block', marginBottom: '0.4rem', fontSize: '0.9rem', color: 'var(--text-muted)' };
 const inputStyle = { width: '100%', boxSizing: 'border-box' };
 const selectStyle = { width: '100%', boxSizing: 'border-box', padding: '0.5rem', background: 'rgba(0,0,0,0.2)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '4px' };
-
-            <GuidedTour tourId="staffManagement" steps={pageTours.staffManagement(t)} />
-
 export default StaffManagement;

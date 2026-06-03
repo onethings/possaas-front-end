@@ -211,7 +211,4 @@ const StaffReports = () => {
         </motion.div>
     );
 };
-
-            <GuidedTour tourId="staffReports" steps={pageTours.staffReports(t)} />
-
 export default StaffReports;

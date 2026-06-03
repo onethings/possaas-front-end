@@ -528,7 +528,4 @@ const DeveloperSettings = () => {
         </motion.div>
     );
 };
-
-            <GuidedTour tourId="developerSettings" steps={pageTours.developerSettings(t)} />
-
 export default DeveloperSettings;
