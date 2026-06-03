@@ -447,7 +447,9 @@ const Orders = () => {
                 </div>
             )}
         </motion.div>
-    );
+
+        <GuidedTour tourId="orders" steps={pageTours.orders(t)} />
+    </>);
 };
 
 const StatusBadge = ({ status, t }) => {
@@ -470,8 +472,6 @@ const StatusBadge = ({ status, t }) => {
             <Icon size={12} />
             <span>{config.text}</span>
         </div>
-        <GuidedTour tourId="orders" steps={pageTours.orders(t)} />
-    </>
     );
 };
 export default Orders;
