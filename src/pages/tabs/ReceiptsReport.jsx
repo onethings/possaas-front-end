@@ -184,7 +184,7 @@ const ReceiptsReport = () => {
                                                 background: isSelected ? 'rgba(99, 102, 241, 0.12)' : 'transparent',
                                                 transition: 'background 0.15s',
                                             }}
-                                            onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
+                                            onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = 'var(--hover-bg)'; }}
                                             onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = 'transparent'; }}
                                         >
                                             <td style={{ padding: '0.6rem 0.4rem', fontWeight: 600, color: 'var(--primary-light)' }}>
@@ -259,9 +259,9 @@ const ReceiptsReport = () => {
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         style={{
-                            background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)',
+                            background: 'var(--bg-surface)', border: '1px solid var(--glass-border)',
                             borderRadius: '16px', padding: '1rem', width: '100%', maxWidth: '480px',
-                            maxHeight: '90vh', overflowY: 'auto', color: '#f8fafc',
+                            maxHeight: '90vh', overflowY: 'auto', color: 'var(--text-main)',
                         }}
                     >
                         <ReceiptDetail
@@ -331,7 +331,7 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
             {/* Top bar: Print + Close */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', flexShrink: 0 }}>
-                <span style={{ fontWeight: 700, fontSize: '1rem', color: '#f8fafc' }}>
+                <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>
                     #{receiptNumber}
                 </span>
                 <div style={{ display: 'flex', gap: '0.25rem' }}>
@@ -339,7 +339,7 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                         onClick={handlePrint}
                         title={t('common.print', '列印')}
                         style={{
-                            background: 'rgba(99,102,241,0.15)', border: 'none', color: '#818cf8',
+                            background: 'var(--hover-bg-strong)', border: 'none', color: 'var(--text-muted)',
                             padding: '0.35rem', borderRadius: '6px', cursor: 'pointer',
                             display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem',
                         }}
@@ -350,7 +350,7 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                         <button
                             onClick={onClose}
                             style={{
-                                background: 'rgba(255,255,255,0.08)', border: 'none', color: '#94a3b8',
+                                background: 'var(--hover-bg-strong)', border: 'none', color: 'var(--text-muted)',
                                 padding: '0.35rem', borderRadius: '6px', cursor: 'pointer',
                                 display: 'flex', alignItems: 'center',
                             }}
@@ -364,18 +364,18 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
             {/* Receipt Paper Card */}
             <div style={{
                 flex: 1, overflowY: 'auto',
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
+                background: 'var(--glass)', border: '1px solid var(--glass-border)',
                 borderRadius: '12px', padding: '1.25rem 1rem',
                 fontFamily: '"SF Mono", "Fira Code", "Consolas", monospace',
-                fontSize: '0.78rem', lineHeight: 1.7,
+                fontSize: '0.78rem', lineHeight: 1.7, color: 'var(--text-main)',
             }}>
                 {/* --- Store Header --- */}
                 <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
-                    <div style={{ fontWeight: 700, fontSize: '1.05rem', color: '#f1f5f9' }}>GR</div>
-                    {store && <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>{store}</div>}
+                    <div style={{ fontWeight: 700, fontSize: '1.05rem', color: 'var(--text-main)' }}>GR</div>
+                    {store && <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{store}</div>}
                 </div>
 
-                <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', margin: '0.5rem 0' }} />
+                <div style={{ borderTop: '1px dashed var(--glass-border)', margin: '0.5rem 0' }} />
 
                 {/* --- Info Rows --- */}
                 <InfoRow icon={<Hash size={11} />} label={t('report.receipt_no', '收據號碼')} value={`#${receiptNumber}`} />
@@ -387,21 +387,21 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                 {orderType && <InfoRow icon={<ShoppingBag size={11} />} label={t('report.order_type', '訂單種類')} value={orderType} />}
                 {pos && <InfoRow icon={<Store size={11} />} label="POS" value={pos} />}
 
-                <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', margin: '0.5rem 0' }} />
+                <div style={{ borderTop: '1px dashed var(--glass-border)', margin: '0.5rem 0' }} />
 
                 {/* --- Items --- */}
                 {items && (
                     <>
-                        <div style={{ fontWeight: 600, color: '#cbd5e1', marginBottom: '0.3rem', fontSize: '0.75rem' }}>
+                        <div style={{ fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.3rem', fontSize: '0.75rem' }}>
                             {t('report.items', '商品')}
                         </div>
                         <div style={{
-                            background: 'rgba(0,0,0,0.15)', borderRadius: '6px', padding: '0.5rem 0.6rem',
-                            marginBottom: '0.5rem', color: '#e2e8f0', whiteSpace: 'pre-wrap', fontSize: '0.73rem',
+                            background: 'var(--hover-bg)', borderRadius: '6px', padding: '0.5rem 0.6rem',
+                            marginBottom: '0.5rem', color: 'var(--text-main)', whiteSpace: 'pre-wrap', fontSize: '0.73rem',
                         }}>
                             {items}
                         </div>
-                        <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', margin: '0.5rem 0' }} />
+                        <div style={{ borderTop: '1px dashed var(--glass-border)', margin: '0.5rem 0' }} />
                     </>
                 )}
 
@@ -415,13 +415,13 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                     <AmountRow label={t('report.tax', '稅務')} value={taxRaw || formatCurrency(taxAmount)} />
                 ) : null}
                 {costOfSales && costOfSales !== '0.00' && (
-                    <AmountRow label={t('report.cogs', '銷售成本')} value={costOfSales} color="#94a3b8" />
+                    <AmountRow label={t('report.cogs', '銷售成本')} value={costOfSales} color="var(--text-muted)" />
                 )}
                 {grossProfit && grossProfit !== '0.00' && (
-                    <AmountRow label={t('report.gross_profit', '毛利潤')} value={grossProfit} color="#4ade80" />
+                    <AmountRow label={t('report.gross_profit', '毛利潤')} value={grossProfit} color="#16a34a" />
                 )}
 
-                <div style={{ borderTop: '2px solid rgba(255,255,255,0.15)', margin: '0.5rem 0' }} />
+                <div style={{ borderTop: '2px solid var(--glass-border)', margin: '0.5rem 0' }} />
 
                 {/* --- Grand Total --- */}
                 <AmountRow
@@ -431,13 +431,13 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                     large
                 />
 
-                <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', margin: '0.5rem 0' }} />
+                <div style={{ borderTop: '1px dashed var(--glass-border)', margin: '0.5rem 0' }} />
 
                 {/* --- Payment & Status --- */}
                 {paymentType && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.15rem 0' }}>
-                        <span style={{ color: '#94a3b8', fontSize: '0.7rem' }}>{t('report.payment_method', '付款方式')}</span>
-                        <span style={{ color: '#f1f5f9', fontWeight: 500, fontSize: '0.73rem' }}>
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>{t('report.payment_method', '付款方式')}</span>
+                        <span style={{ color: 'var(--text-main)', fontWeight: 500, fontSize: '0.73rem' }}>
                             <CreditCard size={11} style={{ marginRight: 3, verticalAlign: 'middle' }} />
                             {paymentType}
                         </span>
@@ -445,11 +445,11 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                 )}
                 {status && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.15rem 0' }}>
-                        <span style={{ color: '#94a3b8', fontSize: '0.7rem' }}>{t('report.status', '狀態')}</span>
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>{t('report.status', '狀態')}</span>
                         <span style={{
                             padding: '0.1rem 0.5rem', borderRadius: '10px', fontSize: '0.68rem',
-                            background: isReturned ? 'rgba(248,113,113,0.15)' : 'rgba(74,222,128,0.1)',
-                            color: isReturned ? '#f87171' : '#4ade80',
+                            background: isReturned ? 'rgba(248,113,113,0.15)' : 'rgba(74,222,128,0.15)',
+                            color: isReturned ? '#dc2626' : '#16a34a',
                             fontWeight: 600,
                         }}>
                             {status}
@@ -457,8 +457,8 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
                     </div>
                 )}
 
-                <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', margin: '0.75rem 0 0.5rem' }} />
-                <div style={{ textAlign: 'center', fontSize: '0.65rem', color: '#64748b' }}>
+                <div style={{ borderTop: '1px dashed var(--glass-border)', margin: '0.75rem 0 0.5rem' }} />
+                <div style={{ textAlign: 'center', fontSize: '0.65rem', color: 'var(--text-muted)' }}>
                     {t('report.receipt_footer', '感謝您的惠顧')}
                 </div>
             </div>
@@ -527,22 +527,22 @@ const PrintReceipt = ({ receipt, currency }) => {
 
 const InfoRow = ({ icon, label, value }) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.15rem 0' }}>
-        <span style={{ color: '#94a3b8', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+        <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
             {icon} {label}
         </span>
-        <span style={{ color: '#f1f5f9', fontWeight: 500, fontSize: '0.73rem', textAlign: 'right', maxWidth: '60%', overflow: 'hidden', textOverflow: 'ellipsis' }}>{value || '—'}</span>
+        <span style={{ color: 'var(--text-main)', fontWeight: 500, fontSize: '0.73rem', textAlign: 'right', maxWidth: '60%', overflow: 'hidden', textOverflow: 'ellipsis' }}>{value || '—'}</span>
     </div>
 );
 
 const AmountRow = ({ label, value, bold, color, large }) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.15rem 0' }}>
         <span style={{
-            color: color || '#cbd5e1',
+            color: color || 'var(--text-muted)',
             fontWeight: bold ? 600 : 400,
             fontSize: large ? '0.9rem' : '0.72rem',
         }}>{label}</span>
         <span style={{
-            color: color || '#f1f5f9',
+            color: color || 'var(--text-main)',
             fontWeight: bold ? 700 : 500,
             fontSize: large ? '1rem' : '0.78rem',
         }}>{value}</span>
