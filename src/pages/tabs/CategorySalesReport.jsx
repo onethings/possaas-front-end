@@ -27,7 +27,7 @@ const COLUMN_DEFS = (t) => [
   { key: 'cost',         label: t('report.cost_of_sales', 'Cost of Sales'), align: 'right', isCurrency: true,
     getVal: (c) => c.cost },
   { key: 'grossProfit',  label: t('report.gross_profit', 'Gross Profit'),   align: 'right', isCurrency: true,
-    getVal: (c) => c.netSales - c.cost },
+    getVal: (c) => c.grossProfit },
   { key: 'profitMargin', label: t('report.profit_margin', 'Profit Margin'),   align: 'right', isCurrency: false,
     getVal: (c) => c.margin + '%' },
   { key: 'tax',          label: t('report.tax', 'Tax'),     align: 'right', isCurrency: true,
@@ -78,19 +78,23 @@ const CategorySalesReport = () => {
         try {
             const result = await getRangeReport(dateRange.start, dateRange.end);
             if (result.success && result.data.categorySummary) {
-                const mapped = result.data.categorySummary.map(c => ({
-                    name: c.categoryName || 'Unknown',
-                    qty: c.qty || 0,
-                    totalRevenue: c.revenue || 0,
-                    returnQty: 0,
-                    refund: 0,
-                    discount: 0,
-                    netSales: c.revenue || 0,
-                    cost: c.cost || 0,
-                    grossProfit: (c.revenue || 0) - (c.cost || 0),
-                    margin: c.revenue ? (((c.revenue - (c.cost || 0)) / c.revenue) * 100).toFixed(1) : 0,
-                    tax: 0,
-                }));
+                const mapped = result.data.categorySummary.map(c => {
+                    const net = c.netSales || c.revenue || 0;
+                    const profit = c.grossProfit || (net - (c.cost || 0));
+                    return {
+                        name: c.categoryName || 'Unknown',
+                        qty: c.qty || 0,
+                        totalRevenue: c.revenue || 0,
+                        returnQty: c.returnQty || 0,
+                        refund: c.refund || 0,
+                        discount: c.discount || 0,
+                        netSales: net,
+                        cost: c.cost || 0,
+                        grossProfit: profit,
+                        margin: net ? ((profit / net) * 100).toFixed(1) : 0,
+                        tax: 0,
+                    };
+                });
                 setCategories(mapped);
             }
         } catch (err) {

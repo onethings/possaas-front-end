@@ -232,7 +232,7 @@ const SalesSummary = () => {
         { label: t('dashboard.refund', 'Refund'), value: `${tenantConfig.currency}${totalRefunds.toLocaleString()}` },
         { label: t('dashboard.discount', 'Discount'), value: `${tenantConfig.currency}${totalDiscount.toLocaleString()}` },
         { label: t('dashboard.net_sales', 'Net Sales'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds).toLocaleString()}` },
-        { label: t('dashboard.gross_profit', 'Gross Profit'), value: `${tenantConfig.currency}${(totalRevenue - totalCost).toLocaleString()}` },
+        { label: t('dashboard.gross_profit', 'Gross Profit'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds - totalCost).toLocaleString()}` },
     ];
 
     const salesTrend = d.reports || [];
@@ -249,8 +249,8 @@ const SalesSummary = () => {
                 label: c.label,
                 value: (r) => {
                     if (c.key === 'netSales') return (r.totalRevenue || 0) - (r.totalRefunds || 0);
-                    if (c.key === 'grossProfit') return (r.totalRevenue || 0) - (r.totalCost || 0);
-                    if (c.key === 'profitMargin') return r.totalRevenue ? ((((r.totalRevenue - (r.totalCost || 0)) / r.totalRevenue) * 100).toFixed(1) + '%') : '0%';
+                    if (c.key === 'grossProfit') return (r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalCost || 0);
+                    if (c.key === 'profitMargin') return r.totalRevenue ? ((((r.totalRevenue - (r.totalRefunds || 0) - (r.totalCost || 0)) / r.totalRevenue) * 100).toFixed(1) + '%') : '0%';
                     if (c.key === 'tax') return r.totalTax || 0;
                     return r[c.key] || 0;
                 }
@@ -465,7 +465,7 @@ const SalesSummary = () => {
                                     {allColumns.filter(c => visibleCols[c.key]).map(c => {
                                         let val;
                                         if (c.key === 'netSales') val = (row.totalRevenue || 0) - (row.totalRefunds || 0);
-                                        else if (c.key === 'grossProfit') val = (row.totalRevenue || 0) - (row.totalCost || 0);
+                                        else if (c.key === 'grossProfit') val = (row.totalRevenue || 0) - (row.totalRefunds || 0) - (row.totalCost || 0);
                                         else if (c.key === 'profitMargin') {
                                             val = row.totalRevenue
                                                 ? ((((row.totalRevenue - (row.totalCost || 0)) / row.totalRevenue) * 100).toFixed(1)) + '%'
