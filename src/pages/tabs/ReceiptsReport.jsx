@@ -281,7 +281,7 @@ const ReceiptsReport = () => {
             {/* Print-only area */}
             {selectedReceipt && (
                 <div className="receipt-print-area" style={{ display: 'none', padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
-                    <PrintReceipt receipt={selectedReceipt} currency={currency} />
+                    <PrintReceipt receipt={selectedReceipt} currency={currency} t={t} />
                 </div>
             )}
         </motion.div>
@@ -298,15 +298,15 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
     const rd = (key) => (raw[key] || '');
 
     // Extract all fields
-    const receiptNumber = rv(receipt, 'receiptNumber', t('report.receipt_no', 'Receipt No.'));
-    const dateStr = rv(receipt, 'date', t('report.date', 'Date'));
-    const employee = rv(receipt, 'employee', t('report.employee', 'Employee'));
-    const customer = rv(receipt, 'customer', t('report.customer_name', 'Customer Name'));
-    const customerPhone = rd(t('report.customer_phone', 'Customer Phone'));
-    const items = rv(receipt, 'items', t('report.description', 'Description'));
-    const paymentType = rv(receipt, 'paymentType', t('report.payment_method', 'Payment Method'));
-    const status = rv(receipt, 'status', t('report.status', 'Status'));
-    const receiptType = rd(t('report.receipt_type', 'Receipt Type'));
+    const receiptNumber = rv(receipt, 'receiptNumber', '收據號碼');
+    const dateStr = rv(receipt, 'date', '日期');
+    const employee = rv(receipt, 'employee', '收銀員名稱');
+    const customer = rv(receipt, 'customer', '客戶名稱');
+    const customerPhone = rd('客戶聯繫電話');
+    const items = rv(receipt, 'items', '描述');
+    const paymentType = rv(receipt, 'paymentType', '付款方式');
+    const status = rv(receipt, 'status', '狀態');
+    const receiptType = rd('收據類型');
     const grossSales = rd('銷售總額');
     const discountRaw = rd('折扣');
     const netSales = rd('淨銷售額');
@@ -314,9 +314,9 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
     const totalCollected = rd('總收集');
     const costOfSales = rd('銷售成本');
     const grossProfit = rd('毛利潤');
-    const orderType = rd(t('report.order_type', 'Order Type'));
+    const orderType = rd('收據類型');
     const pos = rd('POS');
-    const store = rd(t('report.store', 'Store'));
+    const store = rd('商店');
     const totalAmount = rn(receipt, 'totalAmount');
     const discountAmount = rn(receipt, 'discountAmount');
     const taxAmount = rn(receipt, 'taxAmount');
@@ -475,22 +475,22 @@ const ReceiptDetail = ({ receipt, currency, t, onClose }) => {
 
 // ==================== Print-Only Receipt (White Background) ====================
 
-const PrintReceipt = ({ receipt, currency }) => {
+const PrintReceipt = ({ receipt, currency, t }) => {
     const raw = receipt?.rawData || {};
     const rd = (key) => (raw[key] || '');
 
-    const receiptNumber = rv(receipt, 'receiptNumber', t('report.receipt_no', 'Receipt No.'));
-    const dateStr = rv(receipt, 'date', t('report.date', 'Date'));
-    const employee = rv(receipt, 'employee', t('report.employee', 'Employee'));
-    const customer = rv(receipt, 'customer', t('report.customer_name', 'Customer Name'));
-    const items = rv(receipt, 'items', t('report.description', 'Description'));
-    const paymentType = rv(receipt, 'paymentType', t('report.payment_method', 'Payment Method'));
-    const status = rv(receipt, 'status', t('report.status', 'Status'));
+    const receiptNumber = rv(receipt, 'receiptNumber', '收據號碼');
+    const dateStr = rv(receipt, 'date', '日期');
+    const employee = rv(receipt, 'employee', '收銀員名稱');
+    const customer = rv(receipt, 'customer', '客戶名稱');
+    const items = rv(receipt, 'items', '描述');
+    const paymentType = rv(receipt, 'paymentType', '付款方式');
+    const status = rv(receipt, 'status', '狀態');
     const grossSales = rd('銷售總額');
     const discountRaw = rd('折扣');
     const netSales = rd('淨銷售額');
     const totalCollected = rd('總收集');
-    const store = rd(t('report.store', 'Store'));
+    const store = rd('商店');
 
     const displayDate = dateStr ? (() => {
         try { return new Date(dateStr).toLocaleString(); } catch { return dateStr; }
