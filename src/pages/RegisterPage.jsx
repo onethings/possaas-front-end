@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Lock, Mail, Building2, User, ArrowRight, Loader2, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { registerTenant } from '../api/tenants';
+import GuidedTour from '../components/GuidedTour';
 
 const RegisterPage = () => {
     const { t } = useTranslation();
@@ -87,7 +88,7 @@ const RegisterPage = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ padding: '2.5rem', width: '100%', maxWidth: '500px' }}
         >
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '2rem' }} data-tour-id="register-welcome">
                 <h1 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>
                     {/* 處理漸層文字：開始您的 Kevin POS 旅程 */}
                     {t('register.title_prefix', '開始您的 ')}
@@ -99,7 +100,7 @@ const RegisterPage = () => {
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {/* 公司名稱 */}
-                <div className="input-group">
+                <div className="input-group" data-tour-id="register-name">
                     <label htmlFor="reg-name" style={labelStyle}>{t('register.company_name')}</label>
                     <div style={{ position: 'relative' }}>
                         <Building2 size={18} style={iconStyle} />
@@ -116,7 +117,7 @@ const RegisterPage = () => {
                 </div>
 
                 {/* 公司編號 */}
-                <div className="input-group">
+                <div className="input-group" data-tour-id="register-tenantId">
                     <label htmlFor="reg-tenantId" style={labelStyle}>{t('register.tenant_id')}</label>
                     <div style={{ position: 'relative' }}>
                         <User size={18} style={iconStyle} />
@@ -133,7 +134,7 @@ const RegisterPage = () => {
                 </div>
 
                 {/* 管理員 Email */}
-                <div className="input-group">
+                <div className="input-group" data-tour-id="register-email">
                     <label htmlFor="reg-adminEmail" style={labelStyle}>{t('register.admin_email')}</label>
                     <div style={{ position: 'relative' }}>
                         <Mail size={18} style={iconStyle} />
@@ -150,7 +151,7 @@ const RegisterPage = () => {
                 </div>
 
                 {/* 密碼 */}
-                <div className="input-group">
+                <div className="input-group" data-tour-id="register-password">
                     <label htmlFor="reg-adminPassword" style={labelStyle}>{t('register.password')}</label>
                     <div style={{ position: 'relative' }}>
                         <Lock size={18} style={iconStyle} />
@@ -173,7 +174,7 @@ const RegisterPage = () => {
                 </div>
 
                 {/* 確認密碼 */}
-                <div className="input-group">
+                <div className="input-group" data-tour-id="register-confirm">
                     <label htmlFor="reg-confirmPassword" style={labelStyle}>{t('register.confirm_password')}</label>
                     <div style={{ position: 'relative' }}>
                         <Lock size={18} style={iconStyle} />
@@ -201,15 +202,17 @@ const RegisterPage = () => {
                     </div>
                 )}
 
+                <div data-tour-id="register-submit" style={{ width: '100%' }}>
                 <button
                     type="submit"
                     className="btn-primary"
                     disabled={loading}
-                    style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: loading ? 0.7 : 1 }}
+                    style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: loading ? 0.7 : 1, width: '100%' }}
                 >
                     {loading ? <Loader2 className="animate-spin" size={18} /> : t('register.submit')}
                     {!loading && <ArrowRight size={18} />}
                 </button>
+                </div>
 
                 <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem' }}>
                     <span style={{ color: 'var(--text-muted)' }}>{t('register.has_account')} </span>
@@ -219,6 +222,12 @@ const RegisterPage = () => {
                 </div>
             </form>
         </motion.div>
+
+        {/* 互動式引導教學 */}
+        <GuidedTour
+            tourId="register"
+            steps={registerTourSteps(t)}
+        />
     );
 };
     const labelStyle = {
@@ -249,3 +258,49 @@ const RegisterPage = () => {
     };
 
     export default RegisterPage;
+
+// 引導教學步驟定義
+const registerTourSteps = (t) => [
+    {
+        target: 'register-welcome',
+        title: t('tour.register_welcome_title', '建立您的商店帳號'),
+        content: t('tour.register_welcome_content', '歡迎！讓我們逐步引導您完成 Kevin POS 的註冊流程，快速建立您的商店後台。'),
+        placement: 'bottom',
+    },
+    {
+        target: 'register-name',
+        title: t('tour.register_name_title', '商店名稱'),
+        content: t('tour.register_name_content', '請輸入您的商店或公司名稱。這將會顯示在您的收據和報表上。'),
+        placement: 'right',
+    },
+    {
+        target: 'register-tenantId',
+        title: t('tour.register_tenant_title', '公司編號'),
+        content: t('tour.register_tenant_content', '設定一個獨一無二的公司編號。這將用於您的團隊成員登入時識別所屬商店。'),
+        placement: 'right',
+    },
+    {
+        target: 'register-email',
+        title: t('tour.register_email_title', '管理員電子郵件'),
+        content: t('tour.register_email_content', '輸入管理員的電子郵件地址。這將作為您登入後台的超級管理員帳號。'),
+        placement: 'right',
+    },
+    {
+        target: 'register-password',
+        title: t('tour.register_password_title', '設定密碼'),
+        content: t('tour.register_password_content', '請設定一組安全的密碼。建議使用英文大小寫、數字和符號的組合。'),
+        placement: 'right',
+    },
+    {
+        target: 'register-confirm',
+        title: t('tour.register_confirm_title', '確認密碼'),
+        content: t('tour.register_confirm_content', '再次輸入相同的密碼以確認無誤。兩個密碼必須完全一致才能繼續。'),
+        placement: 'right',
+    },
+    {
+        target: 'register-submit',
+        title: t('tour.register_submit_title', '建立帳號'),
+        content: t('tour.register_submit_content', '所有資料填寫完成後，點擊此按鈕即可建立您的商店帳號並開始使用 Kevin POS！'),
+        placement: 'top',
+    },
+];

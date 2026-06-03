@@ -5,6 +5,7 @@ import { Lock, User, Building2, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { login } from '../api/auth';
+import GuidedTour from '../components/GuidedTour';
 
 const LoginPage = () => {
     const { t, i18n } = useTranslation();
@@ -108,7 +109,7 @@ const LoginPage = () => {
                 }}
             >
                 {/* 語言切換器選單 */}
-                <div style={{
+                <div data-tour-id="login-lang" style={{
                     position: 'absolute',
                     top: '1rem',
                     // 根據 RTL 動態調換左右邊定位
@@ -129,7 +130,7 @@ const LoginPage = () => {
                     </select>
                 </div>
 
-                <div style={{ textAlign: 'center', marginBottom: '2.5rem', marginTop: '1rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '2.5rem', marginTop: '1rem' }} data-tour-id="login-welcome">
                     <h1 style={{ fontSize: '1.75rem', marginBottom: '0.5rem', fontWeight: 700, letterSpacing: '-0.025em' }}>
                         {t('login.welcome')} <span className="gradient-text">Kevin POS</span>
                     </h1>
@@ -138,7 +139,7 @@ const LoginPage = () => {
 
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                     {/* 帳號欄位 */}
-                    <div className="input-group">
+                    <div className="input-group" data-tour-id="login-username">
                         <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('login.email')}</label>
                         <div style={{ position: 'relative' }}>
                             <User size={18} style={{ 
@@ -163,7 +164,7 @@ const LoginPage = () => {
                     </div>
 
                     {/* 密碼欄位 */}
-                    <div className="input-group">
+                    <div className="input-group" data-tour-id="login-password">
                         <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('login.password')}</label>
                         <div style={{ position: 'relative' }}>
                             <Lock size={18} style={{ 
@@ -255,6 +256,7 @@ const LoginPage = () => {
                     )}
 
                     {/* 登入按鈕 */}
+                    <div data-tour-id="login-submit" style={{ width: '100%' }}>
                     <button
                         type="submit"
                         className="btn-primary"
@@ -276,6 +278,7 @@ const LoginPage = () => {
                             style={{ transform: isRtl ? 'rotate(180deg)' : 'none' }}
                         />
                     </button>
+                    </div>
 
                     {/* 頁尾連結：RWD 彈性排版 */}
                     <div style={{ 
@@ -288,10 +291,16 @@ const LoginPage = () => {
                         flexWrap: 'wrap' // 當手機寬度不夠時自動換行
                     }}>
                         <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>{t('login.forgotPassword')}</a>
-                        <Link to="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>{t('login.applyTrial')}</Link>
+                        <Link to="/register" data-tour-id="login-register-link" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>{t('login.applyTrial')}</Link>
                     </div>
                 </form>
             </motion.div>
+
+            {/* 互動式引導教學 */}
+            <GuidedTour
+                tourId="login"
+                steps={loginTourSteps(t)}
+            />
         </div>
     );
 };
@@ -318,5 +327,45 @@ const selectStyle = {
     outline: 'none',
     cursor: 'pointer'
 };
+
+// 引導教學步驟定義
+const loginTourSteps = (t) => [
+    {
+        target: 'login-welcome',
+        title: t('tour.login_welcome_title', '歡迎使用 Kevin POS'),
+        content: t('tour.login_welcome_content', '這是您的智慧 POS 管理後台。讓我們快速瀏覽登入流程，幫助您順利開始！'),
+        placement: 'bottom',
+    },
+    {
+        target: 'login-username',
+        title: t('tour.login_username_title', '輸入您的帳號'),
+        content: t('tour.login_username_content', '請在此處輸入您的管理員電子郵件地址。這是您在註冊時使用的帳號。'),
+        placement: 'right',
+    },
+    {
+        target: 'login-password',
+        title: t('tour.login_password_title', '輸入您的密碼'),
+        content: t('tour.login_password_content', '請輸入您的登入密碼。點擊眼睛圖示可以切換密碼的可見性。'),
+        placement: 'right',
+    },
+    {
+        target: 'login-submit',
+        title: t('tour.login_submit_title', '點擊登入'),
+        content: t('tour.login_submit_content', '填寫完帳號密碼後，點擊此按鈕即可進入您的 POS 管理後台。'),
+        placement: 'top',
+    },
+    {
+        target: 'login-register-link',
+        title: t('tour.login_register_title', '還沒有帳號？'),
+        content: t('tour.login_register_content', '如果您還沒有帳號，點擊這裡可以前往註冊頁面，免費建立您的商店帳號。'),
+        placement: 'top',
+    },
+    {
+        target: 'login-lang',
+        title: t('tour.login_lang_title', '切換語言'),
+        content: t('tour.login_lang_content', 'Kevin POS 支援多種語言。您可以隨時在這裡切換您偏好的顯示語言。'),
+        placement: 'bottom',
+    },
+];
 
 export default LoginPage;
