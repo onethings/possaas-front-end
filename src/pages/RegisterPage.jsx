@@ -81,6 +81,7 @@ const RegisterPage = () => {
     }
 
     return (
+        <>
         <motion.div
             className="glass-panel animate-fade-in"
             initial={{ opacity: 0, y: 20 }}
@@ -228,6 +229,7 @@ const RegisterPage = () => {
             tourId="register"
             steps={registerTourSteps(t)}
         />
+        </>
     );
 };
     const labelStyle = {
