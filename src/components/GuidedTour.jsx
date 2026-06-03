@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, ChevronLeft, Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const TOUR_STORAGE_KEY = 'kevinpos_guided_tour';
 
@@ -26,6 +27,7 @@ const GuidedTour = ({ tourId, steps = [], onComplete }) => {
     const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
     const [arrowStyle, setArrowStyle] = useState({});
     const tourKey = `${TOUR_STORAGE_KEY}_${tourId}`;
+    const { t } = useTranslation();
 
     // Check if tour was already completed
     useEffect(() => {
@@ -312,7 +314,7 @@ const GuidedTour = ({ tourId, steps = [], onComplete }) => {
                                 cursor: 'pointer', fontSize: '0.8rem', padding: '0.3rem 0',
                             }}
                         >
-                            Skip
+                            {t('tour.skip', 'Skip')}
                         </button>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                             {currentStep > 0 && (
@@ -325,7 +327,7 @@ const GuidedTour = ({ tourId, steps = [], onComplete }) => {
                                         padding: '0.45rem 0.85rem', cursor: 'pointer', fontSize: '0.82rem',
                                     }}
                                 >
-                                    <ChevronLeft size={14} /> Back
+                                    <ChevronLeft size={14} /> {t('tour.back', 'Back')}
                                 </button>
                             )}
                             <button
@@ -339,9 +341,9 @@ const GuidedTour = ({ tourId, steps = [], onComplete }) => {
                                 }}
                             >
                                 {isLast ? (
-                                    <>Done <Check size={14} /></>
+                                    <>{t('tour.done', 'Done')} <Check size={14} /></>
                                 ) : (
-                                    <>Next <ChevronRight size={14} /></>
+                                    <>{t('tour.next', 'Next')} <ChevronRight size={14} /></>
                                 )}
                             </button>
                         </div>
