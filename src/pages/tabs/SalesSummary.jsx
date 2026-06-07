@@ -16,7 +16,7 @@ import { useTenant } from '../../contexts/TenantContext';
 import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
 import { exportCSV, exportPDF } from '../../utils/exportUtils';
-import { useSortable, SortArrow } from '../../utils/useSortable';
+import { SortArrow } from '../../utils/useSortable';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler);
 
@@ -158,6 +158,11 @@ const SalesSummary = () => {
     const allColumns = COLUMN_DEFS(t);
 
     // ── Sort ──
+    const [sortKey, setSortKey] = useState('date');
+    const [sortDir, setSortDir] = useState('desc');
+    const handleSort = (key) => {
+        setSortKey(prev => { if (prev === key) { setSortDir(d => d === 'asc' ? 'desc' : 'asc'); return prev; } setSortDir('asc'); return key; });
+    };
     const SORT_GETTERS = {
         date: (r) => r.date || r._id || '',
         totalRevenue: (r) => r.totalRevenue || 0,
@@ -169,7 +174,6 @@ const SalesSummary = () => {
         profitMargin: (r) => r.totalRevenue ? (((r.totalRevenue - (r.totalCost || 0)) / r.totalRevenue) * 100) : 0,
         tax: (r) => r.totalTax || 0,
     };
-    const { sortKey, sortDir, handleSort } = useSortable([], { defaultKey: 'date', defaultDir: 'desc' });
     const granularDef = allGranularities.find(g => g.key === granularity) || allGranularities[0];
     const metricDef = allMetrics.find(m => m.key === chartMetric) || allMetrics[0];
 
@@ -227,6 +231,19 @@ const SalesSummary = () => {
         },
     };
 
+    // ── Sort computed data (must be before early return) ──
+    const sortedTrend = useMemo(() => {
+        const trend = summary?.reports || [];
+        if (!sortKey || !trend.length) return trend;
+        const getter = SORT_GETTERS[sortKey] || ((r) => r[sortKey]);
+        return [...trend].sort((a, b) => {
+            let va = getter(a); if (va == null) va = '';
+            let vb = getter(b); if (vb == null) vb = '';
+            if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+            return sortDir === 'asc' ? (va - vb) : (vb - va);
+        });
+    }, [summary, sortKey, sortDir]);
+
     if (loading && !summary) {
         return (
             <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
@@ -251,16 +268,6 @@ const SalesSummary = () => {
     ];
 
     const salesTrend = d.reports || [];
-    const sortedTrend = useMemo(() => {
-        if (!sortKey || !salesTrend.length) return salesTrend;
-        const getter = SORT_GETTERS[sortKey] || ((r) => r[sortKey]);
-        return [...salesTrend].sort((a, b) => {
-            let va = getter(a); if (va == null) va = '';
-            let vb = getter(b); if (vb == null) vb = '';
-            if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
-            return sortDir === 'asc' ? (va - vb) : (vb - va);
-        });
-    }, [salesTrend, sortKey, sortDir]);
     const totalPages = Math.max(1, Math.ceil(sortedTrend.length / pageSize));
     const pagedData = sortedTrend.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
