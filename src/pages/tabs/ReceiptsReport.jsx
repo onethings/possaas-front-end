@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import GuidedTour from '../../components/GuidedTour';
 import { pageTours } from '../../utils/pageTours';
@@ -9,6 +9,7 @@ import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
 import { getReceipts } from '../../api/receipts';
 import { exportCSV, exportPDF } from '../../utils/exportUtils';
+import { SortArrow } from '../../utils/useSortable';
 
 /** Helper: safely read a value from receipt map or rawData fallback */
 const rv = (r, key, rawKey) => {
@@ -73,6 +74,7 @@ const ReceiptsReport = () => {
         raw: r,
         no: r.receiptNumber || '—',
         date: r.date ? new Date(r.date).toLocaleString() : '—',
+        dateRaw: r.date || '',
         employee: r.employee || '—',
         customer: r.customer || '—',
         type: r.status === 'refund' || r.status === 'returned' ? t('report.refund', 'Refund') : t('report.sales', 'Sales'),
@@ -81,6 +83,30 @@ const ReceiptsReport = () => {
         status: r.status || 'paid',
         items: r.items || '',
     }));
+
+    // ── Sort ──
+    const [sortKey, setSortKey] = useState('');
+    const [sortDir, setSortDir] = useState('asc');
+    const handleSort = (key) => {
+        setSortKey(prev => { if (prev === key) { setSortDir(d => d === 'asc' ? 'desc' : 'asc'); return prev; } setSortDir('asc'); return key; });
+    };
+    const REC_SORT_GETTERS = {
+        no: (r) => r.no || '',
+        date: (r) => r.dateRaw || '',
+        employee: (r) => r.employee || '',
+        type: (r) => r.type || '',
+        total: (r) => r.total || 0,
+    };
+    const sortedReceipts = useMemo(() => {
+        if (!sortKey) return receipts;
+        const getter = REC_SORT_GETTERS[sortKey] || ((r) => r[sortKey]);
+        return [...receipts].sort((a, b) => {
+            let va = getter(a); if (va == null) va = '';
+            let vb = getter(b); if (vb == null) vb = '';
+            if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+            return sortDir === 'asc' ? (va - vb) : (vb - va);
+        });
+    }, [receipts, sortKey, sortDir]);
 
     const handlePrint = () => {
         if (!selectedReceipt) return;
@@ -166,15 +192,15 @@ const ReceiptsReport = () => {
                         <table data-tour-id="receipts-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
                             <thead>
                                 <tr style={{ borderBottom: '1px solid var(--glass-border)', position: 'sticky', top: 0, background: 'var(--glass-bg)', zIndex: 1 }}>
-                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.receipt_no', 'Receipt No')}</th>
-                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.date', 'Date')}</th>
-                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.employee', 'Employee')}</th>
-                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.type', 'Type')}</th>
-                                    <th style={{ padding: '0.6rem 0.4rem', textAlign: 'right', color: 'var(--text-muted)', fontWeight: 500 }}>{t('report.total', 'Total')}</th>
+                                    <th onClick={() => handleSort('no')} style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500, cursor: 'pointer', userSelect: 'none' }}>{t('report.receipt_no', 'Receipt No')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="no" /></th>
+                                    <th onClick={() => handleSort('date')} style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500, cursor: 'pointer', userSelect: 'none' }}>{t('report.date', 'Date')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="date" /></th>
+                                    <th onClick={() => handleSort('employee')} style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500, cursor: 'pointer', userSelect: 'none' }}>{t('report.employee', 'Employee')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="employee" /></th>
+                                    <th onClick={() => handleSort('type')} style={{ padding: '0.6rem 0.4rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500, cursor: 'pointer', userSelect: 'none' }}>{t('report.type', 'Type')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="type" /></th>
+                                    <th onClick={() => handleSort('total')} style={{ padding: '0.6rem 0.4rem', textAlign: 'right', color: 'var(--text-muted)', fontWeight: 500, cursor: 'pointer', userSelect: 'none' }}>{t('report.total', 'Total')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="total" /></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {receipts.map((r, idx) => {
+                                {sortedReceipts.map((r, idx) => {
                                     const isSelected = selectedReceipt && selectedReceipt._id === r._id;
                                     return (
                                         <tr

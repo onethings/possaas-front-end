@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Download, Loader2, FileText, FileSpreadsheet } from 'lucide-react';
@@ -7,6 +7,7 @@ import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
 import { getRangeReport } from '../../api/reports';
 import { exportCSV, exportPDF } from '../../utils/exportUtils';
+import { SortArrow } from '../../utils/useSortable';
 
 const EmployeeSalesReport = () => {
     const { t } = useTranslation();
@@ -16,6 +17,33 @@ const EmployeeSalesReport = () => {
     const [employees, setEmployees] = useState([]);
     const [showExportMenu, setShowExportMenu] = useState(false);
     const exportRef = useRef(null);
+
+    // ── Sort ──
+    const [sortKey, setSortKey] = useState('');
+    const [sortDir, setSortDir] = useState('asc');
+    const handleSort = (key) => {
+        setSortKey(prev => { if (prev === key) { setSortDir(d => d === 'asc' ? 'desc' : 'asc'); return prev; } setSortDir('asc'); return key; });
+    };
+    const EMP_SORT_GETTERS = {
+        name: (e) => e.name || '',
+        totalSales: (e) => e.totalSales || 0,
+        refund: (e) => e.refund || 0,
+        discount: (e) => e.discount || 0,
+        netSales: (e) => e.netSales || 0,
+        receipts: (e) => e.receipts || 0,
+        avgSale: (e) => e.avgSale || 0,
+        registeredCustomers: (e) => e.registeredCustomers || 0,
+    };
+    const sortedEmployees = useMemo(() => {
+        if (!sortKey) return employees;
+        const getter = EMP_SORT_GETTERS[sortKey] || ((e) => e[sortKey]);
+        return [...employees].sort((a, b) => {
+            let va = getter(a); if (va == null) va = '';
+            let vb = getter(b); if (vb == null) vb = '';
+            if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+            return sortDir === 'asc' ? (va - vb) : (vb - va);
+        });
+    }, [employees, sortKey, sortDir]);
 
     useEffect(() => {
         fetchData();
@@ -101,18 +129,18 @@ const EmployeeSalesReport = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.employee_name', 'Employee Name')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.total_sales', 'Total Sales')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.refund', 'Refund')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.discount', 'Discount')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.net_sales', 'Net Sales')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.receipts', 'Receipts')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.avg_sale', 'Avg Sale')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.registered_customers', 'Registered Customers')}</th>
+                                <th onClick={() => handleSort('name')} style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.employee_name', 'Employee Name')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="name" /></th>
+                                <th onClick={() => handleSort('totalSales')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.total_sales', 'Total Sales')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="totalSales" /></th>
+                                <th onClick={() => handleSort('refund')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.refund', 'Refund')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="refund" /></th>
+                                <th onClick={() => handleSort('discount')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.discount', 'Discount')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="discount" /></th>
+                                <th onClick={() => handleSort('netSales')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.net_sales', 'Net Sales')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="netSales" /></th>
+                                <th onClick={() => handleSort('receipts')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.receipts', 'Receipts')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="receipts" /></th>
+                                <th onClick={() => handleSort('avgSale')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.avg_sale', 'Avg Sale')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="avgSale" /></th>
+                                <th onClick={() => handleSort('registeredCustomers')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.registered_customers', 'Registered Customers')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="registeredCustomers" /></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {employees.map((emp, idx) => (
+                            {sortedEmployees.map((emp, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                                     <td style={{ padding: '0.75rem 0.5rem', fontWeight: 600 }}>{emp.name}</td>
                                     <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{tenantConfig.currency}{emp.totalSales.toLocaleString()}</td>
@@ -128,7 +156,7 @@ const EmployeeSalesReport = () => {
                     </table>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    <span>{t('common.page_info', { current: 1, total: Math.max(1, Math.ceil(employees.length / 10)) })}</span>
+                    <span>{t('common.page_info', { current: 1, total: Math.max(1, Math.ceil(sortedEmployees.length / 10)) })}</span>
                     <select style={{ background: 'rgba(0,0,0,0.2)', border: 'none', color: 'var(--text-muted)', padding: '0.3rem', borderRadius: '4px', fontSize: '0.8rem' }}>
                         <option>10 {t('common.rows', 'Rows')}</option>
                         <option>25 {t('common.rows', 'Rows')}</option>

@@ -13,6 +13,7 @@ import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
 import { getRangeReport } from '../../api/reports';
 import { exportCSV, exportPDF } from '../../utils/exportUtils';
+import { SortArrow } from '../../utils/useSortable';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, ArcElement, Title, Tooltip, Legend, Filler);
 
@@ -77,6 +78,25 @@ const ProductSalesReport = () => {
     const [showExportMenu, setShowExportMenu] = useState(false);
     const [showColumnPicker, setShowColumnPicker] = useState(false);
     const [visibleCols, setVisibleCols] = useState(DEFAULT_VISIBLE);
+
+    // ── Sort ──
+    const [sortKey, setSortKey] = useState('');
+    const [sortDir, setSortDir] = useState('asc');
+    const handleSort = (key) => {
+        setSortKey(prev => { if (prev === key) { setSortDir(d => d === 'asc' ? 'desc' : 'asc'); return prev; } setSortDir('asc'); return key; });
+    };
+    const sortedProducts = useMemo(() => {
+        if (!sortKey) return products;
+        const cols = COLUMN_DEFS(t);
+        const col = cols.find(c => c.key === sortKey);
+        const getter = col?.getVal || ((p) => p[sortKey]);
+        return [...products].sort((a, b) => {
+            let va = getter(a); if (va == null) va = '';
+            let vb = getter(b); if (vb == null) vb = '';
+            if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+            return sortDir === 'asc' ? (va - vb) : (vb - va);
+        });
+    }, [products, sortKey, sortDir, t]);
     const exportRef = useRef(null);
     const colPickerRef = useRef(null);
 
@@ -485,14 +505,14 @@ const ProductSalesReport = () => {
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
                                 {COLUMN_DEFS(t).filter(c => visibleCols[c.key]).map(c => (
-                                    <th key={c.key} style={{ padding: '0.75rem 0.5rem', textAlign: c.align, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                                        {c.label}
+                                    <th key={c.key} onClick={() => handleSort(c.key)} style={{ padding: '0.75rem 0.5rem', textAlign: c.align, color: 'var(--text-muted)', whiteSpace: 'nowrap', cursor: 'pointer', userSelect: 'none' }}>
+                                        {c.label} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey={c.key} />
                                     </th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody>
-                            {products.map((p, idx) => (
+                            {sortedProducts.map((p, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                                     {COLUMN_DEFS(t).filter(c => visibleCols[c.key]).map(c => {
                                         const rawVal = c.getVal(p);
@@ -518,7 +538,7 @@ const ProductSalesReport = () => {
                     </table>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    <span>{t('common.page_info', { current: 1, total: Math.max(1, Math.ceil(products.length / 10)) })}</span>
+                    <span>{t('common.page_info', { current: 1, total: Math.max(1, Math.ceil(sortedProducts.length / 10)) })}</span>
                     <select style={{ background: 'rgba(0,0,0,0.2)', border: 'none', color: 'var(--text-muted)', padding: '0.3rem', borderRadius: '4px', fontSize: '0.8rem' }}>
                         <option>10 {t('common.rows', 'Rows')}</option>
                         <option>25 {t('common.rows', 'Rows')}</option>

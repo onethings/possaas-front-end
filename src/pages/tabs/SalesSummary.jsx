@@ -16,6 +16,7 @@ import { useTenant } from '../../contexts/TenantContext';
 import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
 import { exportCSV, exportPDF } from '../../utils/exportUtils';
+import { useSortable, SortArrow } from '../../utils/useSortable';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler);
 
@@ -155,6 +156,20 @@ const SalesSummary = () => {
     const allGranularities = GRANULARITIES(t);
     const allMetrics = METRICS(t);
     const allColumns = COLUMN_DEFS(t);
+
+    // ── Sort ──
+    const SORT_GETTERS = {
+        date: (r) => r.date || r._id || '',
+        totalRevenue: (r) => r.totalRevenue || 0,
+        totalRefunds: (r) => r.totalRefunds || 0,
+        totalDiscount: (r) => r.totalDiscount || 0,
+        netSales: (r) => (r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0),
+        totalCost: (r) => r.totalCost || 0,
+        grossProfit: (r) => (r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0) - (r.totalCost || 0),
+        profitMargin: (r) => r.totalRevenue ? (((r.totalRevenue - (r.totalCost || 0)) / r.totalRevenue) * 100) : 0,
+        tax: (r) => r.totalTax || 0,
+    };
+    const { sortKey, sortDir, handleSort } = useSortable([], { defaultKey: 'date', defaultDir: 'desc' });
     const granularDef = allGranularities.find(g => g.key === granularity) || allGranularities[0];
     const metricDef = allMetrics.find(m => m.key === chartMetric) || allMetrics[0];
 
@@ -236,8 +251,18 @@ const SalesSummary = () => {
     ];
 
     const salesTrend = d.reports || [];
-    const totalPages = Math.max(1, Math.ceil(salesTrend.length / pageSize));
-    const pagedData = salesTrend.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const sortedTrend = useMemo(() => {
+        if (!sortKey || !salesTrend.length) return salesTrend;
+        const getter = SORT_GETTERS[sortKey] || ((r) => r[sortKey]);
+        return [...salesTrend].sort((a, b) => {
+            let va = getter(a); if (va == null) va = '';
+            let vb = getter(b); if (vb == null) vb = '';
+            if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+            return sortDir === 'asc' ? (va - vb) : (vb - va);
+        });
+    }, [salesTrend, sortKey, sortDir]);
+    const totalPages = Math.max(1, Math.ceil(sortedTrend.length / pageSize));
+    const pagedData = sortedTrend.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     // ── Export ──
     const handleExport = (type) => {
@@ -446,12 +471,12 @@ const SalesSummary = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                                    {t('report.date', 'Date')}
+                                <th onClick={() => handleSort('date')} style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)', whiteSpace: 'nowrap', cursor: 'pointer', userSelect: 'none' }}>
+                                    {t('report.date', 'Date')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="date" />
                                 </th>
                                 {allColumns.filter(c => visibleCols[c.key]).map(c => (
-                                    <th key={c.key} style={{ padding: '0.75rem 0.5rem', textAlign: c.align, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                                        {c.label}
+                                    <th key={c.key} onClick={() => handleSort(c.key)} style={{ padding: '0.75rem 0.5rem', textAlign: c.align, color: 'var(--text-muted)', whiteSpace: 'nowrap', cursor: 'pointer', userSelect: 'none' }}>
+                                        {c.label} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey={c.key} />
                                     </th>
                                 ))}
                             </tr>

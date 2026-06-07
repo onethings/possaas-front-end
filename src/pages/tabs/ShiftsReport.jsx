@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Download, Loader2 } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
 import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
+import { SortArrow } from '../../utils/useSortable';
 
 const ShiftsReport = () => {
     const { t } = useTranslation();
@@ -12,6 +13,30 @@ const ShiftsReport = () => {
     const { dateRange } = useReportFilters();
     const [loading, setLoading] = useState(true);
     const [shifts, setShifts] = useState([]);
+
+    // ── Sort ──
+    const [sortKey, setSortKey] = useState('');
+    const [sortDir, setSortDir] = useState('asc');
+    const handleSort = (key) => {
+        setSortKey(prev => { if (prev === key) { setSortDir(d => d === 'asc' ? 'desc' : 'asc'); return prev; } setSortDir('asc'); return key; });
+    };
+    const SHIFT_SORT_GETTERS = {
+        date: (s) => new Date(s.clockIn).toISOString().split('T')[0],
+        employee: (s) => (s.staffName || s.userId || ''),
+        startTime: (s) => new Date(s.clockIn).getTime(),
+        endTime: (s) => s.clockOut ? new Date(s.clockOut).getTime() : 0,
+        totalHours: (s) => s.totalHours || 0,
+    };
+    const sortedShifts = useMemo(() => {
+        if (!sortKey) return shifts;
+        const getter = SHIFT_SORT_GETTERS[sortKey] || ((s) => s[sortKey]);
+        return [...shifts].sort((a, b) => {
+            let va = getter(a); if (va == null) va = '';
+            let vb = getter(b); if (vb == null) vb = '';
+            if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+            return sortDir === 'asc' ? (va - vb) : (vb - va);
+        });
+    }, [shifts, sortKey, sortDir]);
 
     useEffect(() => {
         fetchShifts();
@@ -59,15 +84,15 @@ const ShiftsReport = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.date', 'Date')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.employee', 'Employee')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.start_time', 'Start Time')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.end_time', 'End Time')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.total_hours', 'Total Hours')}</th>
+                                <th onClick={() => handleSort('date')} style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.date', 'Date')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="date" /></th>
+                                <th onClick={() => handleSort('employee')} style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.employee', 'Employee')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="employee" /></th>
+                                <th onClick={() => handleSort('startTime')} style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.start_time', 'Start Time')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="startTime" /></th>
+                                <th onClick={() => handleSort('endTime')} style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.end_time', 'End Time')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="endTime" /></th>
+                                <th onClick={() => handleSort('totalHours')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.total_hours', 'Total Hours')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="totalHours" /></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {shifts.length > 0 ? shifts.map((s, idx) => (
+                            {sortedShifts.length > 0 ? sortedShifts.map((s, idx) => (
                                 <tr key={s._id || idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                                     <td style={{ padding: '0.75rem 0.5rem', fontWeight: 500 }}>{new Date(s.clockIn).toLocaleDateString()}</td>
                                     <td style={{ padding: '0.75rem 0.5rem' }}>{s.staffName || s.userId || t('common.unknown', 'Unknown')}</td>

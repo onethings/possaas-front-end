@@ -39,6 +39,7 @@ import { Line, Bar, Pie } from 'react-chartjs-2';
 import { getRevenueReport } from '../api/reports';
 import { useAuth } from '../contexts/AuthContext';
 import { useTenant } from '../contexts/TenantContext';
+import { SortArrow } from '../utils/useSortable';
 
 ChartJS.register(
     CategoryScale,
@@ -73,6 +74,34 @@ const RevenueReport = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [activeTab, setActiveTab] = useState('overview');
+
+    // ── Sort ──
+    const [sortKey, setSortKey] = useState('');
+    const [sortDir, setSortDir] = useState('asc');
+    const handleSort = (key) => {
+        setSortKey(prev => { if (prev === key) { setSortDir(d => d === 'asc' ? 'desc' : 'asc'); return prev; } setSortDir('asc'); return key; });
+    };
+
+    // ── Sorted overview reports ──
+    const sortedReports = useMemo(() => {
+        const reports = data?.details?.reports || [];
+        if (!sortKey || !reports.length) return reports;
+        const getters = {
+            date: (r) => r.date || '',
+            totalRevenue: (r) => r.totalRevenue || 0,
+            totalCost: (r) => r.totalCost || 0,
+            profit: (r) => (r.totalRevenue || 0) - (r.totalCost || 0),
+            totalExpenses: (r) => r.totalExpenses || 0,
+            margin: (r) => r.totalRevenue > 0 ? ((r.totalRevenue - r.totalCost) / r.totalRevenue) * 100 : 0,
+        };
+        const getter = getters[sortKey] || ((r) => r[sortKey]);
+        return [...reports].sort((a, b) => {
+            let va = getter(a); if (va == null) va = '';
+            let vb = getter(b); if (vb == null) vb = '';
+            if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+            return sortDir === 'asc' ? (va - vb) : (vb - va);
+        });
+    }, [data, sortKey, sortDir]);
 
     // 4. 副作用處理 (Effects) & RWD 樣式注入
     useEffect(() => {
@@ -422,12 +451,12 @@ const RevenueReport = () => {
                         <thead>
                             {activeTab === 'overview' ? (
                                 <tr>
-                                    <th>{t('reports.table.date')}</th>
-                                    <th className="text-right">{t('reports.table.net_sales')}</th>
-                                    <th className="text-right">{t('reports.table.cost')}</th>
-                                    <th className="text-right">{t('reports.table.profit')}</th>
-                                    <th className="text-right">{t('reports.table.expenses')}</th>
-                                    <th className="text-center">{t('reports.table.margin')}</th>
+                                    <th onClick={() => handleSort('date')} style={{ cursor: 'pointer', userSelect: 'none' }}>{t('reports.table.date')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="date" /></th>
+                                    <th onClick={() => handleSort('totalRevenue')} className="text-right" style={{ cursor: 'pointer', userSelect: 'none' }}>{t('reports.table.net_sales')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="totalRevenue" /></th>
+                                    <th onClick={() => handleSort('totalCost')} className="text-right" style={{ cursor: 'pointer', userSelect: 'none' }}>{t('reports.table.cost')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="totalCost" /></th>
+                                    <th onClick={() => handleSort('profit')} className="text-right" style={{ cursor: 'pointer', userSelect: 'none' }}>{t('reports.table.profit')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="profit" /></th>
+                                    <th onClick={() => handleSort('totalExpenses')} className="text-right" style={{ cursor: 'pointer', userSelect: 'none' }}>{t('reports.table.expenses')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="totalExpenses" /></th>
+                                    <th onClick={() => handleSort('margin')} className="text-center" style={{ cursor: 'pointer', userSelect: 'none' }}>{t('reports.table.margin')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="margin" /></th>
                                 </tr>
                             ) : activeTab === 'products' ? (
                                 <tr>
@@ -448,7 +477,7 @@ const RevenueReport = () => {
                             )}
                         </thead>
                         <tbody>
-                            {activeTab === 'overview' && data?.details?.reports?.map((r, i) => {
+                            {activeTab === 'overview' && sortedReports.map((r, i) => {
                                 const profit = r.totalRevenue - r.totalCost;
                                 const margin = r.totalRevenue > 0 ? (profit / r.totalRevenue) * 100 : 0;
                                 return (
@@ -464,8 +493,8 @@ const RevenueReport = () => {
                                     </tr>
                                 );
                             })}
-                            {activeTab === 'overview' && data?.details?.reports?.length > 0 && (() => {
-                                const reps = data.details.reports;
+                            {activeTab === 'overview' && sortedReports.length > 0 && (() => {
+                                const reps = sortedReports;
                                 const sumRev = reps.reduce((s, r) => s + (r.totalRevenue || 0), 0);
                                 const sumCost = reps.reduce((s, r) => s + (r.totalCost || 0), 0);
                                 const sumProfit = sumRev - sumCost;

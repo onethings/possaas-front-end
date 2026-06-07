@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Download, Loader2, FileText, FileSpreadsheet } from 'lucide-react';
@@ -7,6 +7,7 @@ import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
 import { getRangeReport } from '../../api/reports';
 import { exportCSV, exportPDF } from '../../utils/exportUtils';
+import { SortArrow } from '../../utils/useSortable';
 
 const PaymentTypeReport = () => {
     const { t } = useTranslation();
@@ -16,6 +17,31 @@ const PaymentTypeReport = () => {
     const [payments, setPayments] = useState([]);
     const [showExportMenu, setShowExportMenu] = useState(false);
     const exportRef = useRef(null);
+
+    // ── Sort ──
+    const [sortKey, setSortKey] = useState('');
+    const [sortDir, setSortDir] = useState('asc');
+    const handleSort = (key) => {
+        setSortKey(prev => { if (prev === key) { setSortDir(d => d === 'asc' ? 'desc' : 'asc'); return prev; } setSortDir('asc'); return key; });
+    };
+    const PAY_SORT_GETTERS = {
+        method: (p) => p.method || '',
+        transactions: (p) => p.transactions || 0,
+        amount: (p) => p.amount || 0,
+        refundTrans: (p) => p.refundTrans || 0,
+        refundAmount: (p) => p.refundAmount || 0,
+        net: (p) => p.net || 0,
+    };
+    const sortedPayments = useMemo(() => {
+        if (!sortKey) return payments;
+        const getter = PAY_SORT_GETTERS[sortKey] || ((p) => p[sortKey]);
+        return [...payments].sort((a, b) => {
+            let va = getter(a); if (va == null) va = '';
+            let vb = getter(b); if (vb == null) vb = '';
+            if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+            return sortDir === 'asc' ? (va - vb) : (vb - va);
+        });
+    }, [payments, sortKey, sortDir]);
 
     useEffect(() => {
         fetchData();
@@ -109,16 +135,16 @@ const PaymentTypeReport = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)' }}>{t('report.payment_method', 'Payment Method')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.payment_transactions', 'Payment Transactions')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.payment_amount', 'Payment Amount')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.refund_transactions', 'Refund Transactions')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.refund_amount', 'Refund Amount')}</th>
-                                <th style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)' }}>{t('report.net_amount', 'Net Amount')}</th>
+                                <th onClick={() => handleSort('method')} style={{ padding: '0.75rem 0.5rem', textAlign: 'left', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.payment_method', 'Payment Method')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="method" /></th>
+                                <th onClick={() => handleSort('transactions')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.payment_transactions', 'Payment Transactions')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="transactions" /></th>
+                                <th onClick={() => handleSort('amount')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.payment_amount', 'Payment Amount')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="amount" /></th>
+                                <th onClick={() => handleSort('refundTrans')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.refund_transactions', 'Refund Transactions')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="refundTrans" /></th>
+                                <th onClick={() => handleSort('refundAmount')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.refund_amount', 'Refund Amount')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="refundAmount" /></th>
+                                <th onClick={() => handleSort('net')} style={{ padding: '0.75rem 0.5rem', textAlign: 'right', color: 'var(--text-muted)', cursor: 'pointer', userSelect: 'none' }}>{t('report.net_amount', 'Net Amount')} <SortArrow sortKey={sortKey} sortDir={sortDir} colKey="net" /></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {payments.map((p, idx) => (
+                            {sortedPayments.map((p, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                                     <td style={{ padding: '0.75rem 0.5rem', fontWeight: 600 }}>{p.method}</td>
                                     <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{p.transactions}</td>
