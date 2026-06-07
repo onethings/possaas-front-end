@@ -54,7 +54,7 @@ const METRICS = (t) => [
   { key: 'netSales',     label: t('report.net_sales', 'Net Sales'),   color: 'hsl(160, 70%, 45%)', bg: 'rgba(52,211,153,0.15)',
     get: (r) => ((r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0)) },
   { key: 'grossProfit',  label: t('report.gross_profit', 'Gross Profit'), color: 'hsl(280, 70%, 60%)', bg: 'rgba(168,85,247,0.15)',
-    get: (r) => ((r.totalRevenue || 0) - (r.totalCost || 0)) },
+    get: (r) => ((r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0) - (r.totalCost || 0)) },
 ];
 
 const COLUMN_DEFS = (t) => [
@@ -69,7 +69,7 @@ const COLUMN_DEFS = (t) => [
   { key: 'totalCost',    label: t('report.cost_of_sales', 'Cost of Sales'), align: 'right',
     render: (r, cur) => cur + (r.totalCost || 0).toLocaleString() },
   { key: 'grossProfit',  label: t('report.gross_profit', 'Gross Profit'), align: 'right',
-    render: (r, cur) => cur + ((r.totalRevenue || 0) - (r.totalCost || 0)).toLocaleString() },
+    render: (r, cur) => cur + ((r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0) - (r.totalCost || 0)).toLocaleString() },
   { key: 'profitMargin', label: t('report.profit_margin', 'Profit Margin'), align: 'right',
     render: (r, cur) => cur + (r.totalRevenue
       ? ((((r.totalRevenue - (r.totalCost || 0)) / r.totalRevenue) * 100).toFixed(1)) + '%'
@@ -232,7 +232,7 @@ const SalesSummary = () => {
         { label: t('dashboard.refund', 'Refund'), value: `${tenantConfig.currency}${totalRefunds.toLocaleString()}` },
         { label: t('dashboard.discount', 'Discount'), value: `${tenantConfig.currency}${totalDiscount.toLocaleString()}` },
         { label: t('dashboard.net_sales', 'Net Sales'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds - totalDiscount).toLocaleString()}` },
-        { label: t('dashboard.gross_profit', 'Gross Profit'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds - totalCost).toLocaleString()}` },
+        { label: t('dashboard.gross_profit', 'Gross Profit'), value: `${tenantConfig.currency}${(totalRevenue - totalRefunds - totalDiscount - totalCost).toLocaleString()}` },
     ];
 
     const salesTrend = d.reports || [];
@@ -249,7 +249,7 @@ const SalesSummary = () => {
                 label: c.label,
                 value: (r) => {
                     if (c.key === 'netSales') return (r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0);
-                    if (c.key === 'grossProfit') return (r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalCost || 0);
+                    if (c.key === 'grossProfit') return (r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0) - (r.totalCost || 0);
                     if (c.key === 'profitMargin') return r.totalRevenue ? ((((r.totalRevenue - (r.totalRefunds || 0) - (r.totalCost || 0)) / r.totalRevenue) * 100).toFixed(1) + '%') : '0%';
                     if (c.key === 'tax') return r.totalTax || 0;
                     return r[c.key] || 0;
@@ -465,7 +465,7 @@ const SalesSummary = () => {
                                     {allColumns.filter(c => visibleCols[c.key]).map(c => {
                                         let val;
                                         if (c.key === 'netSales') val = (row.totalRevenue || 0) - (row.totalRefunds || 0) - (row.totalDiscount || 0);
-                                        else if (c.key === 'grossProfit') val = (row.totalRevenue || 0) - (row.totalRefunds || 0) - (row.totalCost || 0);
+                                        else if (c.key === 'grossProfit') val = (row.totalRevenue || 0) - (row.totalRefunds || 0) - (row.totalDiscount || 0) - (row.totalCost || 0);
                                         else if (c.key === 'profitMargin') {
                                             val = row.totalRevenue
                                                 ? ((((row.totalRevenue - (row.totalCost || 0)) / row.totalRevenue) * 100).toFixed(1)) + '%'
