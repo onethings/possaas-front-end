@@ -2,8 +2,10 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 
 const ReportFilterContext = createContext();
 
+const getToday = () => new Date().toISOString().split('T')[0];
+
 const DEFAULT_FILTERS = {
-  dateRange: { start: '2026-05-03', end: '2026-06-02' },
+  dateRange: { start: getToday(), end: getToday() },
   timeFilter: 'all',
   employeeFilter: 'all',
 };
