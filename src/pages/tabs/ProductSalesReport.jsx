@@ -150,14 +150,14 @@ const ProductSalesReport = () => {
                         sku: p.sku || '',
                         category: p.category || '—',
                         qty: p.qty || 0,
-                        totalRevenue: p.grossSales || p.revenue || 0,
+                        totalRevenue: p.revenue || 0,
                         returnQty: p.returnQty || 0,
                         refund: p.refund || 0,
                         discount: p.discount || 0,
-                        netSales: p.revenue || 0,
+                        netSales: (p.revenue || 0) - (p.discount || 0),
                         cost: p.cost || 0,
-                        grossProfit: p.grossProfit || ((p.revenue || 0) - (p.cost || 0)),
-                        profitMargin: p.profitMargin || (p.revenue ? (((p.revenue - (p.cost || 0)) / p.revenue) * 100).toFixed(1) : 0),
+                        grossProfit: ((p.revenue || 0) - (p.discount || 0)) - (p.cost || 0),
+                        profitMargin: p.revenue ? ((((p.revenue - (p.discount || 0)) - (p.cost || 0)) / p.revenue) * 100).toFixed(1) : 0,
                         tax: p.tax || 0,
                     }));
                     setProducts(mapped);
