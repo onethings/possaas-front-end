@@ -61,29 +61,16 @@ const PaymentTypeReport = () => {
             const result = await getRangeReport(dateRange.start, dateRange.end);
             if (result.success) {
                 const d = result.data;
-                const paymentSummary = d.paymentSummary || [];
-                if (paymentSummary.length > 0) {
-                    setPayments(paymentSummary.map(p => ({
-                        method: p.method || t('report.unknown', 'Unknown'),
-                        transactions: p.count || 0,
-                        amount: p.amount || 0,
-                        refundTrans: 0,
-                        refundAmount: 0,
-                        net: p.amount || 0,
-                    })));
-                } else {
-                    // fallback: aggregate from totals
-                    const totalRevenue = d.totalRevenue || 0;
-                    const totalRefunds = d.totalRefunds || 0;
-                    setPayments([{
-                        method: t('report.cash', 'Cash'),
-                        transactions: d.totalOrders || 0,
-                        amount: totalRevenue,
-                        refundTrans: 0,
-                        refundAmount: totalRefunds,
-                        net: totalRevenue - totalRefunds,
-                    }]);
-                }
+                const totalRevenue = d.totalRevenue || 0;
+                const totalRefunds = d.totalRefunds || 0;
+                setPayments([{
+                    method: t('report.cash', 'Cash'),
+                    transactions: d.totalOrders || 0,
+                    amount: totalRevenue,
+                    refundTrans: 0,
+                    refundAmount: totalRefunds,
+                    net: totalRevenue - totalRefunds,
+                }]);
             }
         } catch (err) {
             console.error('Failed to fetch payment types:', err);
