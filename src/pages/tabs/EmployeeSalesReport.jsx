@@ -69,11 +69,11 @@ const EmployeeSalesReport = () => {
                 const mapped = result.data.staffPerformance.map(s => ({
                     name: s.staffName || 'Unknown',
                     totalSales: s.revenue || 0,
-                    refund: 0,
-                    discount: 0,
-                    netSales: s.revenue || 0,
+                    refund: s.refund || 0,
+                    discount: s.discount || 0,
+                    netSales: s.netSales || (s.revenue - (s.refund || 0) - (s.discount || 0)) || 0,
                     receipts: s.orderCount || 0,
-                    avgSale: s.orderCount ? Math.round((s.revenue || 0) / s.orderCount) : 0,
+                    avgSale: s.orderCount ? Math.round(((s.netSales || s.revenue) || 0) / s.orderCount) : 0,
                     registeredCustomers: 0,
                 }));
                 setEmployees(mapped);
