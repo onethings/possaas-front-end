@@ -72,9 +72,12 @@ const COLUMN_DEFS = (t) => [
   { key: 'grossProfit',  label: t('report.gross_profit', 'Gross Profit'), align: 'right',
     render: (r, cur) => cur + ((r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0) - (r.totalCost || 0)).toLocaleString() },
   { key: 'profitMargin', label: t('report.profit_margin', 'Profit Margin'), align: 'right',
-    render: (r, cur) => cur + (r.totalRevenue
-      ? ((((r.totalRevenue - (r.totalCost || 0)) / r.totalRevenue) * 100).toFixed(1)) + '%'
-      : '0%') },
+    render: (r, cur) => {
+      const netSales = (r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0);
+      return cur + (netSales > 0
+        ? ((((netSales - (r.totalCost || 0)) / netSales) * 100).toFixed(1)) + '%'
+        : '0%');
+    } },
   { key: 'tax',          label: t('report.tax', 'Tax'),               align: 'right',
     render: (r, cur) => cur + (r.totalTax || 0).toLocaleString() },
 ];
@@ -171,7 +174,10 @@ const SalesSummary = () => {
         netSales: (r) => (r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0),
         totalCost: (r) => r.totalCost || 0,
         grossProfit: (r) => (r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0) - (r.totalCost || 0),
-        profitMargin: (r) => r.totalRevenue ? (((r.totalRevenue - (r.totalCost || 0)) / r.totalRevenue) * 100) : 0,
+        profitMargin: (r) => {
+            const netSales = (r.totalRevenue || 0) - (r.totalRefunds || 0) - (r.totalDiscount || 0);
+            return netSales > 0 ? (((netSales - (r.totalCost || 0)) / netSales) * 100) : 0;
+        },
         tax: (r) => r.totalTax || 0,
     };
     const granularDef = allGranularities.find(g => g.key === granularity) || allGranularities[0];
@@ -499,8 +505,9 @@ const SalesSummary = () => {
                                         if (c.key === 'netSales') val = (row.totalRevenue || 0) - (row.totalRefunds || 0) - (row.totalDiscount || 0);
                                         else if (c.key === 'grossProfit') val = (row.totalRevenue || 0) - (row.totalRefunds || 0) - (row.totalDiscount || 0) - (row.totalCost || 0);
                                         else if (c.key === 'profitMargin') {
-                                            val = row.totalRevenue
-                                                ? ((((row.totalRevenue - (row.totalCost || 0)) / row.totalRevenue) * 100).toFixed(1)) + '%'
+                                            const netSales = (row.totalRevenue || 0) - (row.totalRefunds || 0) - (row.totalDiscount || 0);
+                                            val = netSales > 0
+                                                ? ((((netSales - (row.totalCost || 0)) / netSales) * 100).toFixed(1)) + '%'
                                                 : '0%';
                                         }
                                         else if (c.key === 'tax') val = row.totalTax || 0;
