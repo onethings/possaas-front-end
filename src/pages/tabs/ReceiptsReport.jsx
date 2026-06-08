@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import GuidedTour from '../../components/GuidedTour';
 import { pageTours } from '../../utils/pageTours';
 import { motion } from 'framer-motion';
-import { Download, Loader2, Search, FileText, FileSpreadsheet, Printer, X, ChevronRight, Calendar, User, ShoppingBag, CreditCard, Store, Hash, MapPin } from 'lucide-react';
+import { Download, Loader2, Search, FileText, FileSpreadsheet, Printer, X, ChevronRight, ChevronLeft, Calendar, User, ShoppingBag, CreditCard, Store, Hash, MapPin } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
 import { useReportFilters } from '../../contexts/ReportFilterContext';
 import FilterBar from '../../components/FilterBar';
 import { getReceipts } from '../../api/receipts';
 import { exportCSV, exportPDF } from '../../utils/exportUtils';
 import { SortArrow } from '../../utils/useSortable';
+import { usePagination } from '../../utils/usePagination';
 
 /** Helper: safely read a value from receipt map or rawData fallback */
 const rv = (r, key, rawKey) => {
@@ -108,6 +109,9 @@ const ReceiptsReport = () => {
         });
     }, [receipts, sortKey, sortDir]);
 
+    // ── Pagination ──
+    const { page, setPage, pageSize, setPageSize, totalPages, pagedData } = usePagination(sortedReceipts, 10);
+
     const handlePrint = () => {
         if (!selectedReceipt) return;
         window.print();
@@ -200,7 +204,7 @@ const ReceiptsReport = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {sortedReceipts.map((r, idx) => {
+                                {pagedData.map((r, idx) => {
                                     const isSelected = selectedReceipt && selectedReceipt._id === r._id;
                                     return (
                                         <tr
@@ -246,6 +250,28 @@ const ReceiptsReport = () => {
                                 )}
                             </tbody>
                         </table>
+                    </div>
+
+                    {/* Pagination */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '0.75rem', fontSize: '0.8rem', color: 'var(--text-muted)', flexShrink: 0 }}>
+                        <span>{t('common.page_info', { current: page, total: totalPages })}</span>
+                        <div style={{ display: 'flex', gap: '0.3rem' }}>
+                            <button onClick={() => setPage(page - 1)} disabled={page <= 1}
+                                style={{ padding: '0.2rem 0.4rem', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--glass-border)', borderRadius: '4px', color: page <= 1 ? 'rgba(255,255,255,0.2)' : 'var(--text-muted)', cursor: page <= 1 ? 'default' : 'pointer', display: 'flex', alignItems: 'center' }}>
+                                <ChevronLeft size={14} />
+                            </button>
+                            <button onClick={() => setPage(page + 1)} disabled={page >= totalPages}
+                                style={{ padding: '0.2rem 0.4rem', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--glass-border)', borderRadius: '4px', color: page >= totalPages ? 'rgba(255,255,255,0.2)' : 'var(--text-muted)', cursor: page >= totalPages ? 'default' : 'pointer', display: 'flex', alignItems: 'center' }}>
+                                <ChevronRight size={14} />
+                            </button>
+                        </div>
+                        <select value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}
+                            style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid var(--glass-border)', color: 'var(--text-muted)', padding: '0.3rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', cursor: 'pointer' }}>
+                            <option value={10}>10 {t('common.rows', 'Rows')}</option>
+                            <option value={25}>25 {t('common.rows', 'Rows')}</option>
+                            <option value={50}>50 {t('common.rows', 'Rows')}</option>
+                            <option value={100}>100 {t('common.rows', 'Rows')}</option>
+                        </select>
                     </div>
                 </div>
 

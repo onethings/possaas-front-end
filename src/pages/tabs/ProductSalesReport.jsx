@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download, Loader2, BarChart3, LineChart, PieChart, FileText, FileSpreadsheet, Settings2 } from 'lucide-react';
+import { Download, Loader2, BarChart3, LineChart, PieChart, FileText, FileSpreadsheet, Settings2, ChevronLeft, ChevronRight } from 'lucide-react';
 import {
     Chart as ChartJS,
     CategoryScale, LinearScale, BarElement, PointElement, LineElement,
@@ -14,6 +14,7 @@ import FilterBar from '../../components/FilterBar';
 import { getRangeReport } from '../../api/reports';
 import { exportCSV, exportPDF } from '../../utils/exportUtils';
 import { SortArrow } from '../../utils/useSortable';
+import { usePagination } from '../../utils/usePagination';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, ArcElement, Title, Tooltip, Legend, Filler);
 
@@ -97,6 +98,10 @@ const ProductSalesReport = () => {
             return sortDir === 'asc' ? (va - vb) : (vb - va);
         });
     }, [products, sortKey, sortDir, t]);
+
+    // ── Pagination ──
+    const { page, setPage, pageSize, setPageSize, totalPages, pagedData } = usePagination(sortedProducts, 10);
+
     const exportRef = useRef(null);
     const colPickerRef = useRef(null);
 
@@ -512,12 +517,11 @@ const ProductSalesReport = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {sortedProducts.map((p, idx) => (
+                            {pagedData.map((p, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                                     {COLUMN_DEFS(t).filter(c => visibleCols[c.key]).map(c => {
                                         const rawVal = c.getVal(p);
                                         const isPercent = c.key === 'profitMargin';
-                                        const isNumeric = c.isCurrency || c.key === 'qty' || c.key === 'returnQty';
                                         const displayVal = c.isCurrency
                                             ? `${tenantConfig.currency}${rawVal.toLocaleString()}`
                                             : rawVal;
@@ -538,11 +542,23 @@ const ProductSalesReport = () => {
                     </table>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    <span>{t('common.page_info', { current: 1, total: Math.max(1, Math.ceil(sortedProducts.length / 10)) })}</span>
-                    <select style={{ background: 'rgba(0,0,0,0.2)', border: 'none', color: 'var(--text-muted)', padding: '0.3rem', borderRadius: '4px', fontSize: '0.8rem' }}>
-                        <option>10 {t('common.rows', 'Rows')}</option>
-                        <option>25 {t('common.rows', 'Rows')}</option>
-                        <option>50 {t('common.rows', 'Rows')}</option>
+                    <span>{t('common.page_info', { current: page, total: totalPages })}</span>
+                    <div style={{ display: 'flex', gap: '0.3rem' }}>
+                        <button onClick={() => setPage(page - 1)} disabled={page <= 1}
+                            style={{ padding: '0.2rem 0.4rem', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--glass-border)', borderRadius: '4px', color: page <= 1 ? 'rgba(255,255,255,0.2)' : 'var(--text-muted)', cursor: page <= 1 ? 'default' : 'pointer', display: 'flex', alignItems: 'center' }}>
+                            <ChevronLeft size={14} />
+                        </button>
+                        <button onClick={() => setPage(page + 1)} disabled={page >= totalPages}
+                            style={{ padding: '0.2rem 0.4rem', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--glass-border)', borderRadius: '4px', color: page >= totalPages ? 'rgba(255,255,255,0.2)' : 'var(--text-muted)', cursor: page >= totalPages ? 'default' : 'pointer', display: 'flex', alignItems: 'center' }}>
+                            <ChevronRight size={14} />
+                        </button>
+                    </div>
+                    <select value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}
+                        style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid var(--glass-border)', color: 'var(--text-muted)', padding: '0.3rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', cursor: 'pointer' }}>
+                        <option value={10}>10 {t('common.rows', 'Rows')}</option>
+                        <option value={25}>25 {t('common.rows', 'Rows')}</option>
+                        <option value={50}>50 {t('common.rows', 'Rows')}</option>
+                        <option value={100}>100 {t('common.rows', 'Rows')}</option>
                     </select>
                 </div>
             </div>

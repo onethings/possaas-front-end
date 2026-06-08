@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTenant } from '../../contexts/TenantContext';
 import FilterBar from '../../components/FilterBar';
 import { getDiscounts } from '../../api/discounts';
 import { SortArrow } from '../../utils/useSortable';
+import { usePagination } from '../../utils/usePagination';
 
 const DiscountReport = () => {
     const { t } = useTranslation();
@@ -34,6 +35,9 @@ const DiscountReport = () => {
             return sortDir === 'asc' ? (va - vb) : (vb - va);
         });
     }, [discounts, sortKey, sortDir]);
+
+    // ── Pagination ──
+    const { page, setPage, pageSize, setPageSize, totalPages, pagedData } = usePagination(sortedDiscounts, 10);
 
     useEffect(() => {
         fetchData();
@@ -90,7 +94,7 @@ const DiscountReport = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {sortedDiscounts.map((d, idx) => (
+                            {pagedData.map((d, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                                     <td style={{ padding: '0.75rem 0.5rem', fontWeight: 600 }}>{d.name}</td>
                                     <td style={{ padding: '0.75rem 0.5rem', textAlign: 'right' }}>{d.count}</td>
@@ -101,11 +105,23 @@ const DiscountReport = () => {
                     </table>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    <span>{t('common.page_info', { current: 1, total: Math.max(1, Math.ceil(sortedDiscounts.length / 10)) })}</span>
-                    <select style={{ background: 'rgba(0,0,0,0.2)', border: 'none', color: 'var(--text-muted)', padding: '0.3rem', borderRadius: '4px', fontSize: '0.8rem' }}>
-                        <option>10 {t('common.rows', 'Rows')}</option>
-                        <option>25 {t('common.rows', 'Rows')}</option>
-                        <option>50 {t('common.rows', 'Rows')}</option>
+                    <span>{t('common.page_info', { current: page, total: totalPages })}</span>
+                    <div style={{ display: 'flex', gap: '0.3rem' }}>
+                        <button onClick={() => setPage(page - 1)} disabled={page <= 1}
+                            style={{ padding: '0.2rem 0.4rem', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--glass-border)', borderRadius: '4px', color: page <= 1 ? 'rgba(255,255,255,0.2)' : 'var(--text-muted)', cursor: page <= 1 ? 'default' : 'pointer', display: 'flex', alignItems: 'center' }}>
+                            <ChevronLeft size={14} />
+                        </button>
+                        <button onClick={() => setPage(page + 1)} disabled={page >= totalPages}
+                            style={{ padding: '0.2rem 0.4rem', background: 'rgba(255,255,255,0.08)', border: '1px solid var(--glass-border)', borderRadius: '4px', color: page >= totalPages ? 'rgba(255,255,255,0.2)' : 'var(--text-muted)', cursor: page >= totalPages ? 'default' : 'pointer', display: 'flex', alignItems: 'center' }}>
+                            <ChevronRight size={14} />
+                        </button>
+                    </div>
+                    <select value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}
+                        style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid var(--glass-border)', color: 'var(--text-muted)', padding: '0.3rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', cursor: 'pointer' }}>
+                        <option value={10}>10 {t('common.rows', 'Rows')}</option>
+                        <option value={25}>25 {t('common.rows', 'Rows')}</option>
+                        <option value={50}>50 {t('common.rows', 'Rows')}</option>
+                        <option value={100}>100 {t('common.rows', 'Rows')}</option>
                     </select>
                 </div>
             </div>
