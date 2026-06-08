@@ -106,6 +106,8 @@
     "sku_barcode": "SKU / 条码",
     "product_name": "商品名称",
     "price": "价格",
+    "cost": "成本",
+    "profit_margin": "利润率",
     "stock": "库存",
     "category": "分类",
     "no_match_msg": "未找到符合条件的商品",

@@ -107,6 +107,8 @@
     "product_name": "Nama Produk",
     "price": "Harga",
     "stock": "Stok",
+    "cost": "Biaya",
+    "profit_margin": "Margin laba",
     "category": "Kategori",
     "no_match_msg": "Tidak ada produk yang cocok dengan kriteria",
     "units": "unit",

@@ -107,6 +107,8 @@
     "product_name": "Nome Prodotto",
     "price": "Prezzo",
     "stock": "Giacenza",
+    "cost": "Costo",
+    "profit_margin": "Margine di profitto",
     "category": "Categoria",
     "no_match_msg": "Nessun prodotto trovato corrispondente ai criteri",
     "units": "unità",

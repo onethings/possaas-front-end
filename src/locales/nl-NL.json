@@ -107,6 +107,8 @@
     "product_name": "Productnaam",
     "price": "Prijs",
     "stock": "Voorraad",
+    "cost": "Kostprijs",
+    "profit_margin": "Winstmarge",
     "category": "Categorie",
     "no_match_msg": "Geen producten gevonden die aan de criteria voldoen",
     "units": "eenheid(en)",

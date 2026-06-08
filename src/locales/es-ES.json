@@ -107,6 +107,8 @@
     "product_name": "Nombre del producto",
     "price": "Precio",
     "stock": "Stock",
+    "cost": "Coste",
+    "profit_margin": "Margen de beneficio",
     "category": "Categoría",
     "no_match_msg": "No se encontraron productos que coincidan con los criterios",
     "units": "unidad(es)",

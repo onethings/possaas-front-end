@@ -107,6 +107,8 @@
     "product_name": "Ürün Adı",
     "price": "Fiyat",
     "stock": "Stok",
+    "cost": "Maliyet",
+    "profit_margin": "Kar Marjı",
     "category": "Kategori",
     "no_match_msg": "Kriterlere uygun ürün bulunamadı",
     "units": "adet",

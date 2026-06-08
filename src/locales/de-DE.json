@@ -107,6 +107,8 @@
     "product_name": "Produktname",
     "price": "Preis",
     "stock": "Lagerbestand",
+    "cost": "Kosten",
+    "profit_margin": "Gewinnspanne",
     "category": "Kategorie",
     "no_match_msg": "Keine Produkte gefunden, die den Kriterien entsprechen",
     "units": "Einheit(en)",

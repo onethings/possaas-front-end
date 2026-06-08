@@ -107,6 +107,8 @@
     "product_name": "Tên sản phẩm",
     "price": "Giá bán",
     "stock": "Tồn kho",
+    "cost": "Giá vốn",
+    "profit_margin": "Lợi nhuận gộp",
     "category": "Danh mục",
     "no_match_msg": "Không tìm thấy sản phẩm phù hợp với tiêu chí",
     "units": "đơn vị",

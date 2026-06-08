@@ -107,6 +107,8 @@
     "product_name": "상품명",
     "price": "가격",
     "stock": "재고",
+    "cost": "비용",
+    "profit_margin": "이익률",
     "category": "카테고리",
     "no_match_msg": "조건에 맞는 상품이 없습니다",
     "units": "단위",

@@ -106,6 +106,8 @@
     "sku_barcode": "SKU / Barcode",
     "product_name": "Product Name",
     "price": "Price",
+    "cost": "Cost",
+    "profit_margin": "Margin",
     "stock": "Stock",
     "category": "Category",
     "no_match_msg": "No products found matching the criteria",

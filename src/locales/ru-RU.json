@@ -107,6 +107,8 @@
     "product_name": "Название товара",
     "price": "Цена",
     "stock": "Запас",
+    "cost": "Стоимость",
+    "profit_margin": "Маржа",
     "category": "Категория",
     "no_match_msg": "Товары не найдены",
     "units": "ед.",

@@ -342,7 +342,7 @@ const Products = () => {
                             <button onClick={() => setModalOpen(true)} className="btn-secondary">{t('products.add_now')}</button>
                         </div>
                     ) : (
-                        <table data-tour-id="products-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '700px' }}>
+                        <table data-tour-id="products-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '900px' }}>
                             <thead>
                                 <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
                                     <th style={{ ...thStyle, width: '50px' }}>
@@ -356,6 +356,8 @@ const Products = () => {
                                     <th style={thStyle}>{t('products.sku_barcode')}</th>
                                     <th style={thStyle}>{t('products.product_name')}</th>
                                     <th style={thStyle}>{t('products.price')}</th>
+                                    <th style={thStyle}>{t('products.cost', 'Cost')}</th>
+                                    <th style={thStyle}>{t('products.profit_margin', 'Margin')}</th>
                                     <th style={thStyle}>{t('products.stock')}</th>
                                     <th style={thStyle}>{t('products.category')}</th>
                                     <th style={thStyle}>{t('common.actions')}</th>
@@ -364,7 +366,7 @@ const Products = () => {
                             <tbody>
                                 {filteredProducts.length === 0 ? (
                                     <tr>
-                                        <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                                        <td colSpan="9" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                                             {t('products.no_match_msg')}
                                         </td>
                                     </tr>
@@ -382,6 +384,14 @@ const Products = () => {
                                             <td style={tdStyle}><code style={{ color: 'var(--primary-light)' }}>{p.sku || 'N/A'}</code></td>
                                             <td style={tdStyle}>{p.name}</td>
                                             <td style={tdStyle}>{tenantConfig.currency}{p.price?.toLocaleString()}</td>
+                                            <td style={tdStyle}>{tenantConfig.currency}{(p.cost || 0).toLocaleString()}</td>
+                                            <td style={tdStyle}>
+                                                <span style={{
+                                                    color: (p.cost && p.price && p.price > p.cost) ? '#4ade80' : (p.cost && p.price ? '#f87171' : 'var(--text-muted)')
+                                                }}>
+                                                    {p.cost && p.price ? ((p.price - p.cost) / p.price * 100).toFixed(1) + '%' : '—'}
+                                                </span>
+                                            </td>
                                             <td style={tdStyle}>
                                                 <span style={{
                                                     padding: '2px 8px',

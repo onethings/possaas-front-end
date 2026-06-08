@@ -106,6 +106,8 @@
     "sku_barcode": "SKU / バーコード",
     "product_name": "製品名",
     "price": "価格",
+    "cost": "コスト",
+    "profit_margin": "利益率",
     "stock": "在庫",
     "category": "カテゴリー",
     "no_match_msg": "条件に一致する製品が見つかりません",
