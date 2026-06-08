@@ -60,55 +60,8 @@ const LoyversePage = () => {
 
     useEffect(() => {
         checkLoyverse();
-    }, []);
-
-    // On mount, check for any pending background task and resume polling
-    useEffect(() => {
-        try {
-            const stored = localStorage.getItem('loyverse_pending_task');
-            if (!stored) return;
-            const { taskId, label, startedAt } = JSON.parse(stored);
-            // Only resume if started within the last 30 minutes
-            if (Date.now() - startedAt > 30 * 60 * 1000) {
-                localStorage.removeItem('loyverse_pending_task');
-                return;
-            }
-            setLoyverseImporting(label);
-            setLoyverseMessage({ type: 'info', text: `${label} 恢復輪詢背景任務...` });
-            let attempts = 0;
-            const maxAttempts = 900;
-            const poll = async () => {
-                try {
-                    const status = await getLoyverseTaskStatus(taskId);
-                    if (status.success && status.data) {
-                        if (status.data.status === 'completed') {
-                            const result = status.data.result;
-                            let msg = result ? Object.entries(result).map(([k, v]) => v.error ? `${k}: ❌ ${v.error}` : `${k}: ${v.imported ?? 0}/${v.total ?? 0}`).join(' | ') : '完成';
-                            setLoyverseMessage({ type: 'success', text: `${label} 匯入完成！${msg}` });
-                            setLoyverseImporting(null);
-                            localStorage.removeItem('loyverse_pending_task');
-                            checkLoyverse();
-                            return;
-                        } else if (status.data.status === 'failed') {
-                            setLoyverseMessage({ type: 'error', text: `${label} 匯入失敗：${status.data.error || 'Unknown'}` });
-                            setLoyverseImporting(null);
-                            localStorage.removeItem('loyverse_pending_task');
-                            return;
-                        } else {
-                            if (status.data.progress) setLoyverseMessage({ type: 'info', text: `${label} ${status.data.progress}` });
-                            attempts++;
-                            if (attempts < maxAttempts) { setTimeout(poll, 2000); }
-                            else { setLoyverseMessage({ type: 'info', text: `${label} 仍在背景執行中，可稍後重整頁面查看結果` }); setLoyverseImporting(null); localStorage.removeItem('loyverse_pending_task'); }
-                        }
-                    }
-                } catch (e) {
-                    attempts++;
-                    if (attempts < maxAttempts) { setTimeout(poll, 2000); }
-                    else { setLoyverseMessage({ type: 'info', text: `${label} 背景任務仍在執行，可稍後重整頁面` }); setLoyverseImporting(null); localStorage.removeItem('loyverse_pending_task'); }
-                }
-            };
-            poll();
-        } catch (e) { /* ignore */ }
+        // Clear any stale pending task from localStorage
+        try { localStorage.removeItem('loyverse_pending_task'); } catch (e) {}
     }, []);
 
     const checkLoyverse = async () => {
