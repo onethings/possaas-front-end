@@ -44,6 +44,8 @@ import {
     Building2,
     AppWindow,
     Database,
+    AlertTriangle,
+    History,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTabs } from '../contexts/TabContext';
@@ -101,6 +103,9 @@ import StoresPage from '../pages/tabs/StoresPage';
 import POSDevicesPage from '../pages/tabs/POSDevicesPage';
 // Help tab components
 import HelpCenter from '../pages/tabs/HelpCenter';
+// Inventory management pages
+import InventoryHistory from '../pages/tabs/InventoryHistory';
+import LowStockAlert from '../pages/tabs/LowStockAlert';
 
 const languages = [
     { code: 'en-US', name: 'English' },
@@ -157,6 +162,8 @@ const sidebarGroups = [
             { id: 'purchase-orders',    icon: FileText,     title: 'nav.purchase_order',    component: PurchaseOrders },
             { id: 'suppliers',          icon: Truck,        title: 'nav.suppliers',         component: Suppliers },
             { id: 'inventory-counts',   icon: ClipboardList, title: 'nav.inventory_count',   component: InventoryCounts },
+            { id: 'inventory-history',  icon: History,      title: 'nav.inventory_history', component: InventoryHistory },
+            { id: 'low-stock-alert',    icon: AlertTriangle,title: 'nav.low_stock_alert',   component: LowStockAlert },
         ]
     },
     {
